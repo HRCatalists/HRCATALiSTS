@@ -1,0 +1,40 @@
+/* Main card */
+/* .card {
+    border-radius: 12px;
+    background-color: #f9f9f9;
+} */
+
+/* Circular Progress Bar */
+.progress-circle {
+    position: relative;
+    width: 150px;
+    height: 150px;
+}
+
+.progress-circle .circle {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: conic-gradient(
+        #007bff 0% 65%,  /* Blue segment for Male */
+        #86c7f3 65% 100% /* Light blue segment for Female */
+    );
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.circle-text {
+    position: absolute;
+    font-size: 1.5rem;
+    color: #333;
+}
+
+/* Gender labels */
+.dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+}

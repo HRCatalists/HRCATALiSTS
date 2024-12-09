@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>Events</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+        <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"rel="stylesheet"integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"crossorigin="anonymous"/>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css">
+        <!-- {{-- JQuery  --}} -->
+        <script
+            src="https://code.jquery.com/jquery-3.7.1.js"
+            integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+            crossorigin="anonymous"></script>
+
+        <!-- buttons for datatables -->
+        <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.dataTables.min.css">
+
+        <!-- Styles CSS -->
+        <link rel="stylesheet" href="css/styles.css">
+
+        <!-- Dashboard CSS -->
+        <link rel="stylesheet" href="css/dashboard.css">
+
+        <!-- Sidebar CSS -->
+        <link rel="stylesheet" href="css/sidebar.css">
+
+        <!-- DB Calendar CSS -->
+        <link rel="stylesheet" href="css/db-calendar.css">
+
+    </head>
+
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-custom sticky-top">
+            <div class="container">
+                <button id="sidebarToggle" class="navbar-toggler" type="button" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <a class="navbar-brand" href="#">
+                    <img src="images/CC_logo.png" alt="Logo" class="cclogo">
+                    <span class="cc-nav-text navbar-text">Columban College, Inc.</span>
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <body>
+        
+        <div class="wrapper d-flex">
+            <!-- Sidebar -->
+            <nav id="sidebar" class="shadow">
+                <ul class="list-unstyled components">
+                    <li class="d-flex align-items-center">
+                        <img src="images/dashboard.png" class="icon" alt="dashboard-icon">
+                        <a href="#homeSubmenu" class="ms-3">Dashboard</a>
+                    </li>
+                    <li class="d-flex align-items-center">
+                        <img src="images/user.png" class="icon" alt="calendar-icon">
+                        <a href="#homeSubmenu" class="ms-3">Profile</a>
+                    </li>
+                    <li class="d-flex align-items-center">
+                        <img src="images/calendar.png" class="icon" alt="applicant-icon">
+                        <a href="#homeSubmenu" class="ms-3">Events</a>
+                    </li>
+                    <li class="d-flex align-items-center">
+                        <img src="images/faqs.png" class="icon" alt="review-icon">
+                        <a href="#homeSubmenu" class="ms-3">Others</a>
+                    </li> 
+                </ul>
+
+                <div class="container mt-auto mx-2">
+
+                    <div class="d-flex align-items-center my-4">
+                        <img src="images/logout.png" class="logout-icon" alt="logout-icon">
+                        <a href="#" class="nav-link ms-3 sidebar-text">Log Out</a>
+                    </div>
+                </div>
+            </nav>
+            <!-- End of Sidebar -->
+             
+            <!-- Dashboard Overview Section -->
+            <div class="container mt-5 container-event" id="dashboard">
+                <div class="row">
+                    <!-- Events Section -->
+                    <div class="col-md-6 now-event">
+                        <h2 class="fw-bold mb-4">Events</h2>
+            
+                        <h4 class="fw-bold mb-3">Now</h4>
+                        <div class="p-4 mb-4" style="background: #eaeaea; border-radius: 8px;">
+                            November 17
+                        </div>
+                    </div>
+
+
+                    <!-- Upcoming Section with Calendar -->
+            <div class="row">
+                <!-- Upcoming Events -->
+                <div class="col-md-9">
+                    <h4 class="fw-bold mb-3">Upcoming</h4>
+                    <div class="p-4 mb-3" style="background: #eaeaea; border-radius: 8px;">
+                        November 19
+                    </div>
+                    <div class="p-4 mb-3" style="background: #eaeaea; border-radius: 8px;">
+                        November 21
+                    </div>
+                    <div class="p-4 mb-3" style="background: #eaeaea; border-radius: 8px;">
+                        November 23
+                    </div>
+                </div>
+
+                <!-- Calendar -->
+                <div class="col-md-3">
+                    <div class="card calendar-event-card p-3" style="background: #f8f9fa; border-radius: 8px;">
+                        <div class="calendar-month" id="end-calendar">
+                            <div class="calendar-header d-flex justify-content-between align-items-center mb-2">
+                                <button class="btn btn-sm btn-outline-secondary" onclick="prevMonth('end')"> < </button>
+                                <span id="end-month-year"></span>
+                                <button class="btn btn-sm btn-outline-secondary" onclick="nextMonth('end')"> > </button>
+                            </div>
+                            <div class="calendar-grid" id="end-days"></div>
+                        </div>
+                    </div>
+                </div>
+                    </div>
+                        
+                      
+                    
+                </div>
+
+                
+                <script src="js/ems-calendar.js"></script>
+
+                <!-- Calendar Script -->
+                <script>
+                    
+                    const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+                    let start = new Date(2024, 0, 1);
+                    let end = new Date(2024, 1, 1);
+                  
+                    function updateCalendar(type) {
+                      const date = type === 'start' ? start : end;
+                      const calendarId = type === 'start' ? 'start' : 'end';
+                      const monthYearElem = document.getElementById(`${calendarId}-month-year`);
+                      const daysElem = document.getElementById(`${calendarId}-days`);
+                  
+                      monthYearElem.textContent = `${monthNames[date.getMonth()]} ${date.getFullYear()}`;
+                      daysElem.innerHTML = '';
+                  
+                      // Calculate days
+                      const firstDay = new Date(date.getFullYear(), date.getMonth(), 1).getDay();
+                      const daysInMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+                  
+                      // Render empty days at the start
+                      for (let i = 0; i < firstDay; i++) {
+                        const emptyDiv = document.createElement('div');
+                        emptyDiv.classList.add('day', 'disabled');
+                        daysElem.appendChild(emptyDiv);
+                      }
+                  
+                      // Render each day
+                      for (let day = 1; day <= daysInMonth; day++) {
+                        const dayDiv = document.createElement('div');
+                        dayDiv.classList.add('day');
+                        dayDiv.textContent = day;
+                  
+                        if (type === 'start' && day === start.getDate()) {
+                          dayDiv.classList.add('selected');
+                        } else if (type === 'end' && day === end.getDate()) {
+                          dayDiv.classList.add('selected');
+                        }
+                  
+                        dayDiv.addEventListener('click', () => {
+                          if (type === 'start') {
+                            start.setDate(day);
+                          } else {
+                            end.setDate(day);
+                          }
+                          updateCalendar(type);
+                        });
+                  
+                        daysElem.appendChild(dayDiv);
+                      }
+                    }
+                  
+                    function prevMonth(type) {
+                      if (type === 'start') {
+                        start.setMonth(start.getMonth() - 1);
+                      } else {
+                        end.setMonth(end.getMonth() - 1);
+                      }
+                      updateCalendar(type);
+                    }
+                  
+                    function nextMonth(type) {
+                      if (type === 'start') {
+                        start.setMonth(start.getMonth() + 1);
+                      } else {
+                        end.setMonth(end.getMonth() + 1);
+                      }
+                      updateCalendar(type);
+                    }
+                  
+                    // Initial render
+                    updateCalendar('start');
+                    updateCalendar('end');
+         
+                 
+                </script>
+                <!-- End of Calendar JS -->     
+
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+      
+
+        <!-- Bootstrap JavaScript Libraries -->
+        <script
+            src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+            integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+            crossorigin="anonymous"
+        ></script>
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+            integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+            crossorigin="anonymous"
+        ></script>
+
+
+        <!-- jQuery and DataTables JS -->
+        <script src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
+
+        <script src="https://cdn.datatables.net/buttons/2.2.3/js/dataTables.buttons.min.js"></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/pdfmake@0.1.53/build/pdfmake.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/pdfmake@0.1.53/build/vfs_fonts.js"></script>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const sidebar = document.getElementById('sidebar');
+                const sidebarToggle = document.getElementById('sidebarToggle');
+
+                function toggleSidebar() {
+                    if (window.innerWidth < 768) {
+                        sidebar.classList.toggle('active');
+                    }
+                }
+
+                sidebarToggle.addEventListener('click', toggleSidebar);
+
+                // Ensure sidebar is visible when resizing to larger screens
+                window.addEventListener('resize', function () {
+                    if (window.innerWidth >= 768) {
+                        sidebar.classList.remove('active');
+                    }
+                });
+            });
+        </script>
+        <!-- End of Sidebar toggle -->
+
+     
+    </body>
+</html>

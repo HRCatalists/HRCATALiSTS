@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>Dashboard</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+
+        <!-- CSRF Token -->
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+
+        <!-- Bootstrap CSS v5.3.2 -->
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+            crossorigin="anonymous"
+        />
+
+        <!-- Styles CSS -->
+        <link rel="stylesheet" href="css/styles.css">
+
+        <!-- Dashboard CSS -->
+        <link rel="stylesheet" href="css/dashboard.css">
+
+        <!-- Sidebar CSS -->
+        <link rel="stylesheet" href="css/sidebar.css">
+
+        <!-- Calendar CSS -->
+        <link rel="stylesheet" href="css/db-calendar.css">
+    </head>
+
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-custom sticky-top">
+            <div class="container">
+                <button id="sidebarToggle" class="navbar-toggler" type="button" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <a class="navbar-brand" href="#">
+                    <img src="images/CC_logo.png" alt="Logo" class="cclogo">
+                    <span class="cc-nav-text navbar-text">Columban College, Inc.</span>
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <body>
+        
+        <div class="wrapper d-flex">
+            <!-- Sidebar -->
+            <nav id="sidebar" class="shadow">
+                <ul class="list-unstyled components">
+                    <li class="d-flex align-items-center">
+                        <img src="images/dashboard.png" class="icon" alt="dashboard-icon">
+                        <a href="admin-ats-db.html" class="ms-3">Dashboard</a>
+                    </li>
+                    <li class="d-flex align-items-center">
+                        <img src="images/calendar.png" class="icon" alt="calendar-icon">
+                        <a href="admin-ats-cl.html" class="ms-3">Calendar</a>
+                    </li>
+                    <li class="d-flex align-items-center">
+                        <img src="images/table.png" class="icon" alt="applicant-icon">
+                        <a href="admin-ats-app-table.html" class="ms-3">Applicant Table</a>
+                    </li>
+                    <li class="d-flex align-items-center">
+                        <img src="images/documents.png" class="icon" alt="review-icon">
+                        <a href="admin-ats-on-review.html" class="ms-3">Ongoing Review</a>
+                    </li>
+                    <li class="d-flex align-items-center">
+                        <img src="images/cv.png" class="icon" alt="positions-icon">
+                        <a href="admin-ats-act-post.html" class="ms-3">Active Positions</a>
+                    </li>
+                    <li class="d-flex align-items-center">
+                        <img src="images/archived.png" class="icon" alt="archived-icon">
+                        <a href="admin-ats-arch.html" class="ms-3">Archived Applicants</a>
+                    </li>
+                </ul>
+
+                <div class="container mt-auto mx-2">
+                    <div class="d-flex align-items-center my-4">
+                        <img src="images/logout.png" class="logout-icon" alt="logout-icon">
+                        <a href="#" class="nav-link ms-3 sidebar-text">Log Out</a>
+                    </div>
+                </div>
+            </nav>
+            <!-- End of Sidebar -->
+             
+            <!-- Dashboard Overview Section -->
+            <div class="container mt-3" id="dashboard">
+                
+                <div class="container">
+
+                    <!-- Only show this text on smaller screens -->
+                    <div class="welcome-text-only">Welcome, {user.name}!</div>
+
+                    <div class="d-flex justify-content-between align-items-center mt-4">
+
+                        <div>
+                            <h2 class="db-h2">DASHBOARD</h2>
+                            <h4 class="db-h4 mt-5">Overview</h4>
+                        </div>
+
+                        <!-- Banner for large screens -->
+                        <div class="d-flex banner banner-gradient text-white align-items-center justify-content-center px-4 py-2">
+                            <h4 class="banner-text mx-5">Welcome, {user.name}!</h4>
+                            <img src="images/db-icon.png" class="banner-icon " alt="banner-icon">
+                        </div>
+
+                        
+                    </div>
+    
+                    <div class="d-flex align-items-center">
+                        <h5 class="db-text me-4">New Applications:</h5>
+                        <p class="applications-counter">4</p>
+                    </div>
+                </div>
+                
+                <div class="row mt-4 dashboard-row d-flex justify-content-between align-items-start">
+                    
+                    <!-- Cards Section -->
+                    <div class="col-md-7">
+                        <div class="row row-cols-1 row-cols-md-2 g-4">
+                            <div class="col">
+                                <div class="card text-center">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center justify-content-center mt-2">
+                                            <h5 class="card-title db-h5 text-color-1 m-auto">Applicant Table</h5>
+                                            <img src="images/table-2.png" class="card-icon m-auto" alt="table-icon">
+                                        </div>
+                                        <p class="counter text-color-1">16</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="card text-center">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center justify-content-center mt-2">
+                                            <h5 class="card-title db-h5 text-color-2 m-auto">Ongoing Review</h5>
+                                            <img src="images/documents-2.png" class="card-icon m-auto" alt="doc-icon">
+                                        </div>
+                                        <p class="counter text-color-2">6</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="card text-center">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center justify-content-center mt-2">
+                                            <h5 class="card-title db-h5 text-color-3 m-auto">Active Positions</h5>
+                                            <img src="images/cv-2.png" class="card-icon m-auto" alt="doc-icon">
+                                        </div>
+                                        <p class="counter text-color-3">8</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="card text-center">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center justify-content-center mt-2">
+                                            <h5 class="card-title db-h5 text-color-4 m-auto">Archived Applicants</h5>
+                                            <img src="images/archived-2.png" class="card-icon m-auto" alt="doc-icon">
+                                        </div>
+                                        <p class="counter text-color-4">6</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            
+                    <!-- Calendar Section -->
+                    <div class="col-md-4 me-5">
+                        <div class="calendar">
+                            <div class="calendar-month" id="start-calendar">
+                                <div class="calendar-header">
+                                    <button onclick="prevMonth('start')"> < </button>
+                                    <span id="start-month-year"></span>
+                                    <button onclick="nextMonth('start')"> > </button>
+                                </div>
+                                <div class="calendar-grid" id="start-days"></div>
+                            </div>
+                            <div class="calendar-month" id="end-calendar">
+                                <div class="calendar-header">
+                                    <button onclick="prevMonth('end')"> < </button>
+                                    <span id="end-month-year"></span>
+                                    <button onclick="nextMonth('end')"> > </button>
+                                </div>
+                                <div class="calendar-grid" id="end-days"></div>
+                            </div>
+                        </div>
+
+                        <!-- Chart Section -->
+                        <div class="chart-container mt-5">
+                            <canvas id="applicantsChart"></canvas>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar toggle -->
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const sidebar = document.getElementById('sidebar');
+                const sidebarToggle = document.getElementById('sidebarToggle');
+
+                function toggleSidebar() {
+                    if (window.innerWidth < 768) {
+                        sidebar.classList.toggle('active');
+                    }
+                }
+
+                sidebarToggle.addEventListener('click', toggleSidebar);
+
+                // Ensure sidebar is visible when resizing to larger screens
+                window.addEventListener('resize', function () {
+                    if (window.innerWidth >= 768) {
+                        sidebar.classList.remove('active');
+                    }
+                });
+            });
+        </script>
+        <!-- End of Sidebar toggle -->
+
+        <!-- Calendar Script -->
+        <script>
+            const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            let start = new Date(2024, 0, 1);
+            let end = new Date(2024, 1, 1);
+          
+            function updateCalendar(type) {
+              const date = type === 'start' ? start : end;
+              const calendarId = type === 'start' ? 'start' : 'end';
+              const monthYearElem = document.getElementById(`${calendarId}-month-year`);
+              const daysElem = document.getElementById(`${calendarId}-days`);
+          
+              monthYearElem.textContent = `${monthNames[date.getMonth()]} ${date.getFullYear()}`;
+              daysElem.innerHTML = '';
+          
+              // Calculate days
+              const firstDay = new Date(date.getFullYear(), date.getMonth(), 1).getDay();
+              const daysInMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+          
+              // Render empty days at the start
+              for (let i = 0; i < firstDay; i++) {
+                const emptyDiv = document.createElement('div');
+                emptyDiv.classList.add('day', 'disabled');
+                daysElem.appendChild(emptyDiv);
+              }
+          
+              // Render each day
+              for (let day = 1; day <= daysInMonth; day++) {
+                const dayDiv = document.createElement('div');
+                dayDiv.classList.add('day');
+                dayDiv.textContent = day;
+          
+                if (type === 'start' && day === start.getDate()) {
+                  dayDiv.classList.add('selected');
+                } else if (type === 'end' && day === end.getDate()) {
+                  dayDiv.classList.add('selected');
+                }
+          
+                dayDiv.addEventListener('click', () => {
+                  if (type === 'start') {
+                    start.setDate(day);
+                  } else {
+                    end.setDate(day);
+                  }
+                  updateCalendar(type);
+                });
+          
+                daysElem.appendChild(dayDiv);
+              }
+            }
+          
+            function prevMonth(type) {
+              if (type === 'start') {
+                start.setMonth(start.getMonth() - 1);
+              } else {
+                end.setMonth(end.getMonth() - 1);
+              }
+              updateCalendar(type);
+            }
+          
+            function nextMonth(type) {
+              if (type === 'start') {
+                start.setMonth(start.getMonth() + 1);
+              } else {
+                end.setMonth(end.getMonth() + 1);
+              }
+              updateCalendar(type);
+            }
+          
+            // Initial render
+            updateCalendar('start');
+            updateCalendar('end');
+        </script>
+        <!-- End of Calendar JS -->
+
+        <!-- Chart.js Library -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+        <script>
+            const ctx = document.getElementById('applicantsChart').getContext('2d');
+            const applicantsChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                    datasets: [
+                        {
+                            label: '2023',
+                            data: [17, 48, 30, 36, 26, 27, 50, 31, 10, 45, 39, 11],
+                            backgroundColor: 'rgba(54, 162, 235, 0.8)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: '2024',
+                            data: [8, 21, 26, 19, 18, 22, 50, 13, 13, 14, 11, 6],
+                            backgroundColor: 'rgba(30, 99, 132, 0.8)',
+                            borderColor: 'rgba(30, 99, 132, 1)',
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 50,
+                            ticks: {
+                                stepSize: 5
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top'
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.dataset.label}: ${context.raw}`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        </script>
+
+        <!-- Bootstrap JavaScript Libraries -->
+        <script
+            src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+            integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+            crossorigin="anonymous"
+        ></script>
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+            integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+            crossorigin="anonymous"
+        ></script>
+    </body>
+</html>
