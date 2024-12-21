@@ -58,167 +58,521 @@
     <!-- job selected -->
 
 
-    <div class="container job-selected">
-        <div class="row ">
+<div class="container job-selected">
+  <!-- Row 1: Job Details -->
+  <div class="row mb-5">
+    <div class="col-md-12">
+      <h2 class="mb-4 text-primary">Medical Staff</h2>
+      <div class="d-flex mb-3">
+        <button class="btn btn-outline-primary me-2">Med</button>
+        <button class="btn btn-outline-primary me-2">Nurse</button>
+        <button class="btn btn-outline-primary">Midwifery</button>
+      </div>
 
-          <!-- Left Column: Job Description -->
-          <div class="col-md-6 left-con">
-            <h2>Medical Staff</h2>
+      <div class="row">
+        <!-- Left Column: Qualifications -->
+        <div class="col-md-6">
+          <h4>Qualifications:</h4>
+          <ul>
+            <li>Graduate of any medical-related course (BS Nursing, Midwifery, etc.)</li>
+            <li>A practicing Catholic of good moral character</li>
+          </ul>
+        </div>
 
-            <button class="btn btn-category">Med</button>
-            <button class="btn btn-category">Nurse</button>
-            <button class="btn btn-category">Midwifery</button>
-            
-            <h4 class="mt-5 mb-4">Requirements:</h4>
-            <ul>
-              <li>Graduate of any medical-related course (BS Nursing, Midwifery, etc.)</li>
-              <li>A practicing Catholic of good moral character</li>
-            </ul>
-            
-            <h4 class="mt-5 mb-4">Duties and Responsibilities:</h4>
-            <ul>
-              <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</li>
-              <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</li>
-              <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</li>
-              <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</li>
-            </ul>
+        <!-- Right Column: Duties and Responsibilities -->
+        <div class="col-md-6">
+          <h4>Duties and Responsibilities:</h4>
+          <ul>
+            <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
+            <li>Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</li>
+            <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
+            <li>Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="row mt-4">
+        <!-- Contact Information -->
+        <div class="col-md-6">
+          <h4>Contacts:</h4>
+          <p>
+            <i class="fas fa-envelope text-primary"></i>
+            <a href="mailto:serverus@gmail.com" class="text-primary">serverus@gmail.com</a>
+          </p>
+          <p>
+            <i class="fas fa-phone text-primary"></i>
+            <span class="text-primary">09123 4557 8g</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  
+  <div class="container mt-5">
+    <h3 class="text-primary">Application Form</h3>
+    <div id="form-page-1" class="form-page">
+
+<!-- page 1: personal info -->
+
+      <h5 class="mb-3">Personal Information</h5>
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <label for="firstName" class="form-label">First Name <span class="text-danger">*</span></label>
+          <input type="text" id="firstName" class="form-control" placeholder="Enter First Name" required>
+        </div>
+        <div class="col-md-6">
+          <label for="lastName" class="form-label">Last Name <span class="text-danger">*</span></label>
+          <input type="text" id="lastName" class="form-control" placeholder="Enter Last Name" required>
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <label for="email" class="form-label">Email Address <span class="text-danger">*</span></label>
+          <input type="email" id="email" class="form-control" placeholder="Enter Email Address" required>
+        </div>
+        <div class="col-md-6">
+          <label for="phone" class="form-label">Contact Number <span class="text-danger">*</span></label>
+          <input type="tel" id="phone" class="form-control" placeholder="Enter Contact Number" required>
+        </div>
+      </div>
+
+      <div class="col-md-12 mb-3">
+        <label for="facebook" class="form-label">Facebook Account Link</label>
+        <input type="url" id="facebook" class="form-control" placeholder="Enter Facebook Link">
+      </div>
+
+      <div class="col-md-12 mb-3">
+        <label for="address" class="form-label">Address <span class="text-danger">*</span></label>
+        <input type="text" id="address" class="form-control" placeholder="Enter Address" required>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-md-3">
+          <label for="dob" class="form-label">Date of Birth</label>
+          <input type="date" id="dob" class="form-control">
+        </div>
+        <div class="col-md-3">
+          <label for="place" class="form-label">Place of Birth</label>
+          <input type="text" id="place" class="form-control" placeholder="Enter Place of Birth">
+        </div>
+        <div class="col-md-3">
+          <label for="gender" class="form-label">Sex</label>
+          <select id="gender" class="form-control">
+            <option value="">Select</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label for="civilStatus" class="form-label">Civil Status</label>
+          <select id="civilStatus" class="form-control">
+            <option value="">Select</option>
+            <option value="Single">Single</option>
+            <option value="Married">Married</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-md-3">
+          <label for="religion" class="form-label">Religion</label>
+          <input type="text" id="religion" class="form-control" placeholder="Enter Religion">
+        </div>
+        <div class="col-md-3">
+          <label for="citizenship" class="form-label">Citizenship</label>
+          <input type="text" id="citizenship" class="form-control" placeholder="Enter Citizenship">
+        </div>
+        <div class="col-md-3">
+          <label for="height" class="form-label">Height</label>
+          <input type="text" id="height" class="form-control" placeholder="Enter Height">
+        </div>
+        <div class="col-md-3">
+          <label for="weight" class="form-label">Weight</label>
+          <input type="text" id="weight" class="form-control" placeholder="Enter Weight">
+        </div>
+      </div>
+
+      <div class="pagination-container mt-5">
+        <button class="btn btn-secondary back-button">Clear</button>
+        <nav>
+          <ul class="pagination">
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="form-page-2">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item"><a class="page-link" href="#">4</a></li>
+          </ul>
+        </nav>
+        
+        <button class="btn btn-primary next-button">Next</button>
+      </div>
+
+
+    </div>
+
+
+    <!-- page 2: fam bg -->
+
+    <div id="form-page-2" class="form-page hidden">
+      <h5 class="mb-3">Family Background</h5>
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <label for="spouseName" class="form-label">Name of Spouse</label>
+          <input type="text" id="spouseName" class="form-control" placeholder="Enter Spouse Name">
+        </div>
+        <div class="col-md-6">
+          <label for="occupation" class="form-label">Occupation</label>
+          <input type="text" id="occupation" class="form-control" placeholder="Enter Occupation">
+        </div>
+      </div>
+
+
+      <div class="mb-3">
+        <label for="childrenCount" class="form-label">No. of Children</label>
+        <input type="number" id="childrenCount" class="form-control" style="max-width: 100px;" value="0" min="0" onchange="generateChildFields()">
+      </div>
+
+      <div id="childFieldsContainer" class="mb-3"></div>
+
+
+
+      <div class="row mb-3 mt-5">
+        <div class="col-md-6">
+          <label for="fatherName" class="form-label">Name of Father</label>
+          <input type="text" id="fatherName" class="form-control" placeholder="Enter Father's Name">
+        </div>
+        <div class="col-md-6">
+          <label for="fatherOccupation" class="form-label">Occupation</label>
+          <input type="text" id="fatherOccupation" class="form-control" placeholder="Enter Father's Occupation">
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <label for="motherName" class="form-label">Name of Mother</label>
+          <input type="text" id="motherName" class="form-control" placeholder="Enter Mother's Name">
+        </div>
+        <div class="col-md-6">
+          <label for="motherOccupation" class="form-label">Occupation</label>
+          <input type="text" id="motherOccupation" class="form-control" placeholder="Enter Mother's Occupation">
+        </div>
+      </div>
+
+
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <label for="emergencyContact" class="form-label">Their Address</label>
+          <input type="text" id="emergencyContact" class="form-control" placeholder="Enter Name" required>
+        </div>
+        <div class="col-md-6">
+          <label for="emergencyContactNumber" class="form-label">Contact No.</label>
+          <input type="text" id="emergencyContactNumber" class="form-control" placeholder="Enter Contact No." required>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="parentsAddress" class="form-label">Name of Person to be contacted in case of emergency</label>
+        <input type="text" id="parentsAddress" class="form-control" placeholder="Enter Name">
+      </div>
+
+      <div class="mb-3">
+        <label for="parentsAddress" class="form-label">Contact of Person to be contacted in case of emergency</label>
+        <input type="text" id="parentsAddress" class="form-control" placeholder="Enter Contact">
+      </div>
       
+      <div class="pagination-container mt-5">
+        <button class="btn btn-secondary back-button">Back</button>
+        <nav>
+          <ul class="pagination">
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item"><a class="page-link" href="#">4</a></li>
+          </ul>
+        </nav>
+        
+        <button class="btn btn-primary next-button">Next</button>
+      </div>
+      
+    </div>
 
-            
-            <h4 class="mt-5 mb-4">Contacts:</h4>
 
-            <p>
-                <i class="fas fa-envelope" style="color: #111D5B;"></i>
-                <a href="mailto:serverus@gmail.com" style="color: #111D5B;">serverus@gmail.com</a>
-            </p>
-            
-            <p>
-                <i class="fas fa-phone" style="color: #111D5B;"></i>
-                <span style="color: #111D5B;">09123 4557 8g</span>
-            </p>
 
+
+    <!-- page 3: education bg -->
+
+    <div id="form-page-3" class="form-page hidden">
+      <h5 class="mb-3">Education</h5>
+      <div class="mb-4">
+        <h6>Elementary</h6>
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="elementaryName" class="form-label">Name of School</label>
+            <input type="text" id="elementaryName" class="form-control" placeholder="Enter the name of school">
           </div>
-
-
-      
-          <!-- Right Column: Application Form -->
-          <div class="col-md-6 form-section">
-            <div class="form-header mb-5">Application Form</div>
-            <form>
-              
-              <div class="row mb-4">
-                <div class="col-md-6">
-                    <h5>First Name <span class="text-danger">*</span></h5>
-                    <input type="text" class="form-control" placeholder="First Name" required>
-                </div>
-                <div class="col-md-6">
-                    <h5>Last Name <span class="text-danger">*</span></h5>
-                    <input type="text" class="form-control" placeholder="Last Name" required>
-                </div>
-            </div>
-              
-              <div class="row mb-4">
-                <div class="col-md-6">
-                    <h5>Email Address <span class="text-danger">*</span></h5>
-                    <input type="email" class="form-control" placeholder="Email Address" required>
-                </div>
-                <div class="col-md-6">
-                    <h5>Phone Number <span class="text-danger">*</span></h5>
-                    <input type="tel" class="form-control" placeholder="Phone Number" required>
-                </div>
-              </div>
-              
-              <div class="mb-4">
-                <h5>Address <span class="text-danger">*</span></h5>
-                <input type="text" class="form-control" placeholder="Address" required>
-              </div>
-      
-              <div class="row mb-4">
-                <div class="col-md-6">
-                    <h5>City <span class="text-danger">*</span></h5>
-                  <input type="text" class="form-control" placeholder="City" required>
-                </div>
-                <div class="col-md-5">
-                    <h5>Province <span class="text-danger">*</span></h5>
-                    <input type="text" class="form-control" placeholder="Province" required>
-                </div>
-              </div>
-
-
-              <!-- attach cv -->
-      
-              <div class="col-md-7 mb-5">
-                <label for="cv" class="form-label">Attach CV <span class="text-danger">*</span></label>
-                <div class="file-upload">
-                    <label for="cv" class="upload-label">
-                        <button type="button" class="btn btn-primary">Upload</button> 
-                        <span class="file-name">or drag your file here</span>
-                    </label>
-                    <input type="file" id="cv" class="file-input" accept=".pdf" required>
-                </div>
-                <small class="form-text text-muted">Submit your file in .pdf format (Max: 2 MB)</small>
-                <small class="form-text text-danger" id="error-message" style="display: none;"></small>
-            </div>
-            
-            <script>
-                document.getElementById('cv').addEventListener('change', function() {
-                    const fileInput = this;
-                    const file = fileInput.files[0];
-                    const fileName = file?.name || "or drag your file here";
-                    const fileType = file?.type;
-                    const fileSize = file?.size || 0;
-                    const fileErrorMessage = document.getElementById('error-message');
-                    const fileUpload = document.querySelector('.file-upload');
-                    const maxSize = 2 * 1024 * 1024; // 2 MB in bytes
-            
-                    // Reset file name display and error message
-                    document.querySelector('.file-name').textContent = fileName;
-                    fileErrorMessage.style.display = 'none';
-                    fileUpload.classList.remove('border-danger');
-            
-                    // Check if the file type is PDF
-                    if (fileType !== 'application/pdf') {
-                        fileUpload.classList.add('border-danger');
-                        fileErrorMessage.textContent = "Wrong file format. Please upload a PDF.";
-                        fileErrorMessage.style.display = 'block';
-                    } 
-                    // Check if file size exceeds 2 MB
-                    else if (fileSize > maxSize) {
-                        fileUpload.classList.add('border-danger');
-                        fileErrorMessage.textContent = "File size exceeds 2 MB. Please upload a smaller file.";
-                        fileErrorMessage.style.display = 'block';
-                    } 
-                    // If valid, remove any error indicators
-                    else {
-                        fileUpload.classList.remove('border-danger');
-                        fileErrorMessage.style.display = 'none';
-                    }
-                });
-            </script>
-            
-           
-            
-      
-              <p class="privacy-policy mb-5">
-                Before providing any information or data, please read and understand our 
-                <a href="#">Privacy Policy</a>, 
-                specifically on the collection, use, disclosure, retention, and correction of the data you provide to us. 
-                By providing us with any information or data, you signify your understanding and agreement to our 
-                <a href="#">Privacy Policy</a>.
-              </p>
-              
-              <div class="form-group form-check mb-5">
-                <input type="checkbox" class="form-check-input shadow" id="privacyPolicy" required>
-                <label class="form-check-label" for="privacyPolicy">I agree to the Privacy Policy and consent to the collection of information as 
-                    stated in the Privacy Policy and Terms & Conditions.</label>
-              </div>
-      
-              <button type="submit" class="btn submit-button">SUBMIT</button>
-            </form>
+          <div class="col-md-6">
+            <label for="elementaryLocation" class="form-label">Location</label>
+            <input type="text" id="elementaryLocation" class="form-control" placeholder="Enter its location">
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="elementaryCourse" class="form-label">Course/Major</label>
+            <input type="text" id="elementaryCourse" class="form-control" placeholder="Enter your course/major">
+          </div>
+          <div class="col-md-6">
+            <label for="elementaryGraduation" class="form-label">Date Graduated</label>
+            <input type="date" id="elementaryGraduation" class="form-control">
           </div>
         </div>
       </div>
 
+      <div class="mb-4">
+        <h6>Junior High School</h6>
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="juniorHighName" class="form-label">Name of School</label>
+            <input type="text" id="juniorHighName" class="form-control" placeholder="Enter the name of school">
+          </div>
+          <div class="col-md-6">
+            <label for="juniorHighLocation" class="form-label">Location</label>
+            <input type="text" id="juniorHighLocation" class="form-control" placeholder="Enter its location">
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="juniorHighCourse" class="form-label">Course/Major</label>
+            <input type="text" id="juniorHighCourse" class="form-control" placeholder="Enter your course/major">
+          </div>
+          <div class="col-md-6">
+            <label for="juniorHighGraduation" class="form-label">Date Graduated</label>
+            <input type="date" id="juniorHighGraduation" class="form-control">
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-4">
+        <h6>Senior High School</h6>
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="seniorHighName" class="form-label">Name of School</label>
+            <input type="text" id="seniorHighName" class="form-control" placeholder="Enter the name of school">
+          </div>
+          <div class="col-md-6">
+            <label for="seniorHighLocation" class="form-label">Location</label>
+            <input type="text" id="seniorHighLocation" class="form-control" placeholder="Enter its location">
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="seniorHighCourse" class="form-label">Course/Major</label>
+            <input type="text" id="seniorHighCourse" class="form-control" placeholder="Enter your course/major">
+          </div>
+          <div class="col-md-6">
+            <label for="seniorHighGraduation" class="form-label">Date Graduated</label>
+            <input type="date" id="seniorHighGraduation" class="form-control">
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-4">
+        <h6>College</h6>
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="collegeName" class="form-label">Name of School</label>
+            <input type="text" id="collegeName" class="form-control" placeholder="Enter the name of school">
+          </div>
+          <div class="col-md-6">
+            <label for="collegeLocation" class="form-label">Location</label>
+            <input type="text" id="collegeLocation" class="form-control" placeholder="Enter its location">
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="collegeCourse" class="form-label">Course/Major</label>
+            <input type="text" id="collegeCourse" class="form-control" placeholder="Enter your course/major">
+          </div>
+          <div class="col-md-6">
+            <label for="collegeGraduation" class="form-label">Date Graduated</label>
+            <input type="date" id="collegeGraduation" class="form-control">
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-4">
+        <h6>Graduate School</h6>
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="graduateSchoolName" class="form-label">Name of School</label>
+            <input type="text" id="graduateSchoolName" class="form-control" placeholder="Enter the name of school">
+          </div>
+          <div class="col-md-6">
+            <label for="graduateSchoolLocation" class="form-label">Location</label>
+            <input type="text" id="graduateSchoolLocation" class="form-control" placeholder="Enter its location">
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="graduateSchoolCourse" class="form-label">Course/Major</label>
+            <input type="text" id="graduateSchoolCourse" class="form-control" placeholder="Enter your course/major">
+          </div>
+          <div class="col-md-6">
+            <label for="graduateSchoolGraduation" class="form-label">Date Graduated</label>
+            <input type="date" id="graduateSchoolGraduation" class="form-control">
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-4">
+        <h6>Doctorate</h6>
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="doctorateName" class="form-label">Name of School</label>
+            <input type="text" id="doctorateName" class="form-control" placeholder="Enter the name of school">
+          </div>
+          <div class="col-md-6">
+            <label for="doctorateLocation" class="form-label">Location</label>
+            <input type="text" id="doctorateLocation" class="form-control" placeholder="Enter its location">
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="graduateSchoolCourse" class="form-label">Course/Major</label>
+            <input type="text" id="graduateSchoolCourse" class="form-control" placeholder="Enter your course/major">
+          </div>
+          <div class="col-md-6">
+            <label for="graduateSchoolGraduation" class="form-label">Date Graduated</label>
+            <input type="date" id="graduateSchoolGraduation" class="form-control">
+          </div>
+        </div>
+      </div>
+
+      <div class="pagination-container mt-5">
+        <button class="btn btn-secondary back-button">Back</button>
+        <nav>
+          <ul class="pagination">
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item"><a class="page-link" href="#">4</a></li>
+          </ul>
+        </nav>
+        
+        <button class="btn btn-primary next-button">Next</button>
+      </div>
+
+      </div>
+
+
+    <!-- page 4: occupational qualifications -->
+
+    <div id="form-page-4" class="form-page hidden">
+      <h5 class="mb-3">Occupational Qualifications</h5>
+      <p>Skills</p>
+      
+      <div class="pagination-container mt-5">
+        <button class="btn btn-secondary back-button">Back</button>
+        <nav>
+          <ul class="pagination">
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item"><a class="page-link" href="#">4</a></li>
+          </ul>
+        </nav>
+        
+        <button class="btn btn-primary next-button">Submit</button>
+      </div>
+
+    </div>
+
+
+  </div>
+
+</div>
+
+<script>
+  const formPages = document.querySelectorAll('.form-page');
+  const paginationLinks = document.querySelectorAll('.pagination .page-link');
+  let currentPageIndex = 0;
+
+  function showPage(index) {
+    formPages.forEach((page, i) => {
+      page.classList.toggle('hidden', i !== index);
+    });
+    paginationLinks.forEach((link, i) => {
+      link.parentElement.classList.toggle('active', i === index);
+    });
+  }
+
+  document.querySelectorAll('.next-button').forEach((button) => {
+    button.addEventListener('click', () => {
+      if (currentPageIndex < formPages.length - 1) {
+        currentPageIndex++;
+        showPage(currentPageIndex);
+      }
+    });
+  });
+
+  document.querySelectorAll('.back-button').forEach((button) => {
+    button.addEventListener('click', () => {
+      if (currentPageIndex > 0) {
+        currentPageIndex--;
+        showPage(currentPageIndex);
+      }
+    });
+  });
+
+  paginationLinks.forEach((link, index) => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      currentPageIndex = index;
+      showPage(currentPageIndex);
+    });
+  });
+
+  // Show the first page initially
+  showPage(currentPageIndex);
+
+  // Generate child fields dynamically based on number of children
+  function generateChildFields() {
+    const container = document.getElementById('childFieldsContainer');
+    const childrenCount = parseInt(document.getElementById('childrenCount').value, 10);
+    container.innerHTML = ''; // Clear previous child fields
+
+    for (let i = 1; i <= childrenCount; i++) {
+      const childDiv = document.createElement('div');
+      childDiv.className = 'row mb-3';
+
+      // Name field
+      const nameDiv = document.createElement('div');
+      nameDiv.className = 'col-md-6';
+      nameDiv.innerHTML = `
+        <label for="childName${i}" class="form-label">Name of Child ${i}</label>
+        <input type="text" id="childName${i}" class="form-control" placeholder="Enter Name of Child ${i}">
+      `;
+      childDiv.appendChild(nameDiv);
+
+      // Date of Birth field
+      const dobDiv = document.createElement('div');
+      dobDiv.className = 'col-md-6';
+      dobDiv.innerHTML = `
+        <label for="childDob${i}" class="form-label">Date of Birth of Child ${i}</label>
+        <input type="date" id="childDob${i}" class="form-control">
+      `;
+      childDiv.appendChild(dobDiv);
+
+      container.appendChild(childDiv);
+    }
+  }
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 
     
