@@ -197,13 +197,13 @@
       </div>
 
       <div class="pagination-container mt-5">
-        <button class="btn btn-secondary back-button">Clear</button>
+        <!-- <button class="btn btn-secondary back-button">Clear</button> -->
         <nav>
           <ul class="pagination">
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="form-page-1">1</a></li>
             <li class="page-item"><a class="page-link" href="form-page-2">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item"><a class="page-link" href="#">4</a></li>
+            <li class="page-item"><a class="page-link" href="form-page-3">3</a></li>
+            <li class="page-item"><a class="page-link" href="form-page-4">4</a></li>
           </ul>
         </nav>
         
@@ -304,10 +304,14 @@
 
     <!-- page 3: education bg -->
 
-    <div id="form-page-3" class="form-page hidden">
-      <h5 class="mb-3">Education</h5>
-      <div class="mb-4">
-        <h6>Elementary</h6>
+    <div id="form-page-3" class="form-page hidden mt-5">
+
+      <h2 class="mb-3 education-form">Education</h2>
+
+
+
+      <div class="my-5 mx-5">
+        <h6 class="educ-level">Elementary</h6>
         <div class="row mb-3">
           <div class="col-md-6">
             <label for="elementaryName" class="form-label">Name of School</label>
@@ -330,8 +334,10 @@
         </div>
       </div>
 
-      <div class="mb-4">
-        <h6>Junior High School</h6>
+
+
+      <div class="my-5 mx-5">
+        <h6 class="educ-level">Junior High School</h6>
         <div class="row mb-3">
           <div class="col-md-6">
             <label for="juniorHighName" class="form-label">Name of School</label>
@@ -354,8 +360,10 @@
         </div>
       </div>
 
-      <div class="mb-4">
-        <h6>Senior High School</h6>
+
+
+      <div class="my-5 mx-5">
+        <h6 class="educ-level">Senior High School</h6>
         <div class="row mb-3">
           <div class="col-md-6">
             <label for="seniorHighName" class="form-label">Name of School</label>
@@ -378,8 +386,10 @@
         </div>
       </div>
 
-      <div class="mb-4">
-        <h6>College</h6>
+
+
+      <div class="my-5 mx-5">
+        <h6 class="educ-level">College</h6>
         <div class="row mb-3">
           <div class="col-md-6">
             <label for="collegeName" class="form-label">Name of School</label>
@@ -402,8 +412,10 @@
         </div>
       </div>
 
-      <div class="mb-4">
-        <h6>Graduate School</h6>
+
+
+      <div class="my-5 mx-5">
+        <h6 class="educ-level">Graduate School</h6>
         <div class="row mb-3">
           <div class="col-md-6">
             <label for="graduateSchoolName" class="form-label">Name of School</label>
@@ -426,8 +438,10 @@
         </div>
       </div>
 
-      <div class="mb-4">
-        <h6>Doctorate</h6>
+
+
+      <div class="my-5 mx-5">
+        <h6 class="educ-level">Doctorate</h6>
         <div class="row mb-3">
           <div class="col-md-6">
             <label for="doctorateName" class="form-label">Name of School</label>
@@ -449,7 +463,18 @@
             <input type="date" id="graduateSchoolGraduation" class="form-control">
           </div>
         </div>
+
+        
       </div>
+
+
+      <div class="my-5 mx-5">
+        <label class="honors-ttl">Honors/Awards</label>
+        <textarea class="honors-input" placeholder="Enter Honors/Awards"></textarea>
+
+      </div>
+
+      
 
       <div class="pagination-container mt-5">
         <button class="btn btn-secondary back-button">Back</button>
@@ -468,11 +493,282 @@
       </div>
 
 
+
     <!-- page 4: occupational qualifications -->
 
     <div id="form-page-4" class="form-page hidden">
-      <h5 class="mb-3">Occupational Qualifications</h5>
-      <p>Skills</p>
+
+
+      <div id="occupational-qualifications-container" class="mt-5">
+        <h3 class="qualification-section-title">Occupational Qualifications</h3>
+
+        <!-- special skills -->
+        <label for="special-skills" class="qualification-form-label">Special Skills:</label>
+        <textarea id="special-skills" class="qualification-form-control" placeholder="Enter your skills"></textarea>
+
+        <!-- kind of license -->
+        <label class="qualification-form-label">
+          License or Certified membership to any trade or profession (CPA, Bar, Etc.)</label>
+        
+    
+        <div class="qualification-license-form">
+          <div class="qualification-license-fields">
+            <div class="qualification-form-group">
+              <label for="license" class="qualification-form-label">Kind of License</label>
+              <input type="text" name="license" class="qualification-form-control" placeholder="Enter kind of license" />
+            </div>
+            <div class="qualification-form-group">
+              <label for="date-issuance" class="qualification-form-label">Date of Issuance</label>
+              <input type="date" name="date-issuance" class="qualification-form-control" />
+            </div>
+            <div class="qualification-form-group">
+              <label for="place-issuance" class="qualification-form-label">Place of Issuance</label>
+              <input type="text" name="place-issuance" class="qualification-form-control" placeholder="Enter place of issuance" />
+            </div>
+          </div>
+        </div>
+    
+        <div class="button-group d-flex justify-content-end">
+          <img src="images/minus.png"  id="remove-form" class="qualification-remove-button">
+          <img src="images/more.png"  id="add-form" class="qualification-add-button">
+          
+
+        </div>
+
+       
+        
+    
+      </div>
+
+
+
+      <!-- Employment Record Form -->
+
+      <div id="employment-record-section" class="mt-5">
+        <h3 class="employment-record-title">Employment Record</h3>
+      
+        <div class="employment-record-item">
+          <div class="row">
+            <div class="employment-form-group col-md-12">
+              <label for="company" class="employment-form-label">Company <span class="text-danger">*</span></label>
+              <input type="text" name="company" class="employment-form-control" placeholder="Enter Company Name" />
+            </div>
+          </div>
+      
+          <div class="row">
+            <div class="employment-form-group col-md-6">
+              <label for="start-date" class="employment-form-label">Start Date <span class="text-danger">*</span></label>
+              <input type="date" name="start-date" class="employment-form-control" />
+            </div>
+            <div class="employment-form-group col-md-6">
+              <label for="end-date" class="employment-form-label">End Date <span class="text-danger">*</span></label>
+              <input type="date" name="end-date" class="employment-form-control" />
+            </div>
+          </div>
+      
+          <div class="row">
+            <div class="employment-form-group col-md-6">
+              <label for="position" class="employment-form-label">Position <span class="text-danger">*</span></label>
+              <input type="text" name="position" class="employment-form-control" placeholder="Enter Duties and Responsibilities" />
+            </div>
+            <div class="employment-form-group col-md-6">
+              <label for="income" class="employment-form-label">Income <span class="text-danger">*</span></label>
+              <input type="text" name="income" class="employment-form-control" placeholder="Enter Income" />
+            </div>
+          </div>
+      
+          <h4 class="references-title">Character References <span class="text-danger">*</span></h4>
+          <div class="row">
+            <div class="employment-form-group col-md-4">
+              <label for="name" class="employment-form-label">Name</label>
+              <input type="text" name="name" class="employment-form-control" placeholder="Enter Name" />
+            </div>
+            <div class="employment-form-group col-md-4">
+              <label for="occupation" class="employment-form-label">Occupation</label>
+              <input type="text" name="occupation" class="employment-form-control" placeholder="Enter Occupation" />
+            </div>
+            <div class="employment-form-group col-md-4">
+              <label for="contact" class="employment-form-label">Contact</label>
+              <input type="text" name="contact" class="employment-form-control" placeholder="Enter Contact" />
+            </div>
+          </div>
+      
+          <div class="row">
+            <div class="employment-form-group col-md-4">
+              <label for="name" class="employment-form-label">Name</label>
+              <input type="text" name="name" class="employment-form-control" placeholder="Enter Name" />
+            </div>
+            <div class="employment-form-group col-md-4">
+              <label for="occupation" class="employment-form-label">Occupation</label>
+              <input type="text" name="occupation" class="employment-form-control" placeholder="Enter Occupation" />
+            </div>
+            <div class="employment-form-group col-md-4">
+              <label for="contact" class="employment-form-label">Contact</label>
+              <input type="text" name="contact" class="employment-form-control" placeholder="Enter Contact" />
+            </div>
+          </div>
+      
+          </div>
+        
+        <div class="employment-button-group d-flex justify-content-end">
+          <img id="remove-employment-record" class="employment-minus-icon" src="images/minus.png" alt="Remove Record" />
+          <img id="add-employment-record" class="employment-plus-icon" src="images/more.png" alt="Add Record" />
+          
+        </div>
+
+
+      </div>
+      
+
+
+      
+
+       <!-- attach cv -->
+      
+      <div class="col-md-7 mb-5 mt-5">
+        <label for="cv" class="form-label">Attach CV <span class="text-danger">*</span></label>
+        <div class="file-upload">
+            <label for="cv" class="upload-label">
+                <button type="button" class="btn btn-primary">Upload</button> 
+                <span class="file-name">or drag your file here</span>
+            </label>
+            <input type="file" id="cv" class="file-input" accept=".pdf" required>
+        </div>
+
+          <small class="form-text text-muted">Submit your file in .pdf format (Max: 2 MB)</small>
+          <small class="form-text text-danger" id="error-message" style="display: none;"></small>
+      </div>
+    
+    <script>
+        document.getElementById('cv').addEventListener('change', function() {
+            const fileInput = this;
+            const file = fileInput.files[0];
+            const fileName = file?.name || "or drag your file here";
+            const fileType = file?.type;
+            const fileSize = file?.size || 0;
+            const fileErrorMessage = document.getElementById('error-message');
+            const fileUpload = document.querySelector('.file-upload');
+            const maxSize = 2 * 1024 * 1024; // 2 MB in bytes
+    
+            // Reset file name display and error message
+            document.querySelector('.file-name').textContent = fileName;
+            fileErrorMessage.style.display = 'none';
+            fileUpload.classList.remove('border-danger');
+    
+            // Check if the file type is PDF
+            if (fileType !== 'application/pdf') {
+                fileUpload.classList.add('border-danger');
+                fileErrorMessage.textContent = "Wrong file format. Please upload a PDF.";
+                fileErrorMessage.style.display = 'block';
+            } 
+            // Check if file size exceeds 2 MB
+            else if (fileSize > maxSize) {
+                fileUpload.classList.add('border-danger');
+                fileErrorMessage.textContent = "File size exceeds 2 MB. Please upload a smaller file.";
+                fileErrorMessage.style.display = 'block';
+            } 
+            // If valid, remove any error indicators
+            else {
+                fileUpload.classList.remove('border-danger');
+                fileErrorMessage.style.display = 'none';
+            }
+        });
+
+
+
+
+        // page 4 - licenses script
+
+
+        // Add new license form
+        document.getElementById('add-form').addEventListener('click', function () {
+          // Select the license form to duplicate
+          const formToDuplicate = document.querySelector('.qualification-license-form');
+
+          // Clone the form
+          const clonedForm = formToDuplicate.cloneNode(true);
+
+          // Clear input fields in the cloned form
+          const inputs = clonedForm.querySelectorAll('input');
+          inputs.forEach(input => {
+            input.value = ''; // Reset value
+          });
+
+          // Append the cloned form below the existing forms
+          const container = document.getElementById('occupational-qualifications-container');
+          container.insertBefore(clonedForm, document.querySelector('.button-group')); // Insert before the button group
+        });
+
+        // Remove the most recent license form
+        document.getElementById('remove-form').addEventListener('click', function () {
+          const licenseForms = document.querySelectorAll('.qualification-license-form');
+
+          // Only remove if more than one form exists
+          if (licenseForms.length > 1) {
+            const lastForm = licenseForms[licenseForms.length - 1];
+            lastForm.remove();
+          } else {
+            alert('You must keep at least one license form.');
+          }
+        });
+
+
+
+
+        // employment record form
+        // Add new employment record form
+        document.getElementById('add-employment-record').addEventListener('click', function () {
+          // Select the employment record form to duplicate
+          const formToDuplicate = document.querySelector('.employment-record-item');
+
+          // Clone the form
+          const clonedForm = formToDuplicate.cloneNode(true);
+
+          // Clear input fields in the cloned form
+          const inputs = clonedForm.querySelectorAll('input');
+          inputs.forEach(input => {
+            input.value = ''; // Reset value
+          });
+
+          // Append the cloned form to the container
+          const container = document.getElementById('employment-record-section');
+          const buttonGroup = document.querySelector('.employment-button-group');
+          container.insertBefore(clonedForm, buttonGroup); // Insert above the button group
+        });
+
+        // Remove the most recent employment record form
+        document.getElementById('remove-employment-record').addEventListener('click', function () {
+          const employmentRecords = document.querySelectorAll('.employment-record-item');
+
+          // Only remove if there is more than one form
+          if (employmentRecords.length > 1) {
+            const lastRecord = employmentRecords[employmentRecords.length - 1];
+            lastRecord.remove();
+          } else {
+            alert('You must keep at least one employment record form.');
+          }
+        });
+
+
+
+        
+    </script>
+    
+
+      <p class="privacy-policy mb-5">
+        Before providing any information or data, please read and understand our 
+        <a href="#">Privacy Policy</a>, 
+        specifically on the collection, use, disclosure, retention, and correction of the data you provide to us. 
+        By providing us with any information or data, you signify your understanding and agreement to our 
+        <a href="#">Privacy Policy</a>.
+      </p>
+      
+      <div class="form-group form-check mb-5">
+        <input type="checkbox" class="form-check-input shadow" id="privacyPolicy" required>
+        <label class="form-check-label" for="privacyPolicy">I agree to the Privacy Policy and consent to the collection of information as 
+            stated in the Privacy Policy and Terms & Conditions.</label>
+      </div>
+
       
       <div class="pagination-container mt-5">
         <button class="btn btn-secondary back-button">Back</button>
@@ -485,10 +781,11 @@
           </ul>
         </nav>
         
-        <button class="btn btn-primary next-button">Submit</button>
+        <button id="submit-btn" class="btn btn-primary next-button">Submit</button>
       </div>
 
     </div>
+
 
 
   </div>
@@ -496,47 +793,97 @@
 </div>
 
 <script>
-  const formPages = document.querySelectorAll('.form-page');
-  const paginationLinks = document.querySelectorAll('.pagination .page-link');
-  let currentPageIndex = 0;
+// Cache all form pages and pagination links
+const formPages = document.querySelectorAll('.form-page');
+const paginationLinks = document.querySelectorAll('.pagination .page-link');
 
-  function showPage(index) {
-    formPages.forEach((page, i) => {
-      page.classList.toggle('hidden', i !== index);
-    });
-    paginationLinks.forEach((link, i) => {
-      link.parentElement.classList.toggle('active', i === index);
-    });
-  }
+// Object to store form data for all pages
+const formData = {};
+let currentPageIndex = 0; // Initialize current page index
 
-  document.querySelectorAll('.next-button').forEach((button) => {
-    button.addEventListener('click', () => {
-      if (currentPageIndex < formPages.length - 1) {
-        currentPageIndex++;
-        showPage(currentPageIndex);
-      }
-    });
+// Save input data for the current page
+function savePageData(index) {
+  const inputs = formPages[index].querySelectorAll('input, select, textarea');
+  formData[index] = {}; // Initialize storage for this page
+  inputs.forEach((input) => {
+    const key = input.id || input.name; // Use input ID or name as the key
+    if (key) {
+      formData[index][key] = input.value; // Save input value
+    }
   });
+}
 
-  document.querySelectorAll('.back-button').forEach((button) => {
-    button.addEventListener('click', () => {
-      if (currentPageIndex > 0) {
-        currentPageIndex--;
-        showPage(currentPageIndex);
-      }
-    });
+// Restore input data for a specific page
+function restorePageData(index) {
+  const inputs = formPages[index].querySelectorAll('input, select, textarea');
+  const savedData = formData[index] || {}; // Retrieve saved data for this page
+  inputs.forEach((input) => {
+    const key = input.id || input.name; // Use input ID or name as the key
+    if (key && savedData[key] !== undefined) {
+      input.value = savedData[key]; // Restore value
+    }
   });
+}
 
+// Function to highlight the current page in pagination
+function updatePaginationHighlight() {
   paginationLinks.forEach((link, index) => {
-    link.addEventListener('click', (e) => {
-      e.preventDefault();
-      currentPageIndex = index;
-      showPage(currentPageIndex);
-    });
+    link.classList.toggle('active', index === currentPageIndex);
+  });
+}
+
+// Function to show the specified page
+function showPage(index) {
+  if (index < 0 || index >= formPages.length) return; // Prevent invalid page indexes
+
+  // Save current page data before switching
+  savePageData(currentPageIndex);
+
+  // Hide all pages and show the selected page
+  formPages.forEach((page, i) => {
+    page.classList.toggle('hidden', i !== index);
   });
 
-  // Show the first page initially
-  showPage(currentPageIndex);
+  // Restore data for the new page
+  restorePageData(index);
+
+  // Update the current page index and highlight
+  currentPageIndex = index;
+  updatePaginationHighlight();
+}
+
+// Handle Next and Back button clicks
+document.querySelectorAll('.next-button').forEach((button) => {
+  button.addEventListener('click', () => {
+    if (currentPageIndex < formPages.length - 1) {
+      showPage(currentPageIndex + 1);
+    }
+  });
+});
+
+document.querySelectorAll('.back-button').forEach((button) => {
+  button.addEventListener('click', () => {
+    if (currentPageIndex > 0) {
+      showPage(currentPageIndex - 1);
+    }
+  });
+});
+
+// Disable pagination number navigation but highlight correctly
+paginationLinks.forEach((link, index) => {
+  link.addEventListener('click', (e) => {
+    e.preventDefault(); // Prevent navigation
+    updatePaginationHighlight(); // Ensure correct highlight
+  });
+});
+
+// Show the first page on initial load and update pagination
+showPage(currentPageIndex);
+
+
+
+
+
 
   // Generate child fields dynamically based on number of children
   function generateChildFields() {
