@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Profile</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+        <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"rel="stylesheet"integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"crossorigin="anonymous"/>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css">
+        <!-- {{-- JQuery  --}} -->
+        <script
+            src="https://code.jquery.com/jquery-3.7.1.js"
+            integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+            crossorigin="anonymous"></script>
+
+        <!-- buttons for datatables -->
+        <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.dataTables.min.css">
+
+        <!-- Styles CSS -->
+        <link rel="stylesheet" href="css/styles.css">
+
+        <!-- Dashboard CSS -->
+        <link rel="stylesheet" href="css/dashboard.css">
+
+        <!-- Sidebar CSS -->
+        <link rel="stylesheet" href="css/sidebar.css">
+
+        <!-- DB Calendar CSS -->
+        <link rel="stylesheet" href="css/db-calendar.css">
+
+       <!-- emp profile CSS -->
+        <link rel="stylesheet" href="css/ems-emp-profile-styles.css">
+
+        
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header class="sticky-top">
+        <nav class="navbar navbar-expand-lg navbar-custom sticky-top">
+            <div class="container">
+                <button id="sidebarToggle" class="navbar-toggler" type="button" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <a class="navbar-brand" href="#">
+                    <img src="images/CC_logo.png" alt="Logo" class="cclogo">
+                    <span class="cc-nav-text navbar-text">Columban College, Inc.</span>
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <div class="d-flex">
+         <!-- Sidebar -->
+         <nav id="sidebar" class="shadow">
+            <ul class="list-unstyled components">
+                <li class="d-flex align-items-center">
+                    <img src="images/dashboard.png" class="icon" alt="dashboard-icon">
+                    <a href="#homeSubmenu" class="ms-3">Dashboard</a>
+                </li>
+                <li class="d-flex align-items-center">
+                    <img src="images/user.png" class="icon" alt="calendar-icon">
+                    <a href="#homeSubmenu" class="ms-3">Profile</a>
+                </li>
+                <li class="d-flex align-items-center">
+                    <img src="images/calendar.png" class="icon" alt="applicant-icon">
+                    <a href="#homeSubmenu" class="ms-3">Events</a>
+                </li>
+                <li class="d-flex align-items-center">
+                    <img src="images/faqs.png" class="icon" alt="review-icon">
+                    <a href="#homeSubmenu" class="ms-3">Others</a>
+                </li> 
+            </ul>
+
+            <div class="container mt-auto mx-2">
+
+                <div class="d-flex align-items-center my-4">
+                    <img src="images/logout.png" class="logout-icon" alt="logout-icon">
+                    <a href="#" class="nav-link ms-3 sidebar-text">Log Out</a>
+                </div>
+            </div>
+        </nav>
+        <!-- End of Sidebar -->
+
+        
+
+
+            <!-- Employment Data Section -->
+         <!-- Main Content -->
+        <div class="content-container container p-3">
+            <h1 class="mb-4 fs-4">Profile</h1>
+
+            <!-- Employment Data Section -->
+            <div>
+                <div class="mb-5">
+                    <!-- Column 1 -->
+                    <div class="col-md-6 mb-3">
+                        <div class="d-flex align-items-center">
+                            <label for="position" class="form-label me-2 fw-bold text-start">Faculty Code:</label>
+                            <input type="text" id="position" placeholder="0000" class="form-control">
+                        </div>
+                    </div>
+                    <!-- Column 2 -->
+                    <div class="col-md-6 mb-3">
+                        <div class="d-flex align-items-center">
+                            <label for="employment-status" class="form-label me-2 fw-bold text-start">Full Name:</label>
+                            <input type="text" id="employment-status" placeholder="Employee's Full Name" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                
+                
+                <div class="section-title fw-bold mb-5">Employment Data</div>
+
+                <div class="row d-flex flex-wrap mb-3">
+                    <div class="col-md-6 d-flex align-items-center mb-1">
+                        <label for="position" class="form-label me-2 text-start mr-1 fw-bold">Position:</label>
+                        <input type="text" id="position" placeholder="Enter position" class="form-control">
+                    </div>
+                    
+                </div>
+
+                <div class="row d-flex flex-wrap mb-3">
+                    <div class="col-md-6 d-flex align-items-center mb-1">
+                        <label for="teaching-load" class="form-label me-2 text-start mr-1 fw-bold">Employment Status:</label>
+                        <input type="text" id="teaching-load" placeholder="Employee's Status" class="form-control">
+                    </div>
+                    <div class="col-md-6 d-flex align-items-center mb-1">
+                        <label for="date-of-employment" class="form-label me-2 text-start mr-1 fw-bold">Date of Employment:</label>
+                        <input type="date" id="date-of-employment" class="form-control">
+                    </div>
+                </div>
+
+                <div class="row d-flex flex-wrap mb-3">
+                    <div class="col-md-6 d-flex align-items-center mb-1">
+                        <label for="Accreditation" class="form-label me-2 text-start mr-1 fw-bold">Accreditation:</label>
+                        <input type="text" id="accreditation" placeholder="Accreditation" class="form-control">
+                    </div>
+                    <div class="col-md-6 d-flex align-items-center mb-1">
+                        <label for="date-of-permanent-stat" class="form-label me-2 text-start mr-1 fw-bold">Date of permanent status:</label>
+                        <input type="date" id="date-of-permanent-stat" class="form-control">
+                    </div>
+                </div>
+
+                <div class="row d-flex flex-wrap mb-3">
+                    <div class="col-md-6 d-flex align-items-center mb-1">
+                        <label for="reg-load" class="form-label me-2 text-start mr-1 fw-bold">Regular Load:</label>
+                        <input type="text" id="reg-load" placeholder="Regular Load" class="form-control">
+                    </div>
+                    <div class="col-md-6 d-flex align-items-center mb-1">
+                        <label for="prof-lic-personel" class="form-label me-2 text-start mr-1 fw-bold">Professional Licensure Personel:</label>
+                        <input type="text" id="prof-lic-personel" placeholder="Professional Licensure Personel" class="form-control">
+                    </div>
+                </div>
+
+                <div class="row d-flex flex-wrap mb-3">
+                    <div class="col-md-6 d-flex align-items-center mb-1">
+                        <label for="Overload" class="form-label me-2 text-start mr-1 fw-bold">Overload:</label>
+                        <input type="text" id="Overload" placeholder="Enter overload" class="form-control">
+                    </div>
+                    <div class="col-md-6 d-flex align-items-center mb-1">
+                        <label for="fac-rank" class="form-label me-2 text-start mr-1 fw-bold">Faculty Rank:</label>
+                        <input type="text" id="fac-rank" placeholder="Faculty Rank" class="form-control">
+                    </div>
+                </div>
+
+                <div class="row d-flex flex-wrap mb-3">
+                    <div class="col-md-6 d-flex align-items-center mb-1">
+                        <label for="parent-course" class="form-label me-2 text-start mr-1 fw-bold">Parent Course:</label>
+                        <input type="text" id="parent-course" placeholder="Parent Course" class="form-control">
+                    </div>
+                    <div class="col-md-6 d-flex align-items-center mb-1">
+                        <label for="annual-salary" class="form-label me-2 text-start mr-1 fw-bold">Annual Salary:</label>
+                        <input type="text" id="annual-salary" placeholder="00000000" class="form-control">
+                    </div>
+                </div>
+
+                <div>
+                    <div class="col-md-6 mb-3">
+                        <div class="d-flex align-items-center">
+                            <label for="tenure-employment" class="form-label me-2 fw-bold text-start">Tenure of Employment:</label>
+                            <input type="text" id="tenure-employment" placeholder="Tenure" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <div class="d-flex align-items-center">
+                            <label for="Teaching-load" class="form-label me-2 fw-bold text-start">Teaching Load:</label>
+                            <input type="text" id="Teaching-load" placeholder="00" class="form-control">
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+
+            </div>
+
+            <!-- Personal Data Section -->
+            <div class="mb-5">
+                <div class="section-title fw-bold my-5">Personal Data</div>
+                    <div class="row d-flex flex-wrap mb-3">
+                        <div class="col-md-6 d-flex align-items-center mb-1">
+                            <label for="Mobile-number" class="form-label me-2 text-start mr-1 fw-bold">Mobile Number:</label>
+                            <input type="text" id="Mobile-num" placeholder="0000 000 0000" class="form-control">
+                        </div>
+                        <div class="col-md-6 d-flex align-items-center mb-1">
+                            <label for="e-address" class="form-label me-2 text-start mr-1 fw-bold">E-mail Address:</label>
+                            <input type="text" id="e-address" placeholder="Enter e-mail address" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="row d-flex flex-wrap mb-3">
+                        <div class="col-md-6 d-flex align-items-center mb-1">
+                            <label for="Address" class="form-label me-2 text-start mr-1 fw-bold">Address:</label>
+                            <input type="text" id="Address" placeholder="Address" class="form-control">
+                        </div>
+                        <div class="col-md-6 d-flex align-items-center mb-1">
+                            <label for="tel-no" class="form-label me-2 text-start mr-1 fw-bold">Tel No.:</label>
+                            <input type="text" id="tel-no" placeholder="Tel-no" class="form-control">
+                        </div>
+                    </div>
+
+
+                    <div class="row d-flex flex-wrap mb-3">
+                        <div class="col-md-6 d-flex align-items-center mb-1">
+                            <label for="date-of-birth" class="form-label me-2 text-start mr-1 fw-bold">Date of Birth:</label>
+                            <input type="date" id="date-of-birth" class="form-control">
+                        </div>
+                        <div class="col-md-6 d-flex align-items-center mb-1">
+                            <label for="place-of-birth" class="form-label me-2 text-start mr-1 fw-bold">Place of birth:</label>
+                            <input type="text" id="place-of-birth" placeholder="Place of Birth" class="form-control">
+                        </div>
+                    </div>
+
+
+                    <div class="row d-flex flex-wrap mb-3">
+                        <div class="col-md-6 d-flex align-items-center mb-1">
+                            <label for="Gender" class="form-label me-2 text-start mr-1 fw-bold">Gender:</label>
+                            <input type="text" id="Gender" placeholder="Gender" class="form-control">
+                        </div>
+                        <div class="col-md-6 d-flex align-items-center mb-1">
+                            <label for="Religion" class="form-label me-2 text-start mr-1 fw-bold">Religion:</label>
+                            <input type="text" id="Religion" placeholder="Religion" class="form-control">
+                        </div>
+                    </div>
+
+
+                    <div class="row d-flex flex-wrap mb-3">
+                        <div class="col-md-6 d-flex align-items-center mb-1">
+                            <label for="Citizenship" class="form-label me-2 text-start mr-1 fw-bold">Citizenship:</label>
+                            <input type="text" id="Citizenship" placeholder="Citizenship" class="form-control">
+                        </div>
+                        <div class="col-md-6 d-flex align-items-center mb-1">
+                            <label for="Civil-Status" class="form-label me-2 text-start mr-1 fw-bold">Civil Status:</label>
+                            <input type="text" id="Civil-Status" placeholder="Civil Status" class="form-control">
+                        </div>
+                    </div>
+
+
+                    <div class="row d-flex flex-wrap mb-3">
+                        <div class="col-md-6 d-flex align-items-center mb-1">
+                            <label for="Spouse" class="form-label me-2 text-start mr-1 fw-bold">Name of spouse:</label>
+                            <input type="text" id="Spouse" placeholder="Your Spouse" class="form-control">
+                        </div>
+                        <div class="col-md-6 d-flex align-items-center mb-1">
+                            <label for="s-address" class="form-label me-2 text-start mr-1 fw-bold">Address:</label>
+                            <input type="text" id="s-address" placeholder="Enter spouse's address" class="form-control">
+                        </div>
+                    </div>
+
+
+                    <div>
+                        <div class="col-md-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <label for="spouse-occupation" class="form-label me-2 fw-bold text-start">Spouse's Occupation:</label>
+                                <input type="text" id="spouse-occupation" placeholder="Your Spouse's Occupation" class="form-control">
+                            </div>
+                        </div>
+    
+                        <div class="col-md-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <label for="num-dependent" class="form-label me-2 fw-bold text-start">No. of Dependent:</label>
+                                <input type="text" id="num-dependent" placeholder="00" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row d-flex flex-wrap mb-3">
+                        <div class="col-md-6 d-flex align-items-center mb-1">
+                            <label for="Father" class="form-label me-2 text-start mr-1 fw-bold">Father:</label>
+                            <input type="text" id="Father" placeholder="0Ftaher's Name" class="form-control">
+                        </div>
+                        <div class="col-md-6 d-flex align-items-center mb-1">
+                            <label for="f-address" class="form-label me-2 text-start mr-1 fw-bold">Address:</label>
+                            <input type="text" id="f-address" placeholder="Father's address" class="form-control">
+                        </div>
+                    </div>
+    
+
+                    <div class="row d-flex flex-wrap mb-3">
+                        <div class="col-md-6 d-flex align-items-center mb-1">
+                            <label for="Father" class="form-label me-2 text-start mr-1 fw-bold">Mother:</label>
+                            <input type="text" id="Father" placeholder="0Ftaher's Name" class="form-control">
+                        </div>
+                        <div class="col-md-6 d-flex align-items-center mb-1">
+                            <label for="m-address" class="form-label me-2 text-start mr-1 fw-bold">Address:</label>
+                            <input type="text" id="m-address" placeholder="Mother's address" class="form-control">
+                        </div>
+                    </div>
+
+
+            </div>
+        </div>
+    </div>
+
+</html>
