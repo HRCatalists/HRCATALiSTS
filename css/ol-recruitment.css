@@ -18,7 +18,10 @@
 
 }
 
-
+.btn-apply:hover{
+  background-color: #111D5B !important;
+  color: white !important;
+}
 
 
 

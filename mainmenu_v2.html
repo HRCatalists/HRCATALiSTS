@@ -8,64 +8,13 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&display=swap">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
-  <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      background: linear-gradient(45deg, rgba(51, 119, 204, 0.8) 10%, rgba(17, 29, 91, 0.8) 100%), 
-                  url('images/columban-bg.jpg') !important;
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-    }
-
-    .logo-container img {
-      max-width: 150px;
-    }
-
-    .left-content h1 {
-      font-size: 3rem;
-      font-weight: bold;
-    }
-
-    .left-content p {
-      font-size: 1.25rem;
-      font-style: italic;
-      color: #e0e0e0;
-    }
-
-    .right-content {
-      background-color: white;
-      height: 100%; /* Full height */
-      padding: 2rem;
-      box-shadow: -4px 0 10px rgba(0, 0, 0, 0.2); /* Shadow on the left side */
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .btn-ems-ats {
-      width: 100%;
-      padding: 20px;
-      font-size: 1.5rem;
-      font-weight: bold;
-    }
-
-    @media (max-width: 768px) {
-      .right-content {
-        margin-top: 2rem;
-        height: auto; /* Adjust for smaller screens */
-        box-shadow: none; /* Remove shadow on small screens */
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="css/mainmenu-styles-v2.css">
+  
 </head>
 
 <body>
   <div class="container-fluid vh-100 d-flex">
-    <div class="row w-100 flex-grow-1">
+    <div class="row w-100 flex-grow-1 d-flex justify-content-end">
       <!-- Left Side -->
       <div class="col-md-6 d-flex flex-column justify-content-center text-start text-white left-content">
         <div class="logo-container mb-4">
@@ -76,12 +25,12 @@
       </div>
 
       <!-- Right Side -->
-      <div class="col-md-6 right-content">
+      <div class="col-md-5 right-content">
         <a href="ems-login.html" class="w-100 mb-3">
-          <button class="btn btn-lg btn-primary btn-ems-ats">LOG IN TO EMS</button>
+          <button class="btn btn-lg btn-primary btn-ems-ats p-5">LOG IN TO EMS</button>
         </a>
         <a href="ats-login.html" class="w-100">
-          <button class="btn btn-lg btn-primary btn-ems-ats">LOG IN TO ATS</button>
+          <button class="btn btn-lg btn-primary btn-ems-ats p-5">LOG IN TO ATS</button>
         </a>
       </div>
     </div>
