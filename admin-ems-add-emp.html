@@ -25,207 +25,187 @@
         <!-- Sidebar CSS -->
         <link rel="stylesheet" href="css/sidebar.css">
 
-        <!-- Sidebar CSS -->
-        <link rel="stylesheet" href="css/ats-calendar.css">
+        <!-- Navbar CSS -->
+        <link rel="stylesheet" href="css/navbar.css">
 
     </head>
 
     <header>
-        <nav class="navbar navbar-expand-lg navbar-custom sticky-top">
-            <div class="container">
-                <button id="sidebarToggle" class="navbar-toggler" type="button" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <a class="navbar-brand" href="#">
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg sticky-top">
+            <div class="container d-flex justify-content-between">
+                
+                <!-- Left Side (Logo and College Name) -->
+                <a class=" d-flex align-items-center" href="#">
                     <img src="images/CC_logo.png" alt="Logo" class="cclogo">
-                    <span class="cc-nav-text navbar-text">Columban College, Inc.</span>
+                    <span class="cc-nav-text navbar-text ms-2">Columban College, Inc.</span>
                 </a>
+                
+                <!-- Right Side (User Profile Section) -->
+                <div class="d-flex align-items-center">
+                    <span class="user-name navbar-text me-3">Rhinell Menes</span>
+                    <div class="dropdown">
+                        <a href="#" class="dropdown-toggle d-flex align-items-center text-decoration-none" id="userMenu" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="images/dummy-profile.png" alt="Profile" class="rounded-circle user-img">
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
+                            <li><a class="dropdown-item" href="#">Profile</a></li>
+                            <li><a class="dropdown-item" href="#">Settings</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#">Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </nav>
+        <!-- End of Navbar -->
     </header>
 
     <body>
         
-        <div class="wrapper d-flex">
-            <!-- Sidebar -->
-            <nav id="sidebar" class="shadow">
-                <ul class="list-unstyled components">
-                    <li class="d-flex align-items-center">
-                        <img src="images/dashboard.png" class="icon" alt="dashboard-icon">
-                        <a href="admin-ems-db.html" class="ms-3">Dashboard</a>
-                    </li>
-                    <li class="d-flex align-items-center">
-                        <img src="images/calendar.png" class="icon" alt="calendar-icon">
-                        <a href="admin-ems-cl.html" class="ms-3">Calendar</a>
-                    </li>
-                    <li class="d-flex align-items-center">
-                        <img src="images/employee.png" class="emp-icon" alt="applicant-icon">
-                        <a href="admin-ems-emp.html" class="ms-3">Employees</a>
-                    </li>
-                    <li class="d-flex align-items-center">
-                        <img src="images/rank.png" class="icon" alt="review-icon">
-                        <a href="on-going-review.html" class="ms-3">Ranking</a>
-                    </li>
-                    <li class="d-flex align-items-center">
-                        <img src="images/note.png" class="icon" alt="positions-icon">
-                        <a href="admin-ems-note.html" class="ms-3">Notes</a>
-                    </li>
-                    <li class="d-flex align-items-center">
-                        <img src="images/faqs.png" class="icon" alt="archived-icon">
-                        <a href="admin-ems-policy.html" class="ms-3">Others</a>
-                    </li>
-                </ul>
-
-                <div class="container mt-auto mx-2">
-                    <div class="d-flex align-items-center my-4">
-                        <img src="images/user.png" class="logout-icon" alt="logout-icon">
-                        <a href="#" class="nav-link ms-3 sidebar-text">Account</a>
-                    </div>
-                    <div class="d-flex align-items-center my-4">
-                        <img src="images/logout.png" class="logout-icon" alt="logout-icon">
-                        <a href="#" class="nav-link ms-3 sidebar-text">Log Out</a>
-                    </div>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-2">
+                    <!-- Sidebar -->
+                    <nav id="sidebar" class="shadow">
+                        <ul class="list-unstyled components">
+                            <li class="d-flex align-items-center">
+                                <img src="images/dashboard.png" class="icon me-3" alt="dashboard-icon">
+                                <a href="admin-ems-db.html">Dashboard</a>
+                            </li>
+                            <li class="d-flex align-items-center">
+                                <img src="images/calendar.png" class="icon me-3" alt="calendar-icon">
+                                <a href="admin-ems-cl.html">Calendar</a>
+                            </li>
+                            <li class="d-flex align-items-center">
+                                <img src="images/employee.png" class="icon me-3" alt="applicant-icon">
+                                <a href="admin-ems-emp.html">Employees</a>
+                            </li>
+                            <li class="d-flex align-items-center">
+                                <img src="images/note.png" class="icon me-3" alt="positions-icon">
+                                <a href="admin-ems-note.html">Notes</a>
+                            </li>
+                            <li class="d-flex align-items-center">
+                                <img src="images/faqs.png" class="icon me-3" alt="archived-icon">
+                                <a href="admin-ems-policy.html">Company Policy</a>
+                            </li>
+                        </ul>
+                    </nav>
+                    <!-- End of Sidebar -->
                 </div>
-            </nav>
-            <!-- End of Sidebar -->
-             
-            <!-- Dashboard Overview Section -->
-            <div class="container py-5">
-                <form>
-                    <!-- General Information -->
-                    <div class="mb-4">
-                        <h5 class="text-primary fw-bold">General Information</h5>
-                        <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="facultyCode" class="form-label">Faculty Code</label>
-                            <input type="text" class="form-control" id="facultyCode" placeholder="Enter Faculty Code">
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="fullName" class="form-label">Full Name</label>
-                            <input type="text" class="form-control" id="fullName" placeholder="Enter Full Name">
-                        </div>
-                        </div>
-                    </div>
-                
-                    <!-- Employment Data -->
-                    <div class="mb-4">
-                        <h5 class="text-primary fw-bold">Employment Data</h5>
-                        <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="position" class="form-label">Position</label>
-                            <input type="text" class="form-control" id="position" placeholder="Enter Position">
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="employmentStatus" class="form-label">Employment Status</label>
-                            <input type="text" class="form-control" id="employmentStatus" placeholder="Enter Employment Status">
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="dateOfEmployment" class="form-label">Date of Employment</label>
-                            <input type="date" class="form-control" id="dateOfEmployment">
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="permanentStatusDate" class="form-label">Date of Permanent Status</label>
-                            <input type="date" class="form-control" id="permanentStatusDate">
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="accreditation" class="form-label">Accreditation</label>
-                            <input type="text" class="form-control" id="accreditation" placeholder="Enter Accreditation">
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="professionalLicensure" class="form-label">Professional Licensure Personnel</label>
-                            <input type="text" class="form-control" id="professionalLicensure" placeholder="Enter Licensure Details">
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="facultyRank" class="form-label">Faculty Rank</label>
-                            <input type="text" class="form-control" id="facultyRank" placeholder="Enter Faculty Rank">
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="annualSalary" class="form-label">Annual Salary</label>
-                            <input type="text" class="form-control" id="annualSalary" placeholder="Enter Annual Salary">
-                        </div>
-                        </div>
-                    </div>
-                
-                    <!-- Personal Data -->
-                    <div class="mb-4">
-                        <h5 class="text-primary fw-bold">Personal Data</h5>
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label for="emailAddress" class="form-label">E-mail Address</label>
-                                <input type="email" class="form-control" id="emailAddress" placeholder="Enter Email Address">
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="address" class="form-label">Address</label>
-                                <input type="text" class="form-control" id="address" placeholder="Enter Address">
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="mobileNo" class="form-label">Mobile No.</label>
-                                <input type="text" class="form-control" id="mobileNo" placeholder="Enter Mobile No.">
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="telNo" class="form-label">Tel No.</label>
-                                <input type="text" class="form-control" id="telNo" placeholder="Enter Telephone No.">
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="dateOfBirth" class="form-label">Date of Birth</label>
-                                <input type="date" class="form-control" id="dateOfBirth">
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="placeOfBirth" class="form-label">Place of Birth</label>
-                                <input type="text" class="form-control" id="placeOfBirth" placeholder="Enter Place of Birth">
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="gender" class="form-label">Gender</label>
-                                <select class="form-select" id="gender">
-                                <option selected>Select Gender</option>
-                                <option value="Male">Male</option>
-                                <option value="Female">Female</option>
-                                </select>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="civilStatus" class="form-label">Civil Status</label>
-                                <input type="text" class="form-control" id="civilStatus" placeholder="Enter Civil Status">
-                            </div>
-                        </div>
-                    </div>
-                
-                    <!-- Submit Button -->
-                    <div class="text-end">
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                    </div>
-                </form>
-            </div>
 
-            <!-- End Dashboard Overview Section -->
+                <div class="col-md-10" id="content">
+                    <!-- Form Section -->
+                    <div class="container py-5">
+                        <form id="addEmployeeForm">
+                            <!-- General Information -->
+                            <div class="mb-4">
+                                <h5 class="text-primary fw-bold">General Information</h5>
+                                <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="facultyCode" class="form-label">Faculty Code</label>
+                                    <input type="text" class="form-control" id="facultyCode" placeholder="Enter Faculty Code">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="fullName" class="form-label">Full Name</label>
+                                    <input type="text" class="form-control" id="fullName" placeholder="Enter Full Name">
+                                </div>
+                                </div>
+                            </div>
+                        
+                            <!-- Employment Data -->
+                            <div class="mb-4">
+                                <h5 class="text-primary fw-bold">Employment Data</h5>
+                                <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="position" class="form-label">Position</label>
+                                    <input type="text" class="form-control" id="position" placeholder="Enter Position">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="employmentStatus" class="form-label">Employment Status</label>
+                                    <input type="text" class="form-control" id="employmentStatus" placeholder="Enter Employment Status">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="dateOfEmployment" class="form-label">Date of Employment</label>
+                                    <input type="date" class="form-control" id="dateOfEmployment">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="permanentStatusDate" class="form-label">Date of Permanent Status</label>
+                                    <input type="date" class="form-control" id="permanentStatusDate">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="accreditation" class="form-label">Accreditation</label>
+                                    <input type="text" class="form-control" id="accreditation" placeholder="Enter Accreditation">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="professionalLicensure" class="form-label">Professional Licensure Personnel</label>
+                                    <input type="text" class="form-control" id="professionalLicensure" placeholder="Enter Licensure Details">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="facultyRank" class="form-label">Faculty Rank</label>
+                                    <input type="text" class="form-control" id="facultyRank" placeholder="Enter Faculty Rank">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="annualSalary" class="form-label">Annual Salary</label>
+                                    <input type="text" class="form-control" id="annualSalary" placeholder="Enter Annual Salary">
+                                </div>
+                                </div>
+                            </div>
+                        
+                            <!-- Personal Data -->
+                            <div class="mb-4">
+                                <h5 class="text-primary fw-bold">Personal Data</h5>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="emailAddress" class="form-label">E-mail Address</label>
+                                        <input type="email" class="form-control" id="emailAddress" placeholder="Enter Email Address">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="address" class="form-label">Address</label>
+                                        <input type="text" class="form-control" id="address" placeholder="Enter Address">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="mobileNo" class="form-label">Mobile No.</label>
+                                        <input type="text" class="form-control" id="mobileNo" placeholder="Enter Mobile No.">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="telNo" class="form-label">Tel No.</label>
+                                        <input type="text" class="form-control" id="telNo" placeholder="Enter Telephone No.">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="dateOfBirth" class="form-label">Date of Birth</label>
+                                        <input type="date" class="form-control" id="dateOfBirth">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="placeOfBirth" class="form-label">Place of Birth</label>
+                                        <input type="text" class="form-control" id="placeOfBirth" placeholder="Enter Place of Birth">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="gender" class="form-label">Gender</label>
+                                        <select class="form-select" id="gender">
+                                        <option selected>Select Gender</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="civilStatus" class="form-label">Civil Status</label>
+                                        <input type="text" class="form-control" id="civilStatus" placeholder="Enter Civil Status">
+                                    </div>
+                                </div>
+                            </div>
+                        
+                            <!-- Submit Button -->
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary btn-md">ADD EMPLOYEE</button>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- Form Section -->
+                </div>
+            </div>
             
         </div>
-
-        <!-- Calendar JS -->
-        <script src="js/ats-calendar.js"></script>
-
-        <!-- Sidebar toggle -->
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                const sidebar = document.getElementById('sidebar');
-                const sidebarToggle = document.getElementById('sidebarToggle');
-
-                function toggleSidebar() {
-                    if (window.innerWidth < 768) {
-                        sidebar.classList.toggle('active');
-                    }
-                }
-
-                sidebarToggle.addEventListener('click', toggleSidebar);
-
-                // Ensure sidebar is visible when resizing to larger screens
-                window.addEventListener('resize', function () {
-                    if (window.innerWidth >= 768) {
-                        sidebar.classList.remove('active');
-                    }
-                });
-            });
-        </script>
-        <!-- End of Sidebar toggle -->
 
         <!-- Bootstrap JavaScript Libraries -->
         <script
@@ -238,5 +218,18 @@
             integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
             crossorigin="anonymous"
         ></script>
+
+            <!-- Add button JS -->
+        <script>
+            document.getElementById("addEmployeeForm").addEventListener("submit", function(event) {
+                // Display a confirmation dialog
+                const confirmation = confirm("Are you sure you want to add this employee profile?");
+                
+                // If the user clicks "Cancel," prevent form submission
+                if (!confirmation) {
+                    event.preventDefault();
+                }
+            });
+        </script>
     </body>
 </html>

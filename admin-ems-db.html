@@ -1,451 +1,395 @@
 <!doctype html>
 <html lang="en">
     <head>
-        <title>Dashboard</title>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+      <title>Dashboard</title>
+      <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
 
-        <!-- CSRF Token -->
-        <meta name="csrf-token" content="{{ csrf_token() }}">
+      <!-- CSRF Token -->
+      <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <!-- Bootstrap CSS v5.3.2 -->
-        <link
-            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-            rel="stylesheet"
-            integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
-            crossorigin="anonymous"
-        />
+      <!-- Bootstrap CSS v5.3.2 -->
+      <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+          crossorigin="anonymous"
+      />
 
-        <!-- Styles CSS -->
-        <link rel="stylesheet" href="css/styles.css">
+      <!-- Styles CSS -->
+      <link rel="stylesheet" href="css/styles.css">
 
-        <!-- Dashboard CSS -->
-        <link rel="stylesheet" href="css/dashboard.css">
+      <!-- Navbar CSS -->
+      <link rel="stylesheet" href="css/navbar.css">
 
-        <!-- Sidebar CSS -->
-        <link rel="stylesheet" href="css/sidebar.css">
+      <!-- Dashboard CSS -->
+      <link rel="stylesheet" href="css/dashboard.css">
 
-        <!-- DB Calendar CSS -->
-        <link rel="stylesheet" href="css/db-calendar.css">
+      <!-- Sidebar CSS -->
+      <link rel="stylesheet" href="css/sidebar.css">
 
-        <!-- Gender Chart CSS -->
-        <link rel="stylesheet" href="css/gender-stat.css">
+      <!-- DB Calendar CSS -->
+      <link rel="stylesheet" href="css/db-ems-calendar.css">
 
-        <!-- Dept. Chart CSS -->
-        <link rel="stylesheet" href="css/dept-chart.css">
+      <!-- Gender Chart CSS -->
+      <link rel="stylesheet" href="css/gender-stat.css">
 
-        <!-- Top Emp CSS -->
-        <link rel="stylesheet" href="css/top-emp.css">
+      <!-- Dept. Chart CSS -->
+      <link rel="stylesheet" href="css/dept-chart.css">
     </head>
 
     <header>
-        <nav class="navbar navbar-expand-lg navbar-custom sticky-top">
-            <div class="container">
-                <button id="sidebarToggle" class="navbar-toggler" type="button" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <a class="navbar-brand" href="#">
-                    <img src="images/CC_logo.png" alt="Logo" class="cclogo">
-                    <span class="cc-nav-text navbar-text">Columban College, Inc.</span>
-                </a>
-            </div>
-        </nav>
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg sticky-top">
+          <div class="container d-flex justify-content-between">
+              
+              <!-- Left Side (Logo and College Name) -->
+              <a class=" d-flex align-items-center" href="#">
+                  <img src="images/CC_logo.png" alt="Logo" class="cclogo">
+                  <span class="cc-nav-text navbar-text ms-2">Columban College, Inc.</span>
+              </a>
+              
+              <!-- Right Side (User Profile Section) -->
+              <div class="d-flex align-items-center">
+                  <span class="user-name navbar-text me-3">Rhinell Menes</span>
+                  <div class="dropdown">
+                      <a href="#" class="dropdown-toggle d-flex align-items-center text-decoration-none" id="userMenu" data-bs-toggle="dropdown" aria-expanded="false">
+                          <img src="images/dummy-profile.png" alt="Profile" class="rounded-circle user-img">
+                      </a>
+                      <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
+                          <li><a class="dropdown-item" href="#">Profile</a></li>
+                          <li><a class="dropdown-item" href="#">Settings</a></li>
+                          <li><hr class="dropdown-divider"></li>
+                          <li><a class="dropdown-item" href="#">Logout</a></li>
+                      </ul>
+                  </div>
+              </div>
+          </div>
+      </nav>
+      <!-- End of Navbar -->
     </header>
 
     <body>
-        
-        <div class="wrapper d-flex">
-            <!-- Sidebar -->
-            <nav id="sidebar" class="shadow">
-                <ul class="list-unstyled components">
-                    <li class="d-flex align-items-center">
-                        <img src="images/dashboard.png" class="icon" alt="dashboard-icon">
-                        <a href="admin-ems-db.html" class="ms-3">Dashboard</a>
-                    </li>
-                    <li class="d-flex align-items-center">
-                        <img src="images/calendar.png" class="icon" alt="calendar-icon">
-                        <a href="admin-ems-cl.html" class="ms-3">Calendar</a>
-                    </li>
-                    <li class="d-flex align-items-center">
-                        <img src="images/employee.png" class="emp-icon" alt="applicant-icon">
-                        <a href="admin-ems-emp.html" class="ms-3">Employees</a>
-                    </li>
-                    <li class="d-flex align-items-center">
-                        <img src="images/rank.png" class="icon" alt="review-icon">
-                        <a href="on-going-review.html" class="ms-3">Ranking</a>
-                    </li>
-                    <li class="d-flex align-items-center">
-                        <img src="images/note.png" class="icon" alt="positions-icon">
-                        <a href="admin-ems-note.html" class="ms-3">Notes</a>
-                    </li>
-                    <li class="d-flex align-items-center">
-                        <img src="images/faqs.png" class="icon" alt="archived-icon">
-                        <a href="admin-ems-policy.html" class="ms-3">Others</a>
-                    </li>
-                </ul>
 
-                <div class="container mt-auto mx-2">
-                    <div class="d-flex align-items-center my-4">
-                        <img src="images/user.png" class="logout-icon" alt="logout-icon">
-                        <a href="#" class="nav-link ms-3 sidebar-text">Account</a>
-                    </div>
-                    <div class="d-flex align-items-center my-4">
-                        <img src="images/logout.png" class="logout-icon" alt="logout-icon">
-                        <a href="#" class="nav-link ms-3 sidebar-text">Log Out</a>
-                    </div>
-                </div>
-            </nav>
-            <!-- End of Sidebar -->
-             
-            <!-- Dashboard Overview Section -->
-            <div class="container mt-3" id="dashboard">
+      <div class="wrapper d-flex">
+        <!-- Sidebar -->
+        <nav id="sidebar" class="shadow">
+            <ul class="list-unstyled components">
+                <li class="d-flex align-items-center">
+                  <img src="images/dashboard.png" class="icon" alt="dashboard-icon">
+                  <a href="admin-ems-db.html" class="ms-3">Dashboard</a>
+                </li>
+  
+                <li class="d-flex align-items-center">
+                    <img src="images/calendar.png" class="icon" alt="calendar-icon">
+                    <a href="admin-ems-cl.html" class="ms-3">Calendar</a>
+                </li>
+  
+                <li class="d-flex align-items-center">
+                  <img src="images/employee.png" class="icon" alt="applicant-icon">
+                  <a href="admin-ems-emp.html" class="ms-3">Employees</a>
+                </li>
+  
+                <li class="d-flex align-items-center">
+                    <img src="images/note.png" class="icon" alt="positions-icon">
+                    <a href="admin-ems-note.html" class="ms-3">Notes</a>
+                </li>
+  
+                <li class="d-flex align-items-center">
+                    <img src="images/faqs.png" class="icon" alt="archived-icon">
+                    <a href="admin-ems-policy.html" class="ms-3">Company Policy</a>
+                </li>
+              </ul>
+        </nav>
+        <!-- End of Sidebar -->
+         
+        <!-- Dashboard Overview Section -->
+        <div class="container" id="content">
+
+          <div class="container mt-3">
+            <!-- Only show this text on smaller screens -->
+            <div class="welcome-text-only">Welcome, {user.name}!</div>
+
+            <div class="d-flex justify-content-between align-items-center mt-4">
+
+              <div>
+                <h2 class="db-h2">DASHBOARD</h2>
+                <h4 class="db-h4 mt-5">Overview</h4>
+              </div>
+
+              <!-- Banner for large screens -->
+              <div class="d-flex banner banner-gradient text-white align-items-center justify-content-center px-4 py-2">
+                <h4 class="banner-text mx-5">Welcome, {user.name}!</h4>
+                <img src="images/db-icon.png" class="banner-icon " alt="banner-icon">
+              </div>
                 
-                <div class="container">
-
-                    <!-- Only show this text on smaller screens -->
-                    <div class="welcome-text-only">Welcome, {user.name}!</div>
-
-                    <div class="d-flex justify-content-between align-items-center mt-4">
-
-                        <div>
-                            <h2 class="db-h2">DASHBOARD</h2>
-                            <h4 class="db-h4 mt-5">Overview</h4>
-                        </div>
-
-                        <!-- Banner for large screens -->
-                        <div class="d-flex banner banner-gradient text-white align-items-center justify-content-center px-4 py-2">
-                            <h4 class="banner-text mx-5">Welcome, {user.name}!</h4>
-                            <img src="images/db-icon.png" class="banner-icon " alt="banner-icon">
-                        </div>
-                        
-                    </div>
-                </div>
-                
-                <div class="row mt-4 dashboard-row">
-                    <!-- Employees Card -->
-                    <div class="col-md-3">
-                        <div class="card emp-card text-center shadow">
-                            <div class="card-body">
-                                <div class="d-flex align-items-center justify-content-center mt-4">
-                                    <h5 class="card-title db-h5 text-color-3 m-auto">Employees</h5>
-                                    <img src="images/cv-2.png" class="card-icon m-auto" alt="doc-icon">
-                                </div>
-                                <p class="counter text-color-3 mt-2">234</p>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- End Employees Card -->
-                
-                    <!-- Employee Structure Statistics -->
-                    <div class="col-md-4">
-                        <div class="card shadow p-4">
-                            <h6 class="text-secondary">Statistics</h6>
-                            <h5 class="fw-bold">Employee Structure</h5>
-                            <div class="position-relative d-flex justify-content-center align-items-center my-2">
-                                <!-- Circular Progress Bar -->
-                                <div class="progress-circle">
-                                    <div class="circle">
-                                        <span class="circle-text fw-bold">100%</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Gender Labels -->
-                            <div class="d-flex justify-content-around">
-                                <div class="d-flex align-items-center">
-                                    <span class="dot bg-primary me-2"></span>
-                                    <span>Male 65%</span>
-                                </div>
-                                <div class="d-flex align-items-center">
-                                    <span class="dot bg-info me-2"></span>
-                                    <span>Female 35%</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- End Employee Structure Statistics -->
-                
-                    <!-- Calendar Section -->
-                    <div class="col-md-5 card-size">
-                        <div class="card shadow">
-                            <div class="card-body">
-                                <div class="row">
-                                    <!-- Event List -->
-                                    <div class="col-md-6 border-end">
-                                        <div class="d-flex align-content-center">
-                                          <h5 id="event-date" class="fw-bold">Events</h5>
-                                          <span class="ms-auto">See more...</span>
-                                        </div>
-                                        <ul id="event-list" class="mt-3">
-                                            <p>Select a date from the calendar to view events.</p>
-                                        </ul>
-                                    </div>
-                    
-                                    <!-- Calendar -->
-                                    <div class="col-md-6">
-                                        <div class="calendar-month" id="end-calendar">
-                                            <div class="calendar-header d-flex justify-content-between align-items-center mb-2">
-                                                <button class="btn btn-sm btn-outline-secondary" onclick="prevMonth('end')"> < </button>
-                                                <span id="end-month-year"></span>
-                                                <button class="btn btn-sm btn-outline-secondary" onclick="nextMonth('end')"> > </button>
-                                            </div>
-                                            <div class="calendar-grid" id="end-days"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- End Calendar Section -->
-
-                    <!-- Dept. Count -->
-                    <div class="row mt-4 dashboard-row">
-                        <div class="col-md-6">
-                            <div class="card shadow p-3">
-                                <h5 class="mb-4 fw-bold">Employee Count by Department</h5>
-                                <div class="mb-2">
-                                <div class="department-name">Department of Engineering</div>
-                                <div class="progress">
-                                    <div class="progress-bar eng" style="width: 40%;"></div>
-                                </div>
-                                </div>
-                                <div class="mb-2">
-                                <div class="department-name">Department of Arts & Science and Education</div>
-                                <div class="progress">
-                                    <div class="progress-bar cased" style="width: 60%;"></div>
-                                </div>
-                                </div>
-                                <div class="mb-2">
-                                <div class="department-name">Department of Business and Accountancy</div>
-                                <div class="progress">
-                                    <div class="progress-bar cba" style="width: 50%;"></div>
-                                </div>
-                                </div>
-                                <div class="mb-2">
-                                <div class="department-name">Department of Nursing</div>
-                                <div class="progress">
-                                    <div class="progress-bar nursing" style="width: 70%;"></div>
-                                </div>
-                                </div>
-                                <div class="mb-2">
-                                <div class="department-name">Department of Computer Studies</div>
-                                <div class="progress">
-                                    <div class="progress-bar ccs" style="width: 80%;"></div>
-                                </div>
-                                </div>
-                                <div class="mb-2">
-                                <div class="department-name">Department of Architecture</div>
-                                <div class="progress">
-                                    <div class="progress-bar arch" style="width: 35%;"></div>
-                                </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!--  End Dept. Count -->
-
-                        <!-- Top Employees -->
-                        <div class="col-md-6">
-                            <div class="card shadow p-3 mb-2">
-                                <h4 class="mb-3">Top 5 Employees</h4>
-                                <div class="table-responsive">
-                                  <table class="table align-middle">
-                                    <thead>
-                                      <tr>
-                                        <th>Name</th>
-                                        <th>Position</th>
-                                        <th>Performance</th>
-                                        <th>Action</th>
-                                      </tr>
-                                    </thead>
-                                    <tbody>
-                                      <tr>
-                                        <td>
-                                          <div class="d-flex align-items-center">
-                                            <img src="https://via.placeholder.com/40" alt="Employee" class="rounded-circle me-2">
-                                            <span>Dummy, Dum Dum</span>
-                                          </div>
-                                        </td>
-                                        <td>Position</td>
-                                        <td>Rank</td>
-                                        <td>
-                                          <button class="btn btn-primary">View</button>
-                                        </td>
-                                      </tr>
-                                      <tr>
-                                        <td>
-                                          <div class="d-flex align-items-center">
-                                            <img src="https://via.placeholder.com/40" alt="Employee" class="rounded-circle me-2">
-                                            <span>Dummy, Dum Dum</span>
-                                          </div>
-                                        </td>
-                                        <td>Position</td>
-                                        <td>Rank</td>
-                                        <td>
-                                          <button class="btn btn-primary">View</button>
-                                        </td>
-                                      </tr>
-                                      <tr>
-                                        <td>
-                                          <div class="d-flex align-items-center">
-                                            <img src="https://via.placeholder.com/40" alt="Employee" class="rounded-circle me-2">
-                                            <span>Dummy, Dum Dum</span>
-                                          </div>
-                                        </td>
-                                        <td>Position</td>
-                                        <td>Rank</td>
-                                        <td>
-                                          <button class="btn btn-primary">View</button>
-                                        </td>
-                                      </tr>
-                                      <tr>
-                                        <td>
-                                          <div class="d-flex align-items-center">
-                                            <img src="https://via.placeholder.com/40" alt="Employee" class="rounded-circle me-2">
-                                            <span>Dummy, Dum Dum</span>
-                                          </div>
-                                        </td>
-                                        <td>Position</td>
-                                        <td>Rank</td>
-                                        <td>
-                                          <button class="btn btn-primary">View</button>
-                                        </td>
-                                      </tr>
-                                      <tr>
-                                        <td>
-                                          <div class="d-flex align-items-center">
-                                            <img src="https://via.placeholder.com/40" alt="Employee" class="rounded-circle me-2">
-                                            <span>Dummy, Dum Dum</span>
-                                          </div>
-                                        </td>
-                                        <td>Position</td>
-                                        <td>Rank</td>
-                                        <td>
-                                          <button class="btn btn-primary">View</button>
-                                        </td>
-                                      </tr>
-                                    </tbody>
-                                  </table>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Top Employees -->
-                    </div>
-
-                </div>
             </div>
+          </div>
+
+          <div class="row mt-5">  
+            <div class="col-md-7">
+
+              <div class="row">
+                <!-- Employees Card -->
+                <div class="col-md-6">
+                    <div class="card emp-card text-center shadow">
+                        <div class="card-body active-text">
+                            <div class="d-flex align-items-center justify-content-center mt-4">
+                                <h5 class="card-title m-auto">Employees</h5>
+                                <img src="images/cv-2.png" class="card-icon m-auto" alt="doc-icon">
+                            </div>
+                            <p class="emp-counter text-wrap fw-bold mt-2">234</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Employees Card -->
+
+                <!-- Employee Structure Statistics -->
+                <div class="col-md-6">
+                  <div class="card shadow p-4">
+
+                    <h6 class="text-secondary">Statistics</h6>
+                    <h5 class="card-title db-h5">Employee Structure</h5>
+
+                    <div class="position-relative d-flex justify-content-center align-items-center my-2">
+                      <div class="progress-circle">
+                        <div class="circle">
+                            <span class="circle-text fw-bold">100%</span>
+                        </div>
+                      </div>
+                    </div>
+                      
+                    <div class="d-flex justify-content-around">
+                      <div class="d-flex align-items-center">
+                        <span class="dot bg-primary me-2"></span>
+                        <span>Male 65%</span>
+                      </div>
+
+                      <div class="d-flex align-items-center">
+                        <span class="dot bg-info me-2"></span>
+                        <span>Female 35%</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- End Employee Structure Statistics -->
+              </div>
+
+              <!-- Dept. Count -->
+              <div class="mt-4">
+                
+                <div class="card shadow p-2">
+                  <div class="card-body">
+                    <h5 class="card-title mb-4">Employee Count by Department</h5>
+                    <div class="mb-2">
+                      <div class="department-name">Department of Engineering</div>
+                      <div class="progress">
+                          <div class="progress-bar eng" style="width: 40%;"></div>
+                      </div>
+                    </div>
+
+                    <div class="mb-2">
+                      <div class="department-name">Department of Arts & Science and Education</div>
+                      <div class="progress">
+                          <div class="progress-bar cased" style="width: 60%;"></div>
+                      </div>
+                    </div>
+
+                    <div class="mb-2">
+                      <div class="department-name">Department of Business and Accountancy</div>
+                      <div class="progress">
+                          <div class="progress-bar cba" style="width: 50%;"></div>
+                      </div>
+                    </div>
+
+                    <div class="mb-2">
+                      <div class="department-name">Department of Nursing</div>
+                      <div class="progress">
+                          <div class="progress-bar nursing" style="width: 70%;"></div>
+                      </div>
+                    </div>
+
+                    <div class="mb-2">
+                      <div class="department-name">Department of Computer Studies</div>
+                      <div class="progress">
+                          <div class="progress-bar ccs" style="width: 80%;"></div>
+                      </div>
+                    </div>
+
+                    <div class="mb-2">
+                      <div class="department-name">Department of Architecture</div>
+                      <div class="progress">
+                          <div class="progress-bar arch" style="width: 35%;"></div>
+                      </div>
+                    </div>
+                    
+                  </div>
+                </div>
+              </div>
+              <!--  End Dept. Count -->
+            </div>
+
+            <!-- Calendar Section -->
+            <div class="col-md-5 card-size">
+        
+              <div class="card shadow">
+                <div class="card-body">
+                  <div class="calendar-container">
+                    <div class="calendar-header d-flex justify-content-between align-items-center">
+                      <button id="prev-month">&lt;</button>
+                      <span id="calendar-header" class="text-center"></span>
+                      <button id="next-month">&gt;</button>
+                    </div>
+                    <div id="calendar" class="mb-4"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card shadow mt-4">
+                <div class="card-body">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <h5 id="event-title" class="fw-bold">Events</h5>
+                    <a href="emp-ems-events.html" class="view-link">See more...</a>
+                  </div>
+                  <ul id="event-list" class="list-group mt-3">
+                    <!-- Dynamic Event Items -->
+                  </ul>
+                </div>
+              </div>
+
+            </div>
+            <!-- End Calendar Section -->
+
+          </div>
         </div>
+        <!-- End Dashboard Overview Section -->
+      </div>
+      
+      <!-- Sidebar JS -->
+      <script src="js/sidebar.js"></script>
 
-        <!-- Sidebar toggle -->
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                const sidebar = document.getElementById('sidebar');
-                const sidebarToggle = document.getElementById('sidebarToggle');
+      <!-- Calendar JS -->
+      <script>
+        document.addEventListener("DOMContentLoaded", function () {
+          const calendarElement = document.getElementById("calendar");
+          const eventListElement = document.getElementById("event-list");
 
-                function toggleSidebar() {
-                    if (window.innerWidth < 768) {
-                        sidebar.classList.toggle('active');
-                    }
-                }
+          const events = [
+            { date: "2025-01-12", description: "Board Meeting" },
+            { date: "2025-01-14", description: "Training Workshop" },
+            { date: "2025-01-16", description: "Company Anniversary" },
+          ];
 
-                sidebarToggle.addEventListener('click', toggleSidebar);
+          const today = new Date();
+          let currentMonth = today.getMonth();
+          let currentYear = today.getFullYear();
 
-                // Ensure sidebar is visible when resizing to larger screens
-                window.addEventListener('resize', function () {
-                    if (window.innerWidth >= 768) {
-                        sidebar.classList.remove('active');
-                    }
-                });
+          function generateCalendar(year, month) {
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+            calendarElement.innerHTML = "";
+
+            // Generate days of the week header
+            const daysOfWeek = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
+            daysOfWeek.forEach((day) => {
+              const dayHeader = document.createElement("div");
+              dayHeader.className = "day";
+              dayHeader.style.fontWeight = "bold";
+              dayHeader.textContent = day;
+              calendarElement.appendChild(dayHeader);
             });
-        </script>
-        <!-- End of Sidebar toggle -->
 
-        <!-- Calendar JS -->
-        <script src="/js/ems-calendar.js"></script>
+            // Add empty slots for days before the first of the month
+            for (let i = 0; i < (firstDay === 0 ? 6 : firstDay - 1); i++) {
+              const emptySlot = document.createElement("div");
+              emptySlot.className = "day";
+              calendarElement.appendChild(emptySlot);
+            }
 
-        <!-- Calendar Script -->
-        <script>
-            const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-            let start = new Date(2024, 0, 1);
-            let end = new Date(2024, 1, 1);
-          
-            function updateCalendar(type) {
-              const date = type === 'start' ? start : end;
-              const calendarId = type === 'start' ? 'start' : 'end';
-              const monthYearElem = document.getElementById(`${calendarId}-month-year`);
-              const daysElem = document.getElementById(`${calendarId}-days`);
-          
-              monthYearElem.textContent = `${monthNames[date.getMonth()]} ${date.getFullYear()}`;
-              daysElem.innerHTML = '';
-          
-              // Calculate days
-              const firstDay = new Date(date.getFullYear(), date.getMonth(), 1).getDay();
-              const daysInMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
-          
-              // Render empty days at the start
-              for (let i = 0; i < firstDay; i++) {
-                const emptyDiv = document.createElement('div');
-                emptyDiv.classList.add('day', 'disabled');
-                daysElem.appendChild(emptyDiv);
-              }
-          
-              // Render each day
-              for (let day = 1; day <= daysInMonth; day++) {
-                const dayDiv = document.createElement('div');
-                dayDiv.classList.add('day');
-                dayDiv.textContent = day;
-          
-                if (type === 'start' && day === start.getDate()) {
-                  dayDiv.classList.add('selected');
-                } else if (type === 'end' && day === end.getDate()) {
-                  dayDiv.classList.add('selected');
-                }
-          
-                dayDiv.addEventListener('click', () => {
-                  if (type === 'start') {
-                    start.setDate(day);
-                  } else {
-                    end.setDate(day);
-                  }
-                  updateCalendar(type);
-                });
-          
-                daysElem.appendChild(dayDiv);
-              }
-            }
-          
-            function prevMonth(type) {
-              if (type === 'start') {
-                start.setMonth(start.getMonth() - 1);
-              } else {
-                end.setMonth(end.getMonth() - 1);
-              }
-              updateCalendar(type);
-            }
-          
-            function nextMonth(type) {
-              if (type === 'start') {
-                start.setMonth(start.getMonth() + 1);
-              } else {
-                end.setMonth(end.getMonth() + 1);
-              }
-              updateCalendar(type);
-            }
-          
-            // Initial render
-            updateCalendar('start');
-            updateCalendar('end');
-        </script>
-        <!-- End of Calendar JS -->
+            // Add the days of the month
+            for (let day = 1; day <= daysInMonth; day++) {
+              const date = `${year}-${String(month + 1).padStart(2, "0")}-${String(
+                day
+              ).padStart(2, "0")}`;
+              const dayElement = document.createElement("div");
+              dayElement.className = "day";
+              dayElement.textContent = day;
 
-        <!-- Bootstrap JavaScript Libraries -->
-        <script
-            src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-            integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
-            crossorigin="anonymous"
-        ></script>
-        <script
-            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
-            integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
-            crossorigin="anonymous"
-        ></script>
+              // Highlight today's date
+              if (
+                today.getDate() === day &&
+                today.getMonth() === month &&
+                today.getFullYear() === year
+              ) {
+                dayElement.classList.add("current");
+              }
+
+              // Highlight event days
+              const event = events.find((e) => e.date === date);
+              if (event) {
+                dayElement.classList.add("event-day");
+                dayElement.setAttribute("title", event.description);
+              }
+
+              calendarElement.appendChild(dayElement);
+            }
+          }
+
+          function populateEvents() {
+            eventListElement.innerHTML = "";
+            events.forEach((event) => {
+              const listItem = document.createElement("li");
+              listItem.className = "list-group-item";
+              listItem.textContent = `${event.date}: ${event.description}`;
+              eventListElement.appendChild(listItem);
+            });
+          }
+
+          function updateCalendarHeader() {
+            const header = document.getElementById("calendar-header");
+            header.textContent = `${new Date(
+              currentYear,
+              currentMonth
+            ).toLocaleString("default", { month: "long" })} ${currentYear}`;
+          }
+
+          document.getElementById("prev-month").addEventListener("click", function () {
+            currentMonth -= 1;
+            if (currentMonth < 0) {
+              currentMonth = 11;
+              currentYear -= 1;
+            }
+            updateCalendarHeader();
+            generateCalendar(currentYear, currentMonth);
+          });
+
+          document.getElementById("next-month").addEventListener("click", function () {
+            currentMonth += 1;
+            if (currentMonth > 11) {
+              currentMonth = 0;
+              currentYear += 1;
+            }
+            updateCalendarHeader();
+            generateCalendar(currentYear, currentMonth);
+          });
+
+          updateCalendarHeader();
+          generateCalendar(currentYear, currentMonth);
+          populateEvents();
+        });
+      </script>
+
+      <!-- Bootstrap JavaScript Libraries -->
+      <script
+          src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+          integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+          crossorigin="anonymous"
+      ></script>
+      <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+          integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+          crossorigin="anonymous"
+      ></script>
     </body>
 </html>

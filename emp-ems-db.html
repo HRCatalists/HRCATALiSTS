@@ -5,7 +5,7 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
         <meta name="csrf-token" content="{{ csrf_token() }}">
-        <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"rel="stylesheet"integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"crossorigin="anonymous"/>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -17,11 +17,11 @@
             integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
             crossorigin="anonymous"></script>
 
-        <!-- buttons for datatables -->
-        <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.dataTables.min.css">
-
         <!-- Styles CSS -->
         <link rel="stylesheet" href="css/styles.css">
+
+        <!-- Navbar CSS -->
+        <link rel="stylesheet" href="css/navbar.css">
 
         <!-- Dashboard CSS -->
         <link rel="stylesheet" href="css/dashboard.css">
@@ -30,172 +30,166 @@
         <link rel="stylesheet" href="css/sidebar.css">
 
         <!-- DB Calendar CSS -->
-        <link rel="stylesheet" href="css/db-calendar.css">
-
+        <link rel="stylesheet" href="css/db-ems-calendar.css">
     </head>
 
-    <header class="sticky-top">
-        <nav class="navbar navbar-expand-lg navbar-custom sticky-top">
-            <div class="container">
-                <button id="sidebarToggle" class="navbar-toggler" type="button" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <a class="navbar-brand" href="#">
+    <header>
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg sticky-top">
+            <div class="container d-flex justify-content-between">
+                
+                <!-- Left Side (Logo and College Name) -->
+                <a class=" d-flex align-items-center" href="#">
                     <img src="images/CC_logo.png" alt="Logo" class="cclogo">
-                    <span class="cc-nav-text navbar-text">Columban College, Inc.</span>
+                    <span class="cc-nav-text navbar-text ms-2">Columban College, Inc.</span>
                 </a>
+                
+                <!-- Right Side (User Profile Section) -->
+                <div class="d-flex align-items-center">
+                    <span class="user-name navbar-text me-3">Rhinell Menes</span>
+                    <div class="dropdown">
+                        <a href="#" class="dropdown-toggle d-flex align-items-center text-decoration-none" id="userMenu" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="images/dummy-profile.png" alt="Profile" class="rounded-circle user-img">
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
+                            <li><a class="dropdown-item" href="#">Profile</a></li>
+                            <li><a class="dropdown-item" href="#">Settings</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#">Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </nav>
+        <!-- End of Navbar -->
     </header>
 
     <body>
-        
+
         <div class="wrapper d-flex">
             <!-- Sidebar -->
             <nav id="sidebar" class="shadow">
                 <ul class="list-unstyled components">
                     <li class="d-flex align-items-center">
                         <img src="images/dashboard.png" class="icon" alt="dashboard-icon">
-                        <a href="#homeSubmenu" class="ms-3">Dashboard</a>
+                        <a href="emp-ems-db.html" class="ms-3">Dashboard</a>
                     </li>
                     <li class="d-flex align-items-center">
                         <img src="images/user.png" class="icon" alt="calendar-icon">
-                        <a href="#homeSubmenu" class="ms-3">Profile</a>
+                        <a href="emp-ems-profile.html" class="ms-3">Profile</a>
                     </li>
                     <li class="d-flex align-items-center">
                         <img src="images/calendar.png" class="icon" alt="applicant-icon">
-                        <a href="#homeSubmenu" class="ms-3">Events</a>
+                        <a href="emp-ems-events.html" class="ms-3">Events</a>
                     </li>
                     <li class="d-flex align-items-center">
                         <img src="images/faqs.png" class="icon" alt="review-icon">
-                        <a href="#homeSubmenu" class="ms-3">Others</a>
+                        <a href="ems-emp-notes.html" class="ms-3">Others</a>
                     </li>
                 </ul>
-
-                <div class="container mt-auto mx-2">
-
-                    <div class="d-flex align-items-center my-4">
-                        <img src="images/logout.png" class="logout-icon" alt="logout-icon">
-                        <a href="#" class="nav-link ms-3 sidebar-text">Log Out</a>
-                    </div>
-                </div>
             </nav>
             <!-- End of Sidebar -->
              
             <!-- Dashboard Overview Section -->
-            <div class="container">
-
-                <!-- Only show this text on smaller screens -->
-
-                <div class="d-flex justify-content-between align-items-center mt-4">
-
-                    <div>
-                        <h2 class="db-h2">DASHBOARD</h2>
-                        <h4 class="db-h4 mt-5">Overview</h4>
+            <div class="container" id="content">
+    
+                <div class="container mt-3">
+                    <!-- Only show this text on smaller screens -->
+                    <div class="welcome-text-only">Welcome, {user.name}!</div>
+        
+                    <div class="d-flex justify-content-between align-items-center mt-4">
+        
+                        <div>
+                            <h2 class="db-h2">DASHBOARD</h2>
+                            <h4 class="db-h4 mt-5">Overview</h4>
+                        </div>
+            
+                        <!-- Banner for large screens -->
+                        <div class="d-flex banner banner-gradient text-white align-items-center justify-content-center px-4 py-2">
+                            <h4 class="banner-text mx-5">Welcome, {user.name}!</h4>
+                            <img src="images/db-icon.png" class="banner-icon " alt="banner-icon">
+                        </div>
+                        
                     </div>
-
-                    <!-- Banner for large screens -->
-                    <div class="d-flex banner banner-gradient text-white align-items-center justify-content-center px-4 py-2">
-                        <h4 class="banner-text mx-5">Welcome, {user.name}!</h4>
-                        <img src="images/db-icon.png" class="banner-icon " alt="banner-icon">
-                    </div>
-
-
                 </div>
+    
+                <div class="row mt-5">  
+                    <div class="col-md-6">
+        
+                        <!-- Employees Card -->
+                        <div class="card shadow card-custom card-wide info-card-height">
+                            <div class="info-header mb-2">Employee Information</div>
+                            <hr>
+                            <div class="card-content">
+                                <div class="d-flex justify-content-between">
+                                    <p><strong>Name:</strong> John Doe</p>
+                                    <p><strong>Employee ID:</strong> 12345600</p>
+                                </div>
 
-
-                <div class="container mt-5">
-                    <div class="row g-4">
-                        <!-- Information Card (Wide Card) -->
-                        <div class="col-md-6">
-                            <div class="card card-custom card-wide info-card-height">
-                                <div class="card-header-custom info-header mb-2">Information</div>
-                                <div class="card-content">
-                                    <div class="d-flex justify-content-between">
-                                        <p><strong>Last Name, First Name Middle:</strong> John Doe</p>
-                                        <p><strong>ID:</strong> 12345600</p>
-                                    </div>
-                                    <p><strong>Position:</strong> CCS Faculty</p>
+                                <div class="d-flex justify-content-between">
+                                    <p><strong>Deparment:</strong> College of Computer Studies</p>
+                                    <p><strong>Position:</strong> Professor</p>
                                 </div>
                             </div>
                         </div>
-                
+                        <!-- End Employees Card -->
+
                         <!-- Recent Updates Card -->
-                        <div class="col-md-6 card-wide">
-                            <div class="card card-custom">
-                                <div class="card-header-custom info-header mb-2">Recent Updates</div>
-                                <div class="card-content">
-                                    <p><strong>November 19, 2024:</strong> <br>
-                                        <span>Lorem ipsum dolor</span> 
-                                        sit amet, dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-                                        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
-                                        </p>
-                                    <p><strong>November 18, 2024:</strong> <br>
-                                        Sed do eiusmod tempor incididunt ut labore. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
-                                        Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                                </div>
+                        <div class="card shadow card-custom card-wide mt-4">
+                            <div class="info-header mb-2">Recent Updates</div>
+                            <hr>
+                            <div class="card-content">
+                                <p><strong>November 19, 2024:</strong> <br>
+                                    <span>Lorem ipsum dolor</span> 
+                                    sit amet, dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+                                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+                                    </p>
+                                <p><strong>November 18, 2024:</strong> <br>
+                                    Sed do eiusmod tempor incididunt ut labore. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
+                                    Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
                             </div>
                         </div>
-                
-                       
-                    <!-- Calendar Section -->
-                    <!-- Events with Calendar -->
-                    <div class="col-md-6 event-card py-2">
-                        <div class="card shadow event-body">
-                            <div class="card-body event-body">
-                                <div class="row">
-                                    <!-- Event List -->
-                                    <div class="col-md-6 border-end">
-                                        <div class="d-flex align-content-center">
-                                            <h5 id="event-date" class="fw-bold">Events</h5>
-                                            <span class="ms-auto">See more...</span>
-                                        </div>
-                                        <ul id="event-list" class="mt-3">
-                                            <p>Lorem Ipsum</p>
-                                        </ul>
-                                    </div>
+                        <!-- End Recent Updates Card -->
 
-                                    <!-- Calendar -->
-                                    <div class="col-md-6 mt-2 ">
-                                        <div class="calendar-month" id="end-calendar">
-                                            <div class="calendar-header d-flex justify-content-between align-items-center mb-2">
-                                                <button class="btn btn-sm btn-outline-secondary" onclick="prevMonth('end')"> < </button>
-                                                <span id="end-month-year"></span>
-                                                <button class="btn btn-sm btn-outline-secondary" onclick="nextMonth('end')"> > </button>
-                                            </div>
-                                            <div class="calendar-grid" id="end-days"></div>
-                                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <!-- Calendar Section -->
+                        <!-- Calendar -->
+                        <div class="card shadow">
+                            <div class="card-body">
+                                <div class="calendar-container">
+                                    <div class="calendar-header d-flex justify-content-between align-items-center">
+                                        <button id="prev-month">&lt;</button>
+                                        <span id="calendar-header" class="text-center"></span>
+                                        <button id="next-month">&gt;</button>
                                     </div>
+                                    <div id="calendar" class="mb-4"></div>
                                 </div>
                             </div>
                         </div>
-                    
-                    <!-- End Calendar Section -->
-                        </div>
-                
-                        <!-- Performance Summary -->
-                        <div class="col-md-6 mb-5">
-                            <div class="card card-custom bar-tall">
-                                <div class="card-header-custom d-flex justify-content-between px-2 py-2">
-                                    <span class="performance-header">Performance Summary</span>
-                                    <span class="performance-header">Rank: 2.5</span>
+                        
+                        <!-- Events -->
+                        <div class="card shadow mt-4">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h5 id="event-title" class="fw-bold">Events</h5>
+                                    <a href="emp-ems-events.html" class="view-link">See more...</a>
                                 </div>
-                                <div class="card-content">
-                                    <canvas class="performance-chart" id="performanceChart"></canvas>
-                                </div>
+
+                                <ul id="event-list" class="list-group mt-3">
+                                <!-- Dynamic Event Items -->
+                                </ul>
                             </div>
                         </div>
+                        <!-- End Calendar Section -->
+
                     </div>
                 </div>
-                
             </div>
-
-  
-
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-
-
+        </div>
+    
         <!-- Bootstrap JavaScript Libraries -->
         <script
             src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
@@ -208,181 +202,119 @@
             crossorigin="anonymous"
         ></script>
 
+        <!-- Sidebar JS -->
+        <script src="js/sidebar.js"></script>
 
-        <!-- jQuery and DataTables JS -->
-        <script src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
-
-        <script src="https://cdn.datatables.net/buttons/2.2.3/js/dataTables.buttons.min.js"></script>
-
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/pdfmake@0.1.53/build/pdfmake.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/pdfmake@0.1.53/build/vfs_fonts.js"></script>
-
-
+        <!-- Calendar JS -->
         <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                const sidebar = document.getElementById('sidebar');
-                const sidebarToggle = document.getElementById('sidebarToggle');
+            document.addEventListener("DOMContentLoaded", function () {
+            const calendarElement = document.getElementById("calendar");
+            const eventListElement = document.getElementById("event-list");
 
-                function toggleSidebar() {
-                    if (window.innerWidth < 768) {
-                        sidebar.classList.toggle('active');
-                    }
+            const events = [
+                { date: "2025-01-12", description: "Board Meeting" },
+                { date: "2025-01-14", description: "Training Workshop" },
+                { date: "2025-01-16", description: "Company Anniversary" },
+            ];
+
+            const today = new Date();
+            let currentMonth = today.getMonth();
+            let currentYear = today.getFullYear();
+
+            function generateCalendar(year, month) {
+                const firstDay = new Date(year, month, 1).getDay();
+                const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+                calendarElement.innerHTML = "";
+
+                // Generate days of the week header
+                const daysOfWeek = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
+                daysOfWeek.forEach((day) => {
+                const dayHeader = document.createElement("div");
+                dayHeader.className = "day";
+                dayHeader.style.fontWeight = "bold";
+                dayHeader.textContent = day;
+                calendarElement.appendChild(dayHeader);
+                });
+
+                // Add empty slots for days before the first of the month
+                for (let i = 0; i < (firstDay === 0 ? 6 : firstDay - 1); i++) {
+                const emptySlot = document.createElement("div");
+                emptySlot.className = "day";
+                calendarElement.appendChild(emptySlot);
                 }
 
-                sidebarToggle.addEventListener('click', toggleSidebar);
+                // Add the days of the month
+                for (let day = 1; day <= daysInMonth; day++) {
+                const date = `${year}-${String(month + 1).padStart(2, "0")}-${String(
+                    day
+                ).padStart(2, "0")}`;
+                const dayElement = document.createElement("div");
+                dayElement.className = "day";
+                dayElement.textContent = day;
 
-                // Ensure sidebar is visible when resizing to larger screens
-                window.addEventListener('resize', function () {
-                    if (window.innerWidth >= 768) {
-                        sidebar.classList.remove('active');
-                    }
+                // Highlight today's date
+                if (
+                    today.getDate() === day &&
+                    today.getMonth() === month &&
+                    today.getFullYear() === year
+                ) {
+                    dayElement.classList.add("current");
+                }
+
+                // Highlight event days
+                const event = events.find((e) => e.date === date);
+                if (event) {
+                    dayElement.classList.add("event-day");
+                    dayElement.setAttribute("title", event.description);
+                }
+
+                calendarElement.appendChild(dayElement);
+                }
+            }
+
+            function populateEvents() {
+                eventListElement.innerHTML = "";
+                events.forEach((event) => {
+                const listItem = document.createElement("li");
+                listItem.className = "list-group-item";
+                listItem.textContent = `${event.date}: ${event.description}`;
+                eventListElement.appendChild(listItem);
                 });
+            }
+
+            function updateCalendarHeader() {
+                const header = document.getElementById("calendar-header");
+                header.textContent = `${new Date(
+                currentYear,
+                currentMonth
+                ).toLocaleString("default", { month: "long" })} ${currentYear}`;
+            }
+
+            document.getElementById("prev-month").addEventListener("click", function () {
+                currentMonth -= 1;
+                if (currentMonth < 0) {
+                currentMonth = 11;
+                currentYear -= 1;
+                }
+                updateCalendarHeader();
+                generateCalendar(currentYear, currentMonth);
+            });
+
+            document.getElementById("next-month").addEventListener("click", function () {
+                currentMonth += 1;
+                if (currentMonth > 11) {
+                currentMonth = 0;
+                currentYear += 1;
+                }
+                updateCalendarHeader();
+                generateCalendar(currentYear, currentMonth);
+            });
+
+            updateCalendarHeader();
+            generateCalendar(currentYear, currentMonth);
+            populateEvents();
             });
         </script>
-        <!-- End of Sidebar toggle -->
-
-
-        
-       <!-- Calendar JS -->
-       <script src="js/ems-calendar.js"></script>
-
-       <!-- Calendar Script -->
-       <script>
-           const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-           let start = new Date(2024, 0, 1);
-           let end = new Date(2024, 1, 1);
-         
-           function updateCalendar(type) {
-             const date = type === 'start' ? start : end;
-             const calendarId = type === 'start' ? 'start' : 'end';
-             const monthYearElem = document.getElementById(`${calendarId}-month-year`);
-             const daysElem = document.getElementById(`${calendarId}-days`);
-         
-             monthYearElem.textContent = `${monthNames[date.getMonth()]} ${date.getFullYear()}`;
-             daysElem.innerHTML = '';
-         
-             // Calculate days
-             const firstDay = new Date(date.getFullYear(), date.getMonth(), 1).getDay();
-             const daysInMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
-         
-             // Render empty days at the start
-             for (let i = 0; i < firstDay; i++) {
-               const emptyDiv = document.createElement('div');
-               emptyDiv.classList.add('day', 'disabled');
-               daysElem.appendChild(emptyDiv);
-             }
-         
-             // Render each day
-             for (let day = 1; day <= daysInMonth; day++) {
-               const dayDiv = document.createElement('div');
-               dayDiv.classList.add('day');
-               dayDiv.textContent = day;
-         
-               if (type === 'start' && day === start.getDate()) {
-                 dayDiv.classList.add('selected');
-               } else if (type === 'end' && day === end.getDate()) {
-                 dayDiv.classList.add('selected');
-               }
-         
-               dayDiv.addEventListener('click', () => {
-                 if (type === 'start') {
-                   start.setDate(day);
-                 } else {
-                   end.setDate(day);
-                 }
-                 updateCalendar(type);
-               });
-         
-               daysElem.appendChild(dayDiv);
-             }
-           }
-         
-           function prevMonth(type) {
-             if (type === 'start') {
-               start.setMonth(start.getMonth() - 1);
-             } else {
-               end.setMonth(end.getMonth() - 1);
-             }
-             updateCalendar(type);
-           }
-         
-           function nextMonth(type) {
-             if (type === 'start') {
-               start.setMonth(start.getMonth() + 1);
-             } else {
-               end.setMonth(end.getMonth() + 1);
-             }
-             updateCalendar(type);
-           }
-         
-           // Initial render
-           updateCalendar('start');
-           updateCalendar('end');
-
-        
-       </script>
-       <!-- End of Calendar JS -->
-
-
-       <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-
-       <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const ctx = document.getElementById('performanceChart').getContext('2d');
-        
-            const data = {
-                labels: ['2020', '2021', '2022', '2023', '2024', '2025'],
-                datasets: [{
-                    label: 'Performance',
-                    data: [1.5, 2, 1, 1.8, 2.3, 2.5],
-                    backgroundColor: [
-                        'rgba(75, 192, 192, 0.2)', // Colors for bars
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(201, 203, 207, 0.2)'
-                    ],
-                    borderColor: [
-                        'rgba(75, 192, 192, 1)', // Border colors for bars
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(201, 203, 207, 1)'
-                    ],
-                    borderWidth: 1
-                }]
-            };
-        
-            const options = {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: true,
-                        position: 'top'
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            };
-        
-            new Chart(ctx, {
-                type: 'bar', // Bar chart
-                data: data,
-                options: options
-            });
-        });
-        
-       </script>
-
-       
-    
     </body>
 </html>

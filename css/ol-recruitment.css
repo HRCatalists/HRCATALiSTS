@@ -8,10 +8,28 @@
   font-family: 'Raleway', sans-serif;
 }
 
+
+
+.btn-apply {
+  color: #ffffff !important;
+  background-color: #3377CC !important;
+  box-shadow: #001F54;
+  font-family: 'Raleway' !important;
+
+}
+
+.btn-apply:hover{
+  background-color: #111D5B !important;
+  color: white !important;
+}
+
+
+
 body {
   width: 100%;
   background-color: #f3f3f3;
 }
+
 
 /* Navbar */
 .navbar {
@@ -461,6 +479,8 @@ h2 {
 
 .form-label{
   font-weight: bold !important;
+  color: #111D5B;
+  
 }
 
 

@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
     <head>
-        <title> Archived Applicants</title>
+        <title>Master List</title>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
         <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -26,9 +26,9 @@
             crossorigin="anonymous">
         </script>
 
-        <!-- buttons for datatables -->
+        <!-- Buttons for datatables -->
         <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.dataTables.min.css">
-        
+
         <!-- Styles CCS -->
         <link rel="stylesheet" href="css/styles.css">
 
@@ -40,6 +40,7 @@
 
         <!-- Data tables CSS -->
         <link rel="stylesheet" href="css/data-tables.css">
+
     </head>
 
     <header>
@@ -74,7 +75,6 @@
     </header>
 
     <body>
-        
         <div class="wrapper d-flex">
             <!-- Sidebar -->
             <nav id="sidebar" class="shadow">
@@ -103,81 +103,72 @@
             </nav>
             <!-- End of Sidebar -->
              
-            <!-- Dashboard Overview Section -->
+            <!-- Master List Section -->
             <div class="container" id="content">
                 
                 <div class="d-flex justify-content-between align-items-center my-5">
                     <div>
-                        <h2 class="dt-h2">Archived Applicants</h2>
+                        <h2 class="dt-h2">Master List</h2>
                     </div>
 
                     <div class="d-flex">
+                        <!-- Add Position Button -->
+                        <div class="container text-center">
+                            <button type="button" class="btn add-btn">
+                                <a href="ats-admin-form-1.html">ADD APPLICANT</a>
+                            </button>
+                        </div>
+
                         <button class="btn shadow print-btn">
                             <i class="fa fa-print"></i> PRINT
                         </button>
                     </div>
 
                 </div>
-    
+
                 <!-- Applicant Table -->
-                <table id="archivedApplicantTable" class="table table-bordered display">
+                <table id="applicantTable" class="table table-bordered display">
                     <thead>
                         <tr>
-                            <th>APPLICANT NAME</th>
+                            <th>NAME</th>
+                            <th>STATUS</th>
+                            <th>STAGES</th>
                             <th>APPLIED DATE</th>
                             <th>POSITION APPLIED TO</th>
-                            <th>ACTIONS</th>
+                            <th>ACTION</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td>Rhinell Menes</td>
+                            <td>APPLICANT</td>
+                            <td>2 - Interview</td>
                             <td>November 11, 2024</td>
                             <td>Medical Staff</td>
-                            <td>
-                                <button class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#candidateProfile">VIEW</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>John Rafael De Venencia</td>
-                            <td>November 11, 2024</td>
-                            <td>Medical Staff</td>
-                            <td>
-                                <button class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#candidateProfile">VIEW</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Jianah Fate Gamboa</td>
-                            <td>November 11, 2024</td>
-                            <td>Medical Staff</td>
-                            <td>
-                                <button class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#candidateProfile">VIEW</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Raiden Monsalud</td>
-                            <td>November 11, 2024</td>
-                            <td>Medical Staff</td>
-                            <td>
-                                <button class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#candidateProfile">VIEW</button>
-                            </td>
+                            <td><button class="btn btn-primary btn-sm" data-bs-toggle="offcanvas" data-bs-target="#candidateProfile">VIEW</button></td>
                         </tr>
                     </tbody>
                 </table>
+
             </div>
-         
+
             <!-- Offcanvas for Candidate Profile View -->
-            <!-- View button -->
             <div class="offcanvas offcanvas-end" tabindex="-1" id="candidateProfile" aria-labelledby="candidateProfileLabel">
 
                 <div class="offcanvas-header">
                     <h3 class="offcanvas-title" id="candidateProfileLabel">Candidate Profile View</h3>
                     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                 </div>
-    
+
                 <div class="offcanvas-body-wrapper px-4">
                     <div class="content-section">
-                        <h5 class="my-4 ">Rhinell Menes</h5>
+                        <div class="d-flex align-items-center justify-content-between my-4">
+                            <h5 class="mt-2">Rhinell Menes</h5>
+
+                            <span class="stage border px-3 py-1">
+                                STAGE: INTERVIEW
+                            </span>
+                        </div>
                         
                         <!-- Tabs -->
                         <ul class="nav nav-tabs">
@@ -187,10 +178,13 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="#" onclick="showTab('notes')">Notes</a>
                             </li>
-                            
+                            <li class="nav-item">
+                                <a class="nav-link" href="#" onclick="showTab('interview')">Schedule an Interview</a>
+                            </li>
                         </ul>
-    
+
                         <!-- Tab Content -->
+                        <!-- Overview Tab -->
                         <div id="overview" class="tab-content">
                             <!-- Contact Information -->
                             <div class="contact-info mt-3 mb-5 d-flex align-items-center">
@@ -202,32 +196,36 @@
                                 </span>
                             </div>
                             
-    
+
                             <!-- Experience Section -->
                             <div class="experience-section">
                                 
                                 <div class="experience-list">
                                     <h6 >Experience</h6>
-    
-                                <p><strong>Lorem ipsum dolor sit amet.</strong> 
-                                    consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...</p>
-                                <p><strong>Lorem ipsum dolor sit amet.</strong> 
-                                    consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...</p>
-                                <p><strong>Lorem ipsum dolor sit amet.</strong> 
-                                    consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...</p>
-                                
-    
+
+                                    <p><strong>Lorem ipsum dolor sit amet.</strong> 
+                                        consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...</p>
+                                    <p><strong>Lorem ipsum dolor sit amet.</strong> 
+                                        consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...</p>
+                                    <p><strong>Lorem ipsum dolor sit amet.</strong> 
+                                        consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...</p>
                                 </div>
                                 
                                 <!-- Attachment -->
-                                <div class="file-attachment my-5">
+                                <div class="file-attachment my-4">
                                     <img src="images/pdf-img.png" alt="PDF icon">
                                     <span>Severus_Snape_CVfinalfinal.pdf</span>
                                     <span class="ms-auto">200 KB</span>
                                 </div>
+
+                                <div class="d-grid">
+                                    <button class="btn btn-success" onclick="showPopup('approvePopup')">APPROVE</button>
+                                </div>
                             </div>
                         </div>
+                        <!-- End Overview Tab -->
                         
+                        <!-- Notes Tab -->
                         <div id="notes" class="tab-content" style="display: none;">
                             <div class="notes-section">
                                 <p><strong>Lorem ipsum dolor sit amet.</strong> consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...</p>
@@ -235,17 +233,54 @@
                                 <p><strong>Lorem ipsum dolor sit amet.</strong> consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...</p>
                             </div>
                         </div>
-    
-                        
+                        <!-- End Notes Tab -->
+
+                        <!-- Interview Tab -->
+                        <div id="interview" class="tab-content" style="display: none;">
+                            <div class="interview-section">
+                                <form>
+                                    <!-- Schedule Name -->
+                                    <div class="mb-3">
+                                        <label for="scheduleName" class="form-label">Schedule Name <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" id="scheduleName" required>
+                                    </div>
+                                    <!-- Name of Applicant -->
+                                    <div class="mb-3">
+                                        <label for="applicantName" class="form-label">Name of Applicant <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" id="applicantName" required>
+                                    </div>
+                                    <!-- Applicant Email -->
+                                    <div class="mb-3">
+                                        <label for="applicantEmail" class="form-label">Applicant Email <span class="text-danger">*</span></label>
+                                        <input type="email" class="form-control" id="applicantEmail" required>
+                                    </div>
+                                    <!-- Schedule Date and Time -->
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="scheduleDate" class="form-label">Schedule Date <span class="text-danger">*</span></label>
+                                            <input type="date" class="form-control" id="scheduleDate" placeholder="Select date" required>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="scheduleTime" class="form-label">Time <span class="text-danger">*</span></label>
+                                            <input type="time" class="form-control" id="scheduleTime" required>
+                                        </div>
+                                    </div>
+                                    <!-- Submit Button -->
+                                    <div class="d-grid">
+                                        <button type="submit" class="btn btn-primary mt-3">SCHEDULE INTERVIEW</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <!-- End Interview Tab -->
+
+                        <!-- Sticky Button Container -->
+                        <div class="button-container mt-5">
+                            <button class="btn archive-btn" onclick="showPopup('archivePopup')">ARCHIVE</button>
+                            <button class="btn btn-danger" onclick="showPopup('rejectPopup')">REJECT</button>
+                        </div>
                     </div>
-    
-                    <!-- Sticky Button Container -->
-                    <div class="button-container">
-                        <button class="btn btn-success" onclick="showPopup('approvePopup')">APPROVE</button>
-                        <button class="btn btn-danger" onclick="showPopup('rejectPopup')">REJECT</button>
-    
-                    </div>
-    
+
                     <!-- Approve Popup -->
                     <div id="approvePopup" class="custom-popup">
                         <div class="popup-content">
@@ -254,7 +289,16 @@
                             <button class="btn btn-outline-secondary" onclick="closePopup('approvePopup')">Cancel</button>
                         </div>
                     </div>
-    
+
+                    <!-- Archived Popup -->
+                    <div id="archivePopup" class="custom-popup">
+                        <div class="popup-content">
+                            <p>Are you sure you want to archive this applicant?</p>
+                            <button class="btn archive-btn" onclick="arhiveAction()">Yes, archive the applicant</button>
+                            <button class="btn btn-outline-secondary" onclick="closePopup('archivePopup')">Cancel</button>
+                        </div>
+                    </div>
+
                     <!-- Reject Popup -->
                     <div id="rejectPopup" class="custom-popup">
                         <div class="popup-content">
@@ -262,88 +306,10 @@
                             <button class="btn btn-danger" onclick="rejectAction()">Yes, reject the applicant</button>
                             <button class="btn btn-outline-secondary" onclick="closePopup('rejectPopup')">Cancel</button>
                         </div>
-                    </div>       
-                </div>
-                <!-- End of View button -->
-
-            <!-- Edit Position Modal -->
-            <div class="modal fade" id="editPositionModal" tabindex="-1" aria-labelledby="editPositionModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="editPositionModalLabel">EDIT POSITION</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                        <form>
-                            <div class="row mb-3">
-                                <div class="col-md-6">
-                                    <label for="jobTitle" class="form-label">Job Title *</label>
-                                    <input type="text" class="form-control" id="jobTitle" placeholder="Enter Job Title" required>
-                                </div>
-                            <div class="col-md-6">
-                                <label for="department" class="form-label">Department *</label>
-                                <input type="text" class="form-control" id="department" placeholder="Enter Department" required>
-                            </div>
-                            </div>
-                            <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label for="email" class="form-label">Email *</label>
-                                <input type="email" class="form-control" id="email" placeholder="Enter Email" required>
-                            </div>
-                            <div class="col-md-3">
-                                <label for="phoneNumber" class="form-label">Phone Number</label>
-                                <input type="text" class="form-control" id="phoneNumber"                                                                                    >
-                            </div>
-                            <div class="col-md-3">
-                                <label for="telephoneNumber" class="form-label">Telephone Number</label>
-                                <input type="text" class="form-control" id="telephoneNumber">
-                            </div>
-                            </div>
-                            <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label for="requirements" class="form-label">Requirements *</label>
-                                <textarea class="form-control" id="requirements" rows="4" required placeholder="Enter applicant requirements..."></textarea>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="duties" class="form-label">Duties and Responsibilities *</label>
-                                <textarea class="form-control" id="duties" rows="4" required placeholder="Enter duties and responsibilities..."></textarea>
-                            </div>
-                            </div>
-                            <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label for="tags" class="form-label">Tags *</label>
-                                <input type="text" class="form-control" id="tags" placeholder="Enter tags">
-                            </div>
-                            <div class="col-md-3">
-                                <label for="dateIssued" class="form-label">Date Issued *</label>
-                                <input type="date" class="form-control" id="dateIssued" required>
-                            </div>
-                            <div class="col-md-3">
-                                <label for="endDate" class="form-label">End Date *</label>
-                                <input type="date" class="form-control" id="endDate" required>
-                            </div>
-                            </div>
-                        </form>
-                        </div>
-                        <div class="modal-footer">
-                        <button type="button" class="btn btn-post">SAVE</button>
-                        <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">CANCEL</button>
-                        </div>
                     </div>
+                    
                 </div>
-            </div>
-            <!-- End of Edit -->
-
-            <!-- Delete Popup -->
-            <div id="rejectPopup" class="custom-popup">
-                <div class="popup-content">
-                    <p>Are you sure you want to delete this applicant?</p>
-                    <button class="btn btn-danger" onclick="rejectAction()">Yes, delete the applicant</button>
-                    <button class="btn btn-outline-secondary" onclick="closePopup('rejectPopup')">Cancel</button>
-                </div>
-            </div>
-  
+            </div>  
         </div>
 
         <!-- Bootstrap JavaScript Libraries -->
@@ -370,7 +336,6 @@
         <!-- Sidebar JS -->
         <script src="js/sidebar.js"></script>
 
-        <!-- Modal Tabs -->
         <script>
             function showTab(tabId) {
                 // Hide all tab contents
@@ -392,57 +357,66 @@
         </script>
 
         <script>
-        // Function to show the popup
-        function showPopup(popupId) {
-            const popup = document.getElementById(popupId);
-            popup.style.visibility = 'visible';
-            popup.style.opacity = '1';
-        }
+            // Function to show the popup
+            function showPopup(popupId) {
+                const popup = document.getElementById(popupId);
+                popup.style.visibility = 'visible';
+                popup.style.opacity = '1';
+            }
 
-        // Function to close the popup
-        function closePopup(popupId) {
-            const popup = document.getElementById(popupId);
-            popup.style.opacity = '0';
-            popup.style.visibility = 'hidden';
-        }
+            // Function to close the popup
+            function closePopup(popupId) {
+                const popup = document.getElementById(popupId);
+                popup.style.opacity = '0';
+                popup.style.visibility = 'hidden';
+            }
 
-        // Action functions for Approve and Reject
-        function approveAction() {
-            alert("Candidate approved!");
-            closePopup('approvePopup');
-        }
+            // Action functions for Approve, Archive, and Reject
+            function approveAction() {
+                alert("Candidate approved!");
+                closePopup('approvePopup');
+            }
 
-        function rejectAction() {
-            alert("Candidate rejected!");
-            closePopup('rejectPopup');
-        }
+            function archiveAction() {
+                alert("Candidate archived!");
+                closePopup('archivePopup');
+            }
 
-        
-        $(document).ready(function() {
-            $('#archivedApplicantTable').DataTable({
-                paging: true,
-                searching: true,
-                ordering: true,
-                pageLength: 10,
-                buttons: ['print'],
-                language: {
-                    paginate: {
-                        previous: 'Previous',
-                        next: 'Next'
+            function rejectAction() {
+                alert("Candidate rejected!");
+                closePopup('rejectPopup');
+            }
+            
+            // Function to handle saving changes
+            function saveChanges() {
+                const selectedStage = document.getElementById("stages").value;
+                alert("Stage saved as: " + selectedStage);
+                closeEditStages();
+            }
+
+            $(document).ready(function() {
+                $('#applicantTable').DataTable({
+                    paging: true,
+                    searching: true,
+                    ordering: true,
+                    pageLength: 10,
+                    language: {
+                        paginate: {
+                            previous: 'Previous',
+                            next: 'Next'
+                        },
+                        search: "", // Remove the default "Search" label
+                        searchPlaceholder: "Search" // Add placeholder text
                     },
-                    search: "", // Remove the default "Search" label
-                    searchPlaceholder: "Search" // Add placeholder text
-                },
-                initComplete: function() {
-                    // Wrap the search input and prepend the icon
-                    $('.dataTables_filter input')
-                        .wrap('<div class="search-box position-relative"></div>') // Add position relative for icon positioning
-                        .attr('placeholder', 'Search'); // Ensure placeholder is set
-                    $('.search-box').prepend('<i class="bi bi-search position-absolute" style="left: 10px; top: 50%; transform: translateY(-50%); color: #888;"></i>');
-                }
+                    initComplete: function() {
+                        // Wrap the search input and prepend the icon
+                        $('.dataTables_filter input')
+                            .wrap('<div class="search-box position-relative"></div>') // Add position relative for icon positioning
+                            .attr('placeholder', 'Search'); // Ensure placeholder is set
+                        $('.search-box').prepend('<i class="bi bi-search position-absolute" style="left: 10px; top: 50%; transform: translateY(-50%); color: #888;"></i>');
+                    }
+                });
             });
-        });
-        
         </script>
     </body>
 </html>

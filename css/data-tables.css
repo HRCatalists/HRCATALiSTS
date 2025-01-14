@@ -1,8 +1,8 @@
 /* PRINT BUTTON */
 .print-btn, .add-btn {
-    background-color: white; /* White background */
-    color: #111D5B; /* Text and icon color */
-    border: 2px solid #111D5B; /* Border color */
+    background-color: white; 
+    color: #111D5B; 
+    border: 2px solid #111D5B; 
     padding: 10px 20px;
     font-size: 16px;
     font-weight: bold;
@@ -17,16 +17,16 @@
 }
 
 .print-btn i {
-margin-right: 8px; /* Space between icon and text */
+margin-right: 8px; 
 }
 
 .print-btn:hover, .add-btn {
-background-color: #111D5B; /* Hover background color */
-color: white; /* Hover text color */
+background-color: #111D5B; 
+color: white;
 }
 
 .print-btn:active, .add-btn {
-transform: scale(0.98); /* Slight shrink effect on click */
+transform: scale(0.98); 
 }
 /* END OF PRINT BUTTON */
 
@@ -59,7 +59,10 @@ transform: scale(0.98); /* Slight shrink effect on click */
   }
 /* END OF ADD A POSTION CSS */
 
-
+.dt-h2 {
+    font-weight: bold;
+    color: #111D5B;
+}
 .form-control {
     font-size: 12px
 }
@@ -149,6 +152,12 @@ transform: scale(0.98); /* Slight shrink effect on click */
     background-color: #800000;
     color: white;
     width: 250px;
+    transition: background-color 0.3s ease;
+}
+
+.archive-btn:hover {
+    background: #4d0000;
+    color: white;
 }
 
 /* Customize the offcanvas panel */
@@ -157,35 +166,39 @@ transform: scale(0.98); /* Slight shrink effect on click */
 }
 
 .offcanvas-end {
-    width: 600px !important; /* Adjust width as needed */
-    background-color: #f4f8ff; /* Match your design */
-
-   
+    width: 600px !important; 
+    background-color: #f4f8ff; 
 }
 
 .offcanvas-body {
     color: #111D5B;
     background-color: white !important;
-    
-
 }
 
 .offcanvas-header {
-    color: #111D5B; /* Set text color */
+    color: #111D5B; 
     background-color: #84BBFF;
 }
-
 
 .offcanvas-title {
     font-size: 1.25rem;
     font-weight: bold;
 }
 
+.stage {
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-size: 15px;
+    color: #FF2600;
+    border-color: #FF2600 !important;
+    border-radius: 5px;
+    display: inline-block;
+}
+
 .nav-tabs .nav-link {
     font-size: 1rem;
     color: #333;
-   
-    
 }
 
 .nav-tabs .nav-link.active {
@@ -203,7 +216,6 @@ transform: scale(0.98); /* Slight shrink effect on click */
     color: #333;
     margin-right: 0.5rem;
     background-color: white;
-  
 }
 
 .experience-section, .notes-section, .interview-section {
@@ -236,7 +248,6 @@ transform: scale(0.98); /* Slight shrink effect on click */
     display: flex;
     align-items: center;
     border-radius: 8px;
-    margin-top: 1rem;
     border: solid 0.5px #3377CC !important;
 }
 
@@ -261,7 +272,6 @@ transform: scale(0.98); /* Slight shrink effect on click */
 .content-section {
     flex-grow: 1;
     overflow-y: auto;
-    padding-bottom: 4rem; /* Add space for buttons */
     background-color: white !important;
 }
 

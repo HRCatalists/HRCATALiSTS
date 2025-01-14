@@ -1,3 +1,7 @@
+#hide-overflow {
+    overflow-x: hidden;
+}
+
 /* APPLICANT DASHBOARD CSS */
 .banner{
     width: 900px;
@@ -41,74 +45,84 @@
     font-size: 20px;
 }
 
-.text-color-1 {
-    color: #3377CC;
+/* CARDS */
+.custom-card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    letter-spacing: 1.3px;
 }
 
-.text-color-2 {
-    color: #F04D23;
+.custom-card:hover {
+    transform: scale(1.01);
 }
 
-.text-color-3 {
-    color: #3EB52B;
-}
-
-.text-color-4 {
-    color: #800000;
-}
-
-.card {
-    min-height: 150px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+.custom-card .card-body {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .card-title {
-    font-size: 17px;
+    font-size: 20px;
+    font-weight: bold;
 }
 
 .card-icon {
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
 }
 
-.counter {
-    font-size: 96px;
+.view-link {
+    font-size: 12px;
+    text-decoration: underline;
+}
+
+.card-number {
+    font-size: 2.5rem;
     font-weight: bold;
+    margin-top: 5px;
 }
 
-.applications-counter {
-    font-size: 70px;
-    font-weight: bold;
-    color: #111D5B; 
+.new-app-bg {
+    background-color: #111D5B;
 }
 
-.edit-stages {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    justify-content: center;
-    align-items: center;
-  }
+.master-text {
+    color: #3377CC !important;
+}
 
-  .edit-stages-content {
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    width: 450px;
-    text-align: center;
-  }
+.active-text {
+    color: #3EB52B !important;
+}
+
+.arch-text {
+    color: #800000 !important;
+}
+
+.text-muted {
+    color: #6c757d !important;
+}
+
+.text-end .view-link {
+    display: block;
+}
+
+/* END APPLICANT DASHBOARD CSS */
+
+
 
 /* EMS DASHBOARD CSS  */
 
 /* ADMIN CSS */
 
 .emp-card {
-height: 300px;
+    height: 300px;
+}
+
+.emp-counter {
+    font-size: 96px;
 }
 
 /* END ADMIN CSS */
@@ -126,23 +140,17 @@ height: 300px;
 
 /* Custom styles for the cards */
 .card-custom {
-    width: 100%; /* Default full width within its column */
-    height: auto; /* Adjust height automatically based on content */
-    border: 1px solid #ddd; /* Optional: add a border for clarity */
-    border-radius: 10px; /* Rounded corners */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: subtle shadow */
-    padding: 16px; /* Spacing inside the card */
-    background-color: #fff; /* Card background color */
-}
-
-/* Adjust width for specific cards */
-.card-custom.card-wide {
-    width: 600px; /* Set specific width for wider cards */
+    width: 600px; 
+    height: auto; 
+    border: 1px solid #ddd; 
+    border-radius: 10px;  
+    padding: 16px; 
+    background-color: #fff; 
 }
 
 /* Adjust height for specific cards */
 .card-custom.card-tall {
-    height: 150px; /* Example fixed height for taller cards */
+    height: 150px; 
 }
 
 /* END EMPLOYEE CSS */
@@ -150,12 +158,6 @@ height: 300px;
 .cont-size {
     width: 650px;
     height: 800px;
-}
-
-@media (max-width: 768px) {
-    .dashboard-row {
-        flex-direction: column;
-    }
 }
 
 @media (max-width: 900px) {
@@ -167,7 +169,7 @@ height: 300px;
         display: block !important;
         font-weight: bold;
         font-size: 40px;
-        color: #111D5B; /* Adjust color as needed */
+        color: #111D5B; 
     }
 }
 

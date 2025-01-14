@@ -1,41 +1,11 @@
 /* SIDEBAR CSS */
 
-/* Navbar */
-a,
-a:hover,
-a:focus {
-    color: inherit;
-    text-decoration: none;
-    transition: all 0.3s;
-}
-
-.navbar {
-    background-color: #3377CC;
-    height: 70px;
-    /* box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1); */
-    color: #fff;
-}
-  
-.cc-nav-text {
-    color: white;
-    letter-spacing: 2px;
-    font-weight: bold;
-    margin-left: 10px; /* Adds space between the logo and the text */
-}
-  
-.cclogo {
-    width: 50px;
-}
-
-.navbar-btn {
-    box-shadow: none;
-    outline: none !important;
-    border: none;
-}
-/* End of Navbar */
 /* ---------------------------------------------------
   EMS SIDEBAR STYLE
 ----------------------------------------------------- */
+.row-fix {
+    width: 100%;
+}
 
 .emp-icon {
     width: 48px;
@@ -47,28 +17,22 @@ a:focus {
 ----------------------------------------------------- */
 
 .wrapper {
-    display: flex;
-    flex-direction: row;
+    height: 100vh;
 }
 
 .icon {
-    width: 40px;
-    height: 40px;
+    width: 35px;
+    height: 35px;
 }
 
 #sidebar {
-    min-width: 250px;
-    max-width: 250px;
+    height: 100%; 
     background: #E8F2FF !important;
     color: #111D5B;
-    height: 100vh;
-    width: 100vw;
     display: flex;
     flex-direction: column;
-    transition: all 0.3s;
-    top: 0;
-    left: 0;
-}
+    transition: all 0.3s ease-in-out;
+}   
 
 #sidebar.active {
     margin-left: -250px;
@@ -83,6 +47,9 @@ a:focus {
     padding: 15px;
     font-size: 16px;
     color: #111D5B;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
 }
 
 #sidebar ul li:hover {
@@ -100,8 +67,15 @@ a:focus {
     color: #111D5B;
 }
 
-#sidebar ul li a.active {
-    color: #3377CC;
+#sidebar ul li.active {
+    background-color: #ffffff; /* Highlighted background */
+    color: #3377CC; /* Highlighted text color */
+    font-weight: bold; /* Emphasize the active item */
+    border-left: 4px solid #3377CC; /* Add a left border to emphasize */
+}
+
+#sidebar ul li.active a {
+    color: #3377CC; /* Ensure active link color matches */
 }
 
 a[data-toggle="collapse"] {
@@ -114,121 +88,95 @@ ul ul a {
     background: #ffffff;
 }
 
-/* Log Out and FAQ Links */
-.sidebar-text {
-    font-weight: bold;
-    font-size: 16px;
-    color: #111D5B;
-}
-
-.logout-icon {
-    width: 30px;
-    height: 30px;
-}
-
-/* Burger Icon CSS */
-#sidebarToggle {
-    display: none;
-    background: none;
-    border: none;
-    font-size: 1.5rem;
-    color: white;
-}
-
 .sidebar {
     display: block;
 }
-
-
-/* .navbar-toggler-icon {
-    display: none;
-} */
 
 /* ---------------------------------------------------
     CONTENT STYLE
 ----------------------------------------------------- */
 
-#content {
+/* #content {
     width: 100%;
     padding: 20px;
     min-height: 100vh;
     transition: all 0.3s;
-}
+} */
 
 /* ---------------------------------------------------
     MEDIAQUERIES
 ----------------------------------------------------- */
 
 @media (max-width: 768px) {
+
+    .wrapper {
+        height: 100%;
+    }
+
     #sidebar {
-        margin-left: -250px;
+        width: 100%; /* Occupy full width */
+        position: absolute; /* Fixed position to keep it visible at the top */
+        top: 60px; /* Adjust based on the height of your navbar */
+        left: 0;
+        z-index: 999; /* Ensure it stays above the content */
+        background-color: #E8F2FF;
+        padding-bottom: 20px; /* Add some space at the bottom */
+        overflow-y: auto; /* Allow scrolling if sidebar content overflows */
+        height: auto; /* Adjust the height automatically */
     }
-    #sidebar.active {
-        margin-left: 0;
+
+    #content {
+        margin-top: 400px; /* Push content below the sidebar */
     }
-    #sidebarCollapse span {
-        display: none;
+
+    .dashboard-overview-section {
+        margin-top: 20px; 
+    }
+    
+    .row {
+        flex-direction: column; /* Stack sidebar and content vertically */
+    }
+
+    #sidebar ul li {
+        flex-direction: row; 
+        justify-content: center; 
+        text-align: left; 
+    }
+
+    #sidebar ul li img {
+        margin-bottom: 0; 
+        margin-right: 8px; 
+    }
+
+    #sidebar ul li a {
+        text-align: left; 
     }
 }
 
-/* Show toggle button when screen width is below 768px */
-@media (max-width: 768px) {
-    #sidebarToggle {
-        display: inline-block; /* Show button */
-    }
+/* Custom Styles */
+.modal-header {
+    background-color: #b8d4f2;
+    border-bottom: none;
 }
-
-/* Hide sidebar for smaller screens by default */
-@media (max-width: 768px) {
-    #sidebar {
-        margin-left: -250px; /* Initially hidden */
-    }
-
-    #sidebar.active {
-        margin-left: 0; /* Show when toggled */
-    }
+.modal-title {
+    font-weight: bold;
 }
-
-/* Force sidebar to show on screens 768px and above */
-@media (min-width: 768px) {
-    #sidebar {
-        margin-left: 0 !important;
-        position: static;
-    }
-
-    #sidebar.active {
-        margin-left: 0 !important;
-    }
-
-    #sidebarToggle {
-        display: none; /* Hide the toggle button on larger screens */
-    }
+.form-label {
+    font-weight: bold;
 }
-
-    /* Custom Styles */
-    .modal-header {
-        background-color: #b8d4f2;
-        border-bottom: none;
-      }
-      .modal-title {
-        font-weight: bold;
-      }
-      .form-label {
-        font-weight: bold;
-      }
-      .modal-footer {
-        justify-content: flex-end;
-      }
-      .modal-body {
-        font-size: 14px;
-      }
-      .btn-post {
-        background-color: #28a745;
-        color: white;
-        border: none;
-      }
-      .btn-cancel {
-        background-color: #dc3545;
-        color: white;
-        border: none;
-      }
+.modal-footer {
+    justify-content: flex-end;
+}
+.modal-body {
+    font-size: 14px;
+}
+.btn-post {
+    background-color: #28a745;
+    color: white;
+    border: none;
+}
+.btn-cancel {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+}
