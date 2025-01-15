@@ -56,6 +56,12 @@
     padding: 20px;
 }
 
+.card h1 {
+    color: #111D5B;
+    font-weight: bold;
+}
+
+
 .card h2 {
     color: #111D5B;
     font-weight: bold;
