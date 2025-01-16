@@ -34,6 +34,10 @@
     </head>
 
     <header>
+        
+    </header>
+
+    <body>
         <!-- Navbar -->
         <nav class="navbar navbar-expand-lg sticky-top">
             <div class="container d-flex justify-content-between">
@@ -62,12 +66,14 @@
             </div>
         </nav>
         <!-- End of Navbar -->
-    </header>
 
-    <body>
+
+
         
-        <div class="wrapper d-flex">
-            <!-- Sidebar -->
+        <div class="row col-md-12">
+
+            <div class="container col-md-2">
+                <!-- Sidebar -->
             <nav id="sidebar" class="shadow">
                 <ul class="list-unstyled components">
                     <li class="d-flex align-items-center">
@@ -93,9 +99,12 @@
                 </ul>
             </nav>
             <!-- End of Sidebar -->
+
+            </div>
+            
              
             <!-- Dashboard Overview Section -->
-            <div class="container" id="content">
+            <div class="container col-md-10" id="content">
                 <!-- Main wrapper for the calendar application -->
                 <!-- Calendar -->
                 <div class="calendar-wrapper mt-5">
@@ -175,6 +184,9 @@
             <!-- End of Calendar -->
         </div>
 
+        <!-- Calendar JS -->
+        <script src="js/ats-calendar.js"></script>
+
         <!-- Bootstrap JavaScript Libraries -->
         <script
             src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
@@ -189,8 +201,5 @@
 
         <!-- Sidebar JS -->
         <script src="js/sidebar.js"></script>
-
-        <!-- Calendar JS -->
-        <script src="js/ats-calendar.js"></script>
     </body>
 </html>

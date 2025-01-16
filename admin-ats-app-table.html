@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
     <head>
-        <title>Dashboard</title>
+        <title>Applicant Table</title>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
         <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -18,18 +18,10 @@
 
         <!-- buttons for datatables -->
         <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.dataTables.min.css">
-
         <!-- navbar & sidebar CSS -->
         <link rel="stylesheet" href="css/sidebar.css">
-        
-        <!-- Styles CSS -->
-        <link rel="stylesheet" href="css/styles.css">
-
-        <!-- Dashboard CSS -->
         <link rel="stylesheet" href="css/dashboard.css">
-
-        <!-- Data tables CSS -->
-        <link rel="stylesheet" href="css/data-tables.css">
+        
 
     </head>
 
@@ -43,7 +35,6 @@
                 <button id="sidebarToggle" class="navbar-toggler" type="button" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-
                 <a class="navbar-brand" href="#">
                     <img src="images/CC_logo.png" alt="Logo" class="cclogo">
                     <span class="cc-nav-text navbar-text">Columban College, Inc.</span>
@@ -51,8 +42,11 @@
             </div>
         </nav>
 
+
+
         
         <div class="row col-md-12">
+
 
             <div class="container col-md-2">
                 <!-- Sidebar -->
@@ -86,7 +80,12 @@
 
                 <div class="container mt-auto mx-2">
                     <div class="d-flex align-items-center my-4">
-                        <img src="images/logout.png" class="logout-icon" alt="logout-icon">
+                        <img src="icons/faqs.png" class="icon" alt="faqs-icon">
+                        <a href="#" class="nav-link ms-3 sidebar-text">FAQs</a>
+                    </div>
+
+                    <div class="d-flex align-items-center my-4">
+                        <img src="icons/logout.png" class="logout-icon" alt="logout-icon">
                         <a href="#" class="nav-link ms-3 sidebar-text">Log Out</a>
                     </div>
                 </div>
@@ -101,7 +100,7 @@
                 
                 <div class="d-flex justify-content-between align-items-center mb-5">
                     <div>
-                        <h2 class="db-h2">On-going Review</h2>
+                        <h2 class="db-h2">Applicant Table</h2>
                     
                     </div>
 
@@ -112,9 +111,6 @@
                     
                 </div>
 
-                
-                
-
                 <!-- Applicant Table -->
                 <table id="applicantTable" class="table table-bordered display">
                     <thead>
@@ -123,6 +119,7 @@
                             <th>STAGES</th>
                             <th>APPLIED DATE</th>
                             <th>POSITION APPLIED TO</th>
+                            <th>HIRED DATE</th>
                             <th>ACTION</th>
                         </tr>
                     </thead>
@@ -132,6 +129,7 @@
                             <td>1 - Screening <button onclick="openEditStages()" class="btn btn-warning"> Edit </button></td>
                             <td>November 11, 2024</td>
                             <td>Medical Staff</td>
+                            <td></td>
                             <td><button class="btn btn-primary btn-sm" data-bs-toggle="offcanvas" data-bs-target="#candidateProfile">View</button></td>
                         </tr>
                         <tr>
@@ -139,6 +137,7 @@
                             <td>1 - Screening <button onclick="openEditStages()" class="btn btn-warning"> Edit </button></td>
                             <td>November 11, 2024</td>
                             <td>Medical Staff</td>
+                            <td></td>
                             <td><button class="btn btn-primary btn-sm" data-bs-toggle="offcanvas" data-bs-target="#candidateProfile">View</button></td>
                         </tr>
                         <tr>
@@ -146,6 +145,7 @@
                             <td>1 - Screening <button onclick="openEditStages()" class="btn btn-warning"> Edit </button></td>
                             <td>November 11, 2024</td>
                             <td>Medical Staff</td>
+                            <td></td>
                             <td><button class="btn btn-primary btn-sm" data-bs-toggle="offcanvas" data-bs-target="#candidateProfile">View</button></td>
                         </tr>
                         <tr>
@@ -153,15 +153,17 @@
                             <td>1 - Screening <button onclick="openEditStages()" class="btn btn-warning"> Edit </button></td>
                             <td>November 11, 2024</td>
                             <td>Medical Staff</td>
+                            <td></td>
                             <td><button class="btn btn-primary btn-sm" data-bs-toggle="offcanvas" data-bs-target="#candidateProfile">View</button></td>
                         </tr>
                     </tbody>
                 </table>
 
+
                 <!-- Edit Stages Structure -->
                 <div class="edit-stages" id="editStages">
                     <div class="edit-stages-content">
-                    <h4>Applicant Stage Form</h4>
+                    <h4>Applicant Stage Form</h4> <br>
                     <label for="stages">Stages</label>
                     <select id="stages">
                         <option value="screening">1 - Screening</option>
@@ -176,8 +178,6 @@
                     </div>
                 </div>
 
-            
-               
             </div>
 
                     
@@ -201,9 +201,6 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#" onclick="showTab('notes')">Notes</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#" onclick="showTab('interview')">Schedule an Interview</a>
                         </li>
                         
                     </ul>
@@ -239,7 +236,7 @@
                             
                             <!-- Attachment -->
                             <div class="file-attachment my-5">
-                                <img src="images/pdf-img.png" alt="PDF icon">
+                                <img src="pictures/pdf-img.png" alt="PDF icon">
                                 <span>Severus_Snape_CVfinalfinal.pdf</span>
                                 <span class="ms-auto">200 KB</span>
                             </div>
@@ -254,49 +251,12 @@
                         </div>
                     </div>
 
-                    <div id="interview" class="tab-content" style="display: none;">
-                        <div class="interview-section">
-                            <div class=" mb-4">
-                                <h6>Schedule Name <span class="text-danger">*</span></h6>
-                                <input type="text" class="form-control"  required>
-                            </div>
-    
-                            <div class=" mb-4">
-                                <h6>Name of Applicant <span class="text-danger">*</span></h6>
-                                <input type="text" class="form-control"  required>
-                            </div>
-    
-                            <div class=" mb-4">
-                                <h6>Applicant Email <span class="text-danger">*</span></h6>
-                                <input type="text" class="form-control" required>
-                            </div>
-    
-                            <div class="row my-4">
-                                <div class="col-md-6">
-                                    <h6>Schedule Date <span class="text-danger">*</span></h6>
-                                    <input type="email" class="form-control"  required>
-                                </div>
-                                <div class="col-md-6">
-                                    <h6>Time<span class="text-danger">*</span></h6>
-                                    <input type="tel" class="form-control" required>
-                                </div>
-                            </div>
-
-                            <div>
-                                <button class="btn btn-primary font-weight-bold">SCHEDULE INTERVIEW</button>
-                            </div>
-
-                        </div>
-
-
-                    </div>
-
                     
                 </div>
 
                 <!-- Sticky Button Container -->
                 <div class="button-container">
-                    <button class="btn archive-btn" onclick="showPopup('approvePopup')">ARCHIVE</button>
+                    <button class="btn btn-success" onclick="showPopup('approvePopup')">APPROVE</button>
                     <button class="btn btn-danger" onclick="showPopup('rejectPopup')">REJECT</button>
 
                 </div>
@@ -304,8 +264,8 @@
                 <!-- Approve Popup -->
                 <div id="approvePopup" class="custom-popup">
                     <div class="popup-content">
-                        <p>Are you sure you want to archive this candidate?</p>
-                        <button class="btn archive-btn" onclick="approveAction()">Yes, archive the candidate!</button>
+                        <p>Are you sure you want to approve this person and proceed to screening?</p>
+                        <button class="btn btn-success" onclick="approveAction()">Yes, proceed to screening!</button>
                         <button class="btn btn-outline-secondary" onclick="closePopup('approvePopup')">Cancel</button>
                     </div>
                 </div>
@@ -346,9 +306,6 @@
             }
         </script>
 
-
-
-
         <!-- Bootstrap JavaScript Libraries -->
         <script
             src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
@@ -370,7 +327,6 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/pdfmake@0.1.53/build/pdfmake.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/pdfmake@0.1.53/build/vfs_fonts.js"></script>
-
 
         <script>
             document.addEventListener('DOMContentLoaded', function () {
@@ -395,85 +351,71 @@
         </script>
         <!-- End of Sidebar toggle -->
 
-
         <script>
-
             // Function to show the popup
-        function showPopup(popupId) {
-            const popup = document.getElementById(popupId);
-            popup.style.visibility = 'visible';
-            popup.style.opacity = '1';
-        }
+            function showPopup(popupId) {
+                const popup = document.getElementById(popupId);
+                popup.style.visibility = 'visible';
+                popup.style.opacity = '1';
+            }
 
-        // Function to close the popup
-        function closePopup(popupId) {
-            const popup = document.getElementById(popupId);
-            popup.style.opacity = '0';
-            popup.style.visibility = 'hidden';
-        }
+            // Function to close the popup
+            function closePopup(popupId) {
+                const popup = document.getElementById(popupId);
+                popup.style.opacity = '0';
+                popup.style.visibility = 'hidden';
+            }
 
-        // Action functions for Approve and Reject
-        function approveAction() {
-            alert("Candidate archived!");
-            closePopup('approvePopup');
-        }
+            // Action functions for Approve and Reject
+            function approveAction() {
+                alert("Candidate approved!");
+                closePopup('approvePopup');
+            }
 
-        function rejectAction() {
-            alert("Candidate rejected!");
-            closePopup('rejectPopup');
-        }
+            function rejectAction() {
+                alert("Candidate rejected!");
+                closePopup('rejectPopup');
+            }
 
-
-
-
-        function openEditStages() {
-            document.getElementById("editStages").style.display = "flex";
-          }
-        
-          // Function to close the edit stages
-          function closeEditStages() {
-            document.getElementById("editStages").style.display = "none";
-          }
-        
-          // Function to handle saving changes
-          function saveChanges() {
-            const selectedStage = document.getElementById("stages").value;
-            alert("Stage saved as: " + selectedStage);
-            closeEditStages();
-          }
-
+            function openEditStages() {
+                document.getElementById("editStages").style.display = "flex";
+            }
             
+            // Function to close the edit stages
+            function closeEditStages() {
+                document.getElementById("editStages").style.display = "none";
+            }
             
-        $(document).ready(function() {
-            $('#applicantTable').DataTable({
-                paging: true,
-                searching: true,
-                ordering: true,
-                pageLength: 10,
-                language: {
-                    paginate: {
-                        previous: 'Previous',
-                        next: 'Next'
+            // Function to handle saving changes
+            function saveChanges() {
+                const selectedStage = document.getElementById("stages").value;
+                alert("Stage saved as: " + selectedStage);
+                closeEditStages();
+            }
+
+            $(document).ready(function() {
+                $('#applicantTable').DataTable({
+                    paging: true,
+                    searching: true,
+                    ordering: true,
+                    pageLength: 10,
+                    language: {
+                        paginate: {
+                            previous: 'Previous',
+                            next: 'Next'
+                        },
+                        search: "", // Remove the default "Search" label
+                        searchPlaceholder: "Search" // Add placeholder text
                     },
-                    search: "", // Remove the default "Search" label
-                    searchPlaceholder: "Search" // Add placeholder text
-                },
-                initComplete: function() {
-                    // Wrap the search input and prepend the icon
-                    $('.dataTables_filter input')
-                        .wrap('<div class="search-box position-relative"></div>') // Add position relative for icon positioning
-                        .attr('placeholder', 'Search'); // Ensure placeholder is set
-                    $('.search-box').prepend('<i class="bi bi-search position-absolute" style="left: 10px; top: 50%; transform: translateY(-50%); color: #888;"></i>');
-                }
+                    initComplete: function() {
+                        // Wrap the search input and prepend the icon
+                        $('.dataTables_filter input')
+                            .wrap('<div class="search-box position-relative"></div>') // Add position relative for icon positioning
+                            .attr('placeholder', 'Search'); // Ensure placeholder is set
+                        $('.search-box').prepend('<i class="bi bi-search position-absolute" style="left: 10px; top: 50%; transform: translateY(-50%); color: #888;"></i>');
+                    }
+                });
             });
-        });
-        
-       
-        
-            
-            
-
-            
         </script>
     </body>
 </html>

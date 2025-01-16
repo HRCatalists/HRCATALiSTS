@@ -32,6 +32,10 @@
         <link rel="stylesheet" href="css/db-calendar.css">
     </head>
 
+    <header>
+        
+    </header>
+
     <body>
         <!-- Navbar -->
         <nav class="navbar navbar-expand-lg sticky-top">
@@ -62,36 +66,41 @@
         </nav>
         <!-- End of Navbar -->
          
-        <div class="wrapper d-flex">
+        <div class=" row col-md-12">
             <!-- Sidebar -->
-            <nav class="shadow" id="sidebar">
-                <ul class="list-unstyled components">
-                    <li class="d-flex align-items-center">
-                        <img src="images/dashboard.png" class="icon" alt="dashboard-icon">
-                        <a href="admin-ats-db.html" class="ms-3">Dashboard</a>
-                    </li>
-                    <li class="d-flex align-items-center">
-                        <img src="images/calendar.png" class="icon" alt="calendar-icon">
-                        <a href="admin-ats-cl.html" class="ms-3">Calendar</a>
-                    </li>
-                    <li class="d-flex align-items-center">
-                        <img src="images/table.png" class="icon" alt="applicant-icon">
-                        <a href="admin-ats-master-list.html" class="ms-3">Master List</a>
-                    </li>
-                    <li class="d-flex align-items-center">
-                        <img src="images/cv.png" class="icon" alt="positions-icon">
-                        <a href="admin-ats-act-post.html" class="ms-3">Active Positions</a>
-                    </li>
-                    <li class="d-flex align-items-center">
-                        <img src="images/archived.png" class="icon" alt="archived-icon">
-                        <a href="admin-ats-arch.html" class="ms-3">Archived Applicants</a>
-                    </li>
-                </ul>
-            </nav>
+
+            <div class="container col-md-2">
+                <nav id="sidebar" class="shadow">
+                    <ul class="list-unstyled components">
+                        <li class="d-flex align-items-center">
+                            <img src="images/dashboard.png" class="icon" alt="dashboard-icon">
+                            <a href="admin-ats-db.html" class="ms-3">Dashboard</a>
+                        </li>
+                        <li class="d-flex align-items-center">
+                            <img src="images/calendar.png" class="icon" alt="calendar-icon">
+                            <a href="admin-ats-cl.html" class="ms-3">Calendar</a>
+                        </li>
+                        <li class="d-flex align-items-center">
+                            <img src="images/table.png" class="icon" alt="applicant-icon">
+                            <a href="admin-ats-master-list.html" class="ms-3">Master List</a>
+                        </li>
+                        <li class="d-flex align-items-center">
+                            <img src="images/cv.png" class="icon" alt="positions-icon">
+                            <a href="admin-ats-act-post.html" class="ms-3">Active Positions</a>
+                        </li>
+                        <li class="d-flex align-items-center">
+                            <img src="images/archived.png" class="icon" alt="archived-icon">
+                            <a href="admin-ats-arch.html" class="ms-3">Archived Applicants</a>
+                        </li>
+                    </ul>
+                </nav>
+
+            </div>
+            
             <!-- End of Sidebar -->
              
             <!-- Dashboard Overview Section -->
-            <div class="container" id="content">
+            <div class="container col-md-10" id="content">
                 
                 <div class="container mt-5">
 
@@ -196,6 +205,14 @@
                                     <button onclick="nextMonth('start')"> > </button>
                                 </div>
                                 <div class="calendar-grid" id="start-days"></div>
+                            </div>
+                            <div class="calendar-month" id="end-calendar">
+                                <div class="calendar-header">
+                                    <button onclick="prevMonth('end')"> < </button>
+                                    <span id="end-month-year"></span>
+                                    <button onclick="nextMonth('end')"> > </button>
+                                </div>
+                                <div class="calendar-grid" id="end-days"></div>
                             </div>
                         </div>
 
