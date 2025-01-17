@@ -37,21 +37,6 @@
     z-index: 1000;
 }   
 
-/* 
-#sidebar {
-        position: fixed;
-        top: 0;
-        left: 0;
-        height: 100%;
-        width: 250px;
-        background-color: #f8f9fa;
-        overflow: hidden;
-        z-index: 1000;
-        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-    } */
-
-
-
 #sidebar.active {
     margin-left: -250px;
 }
@@ -86,14 +71,14 @@
 }
 
 #sidebar ul li.active {
-    background-color: #ffffff; /* Highlighted background */
-    color: #3377CC; /* Highlighted text color */
-    font-weight: bold; /* Emphasize the active item */
-    border-left: 4px solid #3377CC; /* Add a left border to emphasize */
+    background-color: #ffffff; 
+    color: #3377CC; 
+    font-weight: bold; 
+    border-left: 4px solid #3377CC; 
 }
 
 #sidebar ul li.active a {
-    color: #3377CC; /* Ensure active link color matches */
+    color: #3377CC;
 }
 
 a[data-toggle="collapse"] {
@@ -111,17 +96,6 @@ ul ul a {
 }
 
 /* ---------------------------------------------------
-    CONTENT STYLE
------------------------------------------------------ */
-
-/* #content {
-    width: 100%;
-    padding: 20px;
-    min-height: 100vh;
-    transition: all 0.3s;
-} */
-
-/* ---------------------------------------------------
     MEDIAQUERIES
 ----------------------------------------------------- */
 
@@ -132,27 +106,27 @@ ul ul a {
     }
 
     #sidebar {
-        width: 100%; /* Occupy full width */
-        position: absolute; /* Fixed position to keep it visible at the top */
-        top: 60px; /* Adjust based on the height of your navbar */
+        width: 100%; 
+        position: absolute; 
+        top: 60px; 
         left: 0;
-        z-index: 999; /* Ensure it stays above the content */
+        z-index: 999;
         background-color: #E8F2FF;
-        padding-bottom: 20px; /* Add some space at the bottom */
-        overflow-y: auto; /* Allow scrolling if sidebar content overflows */
-        height: auto; /* Adjust the height automatically */
+        padding-bottom: 20px; 
+        overflow-y: auto; 
+        height: auto; 
     }
 
-    #content {
-        margin-top: 400px; /* Push content below the sidebar */
-    }
+    /* #content {
+        margin-top: 400px; 
+    } */
 
     .dashboard-overview-section {
         margin-top: 20px; 
     }
     
     .row {
-        flex-direction: column; /* Stack sidebar and content vertically */
+        flex-direction: column; 
     }
 
     #sidebar ul li {
@@ -170,6 +144,7 @@ ul ul a {
         text-align: left; 
     }
 }
+
 
 /* Custom Styles */
 .modal-header {

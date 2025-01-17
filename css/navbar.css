@@ -48,5 +48,9 @@ a:focus {
     .navbar .user-img {
         margin-left: auto; /* Adjust alignment for the dropdown */
     }
+
+    .navbar .login {
+        display: none; /* Hide text */
+    }
 }
 /* End of Navbar */

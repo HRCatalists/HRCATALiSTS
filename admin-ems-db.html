@@ -38,45 +38,35 @@
       <link rel="stylesheet" href="css/dept-chart.css">
     </head>
 
-    <header>
-        
-    </header>
-
     <body>
-
-
-
-              <!-- Navbar -->
-              <nav class="navbar navbar-expand-lg sticky-top">
-                <div class="container d-flex justify-content-between">
-                    
-                    <!-- Left Side (Logo and College Name) -->
-                    <a class=" d-flex align-items-center" href="#">
-                        <img src="images/CC_logo.png" alt="Logo" class="cclogo">
-                        <span class="cc-nav-text navbar-text ms-2">Columban College, Inc.</span>
-                    </a>
-                    
-                    <!-- Right Side (User Profile Section) -->
-                    <div class="d-flex align-items-center">
-                        <span class="user-name navbar-text me-3">Rhinell Menes</span>
-                        <div class="dropdown">
-                            <a href="#" class="dropdown-toggle d-flex align-items-center text-decoration-none" id="userMenu" data-bs-toggle="dropdown" aria-expanded="false">
-                                <img src="images/dummy-profile.png" alt="Profile" class="rounded-circle user-img">
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
-                                <li><a class="dropdown-item" href="#">Profile</a></li>
-                                <li><a class="dropdown-item" href="#">Settings</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="#">Logout</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </nav>
-            <!-- End of Navbar -->
-
-
-
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg sticky-top">
+          <div class="container d-flex justify-content-between">
+              
+              <!-- Left Side (Logo and College Name) -->
+              <a class=" d-flex align-items-center" href="#">
+                  <img src="images/CC_logo.png" alt="Logo" class="cclogo">
+                  <span class="cc-nav-text navbar-text ms-2">Columban College, Inc.</span>
+              </a>
+              
+              <!-- Right Side (User Profile Section) -->
+              <div class="d-flex align-items-center">
+                  <span class="user-name navbar-text me-3">Rhinell Menes</span>
+                  <div class="dropdown">
+                      <a href="#" class="dropdown-toggle d-flex align-items-center text-decoration-none" id="userMenu" data-bs-toggle="dropdown" aria-expanded="false">
+                          <img src="images/dummy-profile.png" alt="Profile" class="rounded-circle user-img">
+                      </a>
+                      <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
+                          <li><a class="dropdown-item" href="#">Profile</a></li>
+                          <li><a class="dropdown-item" href="#">Settings</a></li>
+                          <li><hr class="dropdown-divider"></li>
+                          <li><a class="dropdown-item" href="#">Logout</a></li>
+                      </ul>
+                  </div>
+              </div>
+          </div>
+      </nav>
+      <!-- End of Navbar -->
 
 
       <div class="row col-md-12">
@@ -109,13 +99,16 @@
                       <img src="images/faqs.png" class="icon" alt="archived-icon">
                       <a href="admin-ems-policy.html" class="ms-3">Company Policy</a>
                   </li>
+
+                  <li class="d-flex align-items-center">
+                    <img src="images/log.png" class="icon" alt="log-icon">
+                    <a href="#" class="ms-3">Logs</a>
+                  </li>
                 </ul>
           </nav>
           <!-- End of Sidebar -->
-
         </div>
         
-         
         <!-- Dashboard Overview Section -->
         <div class="container col-md-10" id="content">
 
@@ -146,7 +139,7 @@
                 <!-- Employees Card -->
                 <div class="col-md-6">
                     <div class="card emp-card text-center shadow">
-                        <div class="card-body active-text">
+                        <div class="card-body emp-card-text">
                             <div class="d-flex align-items-center justify-content-center mt-4">
                                 <h5 class="card-title m-auto">Employees</h5>
                                 <img src="images/cv-2.png" class="card-icon m-auto" alt="doc-icon">
@@ -282,116 +275,7 @@
       <script src="js/sidebar.js"></script>
 
       <!-- Calendar JS -->
-      <script>
-        document.addEventListener("DOMContentLoaded", function () {
-          const calendarElement = document.getElementById("calendar");
-          const eventListElement = document.getElementById("event-list");
-
-          const events = [
-            { date: "2025-01-12", description: "Board Meeting" },
-            { date: "2025-01-14", description: "Training Workshop" },
-            { date: "2025-01-16", description: "Company Anniversary" },
-          ];
-
-          const today = new Date();
-          let currentMonth = today.getMonth();
-          let currentYear = today.getFullYear();
-
-          function generateCalendar(year, month) {
-            const firstDay = new Date(year, month, 1).getDay();
-            const daysInMonth = new Date(year, month + 1, 0).getDate();
-
-            calendarElement.innerHTML = "";
-
-            // Generate days of the week header
-            const daysOfWeek = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
-            daysOfWeek.forEach((day) => {
-              const dayHeader = document.createElement("div");
-              dayHeader.className = "day";
-              dayHeader.style.fontWeight = "bold";
-              dayHeader.textContent = day;
-              calendarElement.appendChild(dayHeader);
-            });
-
-            // Add empty slots for days before the first of the month
-            for (let i = 0; i < (firstDay === 0 ? 6 : firstDay - 1); i++) {
-              const emptySlot = document.createElement("div");
-              emptySlot.className = "day";
-              calendarElement.appendChild(emptySlot);
-            }
-
-            // Add the days of the month
-            for (let day = 1; day <= daysInMonth; day++) {
-              const date = `${year}-${String(month + 1).padStart(2, "0")}-${String(
-                day
-              ).padStart(2, "0")}`;
-              const dayElement = document.createElement("div");
-              dayElement.className = "day";
-              dayElement.textContent = day;
-
-              // Highlight today's date
-              if (
-                today.getDate() === day &&
-                today.getMonth() === month &&
-                today.getFullYear() === year
-              ) {
-                dayElement.classList.add("current");
-              }
-
-              // Highlight event days
-              const event = events.find((e) => e.date === date);
-              if (event) {
-                dayElement.classList.add("event-day");
-                dayElement.setAttribute("title", event.description);
-              }
-
-              calendarElement.appendChild(dayElement);
-            }
-          }
-
-          function populateEvents() {
-            eventListElement.innerHTML = "";
-            events.forEach((event) => {
-              const listItem = document.createElement("li");
-              listItem.className = "list-group-item";
-              listItem.textContent = `${event.date}: ${event.description}`;
-              eventListElement.appendChild(listItem);
-            });
-          }
-
-          function updateCalendarHeader() {
-            const header = document.getElementById("calendar-header");
-            header.textContent = `${new Date(
-              currentYear,
-              currentMonth
-            ).toLocaleString("default", { month: "long" })} ${currentYear}`;
-          }
-
-          document.getElementById("prev-month").addEventListener("click", function () {
-            currentMonth -= 1;
-            if (currentMonth < 0) {
-              currentMonth = 11;
-              currentYear -= 1;
-            }
-            updateCalendarHeader();
-            generateCalendar(currentYear, currentMonth);
-          });
-
-          document.getElementById("next-month").addEventListener("click", function () {
-            currentMonth += 1;
-            if (currentMonth > 11) {
-              currentMonth = 0;
-              currentYear += 1;
-            }
-            updateCalendarHeader();
-            generateCalendar(currentYear, currentMonth);
-          });
-
-          updateCalendarHeader();
-          generateCalendar(currentYear, currentMonth);
-          populateEvents();
-        });
-      </script>
+      <script src="js/db-calendar.js"></script>
 
       <!-- Bootstrap JavaScript Libraries -->
       <script

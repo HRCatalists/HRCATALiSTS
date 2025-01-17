@@ -1,59 +1,15 @@
-/* online recruitment */
-
-/* Global Reset */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Raleway', sans-serif;
-}
-
-
+/* Online recruitment */
 
 .btn-apply {
   color: #ffffff !important;
   background-color: #3377CC !important;
   box-shadow: #001F54;
   font-family: 'Raleway' !important;
-
 }
 
 .btn-apply:hover{
   background-color: #111D5B !important;
   color: white !important;
-}
-
-
-
-body {
-  width: 100%;
-  background-color: #f3f3f3;
-}
-
-
-/* Navbar */
-.navbar {
-  background-color: #3377CC;
-  height: 70px;
-  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
-  color: #fff;
-}
-
-.cc-nav-text {
-  color: white;
-  letter-spacing: 2px;
-  font-weight: bold;
-  margin-left: 10px; /* Adds space between the logo and the text */
-}
-
-.cclogo {
-  width: 50px;
-}
-
-.navbar-btn {
-  box-shadow: none;
-  outline: none !important;
-  border: none;
 }
 
 /* Banner Section */
@@ -285,13 +241,9 @@ body {
   color: white !important;
 }
 
-.footer h5 {
-  font-weight: bold;
-}
-
 .footer-logo {
   width: 80px;
-  height: auto;
+  height: 80px;
 }
 
 .footer h3,
@@ -300,8 +252,8 @@ body {
   margin: 0;
 }
 
-.footer p {
-  font-size: 0.9rem;
+.footer p, a{
+  font-size: 14px;
 }
 
 .footer .small {
@@ -312,6 +264,10 @@ body {
 .footer .fa-facebook-square {
   color: #ffffff;
   font-size: 1.5em;
+}
+
+.footer .copyright {
+  background-color: #111D5B !important;
 }
 
 /* --- Media Queries for Responsiveness --- */
@@ -407,9 +363,6 @@ body {
     padding: 10px 5px;
   }
 
-  .footer-logo {
-    width: 50px;
-  }
 
   .footer p,
   .footer h3 {
@@ -419,9 +372,12 @@ body {
   .footer .fa-facebook-square {
     font-size: 1.2em;
   }
+
+  .footer .logo-section, .contact-section,
+  .login-section, .legal-section {
+    margin-bottom: 30px;
+  }
 }
-
-
 
 
 
@@ -479,7 +435,6 @@ h2 {
   color: #111D5B;
   
 }
-
 
 .form-section h5 {
   font-size: 20px !important;
@@ -586,4 +541,3 @@ h2 {
   opacity: 0;
   cursor: pointer;
 }
-
