@@ -53,4 +53,10 @@ a:focus {
         display: none; /* Hide text */
     }
 }
+
+@media (max-width: 440px) {
+    .navbar .cc-nav-text {
+        display: none; 
+    }
+}
 /* End of Navbar */

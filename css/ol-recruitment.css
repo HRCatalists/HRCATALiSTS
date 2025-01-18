@@ -183,7 +183,7 @@
   background-color: #D0E5FF;
   padding: 100px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  overflow-x: auto; /* Allows horizontal scroll on small screens */
+  overflow-x: auto; 
 }
 
 .list-ttl {
@@ -206,7 +206,7 @@
   text-align: left;
   min-height: 60px;
   border-bottom: 1px solid #ddd;
-  white-space: nowrap; /* Prevents text wrapping */
+  white-space: nowrap; 
 }
 
 .table thead th {
@@ -241,6 +241,10 @@
   color: white !important;
 }
 
+.footer .container {
+  padding: 50px 0;
+}
+
 .footer-logo {
   width: 80px;
   height: 80px;
@@ -267,7 +271,14 @@
 }
 
 .footer .copyright {
-  background-color: #111D5B !important;
+  border-top: 1px solid lightblue;
+  padding: 20px 10px;
+}
+
+.footer ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 /* --- Media Queries for Responsiveness --- */

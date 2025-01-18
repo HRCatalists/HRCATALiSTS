@@ -32,14 +32,22 @@
         <link rel="stylesheet" href="css/db-ats-calendar.css">
     </head>
 
-    <header>
-        
-    </header>
-
     <body>
         <!-- Navbar -->
-        <nav class="navbar navbar-expand-lg sticky-top">
+        <nav class="navbar navbar-expand-lg fixed-top">
             <div class="container d-flex justify-content-between">
+
+                <!-- Hamburger Menu Button -->
+                <button class="navbar-toggler me-2" type="button" id="hamburgerMenu">
+                    <div class="imageBox">
+                        <div class="imageInn">
+                            <img src="images/hamburger-1.png" class="card-icon m-auto" alt="Default Image">
+                        </div>
+                        <div class="hoverImg">
+                            <img src="images/hamburger-2.png" class="card-icon m-auto" alt="Profile Image">
+                        </div>
+                    </div>
+                </button>
                 
                 <!-- Left Side (Logo and College Name) -->
                 <a class=" d-flex align-items-center" href="#">
@@ -65,198 +73,232 @@
             </div>
         </nav>
         <!-- End of Navbar -->
-         
-        <div class=" row col-md-12">
+
+        <!-- Dashboard Content -->
+        <div class="d-flex">
             <!-- Sidebar -->
-            <div class="container col-md-2">
-                <nav id="sidebar" class="shadow">
-                    <ul class="list-unstyled components">
-                        <li class="d-flex align-items-center">
-                            <img src="images/dashboard.png" class="icon" alt="dashboard-icon">
-                            <a href="admin-ats-db.html" class="ms-3">Dashboard</a>
-                        </li>
-                        <li class="d-flex align-items-center">
-                            <img src="images/calendar.png" class="icon" alt="calendar-icon">
-                            <a href="admin-ats-cl.html" class="ms-3">Calendar</a>
-                        </li>
-                        <li class="d-flex align-items-center">
-                            <img src="images/table.png" class="icon" alt="applicant-icon">
-                            <a href="admin-ats-master-list.html" class="ms-3">Master List</a>
-                        </li>
-                        <li class="d-flex align-items-center">
-                            <img src="images/cv.png" class="icon" alt="positions-icon">
-                            <a href="admin-ats-act-post.html" class="ms-3">Active Positions</a>
-                        </li>
-                        <li class="d-flex align-items-center">
-                            <img src="images/archived.png" class="icon" alt="archived-icon">
-                            <a href="admin-ats-arch.html" class="ms-3">Archived Applicants</a>
-                        </li>
-                        <li class="d-flex align-items-center">
-                            <img src="images/log.png" class="icon" alt="log-icon">
-                            <a href="#" class="ms-3">Logs</a>
-                        </li>
-                    </ul>
-                </nav>
+            <div class="shadow" id="sidebar" >
+                <ul class="list-unstyled components">
+                    <li class="d-flex align-items-center">
+                        <img src="images/dashboard.png" class="icon" alt="dashboard-icon">
+                        <a href="admin-ats-db.html" class="ms-3">Dashboard</a>
+                    </li>
+                    <li class="d-flex align-items-center">
+                        <img src="images/calendar.png" class="icon" alt="calendar-icon">
+                        <a href="admin-ats-cl.html" class="ms-3">Calendar</a>
+                    </li>
+                    <li class="d-flex align-items-center">
+                        <img src="images/table.png" class="icon" alt="applicant-icon">
+                        <a href="admin-ats-master-list.html" class="ms-3">Master List</a>
+                    </li>
+                    <li class="d-flex align-items-center">
+                        <img src="images/cv.png" class="icon" alt="positions-icon">
+                        <a href="admin-ats-act-post.html" class="ms-3">Active Positions</a>
+                    </li>
+                    <li class="d-flex align-items-center">
+                        <img src="images/archived.png" class="icon" alt="archived-icon">
+                        <a href="admin-ats-arch.html" class="ms-3">Archived Applicants</a>
+                    </li>
+                    <li class="d-flex align-items-center">
+                        <img src="images/log.png" class="icon" alt="log-icon">
+                        <a href="admin-ats-logs.html" class="ms-3">Logs</a>
+                    </li>
+                    <li class="d-flex m-0 px-0 ">
+                        <a href="admin-ems-db.html" class="fw-bold ms-3 ems-button">SWITCH TO EMS</a>
+                    </li>
+                </ul>
             </div>
             <!-- End of Sidebar -->
-             
-            <!-- Dashboard Overview Section -->
-            <div class="container col-md-10" id="content">
-                
+        
+            <!-- Dashboard Content -->
+            <div id="content" class="flex-grow-1">
                 <div class="container mt-5">
-
-                    <!-- Only show this text on smaller screens -->
                     <div class="welcome-text-only">Welcome, {user.name}!</div>
 
                     <div class="d-flex justify-content-between align-items-center mt-4">
-
                         <div>
                             <h2 class="db-h2">DASHBOARD</h2>
-                            <h4 class="db-h4 mt-5">Overview</h4>
+                            <h4 class="db-h4 mt-4">Overview</h4>
                         </div>
 
-                        <!-- Banner for large screens -->
+                        <!-- Banner -->
                         <div class="d-flex banner banner-gradient text-white align-items-center justify-content-center px-4 py-2">
                             <h4 class="banner-text mx-5">Welcome, {user.name}!</h4>
                             <img src="images/db-icon.png" class="banner-icon " alt="banner-icon">
                         </div>
-
-                        
                     </div>
-                </div>
-                
-                <div class="row mt-4 dashboard-row d-flex justify-content-between align-items-start mt-5">
+
+                    <div class="row mt-4 dashboard-row d-flex justify-content-between align-items-start mt-5">
                     
-                    <!-- Cards Section -->
-                    <div class="col-md-7">
-                        <div class="row row-cols-1 g-4">
-                            <div class="col">
-                                <div class="card custom-card new-app-bg text-white">
-                                    <div class="card-body d-flex justify-content-between align-items-center">
-                                        <div class="d-flex align-items-center ms-4">
-                                            <div class="me-3">
-                                                <img src="images/applicant.png" class="card-icon m-auto" alt="table-icon">
+                        <!-- Cards and Chart Section -->
+                        <div class="col-md-7">
+                            <div class="row row-cols-1 g-4">
+                                <div class="col">
+                                    <div class="card custom-card new-app-bg text-white">
+                                        <div class="card-body d-flex justify-content-between align-items-center">
+                                            <div class="d-flex align-items-center ms-4">
+                                                <div class="me-3">
+                                                    <img src="images/applicant.png" class="card-icon m-auto" alt="table-icon">
+                                                </div>
+                                                <h5 class="card-title">New Applications</h5>
                                             </div>
-                                            <h5 class="card-title">New Applications</h5>
+                                            <div class="text-end me-4">
+                                                <h2 class="card-number">4</h2>
+                                            </div>
                                         </div>
-                                        <div class="text-end me-4">
-                                            <h2 class="card-number">4</h2>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="card master-text custom-card">
+                                        <div class="card-body d-flex justify-content-between align-items-center">
+                                            <div class="d-flex align-items-center ms-4">
+                                                <div class="me-3">
+                                                    <div class="imageBox">
+                                                        <div class="imageInn">
+                                                            <img src="images/table-2.png" class="card-icon m-auto" alt="Default Image">
+                                                        </div>
+                                                        <div class="hoverImg">
+                                                            <img src="images/table-3.png" class="card-icon m-auto" alt="Profile Image">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <h5 class="card-title">Master List</h5>
+                                            </div>
+                                            <div class="text-end me-4">
+                                                <a href="admin-ats-master-list.html" class="view-link d-block">View all</a>
+                                                <h2 class="card-number">17</h2>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="card active-text custom-card">
+                                        <div class="card-body d-flex justify-content-between align-items-center">
+                                            <div class="d-flex align-items-center ms-4">
+                                                <div class="me-3">
+                                                    <div class="imageBox">
+                                                        <div class="imageInn">
+                                                            <img src="images/cv-2.png" class="card-icon m-auto" alt="Default Image">
+                                                        </div>
+                                                        <div class="hoverImg">
+                                                            <img src="images/cv-3.png" class="card-icon m-auto" alt="Profile Image">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <h5 class="card-title">Active Positions</h5>
+                                            </div>
+                                            <div class="text-end me-4">
+                                                <a href="admin-ats-act-post.html" class="view-link d-block">View all</a>
+                                                <h2 class="card-number">6</h2>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="card arch-text custom-card">
+                                        <div class="card-body d-flex justify-content-between align-items-center">
+                                            <div class="d-flex align-items-center ms-4">
+                                                <div class="me-3">
+                                                    <div class="imageBox">
+                                                        <div class="imageInn">
+                                                            <img src="images/archived-2.png" class="card-icon m-auto" alt="Default Image">
+                                                        </div>
+                                                        <div class="hoverImg">
+                                                            <img src="images/archived-3.png" class="card-icon m-auto" alt="Profile Image">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <h5 class="card-title">Archived Applicants</h5>
+                                            </div>
+                                            <div class="text-end me-4">
+                                                <a href="admin-ats-arch.html" class="view-link d-block">View all</a>
+                                                <h2 class="card-number">9</h2>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col">
-                                <div class="card master-text custom-card">
-                                    <div class="card-body d-flex justify-content-between align-items-center">
-                                        <div class="d-flex align-items-center ms-4">
-                                            <div class="me-3">
-                                                <div class="imageBox">
-                                                    <div class="imageInn">
-                                                        <img src="images/table-2.png" class="card-icon m-auto" alt="Default Image">
-                                                    </div>
-                                                    <div class="hoverImg">
-                                                        <img src="images/table-3.png" class="card-icon m-auto" alt="Profile Image">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <h5 class="card-title">Master List</h5>
-                                        </div>
-                                        <div class="text-end me-4">
-                                            <a href="admin-ats-master-list.html" class="view-link d-block">View all</a>
-                                            <h2 class="card-number">17</h2>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="card active-text custom-card">
-                                    <div class="card-body d-flex justify-content-between align-items-center">
-                                        <div class="d-flex align-items-center ms-4">
-                                            <div class="me-3">
-                                                <div class="imageBox">
-                                                    <div class="imageInn">
-                                                        <img src="images/cv-2.png" class="card-icon m-auto" alt="Default Image">
-                                                    </div>
-                                                    <div class="hoverImg">
-                                                        <img src="images/cv-3.png" class="card-icon m-auto" alt="Profile Image">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <h5 class="card-title">Active Positions</h5>
-                                        </div>
-                                        <div class="text-end me-4">
-                                            <a href="admin-ats-act-post.html" class="view-link d-block">View all</a>
-                                            <h2 class="card-number">6</h2>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="card arch-text custom-card">
-                                    <div class="card-body d-flex justify-content-between align-items-center">
-                                        <div class="d-flex align-items-center ms-4">
-                                            <div class="me-3">
-                                                <div class="imageBox">
-                                                    <div class="imageInn">
-                                                        <img src="images/archived-2.png" class="card-icon m-auto" alt="Default Image">
-                                                    </div>
-                                                    <div class="hoverImg">
-                                                        <img src="images/archived-3.png" class="card-icon m-auto" alt="Profile Image">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <h5 class="card-title">Archived Applicants</h5>
-                                        </div>
-                                        <div class="text-end me-4">
-                                            <a href="admin-ats-arch.html" class="view-link d-block">View all</a>
-                                            <h2 class="card-number">9</h2>
-                                        </div>
-                                    </div>
-                                </div>
+    
+                            <!-- Chart Section -->
+                            <div class="chart-container mt-5">
+                                <canvas id="applicantsChart"></canvas>
                             </div>
                         </div>
+                        <!-- End Cards and Chart Section -->
+    
+                        <!-- Calendar Section -->
+                        <div class="col-md-5 card-size">
+                    
+                            <div class="card shadow">
+                                <div class="card-body">
+    
+                                    <div class="calendar-container">
+                                        <div class="calendar-header d-flex justify-content-between align-items-center">
+                                            <button id="prev-month">&lt;</button>
+                                            <span id="calendar-header" class="text-center"></span>
+                                            <button id="next-month">&gt;</button>
+                                        </div>
+                                        <div id="calendar" class="mb-4"></div>
+                                    </div>
+    
+                                </div>
+                            </div>
+            
+                            <div class="card shadow mt-4">
+                                <div class="card-body">
+    
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <h5 id="event-title" class="fw-bold">Events</h5>
+                                        <a href="emp-ems-events.html" class="view-link">See more...</a>
+                                    </div>
+                                    <ul id="event-list" class="list-group mt-3">
+                                    <!-- Dynamic Event Items -->
+                                    </ul>
+    
+                                </div>
+                            </div>
 
-                        <!-- Chart Section -->
-                        <div class="chart-container mt-5">
-                            <canvas id="applicantsChart"></canvas>
+                            <div class="card shadow mt-4">
+                                <div class="card-body">
+    
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <h5 class="fw-bold">Recent Activities</h5>
+                                        <a href="admin-ats-logs.html" class="view-link">See more...</a>
+                                    </div>
+
+                                    <table class="table table-bordered m-0">
+                                        <thead class="small">
+                                            <tr>
+                                                <th>USER</th>
+                                                <th>ACTIVITIES</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody class="small">
+                                            <tr>
+                                                <td>Dr. Mora</td>
+                                                <td>Updated Applicant Profile</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>Dr. Mora</td>
+                                                <td>Deleted Applicant Profile</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>Secretary</td>
+                                                <td>Posted a Position</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
+                        <!-- End Calendar Section -->
                     </div>
-
-                    <!-- Calendar Section -->
-                    <div class="col-md-5 card-size">
-                
-                        <div class="card shadow">
-                            <div class="card-body">
-
-                                <div class="calendar-container">
-                                    <div class="calendar-header d-flex justify-content-between align-items-center">
-                                        <button id="prev-month">&lt;</button>
-                                        <span id="calendar-header" class="text-center"></span>
-                                        <button id="next-month">&gt;</button>
-                                    </div>
-                                    <div id="calendar" class="mb-4"></div>
-                                </div>
-
-                            </div>
-                        </div>
-        
-                        <div class="card shadow mt-4">
-                            <div class="card-body">
-
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <h5 id="event-title" class="fw-bold">Events</h5>
-                                    <a href="emp-ems-events.html" class="view-link">See more...</a>
-                                </div>
-                                <ul id="event-list" class="list-group mt-3">
-                                <!-- Dynamic Event Items -->
-                                </ul>
-
-                            </div>
-                        </div>
-                    </div>
-                    <!-- End Calendar Section -->
                 </div>
             </div>
+
         </div>
 
         <!-- Bootstrap JavaScript Libraries -->
@@ -282,5 +324,6 @@
 
         <!-- Calendar JS -->
         <script src="js/db-calendar.js"></script>
+
     </body>
 </html>

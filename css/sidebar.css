@@ -12,7 +12,6 @@
     height: 48px;
 }
 
-
 /* ---------------------------------------------------
   ATS SIDEBAR STYLE
 ----------------------------------------------------- */
@@ -26,19 +25,23 @@
     height: 35px;
 }
 
+/* Sidebar Hidden by Default */
 #sidebar {
-    height: 100%; 
-    background: #E8F2FF !important;
-    color: #111D5B;
-    display: flex;
-    flex-direction: column;
-    transition: all 0.3s ease-in-out;
     position: fixed;
+    left: 0;
+    top: 60px;
+    width: 250px;
+    min-height: 100vh; /* Full height */
+    height: 100%;
+    background: #E8F2FF;
+    transition: transform 0.3s ease-in-out;
+    transform: translateX(0); 
     z-index: 1000;
-}   
+}
 
-#sidebar.active {
-    margin-left: -250px;
+/* Sidebar Hidden State */
+#sidebar.hidden {
+    transform: translateX(-100%); 
 }
 
 #sidebar ul.components {
@@ -95,56 +98,46 @@ ul ul a {
     display: block;
 }
 
+/* Hamburger Menu Button */
+.navbar-toggler {
+    border: none;
+    background: none;
+    /* font-size: 1.5rem; */
+    /* color: #111D5B; */
+    display: none;
+}
+
+.navbar-toggler:focus {
+    outline: none;
+    box-shadow: none; /* Removes any shadow if present */
+}
+
+#content {
+    margin-top: 50px; 
+    margin-left: 250px; 
+    padding: 20px; 
+    width: calc(100% - 250px); 
+}
+
 /* ---------------------------------------------------
     MEDIAQUERIES
 ----------------------------------------------------- */
 
 @media (max-width: 768px) {
 
-    .wrapper {
-        height: 100%;
+    .navbar-toggler {
+        display: inline-block;
     }
 
     #sidebar {
-        width: 100%; 
-        position: absolute; 
-        top: 60px; 
-        left: 0;
-        z-index: 999;
-        background-color: #E8F2FF;
-        padding-bottom: 20px; 
-        overflow-y: auto; 
-        height: auto; 
+        transform: translateX(-100%); 
+        width: 230px; 
     }
 
-    /* #content {
-        margin-top: 400px; 
-    } */
-
-    .dashboard-overview-section {
-        margin-top: 20px; 
-    }
-    
-    .row {
-        flex-direction: column; 
-    }
-
-    #sidebar ul li {
-        flex-direction: row; 
-        justify-content: center; 
-        text-align: left; 
-    }
-
-    #sidebar ul li img {
-        margin-bottom: 0; 
-        margin-right: 8px; 
-    }
-
-    #sidebar ul li a {
-        text-align: left; 
+    #content {
+        margin-left: 0; 
     }
 }
-
 
 /* Custom Styles */
 .modal-header {

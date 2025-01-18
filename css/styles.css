@@ -1,13 +1,13 @@
 @font-face {
-    font-family: 'Raleway';
-    src: url('/font/Raleway-Regular.ttf');
+    font-family: 'Caudex';
+    src: url('/font/Caudex-Regular.ttf');
 }
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Caudex', sans-serif;
 }
 
 html, body {
