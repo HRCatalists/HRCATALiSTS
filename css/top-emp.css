@@ -1,0 +1,31 @@
+/* General Styles */
+h4 {
+    font-weight: bold;
+    color: #2c3e50;
+  }
+  
+  .table {
+    border: none;
+  }
+  
+  .table thead th {
+    font-weight: bold;
+    color: #34495e;
+    border-bottom: 2px solid #ddd;
+  }
+  
+  .table tbody td {
+    vertical-align: middle;
+    border-top: none;
+  }
+  
+  .btn-primary {
+    background-color: #3377CC;
+    border: none;
+    border-radius: 10px;
+  }
+  
+  .btn-primary:hover {
+    background-color: #0056b3;
+  }
+  
