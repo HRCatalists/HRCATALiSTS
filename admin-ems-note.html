@@ -36,14 +36,24 @@
 
     </head>
 
-    <header>
-       
-    </header>
 
     <body>
-         <!-- Navbar -->
-         <nav class="navbar navbar-expand-lg sticky-top">
+
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg fixed-top">
             <div class="container d-flex justify-content-between">
+
+                <!-- Hamburger Menu Button -->
+                <button class="navbar-toggler me-2" type="button" id="hamburgerMenu">
+                    <div class="imageBox">
+                        <div class="imageInn">
+                            <img src="images/hamburger-1.png" class="card-icon m-auto" alt="Default Image">
+                        </div>
+                        <div class="hoverImg">
+                            <img src="images/hamburger-2.png" class="card-icon m-auto" alt="Profile Image">
+                        </div>
+                    </div>
+                </button>
                 
                 <!-- Left Side (Logo and College Name) -->
                 <a class=" d-flex align-items-center" href="#">
@@ -69,125 +79,128 @@
             </div>
         </nav>
         <!-- End of Navbar -->
+
+
+        <div class="d-flex">
+
+            <!-- Sidebar -->
+            <div id="sidebar" class="shadow">
+                <ul class="list-unstyled components">
+                    <li class="d-flex align-items-center">
+                        <img src="images/dashboard.png" class="icon" alt="dashboard-icon">
+                        <a href="admin-ems-db.html" class="ms-3">Dashboard</a>
+                    </li>
+
+                    <li class="d-flex align-items-center">
+                        <img src="images/calendar.png" class="icon" alt="calendar-icon">
+                        <a href="admin-ems-cl.html" class="ms-3">Calendar</a>
+                    </li>
+
+                    <li class="d-flex align-items-center">
+                        <img src="images/employee.png" class="icon" alt="applicant-icon">
+                        <a href="admin-ems-emp.html" class="ms-3">Employees</a>
+                    </li>
+
+                    <li class="d-flex align-items-center">
+                        <img src="images/note.png" class="icon" alt="positions-icon">
+                        <a href="admin-ems-note.html" class="ms-3">Notes</a>
+                    </li>
+
+                    <li class="d-flex align-items-center">
+                        <img src="images/faqs.png" class="icon" alt="archived-icon">
+                        <a href="admin-ems-policy.html" class="ms-3">Company Policy</a>
+                    </li>
+
+                    <li class="d-flex m-0 px-0 ">
+                        <a href="admin-ats-db.html" class="fw-bold ms-3 ems-button">SWITCH TO ATS</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- End of Sidebar -->
         
-        <div class="row col-md-12">
+            <!-- Policy Content -->
+            <div id="content" class="flex-grow-1">
+                <div class="container mt-5">
 
-            <div class="container col-md-2">
-                        <!-- Sidebar -->
-                    <nav id="sidebar" class="shadow">
-                        <ul class="list-unstyled components">
-                            <li class="d-flex align-items-center">
-                            <img src="images/dashboard.png" class="icon" alt="dashboard-icon">
-                            <a href="admin-ems-db.html" class="ms-3">Dashboard</a>
-                            </li>
-            
-                            <li class="d-flex align-items-center">
-                                <img src="images/calendar.png" class="icon" alt="calendar-icon">
-                                <a href="admin-ems-cl.html" class="ms-3">Calendar</a>
-                            </li>
-            
-                            <li class="d-flex align-items-center">
-                            <img src="images/employee.png" class="icon" alt="applicant-icon">
-                            <a href="admin-ems-emp.html" class="ms-3">Employees</a>
-                            </li>
-            
-                            <li class="d-flex align-items-center">
-                                <img src="images/note.png" class="icon" alt="positions-icon">
-                                <a href="admin-ems-note.html" class="ms-3">Notes</a>
-                            </li>
-            
-                            <li class="d-flex align-items-center">
-                                <img src="images/faqs.png" class="icon" alt="archived-icon">
-                                <a href="admin-ems-policy.html" class="ms-3">Company Policy</a>
-                            </li>
-                        </ul>
-                    </nav>
-                    <!-- End of Sidebar -->
-
-            </div>
-            
-             
-            <!-- Dashboard Overview Section -->
-            
-            <div class="container py-5 col-md-10" id="content">
-                <div class="row">  
-                    <div class="col-lg-6">
-                        <h2 class="fw-bold hd-color mb-4">NOTES</h2>
-                        <div class="d-flex align-items-center mb-3">
-                            <input type="text" class="form-control mb-5" placeholder="Search">
-                        </div>
-                        <div class="notes-list">
-                        <div class="note-item mb-3 p-3 bg-white shadow-sm rounded">
-                            <div class="d-flex justify-content-between">
-                                <span class="fw-bold">November 10</span>
-                                <button class="btn btn-primary btn-sm view-note" data-bs-toggle="modal" data-bs-target="#noteModal">VIEW</button>
+                    <div class="row">  
+                        <div class="col-lg-6">
+                            <h2 class="fw-bold hd-color mb-4">NOTES</h2>
+                            <div class="d-flex align-items-center mb-3">
+                                <input type="text" class="form-control mb-5" placeholder="Search">
                             </div>
-                            <h5 class="mt-2">Title</h5>
-                            <p class="small text-muted">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                            </p>
-                        </div>
-                        <div class="note-item mb-3 p-3 bg-white shadow-sm rounded">
-                            <div class="d-flex justify-content-between">
-                                <span class="fw-bold">November 3</span>
-                                <button class="btn btn-primary btn-sm view-note" data-bs-toggle="modal" data-bs-target="#noteModal">VIEW</button>
+                            <div class="notes-list">
+                            <div class="note-item mb-3 p-3 bg-white shadow-sm rounded">
+                                <div class="d-flex justify-content-between">
+                                    <span class="fw-bold">November 10</span>
+                                    <button class="btn btn-primary btn-sm view-note" data-bs-toggle="modal" data-bs-target="#noteModal">VIEW</button>
+                                </div>
+                                <h5 class="mt-2">Title</h5>
+                                <p class="small text-muted">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                                </p>
                             </div>
-                            <h5 class="mt-2">Title</h5>
-                            <p class="small text-muted">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                            </p>
-                        </div>
-                        <div class="note-item mb-3 p-3 bg-white shadow-sm rounded">
-                            <div class="d-flex justify-content-between">
-                                <span class="fw-bold">October 31</span>
-                                <button class="btn btn-primary btn-sm view-note" data-bs-toggle="modal" data-bs-target="#noteModal">VIEW</button>
+                            <div class="note-item mb-3 p-3 bg-white shadow-sm rounded">
+                                <div class="d-flex justify-content-between">
+                                    <span class="fw-bold">November 3</span>
+                                    <button class="btn btn-primary btn-sm view-note" data-bs-toggle="modal" data-bs-target="#noteModal">VIEW</button>
+                                </div>
+                                <h5 class="mt-2">Title</h5>
+                                <p class="small text-muted">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                                </p>
                             </div>
-                            <h5 class="mt-2">Title</h5>
-                            <p class="small text-muted">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                            </p>
+                            <div class="note-item mb-3 p-3 bg-white shadow-sm rounded">
+                                <div class="d-flex justify-content-between">
+                                    <span class="fw-bold">October 31</span>
+                                    <button class="btn btn-primary btn-sm view-note" data-bs-toggle="modal" data-bs-target="#noteModal">VIEW</button>
+                                </div>
+                                <h5 class="mt-2">Title</h5>
+                                <p class="small text-muted">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                                </p>
+                            </div>
+                            </div>
                         </div>
+                        <div class="col-lg-6">
+                            <div class="p-4 bg-white shadow-sm rounded">
+                                <h5 class="fw-bold mb-3">New Note</h5>
+                                <form>
+                                    <div class="mb-3">
+                                        <label for="date" class="form-label">Date:</label>
+                                        <input type="date" class="form-control" id="date">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="title" class="form-label">Title:</label>
+                                        <input type="text" class="form-control" id="title">
+                                    </div>
+                                    <div class="mb-3">
+                                    <textarea class="form-control" rows="6" placeholder="Write your note here..."></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-success w-25">ADD NOTE</button>
+                                </form>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-lg-6">
-                        <div class="p-4 bg-white shadow-sm rounded">
-                            <h5 class="fw-bold mb-3">New Note</h5>
-                            <form>
-                                <div class="mb-3">
-                                    <label for="date" class="form-label">Date:</label>
-                                    <input type="date" class="form-control" id="date">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="title" class="form-label">Title:</label>
-                                    <input type="text" class="form-control" id="title">
-                                </div>
-                                <div class="mb-3">
-                                <textarea class="form-control" rows="6" placeholder="Write your note here..."></textarea>
-                                </div>
-                                <button type="submit" class="btn btn-success w-25">ADD NOTE</button>
-                            </form>
-                        </div>
-                    </div>
+
                 </div>
-            </div>
-            <!-- End Dashboard Overview Section -->
 
-            <!-- Modal -->
-            <div class="modal fade" id="noteModal" tabindex="-1" aria-labelledby="noteModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header modal-bgd">
-                            <h5 class="modal-title modal-hd" id="noteModalLabel">Note Details</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <p><strong>Date:</strong> <span id="modal-date"></span></p>
-                            <p><strong>Title:</strong> <span id="modal-title"></span></p>
-                            <p><strong>Note:</strong> <span id="modal-content"></span></p>
-                        </div>
-                        <div class="modal-footer justify-content-between">
-                            <button class="btn btn-danger">Delete</button>
-                            <button class="btn btn-success">Edit</button>
+                <!-- Modal -->
+                <div class="modal fade" id="noteModal" tabindex="-1" aria-labelledby="noteModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header modal-bgd">
+                                <h5 class="modal-title modal-hd" id="noteModalLabel">Note Details</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p><strong>Date:</strong> <span id="modal-date"></span></p>
+                                <p><strong>Title:</strong> <span id="modal-title"></span></p>
+                                <p><strong>Note:</strong> <span id="modal-content"></span></p>
+                            </div>
+                            <div class="modal-footer justify-content-between">
+                                <button class="btn btn-danger">Delete</button>
+                                <button class="btn btn-success">Edit</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -206,5 +219,8 @@
             integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
             crossorigin="anonymous"
         ></script>
+
+        <!-- Sidebar JS -->
+        <script src="js/sidebar.js"></script>
     </body>
 </html>

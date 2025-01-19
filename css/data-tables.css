@@ -226,6 +226,10 @@ transform: scale(0.98);
     color: #333;
 }
 
+.notes-btn {
+    border-top: 1px solid lightblue;
+}
+
 .experience-section h6 {
     font-size: 16px;
     font-weight: bold;
@@ -293,7 +297,6 @@ transform: scale(0.98);
 .btn-success {
     flex: 1;
     background-color: #28a745;
-    border: none;
 }
 
 .btn-danger {
