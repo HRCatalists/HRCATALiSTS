@@ -10,6 +10,7 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css">
+
         <!-- {{-- JQuery  --}} -->
         <script
             src="https://code.jquery.com/jquery-3.7.1.js"
@@ -32,19 +33,26 @@
         <link rel="stylesheet" href="css/db-ems-calendar.css">
     </head>
 
-    <header>
-        
-    </header>
-
     <body>
         <!-- Navbar -->
-        <nav class="navbar navbar-expand-lg sticky-top">
+        <nav class="navbar navbar-expand-lg fixed-top">
             <div class="container d-flex justify-content-between">
+
+                <!-- Hamburger Menu Button -->
+                <button class="navbar-toggler me-2" type="button" id="hamburgerMenu">
+                    <div class="imageBox">
+                        <div class="imageInn">
+                            <img src="images/hamburger-1.png" class="card-icon m-auto" alt="Default Image">
+                        </div>
+                        <div class="hoverImg">
+                            <img src="images/hamburger-2.png" class="card-icon m-auto" alt="Profile Image">
+                        </div>
+                    </div>
+                </button>
                 
                 <!-- Left Side (Logo and College Name) -->
                 <a class=" d-flex align-items-center" href="#">
                     <img src="images/CC_logo.png" alt="Logo" class="cclogo">
-                    <span class="cc-nav-text navbar-text ms-2">Columban College, Inc.</span>
                     <span class="cc-nav-text navbar-text ms-2">Columban College, Inc.</span>
                 </a>
                 
@@ -67,40 +75,37 @@
         </nav>
         <!-- End of Navbar -->
 
-
-
-        
-        <div class="row col-md-12">
-            <div class="container col-md-2">
-                <!-- Sidebar -->
-                <nav id="sidebar" class="shadow">
-                    <ul class="list-unstyled components">
-                        <li class="d-flex align-items-center">
-                            <img src="images/dashboard.png" class="icon" alt="dashboard-icon">
-                            <a href="emp-ems-db.html" class="ms-3">Dashboard</a>
-                        </li>
-                        <li class="d-flex align-items-center">
-                            <img src="images/user.png" class="icon" alt="calendar-icon">
-                            <a href="emp-ems-profile.html" class="ms-3">Profile</a>
-                        </li>
-                        <li class="d-flex align-items-center">
-                            <img src="images/calendar.png" class="icon" alt="applicant-icon">
-                            <a href="emp-ems-events.html" class="ms-3">Events</a>
-                        </li>
-                        <li class="d-flex align-items-center">
-                            <img src="images/faqs.png" class="icon" alt="review-icon">
-                            <a href="ems-emp-notes.html" class="ms-3">Others</a>
-                        </li>
-                    </ul>
-                </nav>
-            <!-- End of Sidebar -->
-
+        <!-- Events Content -->
+        <div class="d-flex">
+            <!-- Sidebar -->
+            <div id="sidebar" class="shadow">
+                <ul class="list-unstyled components">
+                    <li class="d-flex align-items-center">
+                        <img src="images/dashboard.png" class="icon" alt="dashboard-icon">
+                        <a href="emp-ems-db.html" class="ms-3">Dashboard</a>
+                    </li>
+                    <li class="d-flex align-items-center">
+                        <img src="images/user.png" class="icon" alt="calendar-icon">
+                        <a href="emp-ems-profile.html" class="ms-3">Profile</a>
+                    </li>
+                    <li class="d-flex align-items-center">
+                        <img src="images/calendar.png" class="icon" alt="applicant-icon">
+                        <a href="emp-ems-events.html" class="ms-3">Events</a>
+                    </li>
+                    <li class="d-flex align-items-center">
+                        <img src="images/faqs.png" class="icon" alt="review-icon">
+                        <a href="ems-emp-others.html" class="ms-3">Others</a>
+                    </li>
+                    <li class="d-flex align-items-center">
+                        <img src="images/log.png" class="icon" alt="log-icon">
+                        <a href="admin-ats-logs.html" class="ms-3">Logs</a>
+                    </li>
+                </ul>
             </div>
-            
-             
-            <!-- Dashboard Overview Section -->
-            <div class="container container-event col-md-10" id="content">
-
+            <!-- End of Sidebar -->
+        
+            <!-- Events Content -->
+            <div id="content" class="flex-grow-1">
                 <div class="container mt-5">
                     <!-- Events Section -->
                     <div class="col-md-6 now-event">
@@ -114,14 +119,17 @@
                         <div class="col-md-7">
                             <h4 class="fw-bold mb-3">Now</h4>
                             <div class="p-4 mb-4" style="background: #eaeaea; border-radius: 8px;">
-                                November 12
+                                <h5>November 12</h5>
+                                <p>Board Meeting at Convery Hall - 3:00 p.m.</p>
                             </div>
                             <h4 class="fw-bold mb-3">Upcoming</h4>
                             <div class="p-4 mb-3" style="background: #eaeaea; border-radius: 8px;">
-                                November 14
+                                <h5>November 14</h5>
+                                <p>Training Workshop in Clark, Pampanga - 1:00 p.m.</p>
                             </div>
                             <div class="p-4 mb-3" style="background: #eaeaea; border-radius: 8px;">
-                                November 16
+                                <h5>November 14</h5>
+                                <p>Company Anniversary at Travellers Hotel - 5:00 p.m.</p>
                             </div>
                         </div>
 
@@ -142,22 +150,11 @@
                         </div>
                     </div>
                 </div>
-            </div>         
+            </div>
+
         </div>
 
         <!-- Bootstrap JavaScript Libraries -->
-         <!-- double: pag tinatanggal ko isa sa kanila di na gunagana
-          yung dropdown eh parehas lang namna sila -->
-        <script
-            src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-            integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
-            crossorigin="anonymous"
-        ></script>
-        <script
-            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
-            integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
-            crossorigin="anonymous"
-        ></script>
         <script
             src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
             integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
@@ -173,116 +170,7 @@
         <script src="js/sidebar.js"></script>
 
         <!-- Calendar JS -->
-        <script>
-            document.addEventListener("DOMContentLoaded", function () {
-            const calendarElement = document.getElementById("calendar");
-            const eventListElement = document.getElementById("event-list");
-
-            const events = [
-                { date: "2025-01-12", description: "Board Meeting" },
-                { date: "2025-01-14", description: "Training Workshop" },
-                { date: "2025-01-16", description: "Company Anniversary" },
-            ];
-
-            const today = new Date();
-            let currentMonth = today.getMonth();
-            let currentYear = today.getFullYear();
-
-            function generateCalendar(year, month) {
-                const firstDay = new Date(year, month, 1).getDay();
-                const daysInMonth = new Date(year, month + 1, 0).getDate();
-
-                calendarElement.innerHTML = "";
-
-                // Generate days of the week header
-                const daysOfWeek = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
-                daysOfWeek.forEach((day) => {
-                const dayHeader = document.createElement("div");
-                dayHeader.className = "day";
-                dayHeader.style.fontWeight = "bold";
-                dayHeader.textContent = day;
-                calendarElement.appendChild(dayHeader);
-                });
-
-                // Add empty slots for days before the first of the month
-                for (let i = 0; i < (firstDay === 0 ? 6 : firstDay - 1); i++) {
-                const emptySlot = document.createElement("div");
-                emptySlot.className = "day";
-                calendarElement.appendChild(emptySlot);
-                }
-
-                // Add the days of the month
-                for (let day = 1; day <= daysInMonth; day++) {
-                const date = `${year}-${String(month + 1).padStart(2, "0")}-${String(
-                    day
-                ).padStart(2, "0")}`;
-                const dayElement = document.createElement("div");
-                dayElement.className = "day";
-                dayElement.textContent = day;
-
-                // Highlight today's date
-                if (
-                    today.getDate() === day &&
-                    today.getMonth() === month &&
-                    today.getFullYear() === year
-                ) {
-                    dayElement.classList.add("current");
-                }
-
-                // Highlight event days
-                const event = events.find((e) => e.date === date);
-                if (event) {
-                    dayElement.classList.add("event-day");
-                    dayElement.setAttribute("title", event.description);
-                }
-
-                calendarElement.appendChild(dayElement);
-                }
-            }
-
-            function populateEvents() {
-                eventListElement.innerHTML = "";
-                events.forEach((event) => {
-                const listItem = document.createElement("li");
-                listItem.className = "list-group-item";
-                listItem.textContent = `${event.date}: ${event.description}`;
-                eventListElement.appendChild(listItem);
-                });
-            }
-
-            function updateCalendarHeader() {
-                const header = document.getElementById("calendar-header");
-                header.textContent = `${new Date(
-                currentYear,
-                currentMonth
-                ).toLocaleString("default", { month: "long" })} ${currentYear}`;
-            }
-
-            document.getElementById("prev-month").addEventListener("click", function () {
-                currentMonth -= 1;
-                if (currentMonth < 0) {
-                currentMonth = 11;
-                currentYear -= 1;
-                }
-                updateCalendarHeader();
-                generateCalendar(currentYear, currentMonth);
-            });
-
-            document.getElementById("next-month").addEventListener("click", function () {
-                currentMonth += 1;
-                if (currentMonth > 11) {
-                currentMonth = 0;
-                currentYear += 1;
-                }
-                updateCalendarHeader();
-                generateCalendar(currentYear, currentMonth);
-            });
-
-            updateCalendarHeader();
-            generateCalendar(currentYear, currentMonth);
-            populateEvents();
-            });
-        </script>
+        <script src="js/db-calendar.js"></script>
 
     </body>
 </html>

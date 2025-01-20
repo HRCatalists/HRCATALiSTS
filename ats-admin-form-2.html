@@ -14,14 +14,17 @@
         crossorigin="anonymous"
         />
 
-        <!-- Styles CCS -->
+        <!-- Styles CSS -->
         <link rel="stylesheet" href="css/styles.css">
-
-        <!-- Sidebar CSS -->
-        <link rel="stylesheet" href="css/sidebar.css">
 
         <!-- Navbar CSS -->
         <link rel="stylesheet" href="css/navbar.css">
+
+        <!-- Dashboard CSS -->
+        <link rel="stylesheet" href="css/dashboard.css">
+
+        <!-- Sidebar CSS -->
+        <link rel="stylesheet" href="css/sidebar.css">
 
         <!-- Online recruitment CSS -->
         <link rel="stylesheet" href="css/ol-recruitment.css">
@@ -36,10 +39,21 @@
     </header>
 
     <body>
-
       <!-- Navbar -->
-      <nav class="navbar navbar-expand-lg sticky-top">
+      <nav class="navbar navbar-expand-lg fixed-top">
         <div class="container d-flex justify-content-between">
+
+            <!-- Hamburger Menu Button -->
+            <button class="navbar-toggler me-2" type="button" id="hamburgerMenu">
+                <div class="imageBox">
+                    <div class="imageInn">
+                        <img src="images/hamburger-1.png" class="card-icon m-auto" alt="Default Image">
+                    </div>
+                    <div class="hoverImg">
+                        <img src="images/hamburger-2.png" class="card-icon m-auto" alt="Profile Image">
+                    </div>
+                </div>
+            </button>
             
             <!-- Left Side (Logo and College Name) -->
             <a class=" d-flex align-items-center" href="#">
@@ -63,145 +77,149 @@
                 </div>
             </div>
         </div>
-    </nav>
-    <!-- End of Navbar -->
+      </nav>
+      <!-- End of Navbar -->
 
-
-
-        <div class="row col-md-12">
-
-          <div class="container col-md-2">
-              <!-- Sidebar -->
-              <nav id="sidebar" class="shadow">
-                <ul class="list-unstyled components">
-                    <li class="d-flex align-items-center">
-                        <img src="images/dashboard.png" class="icon" alt="dashboard-icon">
-                        <a href="admin-ats-db.html" class="ms-3">Dashboard</a>
-                    </li>
-                    <li class="d-flex align-items-center">
-                        <img src="images/calendar.png" class="icon" alt="calendar-icon">
-                        <a href="admin-ats-cl.html" class="ms-3">Calendar</a>
-                    </li>
-                    <li class="d-flex align-items-center">
-                        <img src="images/table.png" class="icon" alt="applicant-icon">
-                        <a href="admin-ats-master-list.html" class="ms-3">Master List</a>
-                    </li>
-                    <li class="d-flex align-items-center">
-                        <img src="images/cv.png" class="icon" alt="positions-icon">
-                        <a href="admin-ats-act-post.html" class="ms-3">Active Positions</a>
-                    </li>
-                    <li class="d-flex align-items-center">
-                        <img src="images/archived.png" class="icon" alt="archived-icon">
-                        <a href="admin-ats-arch.html" class="ms-3">Archived Applicants</a>
-                    </li>
-                </ul>
-            </nav>
-            <!-- End of Sidebar -->
-
-          </div>
-            
-             
-            <div class="container col-md-10">
-
-                <div class="container mt-5 mb-4" id="target-content">
-                    <a href="admin-ats-master-list.html" class="back-icon">
-                      <i class="fas fa-arrow-left"></i>
-                    </a>
-                </div>
-
-                <h2 class="text-primary mb-4">Application Form</h2>
-          
-                <!-- page 2: fam bg -->
-                <div id="form-page-2" class="form-page ">
-                  <h5 class="mb-3">Family Background</h5>
-                  <div class="row mb-3">
-                    <div class="col-md-6">
-                      <label for="spouseName" class="form-label">Name of Spouse</label>
-                      <input type="text" id="spouseName" class="form-control" placeholder="Enter Spouse Name">
-                    </div>
-                    <div class="col-md-6">
-                      <label for="occupation" class="form-label">Occupation</label>
-                      <input type="text" id="occupation" class="form-control" placeholder="Enter Occupation">
-                    </div>
-                  </div>
-            
-            
-                  <div class="mb-3">
-                    <label for="childrenCount" class="form-label">No. of Children</label>
-                    <input type="number" id="childrenCount" class="form-control" style="max-width: 100px;" value="0" min="0" onchange="generateChildFields()">
-                  </div>
-            
-                  <div id="childFieldsContainer" class="mb-3"></div>
-            
-            
-            
-                  <div class="row mb-3 mt-5">
-                    <div class="col-md-6">
-                      <label for="fatherName" class="form-label">Name of Father</label>
-                      <input type="text" id="fatherName" class="form-control" placeholder="Enter Father's Name">
-                    </div>
-                    <div class="col-md-6">
-                      <label for="fatherOccupation" class="form-label">Occupation</label>
-                      <input type="text" id="fatherOccupation" class="form-control" placeholder="Enter Father's Occupation">
-                    </div>
-                  </div>
-            
-                  <div class="row mb-3">
-                    <div class="col-md-6">
-                      <label for="motherName" class="form-label">Name of Mother</label>
-                      <input type="text" id="motherName" class="form-control" placeholder="Enter Mother's Name">
-                    </div>
-                    <div class="col-md-6">
-                      <label for="motherOccupation" class="form-label">Occupation</label>
-                      <input type="text" id="motherOccupation" class="form-control" placeholder="Enter Mother's Occupation">
-                    </div>
-                  </div>
-            
-            
-                  <div class="row mb-3">
-                    <div class="col-md-6">
-                      <label for="emergencyContact" class="form-label">Their Address</label>
-                      <input type="text" id="emergencyContact" class="form-control" placeholder="Enter Name" required>
-                    </div>
-                    <div class="col-md-6">
-                      <label for="emergencyContactNumber" class="form-label">Contact No.</label>
-                      <input type="text" id="emergencyContactNumber" class="form-control" placeholder="Enter Contact No." required>
-                    </div>
-                  </div>
-            
-                  <div class="mb-3">
-                    <label for="parentsAddress" class="form-label">Name of Person to be contacted in case of emergency</label>
-                    <input type="text" id="parentsAddress" class="form-control" placeholder="Enter Name">
-                  </div>
-            
-                  <div class="mb-3">
-                    <label for="parentsAddress" class="form-label">Contact of Person to be contacted in case of emergency</label>
-                    <input type="text" id="parentsAddress" class="form-control" placeholder="Enter Contact">
-                  </div>
-            
-                  <div class="pagination-container my-5 d-flex justify-content-between align-items-center mt-3">
-                    <button class="btn btn-secondary back-button">Back</button>
-                    <nav>
-                      <ul class="pagination mt-3">
-                        <li class="page-item"><a class="page-link rounded d-flex align-items-center justify-content-center mx-1" 
-                          href="ats-admin-form-1.html">1</a></li>
-                        <li class="page-item"><a class="page-link rounded d-flex align-items-center justify-content-center mx-1" 
-                          href="ats-admin-form-2.html">2</a></li>
-                        <li class="page-item"><a class="page-link rounded d-flex align-items-center justify-content-center mx-1" 
-                          href="ats-admin-form-3.html">3</a></li>
-                        <li class="page-item"><a class="page-link rounded d-flex align-items-center justify-content-center mx-1" 
-                          href="ats-admin-form-4.html">4</a></li>
-                      </ul>
-                    </nav>
-                    
-                    <button class="btn btn-primary next-button">Next</button>
-                  </div>
-          
-                </div>
-          
-            </div>
-
+      <div class="d-flex">
+        <!-- Sidebar -->
+        <div class="shadow" id="sidebar" >
+            <ul class="list-unstyled components">
+                <li class="d-flex align-items-center">
+                    <img src="images/dashboard.png" class="icon" alt="dashboard-icon">
+                    <a href="admin-ats-db.html" class="ms-3">Dashboard</a>
+                </li>
+                <li class="d-flex align-items-center">
+                    <img src="images/calendar.png" class="icon" alt="calendar-icon">
+                    <a href="admin-ats-cl.html" class="ms-3">Calendar</a>
+                </li>
+                <li class="d-flex align-items-center">
+                    <img src="images/table.png" class="icon" alt="applicant-icon">
+                    <a href="admin-ats-master-list.html" class="ms-3">Master List</a>
+                </li>
+                <li class="d-flex align-items-center">
+                    <img src="images/cv.png" class="icon" alt="positions-icon">
+                    <a href="admin-ats-act-post.html" class="ms-3">Active Positions</a>
+                </li>
+                <li class="d-flex align-items-center">
+                    <img src="images/archived.png" class="icon" alt="archived-icon">
+                    <a href="admin-ats-arch.html" class="ms-3">Archived Applicants</a>
+                </li>
+                <li class="d-flex align-items-center">
+                    <img src="images/log.png" class="icon" alt="log-icon">
+                    <a href="admin-ats-logs.html" class="ms-3">Logs</a>
+                </li>
+                <li class="d-flex m-0 px-0 ">
+                    <a href="admin-ems-db.html" class="fw-bold ms-3 ems-button">SWITCH TO EMS</a>
+                </li>
+            </ul>
         </div>
+        <!-- End of Sidebar -->
+    
+        <!-- Page 2 Form Content -->
+        <div id="content" class="flex-grow-1">
+            <div class="container mt-5">
+                
+              <div class="container mt-5 mb-4" id="target-content">
+                <a href="admin-ats-master-list.html" class="back-icon">
+                  <i class="fas fa-arrow-left"></i>
+                </a>
+              </div>
+
+              <h2 class="text-primary mb-4">Application Form</h2>
+      
+              <!-- page 2: fam bg -->
+              <div id="form-page-2" class="form-page ">
+                <h5 class="mb-3">Family Background</h5>
+                <div class="row mb-3">
+                  <div class="col-md-6">
+                    <label for="spouseName" class="form-label">Name of Spouse</label>
+                    <input type="text" id="spouseName" class="form-control" placeholder="Enter Spouse Name">
+                  </div>
+                  <div class="col-md-6">
+                    <label for="occupation" class="form-label">Occupation</label>
+                    <input type="text" id="occupation" class="form-control" placeholder="Enter Occupation">
+                  </div>
+                </div>
+          
+          
+                <div class="mb-3">
+                  <label for="childrenCount" class="form-label">No. of Children</label>
+                  <input type="number" id="childrenCount" class="form-control" style="max-width: 100px;" value="0" min="0" onchange="generateChildFields()">
+                </div>
+          
+                <div id="childFieldsContainer" class="mb-3"></div>
+          
+          
+          
+                <div class="row mb-3 mt-5">
+                  <div class="col-md-6">
+                    <label for="fatherName" class="form-label">Name of Father</label>
+                    <input type="text" id="fatherName" class="form-control" placeholder="Enter Father's Name">
+                  </div>
+                  <div class="col-md-6">
+                    <label for="fatherOccupation" class="form-label">Occupation</label>
+                    <input type="text" id="fatherOccupation" class="form-control" placeholder="Enter Father's Occupation">
+                  </div>
+                </div>
+          
+                <div class="row mb-3">
+                  <div class="col-md-6">
+                    <label for="motherName" class="form-label">Name of Mother</label>
+                    <input type="text" id="motherName" class="form-control" placeholder="Enter Mother's Name">
+                  </div>
+                  <div class="col-md-6">
+                    <label for="motherOccupation" class="form-label">Occupation</label>
+                    <input type="text" id="motherOccupation" class="form-control" placeholder="Enter Mother's Occupation">
+                  </div>
+                </div>
+          
+          
+                <div class="row mb-3">
+                  <div class="col-md-6">
+                    <label for="emergencyContact" class="form-label">Their Address</label>
+                    <input type="text" id="emergencyContact" class="form-control" placeholder="Enter Name" required>
+                  </div>
+                  <div class="col-md-6">
+                    <label for="emergencyContactNumber" class="form-label">Contact No.</label>
+                    <input type="text" id="emergencyContactNumber" class="form-control" placeholder="Enter Contact No." required>
+                  </div>
+                </div>
+          
+                <div class="mb-3">
+                  <label for="parentsAddress" class="form-label">Name of Person to be contacted in case of emergency</label>
+                  <input type="text" id="parentsAddress" class="form-control" placeholder="Enter Name">
+                </div>
+          
+                <div class="mb-3">
+                  <label for="parentsAddress" class="form-label">Contact of Person to be contacted in case of emergency</label>
+                  <input type="text" id="parentsAddress" class="form-control" placeholder="Enter Contact">
+                </div>
+          
+                <div class="pagination-container my-5 d-flex justify-content-between align-items-center mt-3">
+                  <button class="btn btn-secondary back-button">Back</button>
+                  <nav>
+                    <ul class="pagination mt-3">
+                      <li class="page-item"><a class="page-link rounded d-flex align-items-center justify-content-center mx-1" 
+                        href="ats-admin-form-1.html">1</a></li>
+                      <li class="page-item"><a class="page-link rounded d-flex align-items-center justify-content-center mx-1" 
+                        href="ats-admin-form-2.html">2</a></li>
+                      <li class="page-item"><a class="page-link rounded d-flex align-items-center justify-content-center mx-1" 
+                        href="ats-admin-form-3.html">3</a></li>
+                      <li class="page-item"><a class="page-link rounded d-flex align-items-center justify-content-center mx-1" 
+                        href="ats-admin-form-4.html">4</a></li>
+                    </ul>
+                  </nav>
+                  
+                  <button class="btn btn-primary next-button">Next</button>
+                </div>
+        
+              </div>
+                
+            </div>
+        </div>
+
+      </div>
+
 
         <!-- Bootstrap JavaScript Libraries -->
         <script

@@ -3,9 +3,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const eventListElement = document.getElementById("event-list");
 
     const events = [
-        { date: "2025-01-12", description: "Board Meeting" },
-        { date: "2025-01-14", description: "Training Workshop" },
-        { date: "2025-01-16", description: "Company Anniversary" },
+        { date: "2025-01-12", description: "Board Meeting - 3:00 p.m." },
+        { date: "2025-01-14", description: "Training Workshop - 1:00 p.m." },
+        { date: "2025-01-16", description: "Company Anniversary - 5:00 p.m." },
     ];
 
     const today = new Date();
