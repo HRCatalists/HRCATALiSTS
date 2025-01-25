@@ -1,0 +1,259 @@
+/* ATS DASHBOARD CSS */
+.banner{
+    width: 900px;
+    height: 120px;
+    border-radius: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.banner-gradient {
+    background-image: linear-gradient(to right, #CDE3FF, #90C1FF, #427FCC, #0047A1, #84BBFF);
+}
+
+.banner-text {
+    font-weight: bold;
+    font-size: 40px;
+}
+
+.banner-icon {
+    width: 250px;
+    height: 200px;
+}
+
+.db-h2 {
+    font-weight: bold;
+    color: #111D5B;
+}
+
+.db-h4 {
+    font-size: 30px;
+    color: #111D5B;
+}
+
+.db-h5 {
+    font-weight: bold;
+    color: #111D5B; 
+}
+
+.db-text {
+    font-weight: bold;
+    color: #111D5B; 
+    font-size: 20px;
+}
+
+
+/* CARDS */
+.custom-card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    letter-spacing: 1.3px;
+}
+
+.custom-card:hover {
+    transform: scale(1.01);
+}
+
+.custom-card .card-body {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card-title {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.card-icon {
+    width: 50px;
+    height: 50px;
+}
+
+.view-link {
+    font-size: 12px;
+    text-decoration: underline;
+}
+
+.card-number {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+.new-app-bg {
+    background-color: #111D5B;
+}
+
+.master-text {
+    color: #3377CC !important;
+    transition: transform 0.3s ease;
+}
+
+.master-text:hover {
+    color: white !important;
+    background-color: #3377CC;
+}
+
+.active-text {
+    color: #3EB52B !important;
+    transition: transform 0.3s ease;
+}
+
+.active-text:hover {
+    color: white !important;
+    background-color: #3EB52B;
+}
+
+.arch-text {
+    color: #800000 !important;
+}
+
+.arch-text:hover {
+    color: white !important;
+    background-color: #800000;
+}
+
+.text-muted {
+    color: #6c757d !important;
+}
+
+.text-end .view-link {
+    display: block;
+}
+
+.imageBox {
+    position: relative;
+    width: 50px; 
+    height: 50px; 
+}
+  
+/* Dashboard card hover effect */
+.imageBox .imageInn img {
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+object-fit: cover;
+opacity: 1;
+z-index: 1;
+}
+  
+.imageBox .hoverImg img {
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+object-fit: cover;
+
+opacity: 0;
+z-index: 0;
+}
+  
+.card:hover .imageBox .imageInn img {
+opacity: 0;
+z-index: 0;
+}
+  
+.card:hover .imageBox .hoverImg img {
+opacity: 1;
+z-index: 1;
+}
+
+/* Hover effect */
+button.navbar-toggler:hover .imageBox .imageInn img {
+    opacity: 0;
+    z-index: 0;
+}
+
+button.navbar-toggler:hover .imageBox .hoverImg img {
+    opacity: 1;
+    z-index: 1;
+}
+
+.ems-button {
+    display: inline-block;
+    font-size: 16px;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: 0.5s ease;
+}
+
+/* Hover effect for the SWITCH TO EMS button */
+.ems-button:hover {
+    transform: translateX(40px);
+    text-decoration: underline !important;
+}
+
+/* END ATS DASHBOARD CSS */
+
+
+/* EMS DASHBOARD CSS  */
+
+/* ADMIN CSS */
+
+.emp-card {
+    height: 300px;
+}
+
+.emp-counter {
+    font-size: 96px;
+}
+
+/* END ADMIN CSS */
+
+/* EMPLOYEE CSS */
+
+.info-card-height {
+    height: 150px;
+}
+
+.info-header {
+    font-weight: 700;
+    font-size: 20px;
+}
+
+.card-custom {
+    width: 600px; 
+    height: auto; 
+    border: 1px solid #ddd; 
+    border-radius: 10px;  
+    padding: 16px; 
+    background-color: #fff; 
+}
+
+.card-custom.card-tall {
+    height: 150px; 
+}
+
+.emp-card-text {
+    color: #3EB52B !important;
+}
+
+/* END EMPLOYEE CSS */
+
+.cont-size {
+    width: 650px;
+    height: 800px;
+}
+
+@media (max-width: 900px) {
+    .banner {
+        display: none !important;
+    }
+
+    .welcome-text-only {
+        display: block !important;
+        font-weight: bold;
+        font-size: 40px;
+        color: #111D5B; 
+    }
+}
+
+/* Default display settings (desktop) */
+.welcome-text-only {
+    display: none; /* Hide on larger screens */
+}
