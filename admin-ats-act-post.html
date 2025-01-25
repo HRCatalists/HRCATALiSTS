@@ -152,6 +152,7 @@
                     <table id="activePositionsTable" class="table table-bordered display">
                         <thead>
                             <tr>
+                                <th class="text-center"><input type="checkbox" id="selectAll"></th>
                                 <th>JOB TITLE</th>
                                 <th>DEPARTMENT</th>
                                 <th>DATE ISSUED</th>
@@ -161,41 +162,45 @@
                         </thead>
                         <tbody>
                             <tr>
+                                <td class="text-center"><input type="checkbox" class="rowCheckbox"></td>
                                 <td>Medical Staff</td>
                                 <td> Clinic </td>
                                 <td>November 11, 2024</td>
                                 <td>Decemeber 11, 2024</td>
-                                <td>
+                                <td class="text-center">
                                     <button class="btn btn-ap-edit" data-bs-toggle="modal" data-bs-target="#editPositionModal">EDIT</button>
                                     <button class="btn btn-danger" onclick="showPopup('rejectPopup')">DELETE</button>
                                 </td>
                             </tr>
                             <tr>
+                                <td class="text-center"><input type="checkbox" class="rowCheckbox"></td>
                                 <td>CCS Professor</td>
                                 <td>College of Computer Studies</td>
                                 <td>November 11, 2024</td>
                                 <td>Decemeber 11, 2024</td>
-                                <td>
+                                <td class="text-center">
                                     <button class="btn btn-ap-edit" data-bs-toggle="modal" data-bs-target="#editPositionModal">EDIT</button>
                                     <button class="btn btn-danger" onclick="showPopup('rejectPopup')">DELETE</button>
                                 </td>
                             </tr>
                             <tr>
+                                <td class="text-center"><input type="checkbox" class="rowCheckbox"></td>
                                 <td>Maintenance</td>
                                 <td>Maintenance Department</td>
                                 <td>November 11, 2024</td>
                                 <td>Decemeber 11, 2024</td>
-                                <td>
+                                <td class="text-center">
                                     <button class="btn btn-ap-edit" data-bs-toggle="modal" data-bs-target="#editPositionModal">EDIT</button>
                                     <button class="btn btn-danger" onclick="showPopup('rejectPopup')">DELETE</button>
                                 </td>
                             </tr>
                             <tr>
+                                <td class="text-center"><input type="checkbox" class="rowCheckbox"></td>
                                 <td>Sanitary Engineers</td>
                                 <td>Maintenance Department</td>
                                 <td>November 11, 2024</td>
                                 <td>Decemeber 11, 2024</td>
-                                <td>
+                                <td class="text-center">
                                     <button class="btn btn-ap-edit" data-bs-toggle="modal" data-bs-target="#editPositionModal">EDIT</button>
                                     <button class="btn btn-danger" onclick="showPopup('rejectPopup')">DELETE</button>
                                 </td>
@@ -231,7 +236,7 @@
                                     <input type="text" class="form-control" id="department" placeholder="Enter Department" required>
                                 </div>
                             </div>
-                            <div class="row mb-3">
+                            <!-- <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
                                     <input type="email" class="form-control" id="email" placeholder="Enter Email" required>
@@ -244,7 +249,7 @@
                                     <label for="telephoneNumber" class="form-label">Telephone Number</label>
                                     <input type="text" class="form-control" id="telephoneNumber">
                                 </div>
-                            </div>
+                            </div> -->
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label for="requirements" class="form-label">Job Description <span class="text-danger">*</span></label>
@@ -300,7 +305,7 @@
                                     <input type="text" class="form-control" id="department" placeholder="Enter Department" required>
                                 </div>
                             </div>
-                            <div class="row mb-3">
+                            <!-- <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
                                     <input type="email" class="form-control" id="email" placeholder="Enter Email" required>
@@ -313,7 +318,7 @@
                                     <label for="telephoneNumber" class="form-label">Telephone Number</label>
                                     <input type="text" class="form-control" id="telephoneNumber">
                                 </div>
-                            </div>
+                            </div> -->
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label for="requirements" class="form-label">Job Description <span class="text-danger">*</span></label>
@@ -400,7 +405,39 @@
                 // Add active class to the clicked nav link
                 document.querySelector(`[onclick="showTab('${tabId}')"]`).classList.add('active');
             }
-        </script>
 
+            $(document).ready(function () {
+                const table = $('#activePositionsTable').DataTable({
+                    paging: true,
+                    searching: true,
+                    ordering: true,
+                    pageLength: 10,
+                    language: {
+                        paginate: {
+                            previous: 'Previous',
+                            next: 'Next',
+                        },
+                        search: '',
+                        searchPlaceholder: 'Search',
+                    },
+                    columnDefs: [
+                        { targets: 0, orderable: false, className: 'text-center' }, // Disable sorting for the checkbox column
+                    ],
+                    order: [[1, 'asc']], // Set default sorting to "JOB TITLE" column
+                });
+
+                // Handle "Select All" checkbox click
+                $('#selectAll').on('click', function () {
+                    const isChecked = $(this).is(':checked');
+                    $('.rowCheckbox').prop('checked', isChecked);
+                });
+
+                // Handle individual row checkbox click
+                $('#activePositionsTable').on('change', '.rowCheckbox', function () {
+                    const allChecked = $('.rowCheckbox:checked').length === $('.rowCheckbox').length;
+                    $('#selectAll').prop('checked', allChecked);
+                });
+            });
+        </script>
     </body>
 </html>

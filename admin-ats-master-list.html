@@ -14,17 +14,18 @@
         crossorigin="anonymous"
         />
 
-        <!-- Data Table -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
-        <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css">
-
         <!-- {{-- JQuery  --}} -->
         <script 
             src="https://code.jquery.com/jquery-3.7.1.js" 
             integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" 
             crossorigin="anonymous">
         </script>
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+        <!-- Data Table -->
+        <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css">
 
         <!-- Buttons for datatables -->
         <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.dataTables.min.css">
@@ -152,6 +153,7 @@
                     <table id="applicantTable" class="table table-bordered display">
                         <thead>
                             <tr>
+                                <th class="text-center"><input type="checkbox" id="selectAll"></th>
                                 <th>NAME</th>
                                 <th>STATUS</th>
                                 <th>STAGES</th>
@@ -162,31 +164,76 @@
                         </thead>
                         <tbody>
                             <tr>
+                                <td class="text-center"><input type="checkbox" class="rowCheckbox"></td>
                                 <td>Rhinell Menes</td>
                                 <td>APPLICANT</td>
-                                <td>2 - Interview</td>
+                                <td>1 - Screening</td>
                                 <td>November 11, 2024</td>
                                 <td>Medical Staff</td>
-                                <td><button class="btn btn-primary btn-sm" data-bs-toggle="offcanvas" data-bs-target="#candidateProfile">VIEW</button></td>
+                                <td>
+                                    <div class="d-flex justify-content-around">
+                                        <button class="btn btn-primary btn-sm" data-bs-toggle="offcanvas" data-bs-target="#candidateProfile">VIEW</button>
+                                        <div class="justify-content-between">
+                                            <button class="btn archive-btn btn-sm" onclick="showPopup('archivePopup')">ARCHIVE</button>
+                                            <button class="btn btn-danger btn-sm" onclick="showPopup('deletePopup')">DELETE</button>
+                                        </div>
+                                    </div>
+                                </td>
                             </tr>
                             <tr>
+                                <td class="text-center"><input type="checkbox" class="rowCheckbox"></td>
                                 <td>Rhinell Menes</td>
                                 <td>APPLICANT</td>
                                 <td>2 - Interview</td>
                                 <td>November 11, 2024</td>
                                 <td>Medical Staff</td>
-                                <td><button class="btn btn-primary btn-sm" data-bs-toggle="offcanvas" data-bs-target="#candidateProfile">VIEW</button></td>
+                                <td>
+                                    <div class="d-flex justify-content-around">
+                                        <button class="btn btn-primary btn-sm" data-bs-toggle="offcanvas" data-bs-target="#candidateProfile">VIEW</button>
+                                        <div class="justify-content-between">
+                                            <button class="btn archive-btn btn-sm" onclick="showPopup('archivePopup')">ARCHIVE</button>
+                                            <button class="btn btn-danger btn-sm" onclick="showPopup('deletePopup')">DELETE</button>
+                                        </div>
+                                    </div>
+                                </td>
                             </tr>
                             <tr>
-                                <td>Rhinell Menes</td>
+                                <td class="text-center"><input type="checkbox" class="rowCheckbox"></td>
+                                <td>Fate Gamboa</td>
                                 <td>APPLICANT</td>
                                 <td>2 - Interview</td>
                                 <td>November 11, 2024</td>
                                 <td>Medical Staff</td>
-                                <td><button class="btn btn-primary btn-sm" data-bs-toggle="offcanvas" data-bs-target="#candidateProfile">VIEW</button></td>
+                                <td>
+                                    <div class="d-flex justify-content-around">
+                                        <button class="btn btn-primary btn-sm" data-bs-toggle="offcanvas" data-bs-target="#candidateProfile">VIEW</button>
+                                        <div class="justify-content-between">
+                                            <button class="btn archive-btn btn-sm" onclick="showPopup('archivePopup')">ARCHIVE</button>
+                                            <button class="btn btn-danger btn-sm" onclick="showPopup('deletePopup')">DELETE</button>
+                                        </div>
+                                    </div>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
+
+                    <!-- Archived Popup -->
+                    <div id="archivePopup" class="custom-popup">
+                        <div class="popup-content">
+                            <p>Are you sure you want to archive this applicant?</p>
+                            <button class="btn archive-btn" onclick="arhiveAction()">Yes, archive the applicant</button>
+                            <button class="btn btn-outline-secondary" onclick="closePopup('archivePopup')">Cancel</button>
+                        </div>
+                    </div>
+
+                    <!-- Delete Popup -->
+                    <div id="deletePopup" class="custom-popup">
+                        <div class="popup-content">
+                            <p>Are you sure you want to delete this applicant?</p>
+                            <button class="btn btn-danger" onclick="deleteAction()">Yes, delete the applicant</button>
+                            <button class="btn btn-outline-secondary" onclick="closePopup('deletePopup')">Cancel</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -202,7 +249,7 @@
             <div class="offcanvas-body-wrapper px-4">
                 <div class="content-section">
                     <div class="d-flex align-items-center justify-content-between my-4">
-                        <h5 class="mt-2">Rhinell Menes</h5>
+                        <h5 class="mt-2">RHINELL MENES</h5>
 
                         <span class="stage border px-3 py-1">
                             STAGE: INTERVIEW
@@ -225,29 +272,39 @@
                     <!-- Tab Content -->
                     <!-- Overview Tab -->
                     <div id="overview" class="tab-content">
-                        <!-- Contact Information -->
-                        <div class="contact-info mt-3 mb-5 d-flex align-items-center">
-                            <span class="me-4">
-                                <i class="bi bi-envelope"></i> menesj@gmail.com
-                            </span>
-                            <span>
-                                <i class="bi bi-telephone"></i> 09313 4567 89
-                            </span>
-                        </div>
                         
-
-                        <!-- Experience Section -->
-                        <div class="experience-section">
+                        <!-- Applicant Section -->
+                        <div class="applicant-section">
                             
-                            <div class="experience-list">
-                                <h6 >Experience</h6>
+                            <div class="applicant-data">
+                                <h5>Applicant Data</h5>
 
-                                <p><strong>Lorem ipsum dolor sit amet.</strong> 
-                                    consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...</p>
-                                <p><strong>Lorem ipsum dolor sit amet.</strong> 
-                                    consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...</p>
-                                <p><strong>Lorem ipsum dolor sit amet.</strong> 
-                                    consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...</p>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <p> <strong>Position:</strong> Medical Staff</p>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <p> <strong>Full Name:</strong> Rhinell menes</p>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <i class="fa-solid fa-envelope me-2"></i> menesj@gmail.com
+                                    </div>
+                                    <div class="col-md-6">
+                                        <i class="fa-solid fa-phone me-2"></i> 09313 4567 89
+                                    </div>
+                                </div>
+
+                                <div class="row mt-3">
+                                    <div class="col-md-12">
+                                        <i class="fa-solid fa-location-dot me-2"></i> 37-B 7th St., West Tapinac, Olongapo City
+                                    </div>
+                                </div>
                             </div>
                             
                             <!-- Attachment -->
@@ -257,9 +314,6 @@
                                 <span class="ms-auto">200 KB</span>
                             </div>
 
-                            <div class="d-grid">
-                                <button class="btn btn-success" onclick="showPopup('approvePopup')">APPROVE</button>
-                            </div>
                         </div>
                     </div>
                     <!-- End Overview Tab -->
@@ -320,8 +374,7 @@
 
                     <!-- Sticky Button Container -->
                     <div class="button-container mt-5">
-                        <button class="btn archive-btn" onclick="showPopup('archivePopup')">ARCHIVE</button>
-                        <button class="btn btn-danger" onclick="showPopup('rejectPopup')">REJECT</button>
+                        <button class="btn btn-success" onclick="showPopup('approvePopup')">APPROVE</button>
                     </div>
                 </div>
 
@@ -331,24 +384,6 @@
                         <p>Are you sure you want to approve this applicant and proceed to the next stage?</p>
                         <button class="btn btn-success" onclick="approveAction()">Yes</button>
                         <button class="btn btn-outline-secondary" onclick="closePopup('approvePopup')">Cancel</button>
-                    </div>
-                </div>
-
-                <!-- Archived Popup -->
-                <div id="archivePopup" class="custom-popup">
-                    <div class="popup-content">
-                        <p>Are you sure you want to archive this applicant?</p>
-                        <button class="btn archive-btn" onclick="arhiveAction()">Yes, archive the applicant</button>
-                        <button class="btn btn-outline-secondary" onclick="closePopup('archivePopup')">Cancel</button>
-                    </div>
-                </div>
-
-                <!-- Reject Popup -->
-                <div id="rejectPopup" class="custom-popup">
-                    <div class="popup-content">
-                        <p>Are you sure you want to reject this applicant?</p>
-                        <button class="btn btn-danger" onclick="rejectAction()">Yes, reject the applicant</button>
-                        <button class="btn btn-outline-secondary" onclick="closePopup('rejectPopup')">Cancel</button>
                     </div>
                 </div>
                 
@@ -425,9 +460,9 @@
                 closePopup('archivePopup');
             }
 
-            function rejectAction() {
-                alert("Candidate rejected!");
-                closePopup('rejectPopup');
+            function deleteAction() {
+                alert("Applicant deleted!");
+                closePopup('deletePopup');
             }
             
             // Function to handle saving changes
@@ -437,8 +472,9 @@
                 closeEditStages();
             }
 
-            $(document).ready(function() {
-                $('#applicantTable').DataTable({
+
+            $(document).ready(function () {
+                const table = $('#applicantTable').DataTable({
                     paging: true,
                     searching: true,
                     ordering: true,
@@ -446,20 +482,37 @@
                     language: {
                         paginate: {
                             previous: 'Previous',
-                            next: 'Next'
+                            next: 'Next',
                         },
-                        search: "", // Remove the default "Search" label
-                        searchPlaceholder: "Search" // Add placeholder text
+                        search: '',
+                        searchPlaceholder: 'Search',
                     },
-                    initComplete: function() {
+                    columnDefs: [
+                        { targets: 0, orderable: false, className: 'text-center' }, // Disable sorting for the "Select All" checkbox column
+                    ],
+                    order: [[1, 'asc']], // Set initial order to a different column (e.g., the "NAME" column)
+                    initComplete: function () {
                         // Wrap the search input and prepend the icon
                         $('.dataTables_filter input')
-                            .wrap('<div class="search-box position-relative"></div>') // Add position relative for icon positioning
-                            .attr('placeholder', 'Search'); // Ensure placeholder is set
+                            .wrap('<div class="search-box position-relative"></div>')
+                            .attr('placeholder', 'Search');
                         $('.search-box').prepend('<i class="bi bi-search position-absolute" style="left: 10px; top: 50%; transform: translateY(-50%); color: #888;"></i>');
-                    }
+                    },
+                });
+
+                // Handle "select all" checkbox
+                $('#selectAll').on('click', function () {
+                    const isChecked = $(this).is(':checked');
+                    $('.rowCheckbox').prop('checked', isChecked);
+                });
+
+                // Handle individual row checkbox click
+                $('#applicantTable').on('change', '.rowCheckbox', function () {
+                    const allChecked = $('.rowCheckbox:checked').length === $('.rowCheckbox').length;
+                    $('#selectAll').prop('checked', allChecked);
                 });
             });
+
         </script>
     </body>
 </html>

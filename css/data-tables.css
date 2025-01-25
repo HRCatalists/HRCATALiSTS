@@ -150,8 +150,7 @@ transform: scale(0.98);
 
 .archive-btn {
     background-color: #800000;
-    color: white;
-    width: 250px;
+    color: white;   
     transition: background-color 0.3s ease;
 }
 
@@ -160,10 +159,18 @@ transform: scale(0.98);
     color: white;
 }
 
-/* Customize the offcanvas panel */
-.offcanvas {
-    font-family: 'Raleway', sans-serif;
+.reject-btn {
+    background-color: #dc3545;
+    color: white;   
+    transition: background-color 0.3s ease;
 }
+
+.reject-btn:hover {
+    background: #8a222d;
+    color: white;
+}
+
+/* Customize the offcanvas panel */
 
 .offcanvas-end {
     width: 600px !important; 
@@ -178,6 +185,7 @@ transform: scale(0.98);
 .offcanvas-header {
     color: #111D5B; 
     background-color: #84BBFF;
+    height: 70px;
 }
 
 .offcanvas-title {
@@ -211,14 +219,14 @@ transform: scale(0.98);
     background-color: white;
 }
 
-.contact-info i {
+/* .contact-info i {
     font-size: 16px;
     color: #333;
     margin-right: 0.5rem;
     background-color: white;
-}
+} */
 
-.experience-section, .notes-section, .interview-section {
+.applicant-section, .notes-section, .interview-section {
     border: 1.5px solid rgba(17, 29, 91, 0.5);
     border-radius: 8px;
     padding: 2rem;
@@ -230,20 +238,19 @@ transform: scale(0.98);
     border-top: 1px solid lightblue;
 }
 
-.experience-section h6 {
-    font-size: 16px;
+.applicant-section h5 {
     font-weight: bold;
     color: #111D5B;
     margin-bottom: 2rem;
 }
 
-.experience-section p {
+/* .applicant-section p {
     font-size: 12px;
     margin-left: 2.5rem;
-}
+} */
 
-.experience-list {
-    margin-bottom: 100px;
+.applicant-data {
+    margin-bottom: 75px;
 }
 
 .file-attachment {
@@ -268,7 +275,8 @@ transform: scale(0.98);
 .offcanvas-body-wrapper {
     display: flex;
     flex-direction: column;
-    height: 100%;
+    max-height: calc(100vh - 50px); 
+    overflow-y: auto;
     color: #111D5B;
     background-color: white;
 }
@@ -285,6 +293,7 @@ transform: scale(0.98);
     padding: 1rem;
     border-top: 1px solid #ddd;
     background-color: white;
+    bottom: 0;
 }
 
 .btn-ap-edit {
