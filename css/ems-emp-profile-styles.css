@@ -17,3 +17,15 @@
     font-size: 18px; 
 
 }     
+
+table thead tr th {
+    color: #111D5B !important;
+    font-size: 15px;
+
+}
+
+table tbody tr td {
+    color: #161616 !important;
+    font-size: 12px;
+
+}

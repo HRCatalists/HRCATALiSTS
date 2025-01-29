@@ -128,115 +128,435 @@
                     </div>
 
                     <div class="d-flex justify-content-between">
-                        <h2 class="db-h2 mb-3">View Employee Information</h2>   
-
-                        <img src="images/dummy-profile.png" alt="Employee Photo">
+                        <h2 class="db-h2 mb-3">View Employee Profile</h2>   
                     </div>
-                    
-                    <form id="addEmployeeForm">
-                        <!-- General Information -->
-                        <div class="mb-4">
-                            <h5 class="text-primary fw-bold">General Information</h5>
-                            <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label for="facultyCode" class="form-label">Faculty Code</label>
-                                <input type="text" class="form-control" id="facultyCode" placeholder="Enter Faculty Code">
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="fullName" class="form-label">Full Name</label>
-                                <input type="text" class="form-control" id="fullName" placeholder="Enter Full Name">
-                            </div>
-                            </div>
-                        </div>
-                    
-                        <!-- Employment Data -->
-                        <div class="mb-4">
-                            <h5 class="text-primary fw-bold">Employment Data</h5>
-                            <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label for="position" class="form-label">Position</label>
-                                <input type="text" class="form-control" id="position" placeholder="Enter Position">
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="employmentStatus" class="form-label">Employment Status</label>
-                                <input type="text" class="form-control" id="employmentStatus" placeholder="Enter Employment Status">
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="dateOfEmployment" class="form-label">Date of Employment</label>
-                                <input type="date" class="form-control" id="dateOfEmployment">
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="permanentStatusDate" class="form-label">Date of Permanent Status</label>
-                                <input type="date" class="form-control" id="permanentStatusDate">
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="accreditation" class="form-label">Accreditation</label>
-                                <input type="text" class="form-control" id="accreditation" placeholder="Enter Accreditation">
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="professionalLicensure" class="form-label">Professional Licensure Personnel</label>
-                                <input type="text" class="form-control" id="professionalLicensure" placeholder="Enter Licensure Details">
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="facultyRank" class="form-label">Faculty Rank</label>
-                                <input type="text" class="form-control" id="facultyRank" placeholder="Enter Faculty Rank">
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="annualSalary" class="form-label">Annual Salary</label>
-                                <input type="text" class="form-control" id="annualSalary" placeholder="Enter Annual Salary">
-                            </div>
-                            </div>
-                        </div>
-                    
-                        <!-- Personal Data -->
-                        <div class="mb-4">
-                            <h5 class="text-primary fw-bold">Personal Data</h5>
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label for="emailAddress" class="form-label">E-mail Address</label>
-                                    <input type="email" class="form-control" id="emailAddress" placeholder="Enter Email Address">
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label for="address" class="form-label">Address</label>
-                                    <input type="text" class="form-control" id="address" placeholder="Enter Address">
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label for="mobileNo" class="form-label">Mobile No.</label>
-                                    <input type="text" class="form-control" id="mobileNo" placeholder="Enter Mobile No.">
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label for="telNo" class="form-label">Tel No.</label>
-                                    <input type="text" class="form-control" id="telNo" placeholder="Enter Telephone No.">
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label for="dateOfBirth" class="form-label">Date of Birth</label>
-                                    <input type="date" class="form-control" id="dateOfBirth">
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label for="placeOfBirth" class="form-label">Place of Birth</label>
-                                    <input type="text" class="form-control" id="placeOfBirth" placeholder="Enter Place of Birth">
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label for="gender" class="form-label">Gender</label>
-                                    <select class="form-select" id="gender">
-                                    <option selected>Select Gender</option>
-                                    <option value="Male">Male</option>
-                                    <option value="Female">Female</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label for="civilStatus" class="form-label">Civil Status</label>
-                                    <input type="text" class="form-control" id="civilStatus" placeholder="Enter Civil Status">
-                                </div>
-                            </div>
-                        </div>
-                    
-                        <!-- Confirm Button -->
-                        <div class="text-center">
-                            <button type="submit" id="editProfileForm" class="btn btn-primary btn-md">CONFIRM</button>
-                        </div>
-                    </form>
+                   
+                    <!-- Main Content -->
+                    <div class="mt-5">
 
+                        <!-- Employment Data Section -->
+                        <div class="mb-5">
+                            <div class="row">
+                                <div class="col-md-9">
+                                    <div class="mb-3">
+                                        <div class="d-flex align-items-center">
+                                            <label for="position" class="form-label me-2 fw-bold text-start">Faculty Code:</label>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <div class="d-flex align-items-center">
+                                            <label for="employment-status" class="form-label me-2 fw-bold text-start">Full Name:</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <div class="d-flex align-items-center">
+                                            <label for="employment-status" class="form-label me-2 fw-bold text-start">School Of:</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <div class="d-flex align-items-center">
+                                            <label for="employment-status" class="form-label me-2 fw-bold text-start">Status:</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <div class="d-flex align-items-center">
+                                            <label for="employment-status" class="form-label me-2 fw-bold text-start">Designation Group:</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <div class="d-flex align-items-center">
+                                            <label for="employment-status" class="form-label me-2 fw-bold text-start">Position:</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <div class="d-flex align-items-center">
+                                            <label for="employment-status" class="form-label me-2 fw-bold text-start">Branch:</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <img src="images/dummy-profile.png" alt="Profile Picture">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Personal Data Section -->
+                        <div class="border-1 border-top border-dark mb-5">
+                            <h4 class="db-h4 my-5">Personal Data</h4>
+                    
+                            <div class="row d-flex flex-wrap mb-3">
+                                <div class="col-md-6 d-flex align-items-center mb-1">
+                                    <label for="Mobile-number" class="form-label me-2 text-start mr-1 fw-bold">Mobile Number:</label>
+                                </div>
+                                <div class="col-md-6 d-flex align-items-center mb-1">
+                                    <label for="e-address" class="form-label me-2 text-start mr-1 fw-bold">E-mail Address:</label>
+                                </div>
+                            </div>
+
+                            <div class="row d-flex flex-wrap mb-3">
+                                <div class="col-md-6 d-flex align-items-center mb-1">
+                                    <label for="Address" class="form-label me-2 text-start mr-1 fw-bold">Address:</label>
+                                </div>
+                                <div class="col-md-6 d-flex align-items-center mb-1">
+                                    <label for="tel-no" class="form-label me-2 text-start mr-1 fw-bold">Tel No.:</label>
+                                </div>
+                            </div>
+
+
+                            <div class="row d-flex flex-wrap mb-3">
+                                <div class="col-md-6 d-flex align-items-center mb-1">
+                                    <label for="date-of-birth" class="form-label me-2 text-start mr-1 fw-bold">Date of Birth:</label>
+                                </div>
+                                <div class="col-md-6 d-flex align-items-center mb-1">
+                                    <label for="place-of-birth" class="form-label me-2 text-start mr-1 fw-bold">Place of birth:</label>
+                                </div>
+                            </div>
+
+
+                            <div class="row d-flex flex-wrap mb-3">
+                                <div class="col-md-6 d-flex align-items-center mb-1">
+                                    <label for="Gender" class="form-label me-2 text-start mr-1 fw-bold">Gender:</label>
+                                </div>
+                                <div class="col-md-6 d-flex align-items-center mb-1">
+                                    <label for="Religion" class="form-label me-2 text-start mr-1 fw-bold">Religion:</label>
+                                </div>
+                            </div>
+
+
+                            <div class="row d-flex flex-wrap mb-3">
+                                <div class="col-md-6 d-flex align-items-center mb-1">
+                                    <label for="Citizenship" class="form-label me-2 text-start mr-1 fw-bold">Citizenship:</label>
+                                </div>
+                                <div class="col-md-6 d-flex align-items-center mb-1">
+                                    <label for="Civil-Status" class="form-label me-2 text-start mr-1 fw-bold">Civil Status:</label>
+                                </div>
+                            </div>
+
+
+                            <div class="row d-flex flex-wrap mb-3">
+                                <div class="col-md-6 d-flex align-items-center mb-1">
+                                    <label for="Spouse" class="form-label me-2 text-start mr-1 fw-bold">Name of spouse:</label>
+                                </div>
+                                <div class="col-md-6 d-flex align-items-center mb-1">
+                                    <label for="s-address" class="form-label me-2 text-start mr-1 fw-bold">Address:</label>
+                                </div>
+                            </div>
+
+
+                            <div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="d-flex align-items-center">
+                                        <label for="spouse-occupation" class="form-label me-2 fw-bold text-start">Spouse's Occupation:</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="d-flex align-items-center">
+                                        <label for="num-dependent" class="form-label me-2 fw-bold text-start">No. of Dependent:</label>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="row d-flex flex-wrap mb-3">
+                                <div class="col-md-6 d-flex align-items-center mb-1">
+                                    <label for="Spouse" class="form-label me-2 text-start mr-1 fw-bold">Name of Children:</label>
+                                </div>
+                                <div class="col-md-6 d-flex align-items-center mb-1">
+                                    <label for="s-address" class="form-label me-2 text-start mr-1 fw-bold">Date of Birth of Children:</label>
+                                </div>
+                            </div>
+
+
+                            <div class="row d-flex flex-wrap mb-3">
+                                <div class="col-md-6 d-flex align-items-center mb-1">
+                                    <label for="Father" class="form-label me-2 text-start mr-1 fw-bold">Father:</label>
+                                </div>
+                                <div class="col-md-6 d-flex align-items-center mb-1">
+                                    <label for="f-address" class="form-label me-2 text-start mr-1 fw-bold">Address:</label>
+                                </div>
+                            </div>
+            
+
+                            <div class="row d-flex flex-wrap mb-3">
+                                <div class="col-md-6 d-flex align-items-center mb-1">
+                                    <label for="Father" class="form-label me-2 text-start mr-1 fw-bold">Mother:</label>
+                                </div>
+                                <div class="col-md-6 d-flex align-items-center mb-1">
+                                    <label for="m-address" class="form-label me-2 text-start mr-1 fw-bold">Address:</label>
+                                </div>
+                            </div>
+
+                            <div class="row d-flex flex-wrap mb-3">
+                                <div class="col-md-6 d-flex align-items-center mb-1">
+                                    <label for="Father" class="form-label me-2 text-start mr-1 fw-bold">SSS No.:</label>
+                                </div>
+                                <div class="col-md-6 d-flex align-items-center mb-1">
+                                    <label for="m-address" class="form-label me-2 text-start mr-1 fw-bold">PhilHealth No.:</label>
+                                </div>
+                            </div>
+
+                            <div class="row d-flex flex-wrap mb-3">
+                                <div class="col-md-6 d-flex align-items-center mb-1">
+                                    <label for="Father" class="form-label me-2 text-start mr-1 fw-bold">TIN No.:</label>
+                                </div>
+                                <div class="col-md-6 d-flex align-items-center mb-1">
+                                    <label for="m-address" class="form-label me-2 text-start mr-1 fw-bold">Pag-Ibig No.:</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Educational Background -->
+                        <div class="border-1 border-top border-dark mb-5">
+                            <h4 class="db-h4 my-5">Educational Background</h4>
+
+                            <div class=" my-5">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-striped">
+                                        <thead class="text-center">
+                                            <tr>
+                                                <th>Education</th>
+                                                <th>School</th>
+                                                <th>Course</th>
+                                                <th>Major</th>
+                                                <th>Remarks</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+                                            <tr>
+                                                <td>Bachelor's Degree</td>
+                                                <td>Columban College</td>
+                                                <td>Computer Science</td>
+                                                <td>Software Development</td>
+                                                <td>Graduated with Honors</td>
+                                            </tr>
+                                            <tr>
+                                                <td>High School</td>
+                                                <td>Sample High School</td>
+                                                <td>-</td>
+                                                <td>-</td>
+                                                <td>With High Honors</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Employment Data 1 -->
+                        <div class="border-1 border-top border-dark mb-5">
+                            <h4 class="db-h4 my-5">Employment Data</h4>
+                        
+                            <div class="col-md-6 mb-3">
+                                <div class="d-flex align-items-center">
+                                    <label for="position" class="form-label me-2 fw-bold text-start">Parent Department:</label>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <div class="d-flex align-items-center">
+                                    <label for="employment-status" class="form-label me-2 fw-bold text-start">Parent College:</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <div class="d-flex align-items-center">
+                                    <label for="employment-status" class="form-label me-2 fw-bold text-start">Employment Classification:</label>
+                                </div>
+                            </div>
+
+                            <div class="row d-flex flex-wrap mb-3">
+                                <div class="col-md-6 d-flex align-items-center mb-1">
+                                    <label for="teaching-load" class="form-label me-2 text-start mr-1 fw-bold">Employment Status:</label>
+                                </div>
+                                <div class="col-md-6 d-flex align-items-center mb-1">
+                                    <label for="date-of-employment" class="form-label me-2 text-start mr-1 fw-bold">Date of Employment:</label>
+                                </div>
+                            </div>
+
+                            <div class="row d-flex flex-wrap mb-3">
+                                <div class="col-md-6 d-flex align-items-center mb-1">
+                                    <label for="teaching-load" class="form-label me-2 text-start mr-1 fw-bold">Accreditation:</label>
+                                </div>
+                                <div class="col-md-6 d-flex align-items-center mb-1">
+                                    <label for="date-of-employment" class="form-label me-2 text-start mr-1 fw-bold">Date of Permanent Status:</label>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- Professional Board Exam or Civil Service Eligibility -->
+                        <div class="border-1 border-top border-dark mb-5">
+                            <h4 class="db-h4 my-5">Employment Data</h4>
+                        
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>License</th>
+                                        <th>License Number</th>
+                                        <th>Expiry Date</th>
+                                        <th>Renewal Date From</th>
+                                        <th>Renewal Date To</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                    </tr>
+                                    <tr>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+
+                        <!-- Employemtn Service Record -->  
+                        <div class="border-1 border-top border-dark mb-5">
+                            <h4 class="db-h4 my-5">Employment Service Record</h4>
+
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Department</th>
+                                        <th>Inclusive Date</th>
+                                        <th>Appointment Record</th>
+                                        <th>Position/Designation</th>
+                                        <th>Rank</th>
+                                        <th>Remarks</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                    </tr>
+                                    <tr>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+
+                        <!-- Training and Seminars Attended -->
+                        <div class="border-1 border-top border-dark mb-5">
+                            <h4 class="db-h4 my-5">Training and Seminars Attended</h4>
+                            
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Title</th>
+                                        <th>Venue</th>
+                                        <th>Remark</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        
+                                    </tr>
+                                    <tr>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Organizational Membership / Officeship -->
+                        <div class="border-1 border-top border-dark mb-5">
+                            <h4 class="db-h4 my-5">Organizational Membership / Officeship</h4>
+
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Date of Registration</th>
+                                            <th>Validity Date</th>
+                                            <th>Name of Organization</th>
+                                            <th>Place</th>
+                                            <th>Position</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                        </tr>
+                                        <tr>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                        </div>
+
+                        <!-- Others -->
+                        <div class="border-1 border-top border-dark mb-5">
+                            <h4 class="db-h4 my-5">Others</h4>
+
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Description / Particular</th>
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        
+                                    </tr>
+                                    <tr>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+
+                    </div>
                 </div>
             </div>
 
