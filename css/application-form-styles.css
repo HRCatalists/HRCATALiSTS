@@ -1,0 +1,173 @@
+/* pagination */
+
+.page-item .page-link {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  
+}
+
+.pagination .page-link.active {
+  background-color: #007bff; /* Bootstrap primary color */
+  color: #fff; /* White text */
+  border-color: #007bff;
+}
+
+
+
+
+/* page 3 - education */
+
+.education-form {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #111D5B;
+}
+
+.educ-level, .honors-ttl {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #111D5B;
+}
+
+
+.honors-input {
+  width: 100%;
+  border: 1px solid #3377CC;
+  background-color: #e2e2e2;
+  border-radius: 5px;
+  font-size: 14px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+
+
+
+
+
+/* Page 4 - Occupational Qualifications */
+
+
+.qualification-license-form {
+  border: 1px solid #3377CC;
+  
+}
+
+.qualification-add-button, .qualification-remove-button {
+  width: 30px;
+}
+
+
+
+
+.qualification-form-label {
+  font-weight: 600;
+  font-size: 14px;
+  color: #111D5B;
+  
+}
+
+
+
+.qualification-form-control {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #3377CC;
+  background-color: #e2e2e2;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+
+
+textarea.qualification-form-control {
+  height: 80px;
+  resize: none;
+}
+
+
+/* Flex layout for the license form */
+.qualification-license-fields {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.qualification-license-fields .qualification-form-group input {
+  width: 100%;
+}
+
+/* Styling for section title */
+.qualification-section-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #111D5B;
+}
+
+
+/* Optional: Add hover effects for inputs */
+.qualification-form-control:hover,
+.qualification-form-control:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 2px 6px rgba(0, 123, 255, 0.2);
+}
+
+
+
+/* page 4 - employment record form */
+/* Employment Record Form Styling */
+
+
+.employment-record-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #111D5B;
+}
+
+.employment-record-item {
+  border: 1px solid #3377cc;
+  border-radius: 8px;
+}
+
+
+
+.employment-form-label {
+  font-weight: 600;
+  font-size: 16px;
+  color: #111D5B;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.employment-form-control {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #3377CC;
+  background-color: #e2e2e2;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+
+
+.references-title {
+  font-size: 16px;
+
+}
+
+
+
+.employment-plus-icon, 
+.employment-minus-icon  {
+  display: inline-block;
+  margin-top: 15px;
+  cursor: pointer;
+  width: 30px;
+
+}
+
+

@@ -1,0 +1,29 @@
+/* General Styles */
+  .department-name {
+    font-weight: bold;
+  }
+  
+  /* Custom Colors */
+  .eng {
+    background-color: #CE1B20;
+  }
+  
+  .cased {
+    background-color: #1BF4FD;
+  }
+
+  .cba {
+    background-color: #F0B371;
+  }
+
+  .nursing {
+    background-color: #63C74B;
+  }
+
+  .ccs {
+    background-color: #8A1FC7;
+  }
+
+  .arch {
+    background-color: #7B1313;
+  }

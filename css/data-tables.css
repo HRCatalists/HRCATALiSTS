@@ -1,0 +1,335 @@
+/* PRINT BUTTON */
+.print-btn, .add-btn {
+    background-color: white; 
+    color: #111D5B; 
+    border: 2px solid #111D5B; 
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: solid 1px #3377cc !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+.print-btn i {
+margin-right: 8px; 
+}
+
+.print-btn:hover, .add-btn {
+background-color: #111D5B; 
+color: white;
+}
+
+.print-btn:active, .add-btn {
+transform: scale(0.98); 
+}
+/* END OF PRINT BUTTON */
+
+/* ADD A POSTION CSS */
+.modal-header {
+    background-color: #84BBFF;
+    border-bottom: none;
+  }
+  .modal-title {
+    font-weight: bold;
+  }
+  .form-label {
+    font-weight: bold;
+  }
+  .modal-footer {
+    justify-content: flex-end;
+  }
+  .modal-body {
+    font-size: 14px;
+  }
+  .btn-post {
+    background-color: #28a745;
+    color: white;
+    border: none;
+  }
+  .btn-cancel {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+  }
+/* END OF ADD A POSTION CSS */
+
+.dt-h2 {
+    font-weight: bold;
+    color: #111D5B;
+}
+.form-control {
+    font-size: 12px
+}
+
+.table th {
+    background-color: #3377CC;
+    color: white;
+}
+
+.dataTables_length label {
+    font-weight: bold;
+    color: #111D5B;
+    display: flex;
+    align-items: center;
+}
+.dataTables_length select {
+    margin-left: 8px;
+    width: auto;
+    display: inline-block;
+}
+.dataTables_filter label {
+    font-weight: bold;
+    color: #111D5B;
+    display: flex;
+    align-items: center;
+}
+.dataTables_filter input {
+    margin-left: 8px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 200px;
+}
+
+/* Style for DataTable pagination */
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    padding: 5px 10px;
+    margin: 0 2px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    background-color: #f8f9fa;
+    color: #333;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    background-color: #e2e6ea;
+    color: #333;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+    background-color: #007bff;
+    color: #fff !important;
+    border-color: #007bff;
+}
+
+/* Style for DataTable print button beside entries */
+.dataTables_wrapper .dt-buttons {
+    margin-left: 15px;
+}
+
+/* Custom search box style */
+.dataTables_wrapper .dataTables_filter {
+    position: relative;
+}
+
+.dataTables_wrapper .dataTables_filter .search-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.dataTables_wrapper .dataTables_filter input {
+    padding-left: 30px; /* Leave space for the search icon */
+    border-radius: 4px;
+    border: 1px solid #ddd;
+}
+
+.dataTables_wrapper .dataTables_filter .search-box i {
+    position: absolute;
+    left: 10px;
+    color: #888;
+}
+
+.archive-btn {
+    background-color: #800000;
+    color: white;
+    width: 250px;
+    transition: background-color 0.3s ease;
+}
+
+.archive-btn:hover {
+    background: #4d0000;
+    color: white;
+}
+
+/* Customize the offcanvas panel */
+.offcanvas {
+    font-family: 'Raleway', sans-serif;
+}
+
+.offcanvas-end {
+    width: 600px !important; 
+    background-color: #f4f8ff; 
+}
+
+.offcanvas-body {
+    color: #111D5B;
+    background-color: white !important;
+}
+
+.offcanvas-header {
+    color: #111D5B; 
+    background-color: #84BBFF;
+}
+
+.offcanvas-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+.stage {
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-size: 15px;
+    color: #FF2600;
+    border-color: #FF2600 !important;
+    border-radius: 5px;
+    display: inline-block;
+}
+
+.nav-tabs .nav-link {
+    font-size: 1rem;
+    color: #333;
+}
+
+.nav-tabs .nav-link.active {
+    color: #0056b3;
+    font-weight: bold;
+}
+
+.tab-content {
+    padding-top: 1rem;
+    background-color: white;
+}
+
+.contact-info i {
+    font-size: 16px;
+    color: #333;
+    margin-right: 0.5rem;
+    background-color: white;
+}
+
+.experience-section, .notes-section, .interview-section {
+    border: 1.5px solid rgba(17, 29, 91, 0.5);
+    border-radius: 8px;
+    padding: 2rem;
+    font-size: 0.95rem;
+    color: #333;
+}
+
+.notes-btn {
+    border-top: 1px solid lightblue;
+}
+
+.experience-section h6 {
+    font-size: 16px;
+    font-weight: bold;
+    color: #111D5B;
+    margin-bottom: 2rem;
+}
+
+.experience-section p {
+    font-size: 12px;
+    margin-left: 2.5rem;
+}
+
+.experience-list {
+    margin-bottom: 100px;
+}
+
+.file-attachment {
+    background-color: #f8f9fa;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    border-radius: 8px;
+    border: solid 0.5px #3377CC !important;
+}
+
+.file-attachment img {
+    width: 20px;
+    margin-right: 10px;
+}
+
+.file-attachment span {
+    font-size: 0.9rem;
+}
+
+/* Sticky footer container for buttons */
+.offcanvas-body-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    color: #111D5B;
+    background-color: white;
+}
+
+.content-section {
+    flex-grow: 1;
+    overflow-y: auto;
+    background-color: white !important;
+}
+
+.button-container {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem;
+    border-top: 1px solid #ddd;
+    background-color: white;
+}
+
+.btn-ap-edit {
+    flex: 1;
+    background-color: #111D5B;
+    color: white;
+    border: none;
+}
+
+.btn-success {
+    flex: 1;
+    background-color: #28a745;
+}
+
+.btn-danger {
+    flex: 1;
+    background-color: #dc3545;
+    border: none;
+}
+
+.custom-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s, opacity 0.3s ease;
+    z-index: 1050;
+}
+
+.popup-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    width: 450px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.custom-popup .btn {
+    margin-top: 10px;
+}
