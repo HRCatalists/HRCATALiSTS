@@ -86,36 +86,66 @@
                 <ul class="list-unstyled components">
                     <li class="d-flex align-items-center">
                         <img src="images/dashboard.png" class="icon" alt="dashboard-icon">
-                        <a href="admin-ems-db.html" class="ms-3">Dashboard</a>
+                        <a href="admin-ems-db.html" class="ms-3 sidebar-effect-2">Dashboard</a>
                     </li>
 
                     <li class="d-flex align-items-center">
                         <img src="images/calendar.png" class="icon" alt="calendar-icon">
-                        <a href="admin-ems-cl.html" class="ms-3">Calendar</a>
+                        <a href="admin-ems-cl.html" class="ms-3 sidebar-effect-2">Calendar</a>
                     </li>
 
-                    <li class="d-flex align-items-center">
+                    <li class="d-flex align-items-center employee">
                         <img src="images/employee.png" class="icon" alt="applicant-icon">
-                        <a href="admin-ems-emp.html" class="ms-3">Employees</a>
+
+                        <a href="#submenu1" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
+                            <span class="ms-3 sidebar-effect-2">Employee</span> 
+                        </a>
+
+                        <ul class="collapse flex-column ms-1" id="submenu1" data-bs-parent="#menu">
+                            <li class="mt-2">
+                                <a href="admin-ems-emp.html" class="nav-link px-0"> <span class="sidebar-effect-1">Employee List</span> </a>
+                            </li>
+                            <li>
+                                <a href="#" class="nav-link px-0"> <span class="sidebar-effect-1">Department of Engineering</span> </a>
+                            </li>
+                            <li>
+                                <a href="#" class="nav-link px-0"> <span class="sidebar-effect-1">Department of Arts & Science and Education</span> </a>
+                            </li>
+                            <li>
+                                <a href="#" class="nav-link px-0"> <span class="sidebar-effect-1">Department of Business and Accountancy</span> </a>
+                            </li>
+                            <li>
+                                <a href="#" class="nav-link px-0"> <span class="sidebar-effect-1">Department of Nursing</span> </a>
+                            </li>
+                            <li>
+                                <a href="#" class="nav-link px-0"> <span class="sidebar-effect-1">Department of Computer Studies</span> </a>
+                            </li>
+                            <li>
+                                <a href="#" class="nav-link px-0"> <span class="sidebar-effect-1">Department of Architecture</span> </a>
+                            </li>
+                            <li>
+                                <a href="#" class="nav-link px-0"> <span class="sidebar-effect-1">Department of Basic Education</span> </a>
+                            </li>
+                        </ul>
                     </li>
 
                     <li class="d-flex align-items-center">
                         <img src="images/note.png" class="icon" alt="positions-icon">
-                        <a href="admin-ems-note.html" class="ms-3">Notes</a>
+                        <a href="admin-ems-note.html" class="ms-3 sidebar-effect">Notes</a>
                     </li>
 
                     <li class="d-flex align-items-center">
                         <img src="images/faqs.png" class="icon" alt="archived-icon">
-                        <a href="admin-ems-policy.html" class="ms-3">Company Policy</a>
+                        <a href="admin-ems-policy.html" class="ms-3 sidebar-effect-2">Company Policy</a>
                     </li>
 
                     <li class="d-flex align-items-center">
                         <img src="images/log.png" class="icon" alt="log-icon">
-                        <a href="admin-ems-logs.html" class="ms-3">Logs</a>
+                        <a href="admin-ems-logs.html" class="ms-3 sidebar-effect">LOGS</a>
                     </li>
-                      
-                    <li class="d-flex m-0 px-0 ">
-                        <a href="admin-ats-db.html" class="fw-bold ms-3 ems-button">SWITCH TO ATS</a>
+                        
+                    <li class="d-flex align-items-center mt-3">
+                        <a href="admin-ats-db.html" class="fw-bold ms-3 sidebar-effect">SWITCH TO ATS</a>
                     </li>
                 </ul>
             </div>

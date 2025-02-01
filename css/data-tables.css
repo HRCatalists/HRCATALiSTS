@@ -1,5 +1,5 @@
 /* PRINT BUTTON */
-.print-btn, .add-btn {
+.print-btn, .add-btn, .edit-btn {
     background-color: white; 
     color: #111D5B; 
     border: 2px solid #111D5B; 
@@ -20,12 +20,12 @@
 margin-right: 8px; 
 }
 
-.print-btn:hover, .add-btn {
+.print-btn:hover, .add-btn, .edit-btn {
 background-color: #111D5B; 
 color: white;
 }
 
-.print-btn:active, .add-btn {
+.print-btn:active, .add-btn, .edit-btn {
 transform: scale(0.98); 
 }
 /* END OF PRINT BUTTON */
