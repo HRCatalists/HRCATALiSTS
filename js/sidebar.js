@@ -43,4 +43,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Initial setup
     resetSidebarVisibility();
+
+    //Sidebar Employee & Ranking JS 
+    document.querySelectorAll('.employee > a, .ranking > a, .department > a').forEach(function(element) {
+        element.addEventListener('click', function() {
+            const chevron = this.querySelector('.chevron-icon');
+            chevron.classList.toggle('rotate');
+        });
+    });
 });

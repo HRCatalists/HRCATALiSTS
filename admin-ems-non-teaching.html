@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
     <head>
-        <title>Calendar</title>
+        <title> Non-Teaching Ranking </title>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
 
@@ -31,8 +31,11 @@
         <!-- Sidebar CSS -->
         <link rel="stylesheet" href="css/sidebar.css">
 
-        <!-- Calendar CSS -->
-        <link rel="stylesheet" href="css/ats-calendar.css">
+        <!-- Data tables CSS -->
+        <!-- <link rel="stylesheet" href="css/data-tables.css"> -->
+
+        <!-- Emp Ranking CSS -->
+        <link rel="stylesheet" href="css/admin-ems-rank.css">
 
     </head>
 
@@ -78,7 +81,6 @@
         </nav>
         <!-- End of Navbar -->
 
-        <!-- Calendar Content -->
         <div class="d-flex">
 
             <!-- Sidebar -->
@@ -200,94 +202,55 @@
             </div>
             <!-- End of Sidebar -->
         
-            <!-- Calendar Content -->
+            <!-- Form Content -->
             <div id="content" class="flex-grow-1">
+
+                <!-- SUBJECT TO CHANGES -->
+                <!-- Main Content -->
                 <div class="container mt-5">
 
-                    <div class="calendar-wrapper my-5">
-                        <div class="container-calendar">
-                            <div id="left">
-    
-                                <h1>Calendar</h1>
-    
-                                <div id="event-section">
-                                    <h3>Add Event</h3>
-                                    <input type="date" id="eventDate">
-                                    <input type="time" id="eventTime" placeholder="Event Time">
-                                    <input type="text" id="eventTitle" placeholder="Event Title">
-                                    <input type="text" id="eventDescription" placeholder="Event Description">
-                                    <button id="addEvent" onclick="addEvent()">Add</button>
-                                </div>
-    
-                                <div id="reminder-section">
-                                    <h3>Reminders</h3>
-                                    <!-- List to display reminders -->
-                                    <ul id="reminderList">
-                                        <li data-event-id="1">
-                                            <strong>Event Title</strong>
-                                            - Event Description on Event Date
-                                            <button class="delete-event"
-                                                onclick="deleteEvent(1)">
-                                                Delete
-                                            </button>
-                                        </li>
-                                    </ul>
-                                </div>
+                    <div class="d-flex justify-content-center mb-4">
+                        <h2 class="db-h2">NON-RANKING SYSTEM</h2>   
+                    </div>
+
+                    <div class="container">
+
+                        <div class="search-container">
+                            <!-- <h4 class="text-center mb-3">Search Personnel</h4> -->
+                            <div class="d-flex">
+                                <input type="text" id="searchName" class="form-control me-2" placeholder="Enter Name of Personnel" aria-label="Search by Name">
+
+                                <select id="searchDepartment" class="form-select me-2">
+                                    <option value="" disabled selected>-Select a Department-</option>
+                                    <option value="engineering">Department of Engineering</option>
+                                    <option value="cased">Department of Arts & Science and Education</option>
+                                    <option value="cba">Department of Business and Accountancy</option>
+                                    <option value="nursing">Department of Nursing</option>
+                                    <option value="ccs">Department of Computer Studies</option>
+                                    <option value="arch">Department of Architecture</option>
+                                    <option value="basic_ed">Department of Basic Education</option>
+                                </select>
+                                
+                                <button class="btn search-btn" onclick="searchPersonnel()">SEARCH</button>
                             </div>
-    
-                            <div id="right" class="ms-4">
-                                <h3 id="monthAndYear"></h3>
-                                <div class="button-container-calendar">
-                                    <button id="previous"
-                                            onclick="previous()">
-                                        ‹
-                                    </button>
-                                    <button id="next"
-                                            onclick="next()">
-                                        ›
-                                    </button>
-                                </div>
-                                <table class="table-calendar"
-                                    id="calendar"
-                                    data-lang="en">
-                                    <thead id="thead-month"></thead>
-                                    <!-- Table body for displaying the calendar -->
-                                    <tbody id="calendar-body"></tbody>
-                                </table>
-                                <div class="footer-container-calendar">
-                                    <label for="month">Jump To: </label>
-                                    <!-- Dropdowns to select a specific month and year -->
-                                    <select id="month" onchange="jump()">
-                                        <option value=0>Jan</option>
-                                        <option value=1>Feb</option>
-                                        <option value=2>Mar</option>
-                                        <option value=3>Apr</option>
-                                        <option value=4>May</option>
-                                        <option value=5>Jun</option>
-                                        <option value=6>Jul</option>
-                                        <option value=7>Aug</option>
-                                        <option value=8>Sep</option>
-                                        <option value=9>Oct</option>
-                                        <option value=10>Nov</option>
-                                        <option value=11>Dec</option>
-                                    </select>
-                                    <!-- Dropdown to select a specific year -->
-                                    <select id="year" onchange="jump()"></select>
-                                </div>
-                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-center align-content-center mt-4">
+
+                            <label class="fw-bold me-2" for="inlusiveDate">Inclusive Date:</label>
+
+                            <input type="date" id="inlusiveDate" class="form-control me-2">
+                            <span class="fw-bold me-2">to</span>
+                            <input type="date" id="inlusiveDate" class="form-control me-2">
+
                         </div>
                     </div>
 
                 </div>
+
             </div>
 
         </div>
-
-        <!-- Sidebar JS -->
-        <script src="js/sidebar.js"></script>
-
-        <!-- Calendar JS -->
-        <script src="js/ats-calendar.js"></script>
 
         <!-- Bootstrap JavaScript Libraries -->
         <script
@@ -300,5 +263,21 @@
             integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
             crossorigin="anonymous"
         ></script>
+
+        <!-- Sidebar JS -->
+        <script src="js/sidebar.js"></script>
+
+        <!-- Confirm button JS -->
+        <script>
+            document.getElementById("editProfileForm").addEventListener("click", function(event) {
+                // Show confirmation dialog
+                const confirmation = confirm("Are you sure you want to save these changes?");
+                
+                // If the user cancels, prevent form submission
+                if (!confirmation) {
+                    event.preventDefault();
+                }
+            });
+        </script>
     </body>
 </html>

@@ -30,15 +30,14 @@
     position: fixed;
     left: 0;
     top: 60px;
-    width: 250px;
+    width: 300px;
     min-height: 100vh; 
-
     background: #E8F2FF;
     transition: transform 0.3s ease-in-out;
     transform: translateX(0); 
     z-index: 2;
-    overflow-y: auto; /* Enable scrolling */
-    max-height: calc(100vh - 60px); /* Adjust height to fit within viewport */
+    overflow-y: auto; 
+    max-height: calc(100vh - 60px); 
 }
 
 /* Hide scrollbar for WebKit browsers */
@@ -68,7 +67,8 @@
 
 #sidebar ul li {
     padding: 15px;
-    font-size: 16px;
+    font-size: 14px;
+    letter-spacing: 1px;
     color: #111D5B;
     display: flex;
     align-items: center;
@@ -82,8 +82,11 @@
 #sidebar ul li a {
     color: #111D5B;
     text-decoration: none;
-    font-family: 'Raleway', sans-serif;
     font-weight: 600;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    width: 100%;
 }
 
 #sidebar ul li a:hover {
@@ -91,10 +94,9 @@
 }
 
 #sidebar ul li.active {
-    background-color: #ffffff; 
     color: #3377CC; 
     font-weight: bold; 
-    border-left: 4px solid #3377CC; 
+    border-left: 6px solid #3377CC; 
 }
 
 #sidebar ul li.active a {
@@ -126,12 +128,12 @@ ul ul a {
 
 .navbar-toggler:focus {
     outline: none;
-    box-shadow: none; /* Removes any shadow if present */
+    box-shadow: none; 
 }
 
 #content {
     margin-top: 50px; 
-    margin-left: 250px; 
+    margin-left: 300px; 
     padding: 20px; 
     width: calc(100% - 250px); 
 }
@@ -144,40 +146,29 @@ ul ul a {
 
 .sidebar-effect {
     display: inline-block;
-    font-size: 16px;
-    text-transform: uppercase;
     text-decoration: none !important;
     transition: 0.4s ease;
 }
 
 /* Hover effect*/
 .sidebar-effect:hover {
-    transform: translateX(35px);
-}
-
-.sidebar-effect-1 {
-    display: inline-block;
-    text-decoration: none !important;
-    transition: 0.4s ease;
-}
-
-/* Hover effect*/
-.sidebar-effect-1:hover {
     transform: translateX(15px);
 }
 
-.sidebar-effect-2 {
-    display: inline-block;
-    font-size: 16px;
-    text-transform: uppercase;
-    text-decoration: none !important;
-    transition: 0.3s ease;
+/* Chevron Icon */
+#chevron-arrow{
+    justify-content: space-between;
+    margin-left: auto !important;
 }
 
-/* Hover effect*/
-.sidebar-effect-2:hover {
-    transform: translateX(15px);
+.chevron-icon {
+    transition: transform 0.3s ease;
 }
+
+.chevron-icon.rotate {
+    transform: rotate(180deg);
+}
+
 
 /* ---------------------------------------------------
     MEDIAQUERIES
