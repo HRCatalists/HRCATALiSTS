@@ -26,7 +26,7 @@
                             <h2>Log In to <br> HR CATALiSTS</h2> 
                         </div>
     
-                        <form method="POST" action="{{ route('admin-login') }}" id="loginForm">
+                        <form method="POST" action="{{ route('login') }}" id="loginForm">
                             @csrf
 
                             <!-- Email -->
@@ -69,12 +69,12 @@
                     <!-- Back Side -->
                     <div class="card p-4 card-back" id="loginCardBack">
                         <div class="card-body d-flex flex-column align-items-center justify-content-center">
-                            <a href="#">
+                            <a href="{{ route('dashboard') }}">
                                 <button class="btn btn-lg btn-primary my-3 w-100 text-center">
                                     EMPLOYEE MANAGEMENT SYSTEM
                                 </button>
                             </a>
-                            <a href="#">
+                            <a href="{{ route('dashboard') }}">
                                 <button class="btn btn-lg btn-primary my-3 w-100 text-center">
                                     APPLICANT TRACKING SYSTEM
                                 </button>
@@ -107,12 +107,11 @@
 </x-login-layout>
 
 
-
-<x-guest-layout>
+{{-- <x-guest-layout>
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
-    <form method="POST" action="{{ route('admin-login') }}">
+    <form method="POST" action="{{ route('login') }}">
         @csrf
 
         <!-- Email Address -->
@@ -154,4 +153,4 @@
             </x-primary-button>
         </div>
     </form>
-</x-guest-layout>
+</x-guest-layout> --}}

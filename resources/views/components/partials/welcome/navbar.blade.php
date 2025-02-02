@@ -12,7 +12,7 @@
         <div class="d-flex align-items-center">
             <span class="text-white login">Are you an Admin?</span>
             <button class="btn-1">
-                <a href="{{ route('admin-login') }}">
+                <a href="{{ route('login') }}">
                     <div class="original">Login</div>
                     <div class="letters">
                         <span>L</span>

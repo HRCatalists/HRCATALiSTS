@@ -3,12 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
-// Redirect '/' to '/careers'
-// Route::get('/', function () {
-//     return redirect('/careers');
-// });
 
-// Careers route
 Route::get('/', function () {
     // Redirect authenticated users to the dashboard
     if (Auth::check()) {
