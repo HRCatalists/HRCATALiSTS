@@ -30,7 +30,7 @@
     position: fixed;
     left: 0;
     top: 60px;
-    width: 300px;
+    width: 310px;
     min-height: 100vh; 
     background: #E8F2FF;
     transition: transform 0.3s ease-in-out;
@@ -133,7 +133,7 @@ ul ul a {
 
 #content {
     margin-top: 50px; 
-    margin-left: 300px; 
+    margin-left: 310px; 
     padding: 20px; 
     width: calc(100% - 250px); 
 }
