@@ -564,12 +564,20 @@
                                         </tr>
                                         <tr>
                                             <td class="ps-4"><div class="ps-4">Within the School</div></td>
-                                            <td  class="text-center"><input type="checkbox" id="one-point" name="options"></td>
+                                            <td class="text-center">
+                                                1 pt/ activity
+                                                <input  class="mx-2" type="number" id="withintheschool-count" name="withintheschool-count" min="0" value="0" oninput="calculatePointwithintheschool()">
+                                                <span id="total-points-withintheschool">0</span> pts
+                                            </td>
                                             <td></td>
                                         </tr>
                                         <tr>
                                             <td class="ps-4"><div class="ps-4">Outside the school/RQAT</div></td>
-                                            <td  class="text-center"><input type="checkbox" id="one-point" name="options"></td>
+                                            <td class="text-center">
+                                                1 pt/ activity
+                                                <input  class="mx-2" type="number" id="RQAT-count" name="RQAT-count" min="0" value="0" oninput="calculatePointRQAT()">
+                                                <span id="total-points-RQAT">0</span> pts
+                                            </td>
                                             <td></td>
                                         </tr>
                                         <tr>
@@ -580,12 +588,20 @@
                                         </tr>
                                         <tr>
                                             <td class="ps-4"><div class="ps-4">Officer/ National Accreditor</div></td>
-                                            <td  class="text-center"><input type="checkbox" id="two-point" name="options"></td>
+                                            <td class="text-center">
+                                                2 pts/ year
+                                                <input  class="mx-2" type="number" id="NatAccreditor-count" name="NatAccreditor-count" min="0" value="0" oninput="calculatePointNatAccreditor()">
+                                                <span id="total-points-NatAccreditor">0</span> pts
+                                            </td>
                                             <td></td>
                                         </tr>
                                         <tr>
                                             <td class="ps-4"><div class="ps-4">Member (last 3 years)</div></td>
-                                            <td  class="text-center"><input type="checkbox" id="one-point" name="options"></td>
+                                            <td class="text-center">
+                                                1 pt/ year
+                                                <input  class="mx-2" type="number" id="member-count" name="member-count" min="0" value="0" oninput="calculatePointmember()">
+                                                <span id="total-points-member">0</span> pts
+                                            </td>
                                             <td></td>
                                         </tr>
 

@@ -13,6 +13,7 @@
     width: 30px;
 }
 
-#training-count , #seminar-count {
+#training-count , #seminar-count , 
+#withintheschool-count , #RQAT-count , #NatAccreditor-count , #member-count{
     width: 60px;
 }
