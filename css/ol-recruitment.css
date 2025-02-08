@@ -435,6 +435,7 @@
 
 h2 {
   font-weight: bold;
+  color: #111D5B;
 }
 
 .form-section {
@@ -550,4 +551,10 @@ h2 {
   height: 100%;
   opacity: 0;
   cursor: pointer;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }

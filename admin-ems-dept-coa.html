@@ -211,15 +211,10 @@
                     
                     <div class="d-flex justify-content-between align-items-center mt-5 mb-5">
                         <div>
-                            <h2 class="db-h2">Employee List</h2>
+                            <h2 class="db-h2">College of Architecture</h2>
                         </div>
     
-                        <div class="d-flex">
-                            <!-- Add Position Button -->
-                            <div class="container text-center">
-                                <a href="admin-ems-add-emp.html" class="button btn add-btn">ADD EMPLOYEE</a>
-                            </div>
-    
+                        <div class="d-flex">   
                             <button class="btn shadow print-btn">
                                 <i class="fa fa-print"></i> PRINT
                             </button>
@@ -228,10 +223,9 @@
                     </div>
         
                     <!-- Employee Table -->
-                    <table id="employeeTable" class="table table-bordered display">
+                    <table id="coaTable" class="table table-bordered display">
                         <thead>
                             <tr>
-                                <th class="text-center"><input type="checkbox" id="selectAll"> </th>
                                 <th>ID</th>
                                 <th>NAME</th>
                                 <th>EMAIL</th>
@@ -243,12 +237,11 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td class="text-center"><input type="checkbox" class="rowCheckbox"></td>
                                 <td>21310350</td>
                                 <td> Monsalud, Rhinell Fate J. </td>
                                 <td>mon@gmail.com</td>
-                                <td>College of Computer Studieds</td> 
-                                <td>Professor</td>
+                                <td>College of Engineering</td> 
+                                <td>Dean</td>
                                 <td>November 11, 2024</td>
                                 <td>
                                     <a href="admin-ems-view-emp.html" class="button btn btn-ap-edit">VIEW</a>
@@ -256,39 +249,36 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td class="text-center"><input type="checkbox" class="rowCheckbox"></td>
                                 <td>21310350</td>
                                 <td> Monsalud, Rhinell Fate J. </td>
                                 <td>mon@gmail.com</td>
-                                <td>College of Nursing</td> 
-                                <td>Professor</td>
-                                <td>November 11, 2024</td>
+                                <td>College of Engineering</td> 
+                                <td>Chairperson</td>
+                                <td>April 18, 2018</td>
                                 <td>
                                     <a href="admin-ems-view-emp.html" class="button btn btn-ap-edit">VIEW</a>
                                     <button class="btn btn-danger" onclick="showPopup('rejectPopup')">DELETE</button>
                                 </td>
                             </tr>
                             <tr>
-                                <td class="text-center"><input type="checkbox" class="rowCheckbox"></td>
                                 <td>21310350</td>
                                 <td> Monsalud, Rhinell Fate J. </td>
                                 <td>mon@gmail.com</td>
-                                <td>College of Architecture</td> 
+                                <td>College of Engineering</td> 
                                 <td>Professor</td>
-                                <td>November 11, 2024</td>
+                                <td>January 9, 2015</td>
                                 <td>
                                     <a href="admin-ems-view-emp.html" class="button btn btn-ap-edit">VIEW</a>
                                     <button class="btn btn-danger" onclick="showPopup('rejectPopup')">DELETE</button>
                                 </td>
                             </tr>
                             <tr>
-                                <td class="text-center"><input type="checkbox" class="rowCheckbox"></td>
                                 <td>21310350</td>
                                 <td> Monsalud, Rhinell Fate J. </td>
                                 <td>mon@gmail.com</td>
-                                <td>College of Architecture</td> 
+                                <td>College of Engineering</td> 
                                 <td>Professor</td>
-                                <td>November 11, 2024</td>
+                                <td>February 24, 2019</td>
                                 <td>
                                     <a href="admin-ems-view-emp.html" class="button btn btn-ap-edit">VIEW</a>
                                     <button class="btn btn-danger" onclick="showPopup('rejectPopup')">DELETE</button>
@@ -300,6 +290,145 @@
                 </div>
             </div>
         </div>
+
+        <!-- Offcanvas for Candidate Profile View -->
+        <!-- Add Employee Modal -->
+        <div class="modal fade" id="addPositionModal" tabindex="-1" aria-labelledby="addPositionModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addPositionModalLabel">ADD A POSITION</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                    <form>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="jobTitle" class="form-label">Job Title *</label>
+                                <input type="text" class="form-control" id="jobTitle" placeholder="Enter Job Title" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="department" class="form-label">Department *</label>
+                                <input type="text" class="form-control" id="department" placeholder="Enter Department" required>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="email" class="form-label">Email *</label>
+                                <input type="email" class="form-control" id="email" placeholder="Enter Email" required>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="phoneNumber" class="form-label">Phone Number</label>
+                                <input type="text" class="form-control" id="phoneNumber"                                                                                    >
+                            </div>
+                            <div class="col-md-3">
+                                <label for="telephoneNumber" class="form-label">Telephone Number</label>
+                                <input type="text" class="form-control" id="telephoneNumber">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="requirements" class="form-label">Requirements *</label>
+                                <textarea class="form-control" id="requirements" rows="4" required placeholder="Enter applicant requirements..."></textarea>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="duties" class="form-label">Duties and Responsibilities *</label>
+                                <textarea class="form-control" id="duties" rows="4" required placeholder="Enter duties and responsibilities..."></textarea>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="tags" class="form-label">Tags *</label>
+                                <input type="text" class="form-control" id="tags" placeholder="Enter tags">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="dateIssued" class="form-label">Date Issued *</label>
+                                <input type="date" class="form-control" id="dateIssued" required>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="endDate" class="form-label">End Date *</label>
+                                <input type="date" class="form-control" id="endDate" required>
+                            </div>
+                        </div>
+                    </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-post">POST</button>
+                        <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">CANCEL</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End of Add a Position -->
+
+        <!-- Edit Position Modal -->
+        <div class="modal fade" id="editPositionModal" tabindex="-1" aria-labelledby="editPositionModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editPositionModalLabel">EDIT POSITION</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                    <form>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="jobTitle" class="form-label">Job Title *</label>
+                                <input type="text" class="form-control" id="jobTitle" placeholder="Enter Job Title" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="department" class="form-label">Department *</label>
+                                <input type="text" class="form-control" id="department" placeholder="Enter Department" required>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="email" class="form-label">Email *</label>
+                                <input type="email" class="form-control" id="email" placeholder="Enter Email" required>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="phoneNumber" class="form-label">Phone Number</label>
+                                <input type="text" class="form-control" id="phoneNumber"                                                                                    >
+                            </div>
+                            <div class="col-md-3">
+                                <label for="telephoneNumber" class="form-label">Telephone Number</label>
+                                <input type="text" class="form-control" id="telephoneNumber">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="requirements" class="form-label">Requirements *</label>
+                                <textarea class="form-control" id="requirements" rows="4" required placeholder="Enter applicant requirements..."></textarea>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="duties" class="form-label">Duties and Responsibilities *</label>
+                                <textarea class="form-control" id="duties" rows="4" required placeholder="Enter duties and responsibilities..."></textarea>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="tags" class="form-label">Tags *</label>
+                                <input type="text" class="form-control" id="tags" placeholder="Enter tags">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="dateIssued" class="form-label">Date Issued *</label>
+                                <input type="date" class="form-control" id="dateIssued" required>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="endDate" class="form-label">End Date *</label>
+                                <input type="date" class="form-control" id="endDate" required>
+                            </div>
+                        </div>
+                    </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-post">SAVE</button>
+                        <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">CANCEL</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End of Edit -->
 
         <!-- Delete Popup -->
         <div id="rejectPopup" class="custom-popup">
@@ -334,6 +463,27 @@
         <!-- Sidebar JS -->
         <script src="js/sidebar.js"></script>
 
+        <!-- Tab JS -->
+        <script>
+            function showTab(tabId) {
+                // Hide all tab contents
+                document.querySelectorAll('.tab-content').forEach((tab) => {
+                    tab.style.display = 'none';
+                });
+
+                // Show the selected tab
+                document.getElementById(tabId).style.display = 'block';
+
+                // Remove active class from all nav links
+                document.querySelectorAll('.nav-link').forEach((link) => {
+                    link.classList.remove('active');
+                });
+
+                // Add active class to the clicked nav link
+                document.querySelector(`[onclick="showTab('${tabId}')"]`).classList.add('active');
+            }
+        </script>
+
         <!-- Data Tables -->
         <script>
             // Function to show the popup
@@ -363,7 +513,7 @@
 
             
             $(document).ready(function() {
-                $('#employeeTable').DataTable({
+                $('#coaTable').DataTable({
                     paging: true,
                     searching: true,
                     ordering: true,
@@ -374,13 +524,13 @@
                             previous: 'Previous',
                             next: 'Next'
                         },
-                        search: "", 
-                        searchPlaceholder: "Search" 
+                        search: "", // Remove the default "Search" label
+                        searchPlaceholder: "Search" // Add placeholder text
                     },
                     columnDefs: [
                         { targets: 0, orderable: false, className: 'text-center' } // Disable sorting for "Select All" checkbox column
                     ],
-                    order: [[1, 'asc']], // Ensure sorting starts from the second column
+                    order: [[1, 'asc']], // Set initial order to a different column (e.g., the "NAME" column)
                     initComplete: function() {
                         // Wrap the search input and prepend the icon
                         $('.dataTables_filter input')
@@ -389,22 +539,7 @@
                         $('.search-box').prepend('<i class="bi bi-search position-absolute" style="left: 10px; top: 50%; transform: translateY(-50%); color: #888;"></i>');
                     }
                 });
-
-
-                // Handle "select all" checkbox
-                $('#selectAll').on('click', function () {
-                    const isChecked = $(this).is(':checked');
-                    $('.rowCheckbox').prop('checked', isChecked);
-                });
-
-                // Handle individual row checkbox click
-                $('#applicantTable').on('change', '.rowCheckbox', function () {
-                    const allChecked = $('.rowCheckbox:checked').length === $('.rowCheckbox').length;
-                    $('#selectAll').prop('checked', allChecked);
-                });
             });
-
-            
         </script>
 
     </body>

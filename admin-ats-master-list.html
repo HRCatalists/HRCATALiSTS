@@ -156,28 +156,57 @@
                     <div class="d-flex justify-content-between align-items-center my-5">
                         <div>
                             <h2 class="dt-h2">Master List</h2>
-                        </div>
-    
-                        <div class="d-flex">
-                            <!-- Add Position Button -->
-                            <div class="container text-center">
-                                <button type="button" class="btn add-btn">
-                                    <a href="ats-admin-form-1.html">ADD APPLICANT</a>
-                                </button>
-                            </div>
-    
+                        </div>     
+
+                        <!-- <div class="d-flex justify-content-around ms-3">
+                            <button type="button" class="btn add-btn me-2">
+                                <a href="ats-admin-form.html">ADD APPLICANT</a>
+                            </button>
+
                             <button class="btn shadow print-btn">
                                 <i class="fa fa-print"></i> PRINT
+                                <a href=""></a>
+                            </button>
+                        </div> -->
+                    </div>
+
+                    <div class="d-flex">
+                        <div class="card checkbox-card ">
+                            <div class="container d-flex">
+
+                                <!-- Select All heckbox -->
+                                <div class="d-flex me-4 py-3">
+                                    <input type="checkbox" id="selectAll" class="rowCheckbox">
+                                </div>
+                                
+                                <!-- Archive and Delete Buttons -->
+                                <div class="d-flex py-1">
+                                    <button class="btn archive-btn btn-sm me-2">ARCHIVE</button>
+                                    <button class="btn reject-btn btn-sm">DELETE</button>
+                                </div>
+                                
+                            </div>
+                            
+                        </div>
+
+                        <div class="d-flex justify-content-around ms-3">
+                            <!-- Add Position Button -->
+                            <button type="button" class="btn add-btn me-2">
+                                <a href="ats-admin-form.html">ADD APPLICANT</a>
+                            </button>
+
+                            <button class="btn shadow print-btn">
+                                <i class="fa fa-print"></i> PRINT
+                                <a href=""></a>
                             </button>
                         </div>
-    
                     </div>
-    
+                    
                     <!-- Applicant Table -->
                     <table id="applicantTable" class="table table-bordered display">
                         <thead>
                             <tr>
-                                <th class="text-center"><input type="checkbox" id="selectAll"></th>
+                                <th></th>
                                 <th>NAME</th>
                                 <th>STATUS</th>
                                 <th>STAGES</th>
@@ -196,11 +225,7 @@
                                 <td>Medical Staff</td>
                                 <td>
                                     <div class="d-flex justify-content-around">
-                                        <button class="btn btn-primary btn-sm" data-bs-toggle="offcanvas" data-bs-target="#candidateProfile">VIEW</button>
-                                        <div class="justify-content-between">
-                                            <button class="btn archive-btn btn-sm" onclick="showPopup('archivePopup')">ARCHIVE</button>
-                                            <button class="btn btn-danger btn-sm" onclick="showPopup('deletePopup')">DELETE</button>
-                                        </div>
+                                        <button class="btn btn-ap-edit" data-bs-toggle="offcanvas" data-bs-target="#candidateProfile">VIEW</button>
                                     </div>
                                 </td>
                             </tr>
@@ -213,11 +238,7 @@
                                 <td>Medical Staff</td>
                                 <td>
                                     <div class="d-flex justify-content-around">
-                                        <button class="btn btn-primary btn-sm" data-bs-toggle="offcanvas" data-bs-target="#candidateProfile">VIEW</button>
-                                        <div class="justify-content-between">
-                                            <button class="btn archive-btn btn-sm" onclick="showPopup('archivePopup')">ARCHIVE</button>
-                                            <button class="btn btn-danger btn-sm" onclick="showPopup('deletePopup')">DELETE</button>
-                                        </div>
+                                        <button class="btn btn-ap-edit" data-bs-toggle="offcanvas" data-bs-target="#candidateProfile">VIEW</button>
                                     </div>
                                 </td>
                             </tr>
@@ -230,27 +251,41 @@
                                 <td>Medical Staff</td>
                                 <td>
                                     <div class="d-flex justify-content-around">
-                                        <button class="btn btn-primary btn-sm" data-bs-toggle="offcanvas" data-bs-target="#candidateProfile">VIEW</button>
-                                        <div class="justify-content-between">
-                                            <button class="btn archive-btn btn-sm" onclick="showPopup('archivePopup')">ARCHIVE</button>
-                                            <button class="btn btn-danger btn-sm" onclick="showPopup('deletePopup')">DELETE</button>
-                                        </div>
+                                        <button class="btn btn-ap-edit" data-bs-toggle="offcanvas" data-bs-target="#candidateProfile">VIEW</button>
                                     </div>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
 
-                    <!-- Archived Popup -->
+                    <!-- Archive Confirmation Popup (Single Applicant) -->
                     <div id="archivePopup" class="custom-popup">
                         <div class="popup-content">
                             <p>Are you sure you want to archive this applicant?</p>
-                            <button class="btn archive-btn" onclick="arhiveAction()">Yes, archive the applicant</button>
+                            <button class="btn archive-btn" onclick="archiveAction()">Yes, archive the applicant</button>
                             <button class="btn btn-outline-secondary" onclick="closePopup('archivePopup')">Cancel</button>
                         </div>
                     </div>
 
-                    <!-- Delete Popup -->
+                    <!-- Archive Confirmation Popup (Multiple Applicants) -->
+                    <div id="multiArchivePopup" class="custom-popup">
+                        <div class="popup-content">
+                            <p>Are you sure you want to archive the <br> selected applicants?</p>
+                            <button class="btn archive-btn" onclick="archiveSelected()">Yes, archive the applicants</button>
+                            <button class="btn btn-outline-secondary" onclick="closePopup('multiArchivePopup')">Cancel</button>
+                        </div>
+                    </div>
+
+                    <!-- Archive Confirmation Popup (Select All) -->
+                    <div id="selectAllArchivePopup" class="custom-popup">
+                        <div class="popup-content">
+                            <p>Are you sure you want to archive ALL applicants?</p>
+                            <button class="btn archive-btn" onclick="archiveAll()">Yes, archive all applicants</button>
+                            <button class="btn btn-outline-secondary" onclick="closePopup('selectAllArchivePopup')">Cancel</button>
+                        </div>
+                    </div>
+
+                    <!-- Delete Confirmation Popup (Single Applicant) -->
                     <div id="deletePopup" class="custom-popup">
                         <div class="popup-content">
                             <p>Are you sure you want to delete this applicant?</p>
@@ -258,6 +293,25 @@
                             <button class="btn btn-outline-secondary" onclick="closePopup('deletePopup')">Cancel</button>
                         </div>
                     </div>
+
+                    <!-- Delete Confirmation Popup (Multiple Applicants) -->
+                    <div id="multiDeletePopup" class="custom-popup">
+                        <div class="popup-content">
+                            <p>Are you sure you want to delete the selected applicants?</p>
+                            <button class="btn btn-danger" onclick="deleteSelected()">Yes, delete the applicants</button>
+                            <button class="btn btn-outline-secondary" onclick="closePopup('multiDeletePopup')">Cancel</button>
+                        </div>
+                    </div>
+
+                    <!-- Delete Confirmation Popup (Select All) -->
+                    <div id="selectAllDeletePopup" class="custom-popup">
+                        <div class="popup-content">
+                            <p>Are you sure you want to delete ALL applicants?</p>
+                            <button class="btn btn-danger" onclick="deleteAll()">Yes, delete all applicants</button>
+                            <button class="btn btn-outline-secondary" onclick="closePopup('selectAllDeletePopup')">Cancel</button>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -339,7 +393,10 @@
                             </div>
 
                             <div class="d-grid mt-5">
-                                <button class="btn btn-primary">EDIT APPLICANT DATA</button>
+                                <!-- <button class="btn btn-primary">EDIT APPLICANT DATA</button> -->
+                            </div>
+                            <div class="d-grid button-container mt-5">
+                                <button class="btn btn-success" onclick="showPopup('approvePopup')">APPROVE</button>
                             </div>
 
                         </div>
@@ -401,9 +458,9 @@
                     <!-- End Interview Tab -->
 
                     <!-- Sticky Button Container -->
-                    <div class="button-container mt-5">
+                    <!-- <div class="button-container mt-5">
                         <button class="btn btn-success" onclick="showPopup('approvePopup')">APPROVE</button>
-                    </div>
+                    </div> -->
                 </div>
 
                 <!-- Approve Popup -->
@@ -442,6 +499,7 @@
         <!-- Sidebar JS -->
         <script src="js/sidebar.js"></script>
 
+        <!-- Tab JS -->
         <script>
             function showTab(tabId) {
                 // Hide all tab contents
@@ -462,6 +520,7 @@
             }
         </script>
 
+        <!-- Data Tables -->
         <script>
             // Function to show the popup
             function showPopup(popupId) {
@@ -499,7 +558,6 @@
                 alert("Stage saved as: " + selectedStage);
                 closeEditStages();
             }
-
 
             $(document).ready(function () {
                 const table = $('#applicantTable').DataTable({
@@ -540,7 +598,199 @@
                     $('#selectAll').prop('checked', allChecked);
                 });
             });
-
         </script>
+
+        <!-- Alerts JS -->
+        <script>
+            $(document).ready(function () {
+                // Initially hide the Archive and Delete buttons
+                $('.archive-btn, .reject-btn').hide();
+        
+                function toggleButtons() {
+                    let selectedCount = $('.rowCheckbox:checked').length;
+                    if (selectedCount > 0) {
+                        $('.archive-btn, .reject-btn').show();
+                    } else {
+                        $('.archive-btn, .reject-btn').hide();
+                    }
+                }
+        
+                // On change of individual checkboxes
+                $('.rowCheckbox').on('change', function () {
+                    toggleButtons();
+                });
+        
+                // When "Select All" is clicked
+                $('#selectAll').on('change', function () {
+                    $('.rowCheckbox').prop('checked', $(this).is(':checked'));
+                    toggleButtons();
+                });
+        
+                // Archive button click event
+                $('.archive-btn').on('click', function () {
+                    let totalCount = $('.rowCheckbox').length; // Total checkboxes
+                    let selectedCount = $('.rowCheckbox:checked').length;
+        
+                    if (selectedCount === totalCount) {
+                        showPopup('selectAllArchivePopup'); // Show "Select All" Archive popup
+                    } else if (selectedCount >= 2) {
+                        showPopup('multiArchivePopup'); // Show multiple applicants popup
+                    } else if (selectedCount === 1) {
+                        showPopup('archivePopup'); // Show single applicant popup
+                    }
+                });
+        
+                // Delete button click event
+                $('.reject-btn').on('click', function () {
+                    let totalCount = $('.rowCheckbox').length; // Total checkboxes
+                    let selectedCount = $('.rowCheckbox:checked').length;
+        
+                    if (selectedCount === totalCount) {
+                        showPopup('selectAllDeletePopup'); // Show "Select All" Delete popup
+                    } else if (selectedCount >= 2) {
+                        showPopup('multiDeletePopup'); // Show multiple applicants popup
+                    } else if (selectedCount === 1) {
+                        showPopup('deletePopup'); // Show single applicant popup
+                    }
+                });
+            });
+        
+            // Function to show popups
+            function showPopup(popupId) {
+                const popup = document.getElementById(popupId);
+                popup.style.visibility = 'visible';
+                popup.style.opacity = '1';
+            }
+        
+            // Function to close popups
+            function closePopup(popupId) {
+                const popup = document.getElementById(popupId);
+                popup.style.opacity = '0';
+                popup.style.visibility = 'hidden';
+            }
+        
+            // Archive ALL applicants
+            function archiveAll() {
+                alert("All applicants archived!");
+                closePopup('selectAllArchivePopup');
+            }
+        
+            // Delete ALL applicants
+            function deleteAll() {
+                alert("All applicants deleted!");
+                closePopup('selectAllDeletePopup');
+            }
+        
+            // Archive action (single)
+            function archiveAction() {
+                alert("Applicant archived!");
+                closePopup('archivePopup');
+            }
+        
+            // Archive action (multiple)
+            function archiveSelected() {
+                alert("Selected applicants archived!");
+                closePopup('multiArchivePopup');
+            }
+        
+            // Delete action (single)
+            function deleteAction() {
+                alert("Applicant deleted!");
+                closePopup('deletePopup');
+            }
+        
+            // Delete action (multiple)
+            function deleteSelected() {
+                alert("Selected applicants deleted!");
+                closePopup('multiDeletePopup');
+            }
+        </script>
+
+        <!-- Checkbox JS - Shows buttons and expands card -->
+        <script>
+            $(document).ready(function () {
+                // Initially hide buttons and keep the card collapsed
+                $('.archive-btn, .reject-btn').hide();
+                $('.checkbox-card').removeClass('expanded');
+
+                function toggleButtons() {
+                    let selectedCount = $('.rowCheckbox:checked').length;
+
+                    if (selectedCount > 0) {
+                        $('.archive-btn, .reject-btn').fadeIn();
+                        $('.checkbox-card').addClass('expanded'); // Expand card
+                    } else {
+                        $('.archive-btn, .reject-btn').fadeOut();
+                        $('.checkbox-card').removeClass('expanded'); // Collapse card
+                    }
+                }
+
+                // Handle checkbox click (including dynamically rendered rows)
+                $(document).on('change', '.rowCheckbox', function () {
+                    toggleButtons();
+                });
+
+                // Handle "Select All" checkbox
+                $('#selectAll').on('change', function () {
+                    $('.rowCheckbox').prop('checked', this.checked);
+                    toggleButtons();
+                });
+
+                // Archive button click event
+                $('.archive-btn').on('click', function () {
+                    let selectedCount = $('.rowCheckbox:checked').length;
+                    if (selectedCount === $('.rowCheckbox').length) {
+                        showPopup('selectAllArchivePopup');
+                    } else if (selectedCount >= 2) {
+                        showPopup('multiArchivePopup');
+                    } else {
+                        showPopup('archivePopup');
+                    }
+                });
+
+                // Delete button click event
+                $('.reject-btn').on('click', function () {
+                    let selectedCount = $('.rowCheckbox:checked').length;
+                    if (selectedCount === $('.rowCheckbox').length) {
+                        showPopup('selectAllDeletePopup');
+                    } else if (selectedCount >= 2) {
+                        showPopup('multiDeletePopup');
+                    } else {
+                        showPopup('deletePopup');
+                    }
+                });
+
+                // Show popup function
+                function showPopup(popupId) {
+                    $('#' + popupId).css({ visibility: 'visible', opacity: '1' });
+                }
+
+                // Close popup function
+                function closePopup(popupId) {
+                    $('#' + popupId).css({ opacity: '0', visibility: 'hidden' });
+                }
+            });
+        </script>
+
+
+        <!-- Expandable Card -->
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const checkboxes = document.querySelectorAll('.rowCheckbox');
+                
+                checkboxes.forEach(checkbox => {
+                    checkbox.addEventListener("change", function () {
+                        const card = this.closest(".checkbox-card");
+                        
+                        if (this.checked) {
+                            card.classList.add("expanded");
+                        } else {
+                            card.classList.remove("expanded");
+                        }
+                    });
+                });
+            });
+        </script>
+        
     </body>
 </html>
