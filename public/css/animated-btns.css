@@ -18,7 +18,7 @@
   scale: 0.7;
   -webkit-tap-highlight-color: transparent;
   -webkit-appearance: button;
-  background-color: #12357d;
+  background-color: #111D5B;
   background-image: none;
   color: #fff;
   cursor: pointer;
@@ -51,7 +51,7 @@
 
 .btn-1 {
   border: 1px solid;
-  border-radius: 5px;
+  border-radius: 20px;
   box-sizing: border-box;
   display: block;
   font-weight: 900;
@@ -169,7 +169,7 @@
   background-color: var(--clr);
   color: #fff;
   background-color: #3377cc;
-  border-radius: 5px;
+  border-radius: 10rem;
   font-weight: 600;
   font-size: 18px;
   letter-spacing: 0.1rem;
@@ -675,20 +675,4 @@
   100% {
     transform: scale3d(1, 1, 1);
   }
-}
-
-
-/* Search button */
-
-.search-btn {
-  font-size: medium;
-  color: #fff;
-  background-color: rgb(51, 119, 204);
-  padding: 12px 28px;
-  border-radius: 5px;
-  transition: all 0.3s ease;
-}
-
-.search-btn:hover {
-  background-color: #12357d;
 }

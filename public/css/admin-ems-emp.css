@@ -1,0 +1,37 @@
+.fixed-action-container {
+    position: fixed;
+    top: 50px; /* Adjust based on navbar height */
+    z-index: 1;
+    display: flex;
+    background: rgba(255, 255, 255, 0.9); /* Slight transparency */
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.emp-content {
+    margin-top: 130px;
+}
+
+input {
+    font-size: 14px !important;
+    border: 1px solid #111D5B !important;
+    transition: 0.3s ease;
+}
+
+select {
+    font-size: 15px !important;
+    border: 1px solid #111D5B !important;
+    transition: 0.3s ease;
+}
+
+input:hover, select:hover  {
+    border: 1.7px solid #3377CC !important;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

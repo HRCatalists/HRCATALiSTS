@@ -28,7 +28,6 @@
     
                         <form method="POST" action="{{ route('login') }}" id="loginForm">
                             @csrf
-
                             <!-- Email -->
                             <div class="mb-3">
                                 <label for="email" class="form-label login-label">Email</label>
@@ -63,24 +62,19 @@
                             <!-- Submit Button -->
                             <button type="submit" class="btn btn-primary w-100 mt-4">Log In</button>
                         </form>
-    
                     </div>
     
                     <!-- Back Side -->
-                    <div class="card p-4 card-back" id="loginCardBack">
-                        <div class="card-body d-flex flex-column align-items-center justify-content-center">
-                            <a href="{{ route('dashboard') }}">
-                                <button class="btn btn-lg btn-primary my-3 w-100 text-center">
-                                    EMPLOYEE MANAGEMENT SYSTEM
-                                </button>
+                    {{-- <div class="card p-4 card-back" id="loginCardBack">
+                        <div class="card-body d-flex flex-column align-items-center justify-content-center p-0">
+                            <a id="chooseEMS" class="btn btn-lg btn-primary my-3 py-5 w-100 text-center">
+                                EMPLOYEE MANAGEMENT SYSTEM
                             </a>
-                            <a href="{{ route('dashboard') }}">
-                                <button class="btn btn-lg btn-primary my-3 w-100 text-center">
-                                    APPLICANT TRACKING SYSTEM
-                                </button>
+                            <a id="chooseATS" class="btn btn-lg btn-primary my-3 py-5 w-100 text-center">
+                                APPLICANT TRACKING SYSTEM
                             </a>
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
         </div>
