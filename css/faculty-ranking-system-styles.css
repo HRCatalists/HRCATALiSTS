@@ -12,3 +12,7 @@
 .addRow , .removeRow {
     width: 30px;
 }
+
+#training-count , #seminar-count {
+    width: 60px;
+}

@@ -215,7 +215,15 @@
                                         </tr>
                                         <tr>
                                             <td>Academic Units towards Master's Degree (last 3 years) for every 6 Units</td>
-                                            <td  class="text-center"><input type="checkbox" id="one-point" name="options"></td>
+                                            <td class="text-center">
+                                                <select id="dropdown-options" name="options">
+                                                    <option value="">Select</option>
+                                                    <option value="option1">6 units = 1 pt</option>
+                                                    <option value="option2">12 units = 2 pts</option>
+                                                    <option value="option3">18 units = 3 pts</option>
+                                                    <option value="option4">24 units = 4 pts</option>
+                                                </select>
+                                            </td>
                                             <td></td>
                                         </tr>
                                         <tr>
@@ -235,7 +243,15 @@
                                         </tr>
                                         <tr>
                                             <td>Academic Units earned towards Doctorate Degree (last 3 years) for every 6 Units</td>
-                                            <td  class="text-center"><input type="checkbox" id="one-point" name="options"></td>
+                                            <td class="text-center">
+                                                <select id="dropdown-options" name="options">
+                                                    <option value="">Select</option>
+                                                    <option value="option1">6 units = 1 pt</option>
+                                                    <option value="option2">12 units = 2 pts</option>
+                                                    <option value="option3">18 units = 3 pts</option>
+                                                    <option value="option4">24 units = 4 pts</option>
+                                                </select>
+                                            </td>
                                             <td></td>
                                         </tr>
                                         <tr>
@@ -291,9 +307,16 @@
                                             <td>Advanced/Special training in related field to one's teaching/ 
                                                 assignment (3 weeks maximum)
                                             </td>
-                                            <td  class="text-center"><input type="checkbox" id="two-points" name="options"></td>
+                                            <td class="text-center">
+                                                2 pts/training
+                                                <input  class="mx-2" type="number" id="training-count" name="training-count" min="0" value="0" oninput="calculatePoints()">
+                                                <span id="total-points">0</span> pts
+                                            </td>
                                             <td></td>
                                         </tr>
+
+
+
                                         <tr>
                                             <td>Travel related to one's field/present assignment and Scholarship/Study Grant (Domestic Abroad)</td>
                                             <td  class="text-center"><input type="checkbox" id="five-points" name="options"></td>
@@ -301,7 +324,11 @@
                                         </tr>
                                         <tr>
                                             <td>Seminars/Workshops/Conventions/Conferences (cumulative)</td>
-                                            <td  class="text-center"><input type="checkbox" id="three-one-points" name="options"></td>
+                                            <td class="text-center">
+                                                .33 pt/day or 1 pt/3 days
+                                                <input class="mx-2 small-input" type="number" id="seminar-count" name="seminar-count" min="0" value="0" oninput="calculatePointseminar()">
+                                                <span id="total-pointseminar">0</span> pts
+                                            </td>
                                             <td></td>
                                         </tr>
                                         <tr>
@@ -772,6 +799,8 @@
 
     </div>
 
+
+        <script src="js/ranking-system.js"></script>
 
         <!-- Bootstrap JavaScript Libraries -->
         <script
