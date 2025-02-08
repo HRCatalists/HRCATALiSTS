@@ -1,15 +1,22 @@
 // Advanced/Special training in related field to one's teaching/ assignment (3 weeks maximum)
 
-$(document).ready(function(){
-    $("#addRow").click(function(){
-        let newRow = "<tr><td></td><td></td><td></td><td></td></tr>";
+$(document).ready(function () {
+    $("#addRow").click(function () {
+        let newRow = `
+            <tr>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+            </tr>`;
         $("#tableBody").append(newRow);
     });
-    
-    $("#removeRow").click(function(){
+
+    $("#removeRow").click(function () {
         $("#tableBody tr:last").remove();
     });
 });
+
 
 
 // 2 pts per training
