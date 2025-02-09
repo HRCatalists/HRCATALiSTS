@@ -108,27 +108,41 @@
                         </a>
                     </li>
 
-                    <li class="d-flex align-items-center pe-5">   
-                        <a href="admin-ats-master-list.html" class="nav-link px-0 align-middle">
+                    <li class="d-flex align-items-center ranking pe-5">   
+                        <a href="#applicants" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
                             <img src="images/table.png" class="icon" alt="applicant-icon">
 
-                            <span class="ms-3 sidebar-effect">MASTER LIST</span> 
+                            <span class="ms-3 sidebar-effect">APPLICANTS</span> 
+
+                            <i class="fa-solid fa-chevron-up chevron-icon" id="chevron-arrow"></i>
                         </a>
+
+                        <ul class="collapse flex-column ms-1" id="applicants" data-bs-parent="#menu">
+                            <li class="mt-2">
+                                <a href="admin-ats-master-list.html" class="nav-link px-0"> <span class="sidebar-effect">Applicant List</span> </a>
+                            </li>
+
+                            <li>
+                                <a href="admin-ats-screening.html" class="nav-link px-0"> <span class="sidebar-effect">Screening</span> </a>
+                            </li>
+
+                            <li>
+                                <a href="admin-ats-interview.html" class="nav-link px-0"> <span class="sidebar-effect">Interview</span> </a>
+                            </li>
+
+                            <li class="d-flex align-items-center pe-5">   
+                                <a href="admin-ats-arch.html" class="nav-link px-0 align-middle">
+                                    <span class="sidebar-effect">Archived</span> 
+                                </a>
+                            </li>
+                        </ul>
                     </li>
 
                     <li class="d-flex align-items-center pe-5">   
                         <a href="admin-ats-act-post.html" class="nav-link px-0 align-middle">
                             <img src="images/cv.png" class="icon" alt="positions-icon">
 
-                            <span class="ms-3 sidebar-effect">ACTIVE POSITIONS</span> 
-                        </a>
-                    </li>
-
-                    <li class="d-flex align-items-center pe-5">   
-                        <a href="admin-ats-arch.html" class="nav-link px-0 align-middle">
-                            <img src="images/archived.png" class="icon" alt="positions-icon">
-
-                            <span class="ms-3 sidebar-effect">ARCHIVED APPLICANTS</span> 
+                            <span class="ms-3 sidebar-effect">OPENINGS</span> 
                         </a>
                     </li>
 
@@ -155,20 +169,41 @@
                         <div>
                             <h2 class="dt-h2">Archived Applicants</h2>
                         </div>
-    
-                        <div class="d-flex">
+                    </div>
+
+                    <div class="d-flex">
+                        <div class="card checkbox-card">
+                            <div class="container d-flex">
+
+                                <!-- Select All heckbox -->
+                                <div class="d-flex me-4 py-3">
+                                    <input type="checkbox" id="selectAll" class="rowCheckbox">
+                                </div>
+                                
+                                <!-- Retrieve and Delete Buttons -->
+                                <div class="d-flex py-1">
+                                    <button class="btn btn-success btn-sm me-2">RETRIEVE</button>
+                                    <button class="btn reject-btn btn-sm">DELETE</button>
+                                </div>
+                                
+                            </div>
+                            
+                        </div>
+
+                        <div class="d-flex justify-content-around ms-3">
+
                             <button class="btn shadow print-btn">
                                 <i class="fa fa-print"></i> PRINT
+                                <a href=""></a>
                             </button>
                         </div>
-    
                     </div>
         
                     <!-- Applicant Table -->
                     <table id="archivedApplicantTable" class="table table-bordered display">
                         <thead>
                             <tr>
-                                <th class="text-center"><input type="checkbox" id="selectAll"></th>
+                                <th></th>
                                 <th>APPLICANT NAME</th>
                                 <th>APPLIED DATE</th>
                                 <th>POSITION APPLIED TO</th>
@@ -183,11 +218,7 @@
                                 <td>Medical Staff</td>
                                 <td>
                                     <div class="d-flex justify-content-around">
-                                        <button class="btn btn-primary btn-sm" data-bs-toggle="offcanvas" data-bs-target="#candidateProfile">VIEW</button>
-                                        <div class="justify-content-between">
-                                            <button class="btn btn-success btn-sm" onclick="showPopup('retrievePopup')">RETRIEVE</button>
-                                            <button class="btn reject-btn btn-sm" onclick="showPopup('deletePopup')">DELETE</button>
-                                        </div>
+                                        <button class="btn btn-ap-edit" data-bs-toggle="offcanvas" data-bs-target="#candidateProfile">VIEW</button>
                                     </div>
                                 </td>
                             </tr>
@@ -198,11 +229,7 @@
                                 <td>Medical Staff</td>
                                 <td>
                                     <div class="d-flex justify-content-around">
-                                        <button class="btn btn-primary btn-sm" data-bs-toggle="offcanvas" data-bs-target="#candidateProfile">VIEW</button>
-                                        <div class="justify-content-between">
-                                            <button class="btn btn-success btn-sm" onclick="showPopup('retrievePopup')">RETRIEVE</button>
-                                            <button class="btn btn-danger btn-sm" onclick="showPopup('deletePopup')">DELETE</button>
-                                        </div>
+                                        <button class="btn btn-ap-edit" data-bs-toggle="offcanvas" data-bs-target="#candidateProfile">VIEW</button>
                                     </div>
                                 </td>
                             </tr>
@@ -213,11 +240,7 @@
                                 <td>Medical Staff</td>
                                 <td>
                                     <div class="d-flex justify-content-around">
-                                        <button class="btn btn-primary btn-sm" data-bs-toggle="offcanvas" data-bs-target="#candidateProfile">VIEW</button>
-                                        <div class="justify-content-between">
-                                            <button class="btn btn-success btn-sm" onclick="showPopup('retrievePopup')">RETRIEVE</button>
-                                            <button class="btn btn-danger btn-sm" onclick="showPopup('deletePopup')">DELETE</button>
-                                        </div>
+                                        <button class="btn btn-ap-edit" data-bs-toggle="offcanvas" data-bs-target="#candidateProfile">VIEW</button>
                                     </div>
                                 </td>
                             </tr>
@@ -228,11 +251,7 @@
                                 <td>Medical Staff</td>
                                 <td>
                                     <div class="d-flex justify-content-around">
-                                        <button class="btn btn-primary btn-sm" data-bs-toggle="offcanvas" data-bs-target="#candidateProfile">VIEW</button>
-                                        <div class="justify-content-between">
-                                            <button class="btn btn-success btn-sm" onclick="showPopup('retrievePopup')">RETRIEVE</button>
-                                            <button class="btn btn-danger btn-sm" onclick="showPopup('deletePopup')">DELETE</button>
-                                        </div>
+                                        <button class="btn btn-ap-edit" data-bs-toggle="offcanvas" data-bs-target="#candidateProfile">VIEW</button>
                                     </div>
                                 </td>
                             </tr>
@@ -381,7 +400,7 @@
         <!-- Sidebar JS -->
         <script src="js/sidebar.js"></script>
 
-        <!-- Modal Tabs -->
+        <!-- Tabs JS -->
         <script>
             function showTab(tabId) {
                 // Hide all tab contents
@@ -402,6 +421,7 @@
             }
         </script>
 
+        <!-- Data Tables -->
         <script>
             // Function to show the popup
             function showPopup(popupId) {
@@ -415,17 +435,6 @@
                 const popup = document.getElementById(popupId);
                 popup.style.opacity = '0';
                 popup.style.visibility = 'hidden';
-            }
-
-            // Action functions for Approve, Archive, and Reject
-            function retrieveAction() {
-                alert("Applicant retrieve!");
-                closePopup('retrievePopup');
-            }
-
-            function deleteAction() {
-                alert("Applicant deleted!");
-                closePopup('deletePopup');
             }
 
             $(document).ready(function () {
@@ -446,28 +455,106 @@
                     columnDefs: [
                         { targets: 0, orderable: false, className: 'text-center' }, // Disable sorting for the checkbox column
                     ],
-                    initComplete: function () {
-                        // Wrap the search input and prepend the icon
-                        $('.dataTables_filter input')
-                            .wrap('<div class="search-box position-relative"></div>')
-                            .attr('placeholder', 'Search');
-                        $('.search-box').prepend('<i class="bi bi-search position-absolute" style="left: 10px; top: 50%; transform: translateY(-50%); color: #888;"></i>');
-                    },
+                    order: [[1, 'asc']], // Set default sorting to "Applicant name" column
                 });
 
+                function toggleButtons() {
+                    const selectedCount = $('.rowCheckbox:checked').length;
+                    const retrieveButton = $('.btn-success');
+                    const deleteButton = $('.reject-btn');
+                    const checkboxCard = $('.checkbox-card');
+
+                    if (selectedCount > 0) {
+                        retrieveButton.show();
+                        deleteButton.show();
+                        checkboxCard.addClass('expanded');
+                    } else {
+                        retrieveButton.hide();
+                        deleteButton.hide();
+                        checkboxCard.removeClass('expanded');
+                    }
+                }
+
+                function showPopup(action) {
+                    let selectedCount = $('.rowCheckbox:checked').length;
+                    let totalApplicants = $('.rowCheckbox').length;
+                    let popupId = action === 'retrieve' ? '#retrievePopup' : '#deletePopup';
+                    let message;
+
+                    if (selectedCount === 1) {
+                        message = `Are you sure you want to ${action} this applicant?`;
+                    } else if (selectedCount === totalApplicants) {
+                        message = `Are you sure you want to ${action} ALL the applicants?`;
+                    } else {
+                        message = `Are you sure you want to ${action} the selected applicants?`;
+                    }
+
+                    $(popupId).find('p').text(message);
+                    $(popupId).css({ visibility: 'visible', opacity: '1' });
+                }
+
+                function closePopup(popupId) {
+                    $(popupId).css({ opacity: '0', visibility: 'hidden' });
+                }
+
+                function retrieveAction() {
+                    alert("Selected applicants retrieved successfully!");
+                    closePopup('#retrievePopup');
+                }
+
+                function deleteAction() {
+                    alert("Selected applicants deleted successfully!");
+                    closePopup('#deletePopup');
+                }
+
                 // Handle "Select All" checkbox click
-                $('#selectAll').on('click', function () {
+                $('#selectAll').on('change', function () {
                     const isChecked = $(this).is(':checked');
                     $('.rowCheckbox').prop('checked', isChecked);
+                    toggleButtons();
                 });
 
                 // Handle individual row checkbox click
                 $('#archivedApplicantTable').on('change', '.rowCheckbox', function () {
                     const allChecked = $('.rowCheckbox:checked').length === $('.rowCheckbox').length;
                     $('#selectAll').prop('checked', allChecked);
+                    toggleButtons();
                 });
+
+                // Handle retrieve button click
+                $('.btn-success').on('click', function () {
+                    if ($('.rowCheckbox:checked').length > 0) {
+                        showPopup('retrieve');
+                    }
+                });
+
+                // Handle delete button click
+                $('.reject-btn').on('click', function () {
+                    if ($('.rowCheckbox:checked').length > 0) {
+                        showPopup('delete');
+                    }
+                });
+
+                // Close popup when clicking cancel
+                $('.btn-outline-secondary').on('click', function () {
+                    closePopup($(this).closest('.custom-popup').attr('id'));
+                });
+
+                // Confirm retrieve action
+                $('#retrievePopup .btn-success').on('click', function () {
+                    retrieveAction();
+                });
+
+                // Confirm delete action
+                $('#deletePopup .btn-danger').on('click', function () {
+                    deleteAction();
+                });
+
+                // Initially hide the retrieve and delete buttons
+                $('.btn-success, .reject-btn').hide();
+                $('.checkbox-card').removeClass('expanded');
             });
-        
+
         </script>
     </body>
 </html>

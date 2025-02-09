@@ -1,3 +1,23 @@
+.btn-employee-search {
+    background-color: #111D5B !important; 
+    color: white !important;
+}
+
+.nav-tabs .nav-link.active {
+    font-weight: bold;
+    color: #111D5B;
+}
+
+
+.addRow , .removeRow {
+    width: 30px;
+}
+
+#training-count , #seminar-count , 
+#withintheschool-count , #RQAT-count , #NatAccreditor-count , #member-count{
+    width: 60px;
+}
+
 .search-container {
     max-width: 900px;
     margin: auto;
@@ -38,6 +58,10 @@ label, span {
     align-items: center;
 }
 
+.year-input {
+    width: 70px;
+}
+
 /* PRINT BUTTON */
 .print-btn {
     background-color: white; 
@@ -67,4 +91,11 @@ color: white;
 
 .print-btn:active {
 transform: scale(0.98); 
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
