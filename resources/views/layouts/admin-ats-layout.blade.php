@@ -287,5 +287,13 @@
         });  
     </script>
 
+    <script>
+        window.addEventListener('pageshow', function(event) {
+            if (event.persisted) {
+                window.location.href = "/login"; // Redirect user back to login
+            }
+        });
+    </script>
+
 </body>
 </html>
