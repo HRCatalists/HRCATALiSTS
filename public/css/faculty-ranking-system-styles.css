@@ -1,0 +1,101 @@
+.btn-employee-search {
+    background-color: #111D5B !important; 
+    color: white !important;
+}
+
+.nav-tabs .nav-link.active {
+    font-weight: bold;
+    color: #111D5B;
+}
+
+
+.addRow , .removeRow {
+    width: 30px;
+}
+
+#training-count , #seminar-count , 
+#withintheschool-count , #RQAT-count , #NatAccreditor-count , #member-count{
+    width: 60px;
+}
+
+.search-container {
+    max-width: 900px;
+    margin: auto;
+    padding: 10px 50px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.search-btn {
+    background-color: #111D5B; 
+    color: white;
+    border: 2px solid #111D5B; 
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: solid 1px #3377cc !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+.search-btn:hover {
+    background-color: white; 
+    color: #111D5B; 
+}
+
+input[type="date"] {
+    width: 300px;
+}
+
+label, span {
+    display: flex;
+    align-items: center;
+}
+
+.year-input {
+    width: 70px;
+}
+
+/* PRINT BUTTON */
+.print-btn {
+    background-color: white; 
+    color: #111D5B; 
+    border: 2px solid #111D5B; 
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: solid 1px #3377cc !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+.print-btn i {
+margin-right: 8px; 
+}
+
+.print-btn:hover {
+background-color: #111D5B; 
+color: white;
+}
+
+.print-btn:active {
+transform: scale(0.98); 
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
