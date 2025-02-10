@@ -1,0 +1,15 @@
+@font-face {
+    font-family: 'Caudex';
+    src: url('/font/Caudex-Regular.ttf');
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Caudex', sans-serif;
+}
+
+html, body {
+    height: 100%;
+}

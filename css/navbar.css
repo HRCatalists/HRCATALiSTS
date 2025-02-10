@@ -1,0 +1,62 @@
+/* Navbar */
+a,
+a:hover,
+a:focus {
+    color: inherit;
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+.navbar {
+    background-color: #3377CC;
+    height: 70px;
+}
+  
+.cc-nav-text {
+    color: white;
+    letter-spacing: 2px;
+    font-weight: bold;
+}
+
+.user-name {
+    color: white;
+    letter-spacing: 2px;
+    font-weight: bold;
+}
+  
+.cclogo {
+    width: 50px;
+}
+
+.navbar-btn {
+    box-shadow: none;
+    outline: none !important;
+    border: none;
+}
+
+.user-img {
+    width: 30px;
+    height: 30px;
+}
+
+/* Media Query for Smaller Screens */
+@media (max-width: 768px) {
+    .navbar .user-name {
+        display: none; /* Hide text */
+    }
+
+    .navbar .user-img {
+        margin-left: auto; /* Adjust alignment for the dropdown */
+    }
+
+    .navbar .login {
+        display: none; /* Hide text */
+    }
+}
+
+@media (max-width: 440px) {
+    .navbar .cc-nav-text {
+        display: none; 
+    }
+}
+/* End of Navbar */

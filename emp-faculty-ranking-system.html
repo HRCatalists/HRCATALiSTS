@@ -1,0 +1,879 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Ranking System</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+        <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"rel="stylesheet"integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"crossorigin="anonymous"/>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css">
+        <!-- {{-- JQuery  --}} -->
+        <script
+            src="https://code.jquery.com/jquery-3.7.1.js"
+            integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+            crossorigin="anonymous"></script>
+
+        <!-- Styles CSS -->
+        <link rel="stylesheet" href="css/styles.css">
+
+        <!-- Navbar CSS -->
+        <link rel="stylesheet" href="css/navbar.css">
+
+        <!-- Dashboard CSS -->
+        <link rel="stylesheet" href="css/dashboard.css">
+
+        <!-- Sidebar CSS -->
+        <link rel="stylesheet" href="css/sidebar.css">
+
+       <!-- Emp profile CSS -->
+        <link rel="stylesheet" href="css/ems-emp-profile-styles.css">
+
+        <!-- faculty ranking system -->
+        <link rel="stylesheet" href="css/faculty-ranking-system-styles.css">
+
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container d-flex justify-content-between">
+
+            <!-- Hamburger Menu Button -->
+            <button class="navbar-toggler me-2" type="button" id="hamburgerMenu">
+                <div class="imageBox">
+                    <div class="imageInn">
+                        <img src="images/hamburger-1.png" class="card-icon m-auto" alt="Default Image">
+                    </div>
+                    <div class="hoverImg">
+                        <img src="images/hamburger-2.png" class="card-icon m-auto" alt="Profile Image">
+                    </div>
+                </div>
+            </button>
+            
+            <!-- Left Side (Logo and College Name) -->
+            <a class=" d-flex align-items-center" href="#">
+                <img src="images/CC_logo.png" alt="Logo" class="cclogo">
+                <span class="cc-nav-text navbar-text ms-2">Columban College, Inc.</span>
+            </a>
+            
+            <!-- Right Side (User Profile Section) -->
+            <div class="d-flex align-items-center">
+                <span class="user-name navbar-text me-3">Rhinell Menes</span>
+                <div class="dropdown">
+                    <a href="#" class="dropdown-toggle d-flex align-items-center text-decoration-none" id="userMenu" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="images/dummy-profile.png" alt="Profile" class="rounded-circle user-img">
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
+                        <li><a class="dropdown-item" href="#">Profile</a></li>
+                        <li><a class="dropdown-item" href="#">Settings</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- End of Navbar -->
+     
+    <!-- Profile Content -->
+    <div class="d-flex">
+            <!-- Sidebar -->
+            <div id="sidebar" class="shadow">
+                <ul class="list-unstyled components">
+                    <li class="d-flex align-items-center">
+                        <img src="images/dashboard.png" class="icon" alt="dashboard-icon">
+                        <a href="emp-ems-db.html" class="ms-3">Dashboard</a>
+                    </li>
+                    <li class="d-flex align-items-center">
+                        <img src="images/user.png" class="icon" alt="calendar-icon">
+                        <a href="emp-ems-profile.html" class="ms-3">Profile</a>
+                    </li>
+                    <li class="d-flex align-items-center">
+                        <img src="images/calendar.png" class="icon" alt="applicant-icon">
+                        <a href="emp-ems-events.html" class="ms-3">Events</a>
+                    </li>
+                    <li class="d-flex align-items-center">
+                        <img src="images/faqs.png" class="icon" alt="review-icon">
+                        <a href="emp-ems-others.html" class="ms-3">Others</a>
+                    </li>
+                    <li class="d-flex align-items-center">
+                        <img src="images/log.png" class="icon" alt="log-icon">
+                        <a href="emp-ems-logs.html" class="ms-3">Logs</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- End of Sidebar -->
+    
+        <!-- Profile Content -->
+        <div id="content" class="flex-grow-1">
+            <div class="container mt-5">
+
+                <div>
+
+                    <div class="container mt-5">
+
+                        <div class="d-flex justify-content-center mb-4">
+                            <h2 class="db-h2">FACULTY RANKING SYSTEM</h2>   
+                        </div>
+    
+                        <div class="container">
+    
+                            <div class="search-container">
+                                <!-- <h4 class="text-center mb-3">Search Personnel</h4> -->
+                                <div class="d-flex">
+                                    <input type="text" id="searchName" class="form-control me-2" placeholder="Enter Name of Personnel" aria-label="Search by Name">
+    
+                                    <select id="searchDepartment" class="form-select me-2">
+                                        <option value="" disabled selected>-Select a Department-</option>
+                                        <option value="engineering">Department of Engineering</option>
+                                        <option value="cased">Department of Arts & Science and Education</option>
+                                        <option value="cba">Department of Business and Accountancy</option>
+                                        <option value="nursing">Department of Nursing</option>
+                                        <option value="ccs">Department of Computer Studies</option>
+                                        <option value="arch">Department of Architecture</option>
+                                        <option value="basic_ed">Department of Basic Education</option>
+                                    </select>
+                                    
+                                    <button class="btn search-btn" onclick="searchPersonnel()">SEARCH</button>
+                                </div>
+                            </div>
+    
+                            <div class="d-flex justify-content-center align-content-center mt-4">
+    
+                                <label class="fw-bold me-2" for="inlusiveDate">Inclusive Date:</label>
+    
+                                <input type="date" id="inlusiveDate" class="form-control me-2">
+                                <span class="fw-bold me-2">to</span>
+                                <input type="date" id="inlusiveDate" class="form-control me-2">
+    
+                            </div>
+                        </div>
+    
+                    </div>
+
+
+
+                    <div>
+                    
+
+                        <!-- Tab links -->
+                        <ul class="nav nav-tabs mt-5" id="myTabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                            <a class="nav-link active" id="tab1" data-bs-toggle="tab" href="#content1" role="tab">I.</a>
+                            </li>
+
+                            <li class="nav-item" role="presentation">
+                            <a class="nav-link" id="tab2" data-bs-toggle="tab" href="#content2" role="tab">II.</a>
+                            </li>
+
+                            <li class="nav-item" role="presentation">
+                            <a class="nav-link" id="tab3" data-bs-toggle="tab" href="#content3" role="tab">III.</a>
+                            </li>
+
+                            <li class="nav-item" role="presentation">
+                            <a class="nav-link" id="tab4" data-bs-toggle="tab" href="#content4" role="tab">IV.</a>
+                            </li>
+
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link" id="tab5" data-bs-toggle="tab" href="#content5" role="tab">SUMMARY</a>
+                                </li>
+                        </ul>
+
+
+                        <!-- Tab content -->
+                        <div class="tab-content" id="myTabContent">
+                            
+                            <div class="tab-pane fade show active" id="content1" role="tabpanel">
+
+                                <table class="table table-bordered mt-5">
+                                    <thead>
+                                        <tr>
+                                            <th>Job Factors</th>
+                                            <th>Action</th>
+                                            <th>Credit Points</th>
+                                            <th>Weights</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>I. ACADEMIC PREPARATION & OTHER QUALIFICATIONS</strong></td>
+                                            <td></td>
+                                            <td><strong>100 POINTS</strong></td>
+                                            <td><strong>x 30%</strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>A. Educational Degrees</strong></td>
+                                            <td   class="text-center"><input type="radio" id="fifty-points" name="groupA" value="1"></td>
+                                            <td  class="text-center"><strong>(50 pts maximum)</strong></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Bachelor's Degree</td>
+                                            <td   class="text-center"><input type="radio" id="fifty-points" name="groupA" value="1"></td>
+                                            <td  class="text-center">20 pts</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Academic Units towards Master's Degree (last 3 years) for every 6 Units</td>
+                                            <td contenteditable="true"></td>
+                                            <td class="text-center">6 units = 1 pt</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>MA/MS/MAT/MBA/MPM (Candidate): Completed Academic Requirements</td>
+                                            <td   class="text-center"><input type="radio" id="fifty-points" name="groupA" value="1"></td>
+                                            <td  class="text-center">25 pts</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Master's Thesis defended without S.O.</td>
+                                            <td   class="text-center"><input type="radio" id="fifty-points" name="groupA" value="1"></td>
+                                            <td  class="text-center">28 pts</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Full-fledged Master's Degree</td>
+                                            <td   class="text-center"><input type="radio" id="fifty-points" name="groupA" value="1"></td>
+                                            <td  class="text-center">30 pts</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Academic Units earned towards Doctorate Degree (last 3 years) for every 6 Units</td>
+                                            <td contenteditable="true"></td>
+                                            <td class="text-center">6 units = 1 pt</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Ph.D./Ed.D. (Candidate): Completed Academic Requirements</td>
+                                            <td   class="text-center"><input type="radio" id="fifty-points" name="groupA" value="1"></td>
+                                            <td  class="text-center">40 pts</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Doctorate Dissertation defended without S.O.</td>
+                                            <td   class="text-center"><input type="radio" id="fifty-points" name="groupA" value="1"></td>
+                                            <td  class="text-center">45 pts</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Full-fledged Doctorate Degree</td>
+                                            <td   class="text-center"><input type="radio" id="fifty-points" name="groupA" value="1"></td>
+                                            <td  class="text-center">50 pts</td>
+                                            <td></td>
+                                        </tr>
+
+                                        <!-- LETTER B -->
+                                        <tr>
+                                            <td><strong>B. Additional Degrees</strong></td>
+                                            <td   class="text-center"><input type="radio" id="fifty-points" name="groupB" value="1"></td>
+                                            <td  class="text-center"><strong>(10 pts maximum)</strong></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Another Bachelor's Degree</td>
+                                            <td   class="text-center"><input type="radio" id="fifty-points" name="groupB" value="1"></td>
+                                            <td  class="text-center">4 pts</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Another Master's Degree - Full Pledged</td>
+                                            <td   class="text-center"><input type="radio" id="fifty-points" name="groupB" value="1"></td>
+                                            <td  class="text-center">6 pts</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Another Doctorate Degree - Full Pledged</td>
+                                            <td   class="text-center"><input type="radio" id="fifty-points" name="groupB" value="1"></td>
+                                            <td  class="text-center">10 pts</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Two or more degrees</td>
+                                            <td   class="text-center"><input type="radio" id="fifty-points" name="groupB" value="1"></td>
+                                            <td  class="text-center">10 pts</td>
+                                            <td></td>
+                                        </tr>
+
+                                        <!-- LETTER C -->
+                                        <tr>
+                                            <td><strong>C. Additional Training</strong></td>
+                                            <td   class="text-center"><input type="radio" id="fifty-points" name="groupC" value="1"></td>
+                                            <td  class="text-center"><strong>(10 pts maximum)</strong></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Advanced/Special training in related field to one's teaching/ 
+                                                assignment (3 weeks maximum)
+                                            </td>
+                                            <td contenteditable="true"></td>
+                                            <td class="text-center">2pts/ training</td>
+                                            <td></td>
+                                        </tr>
+
+
+
+                                        <tr>
+                                            <td>Travel related to one's field/present assignment and Scholarship/Study Grant (Domestic Abroad)</td>
+                                            <td   class="text-center"><input type="radio" id="fifty-points" name="groupC" value="1"></td>
+                                            <td  class="text-center">5 pts pro-rated</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Seminars/Workshops/Conventions/Conferences (cumulative)</td>
+                                            <td contenteditable="true"></td>
+                                            <td class="text-center">.33 pt/day or 1 pt/3 days</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>18 units of Professional Education Subjects</td>
+                                            <td   class="text-center"><input type="radio" id="fifty-points" name="groupC" value="1"></td>
+                                            <td  class="text-center">5 pts</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Plumbing Licenses</td>
+                                            <td   class="text-center"><input type="radio" id="fifty-points" name="groupC" value="1"></td>
+                                            <td  class="text-center">5 pts</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Certificate of Completion</td>
+                                            <td   class="text-center"><input type="radio" id="fifty-points" name="groupC" value="1"></td>
+                                            <td  class="text-center">3 pts</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>National Certificate</td>
+                                            <td   class="text-center"><input type="radio" id="fifty-points" name="groupC" value="1"></td>
+                                            <td  class="text-center">5 pts</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Trainor's Methodology Certificate</td>
+                                            <td   class="text-center"><input type="radio" id="fifty-points" name="groupC" value="1"></td>
+                                            <td  class="text-center">10 pts</td>
+                                            <td></td>
+                                        </tr>
+
+                                        <!-- LETTER D -->
+                                        <tr>
+                                            <td><strong>D. Government Examinations Passed/Eligibility</strong></td>
+                                            <td  class="text-center"><input type="radio" id="twenty-points" name="groupD" value="1" ></td>
+                                            <td  class="text-center"><strong>(20 pts maximum)</strong></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Teachers Board (LET)</td>
+                                            <td  class="text-center"><input type="radio" id="twenty-points" name="groupD" value="1" ></td>
+                                            <td  class="text-center">20 pts</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>CS Certification Eligibility/Career Professional</td>
+                                            <td  class="text-center"><input type="radio" id="twenty-points" name="groupD" value="1" ></td>
+                                            <td  class="text-center">15 pts</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Bar/CPA/MD/DM/DV/Engineering etc.</td>
+                                            <td  class="text-center"><input type="radio" id="twenty-points" name="groupD" value="1" ></td>
+                                            <td  class="text-center">20 pts</td>
+                                            <td></td>
+                                        </tr>
+
+                                        <!-- LETTER E -->
+                                        <tr>
+                                            <td><strong>E. Academic Honors/Awards Received</strong></td>
+                                            <td  class="text-center"><input type="radio" id="ten-points" name="groupE" value="1" ></td>
+                                            <td  class="text-center"><strong>(10 pts maximum)</strong></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Board/Bar Placer</td>
+                                            <td  class="text-center"><input type="radio" id="ten-points" name="groupE" value="1" ></td>
+                                            <td  class="text-center">10 pts</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Awards:</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="ps-4">Local</td>
+                                            <td  class="text-center"><input type="radio" id="ten-points" name="groupE" value="1" ></td>
+                                            <td  class="text-center">3 pts</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="ps-4">Regional</td>
+                                            <td  class="text-center"><input type="radio" id="ten-points" name="groupE" value="1" ></td>
+                                            <td  class="text-center">5 pts</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="ps-4">National/International</td>
+                                            <td  class="text-center"><input type="radio" id="ten-points" name="groupE" value="1" ></td>
+                                            <td  class="text-center">1o pts</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="ps-4">Summa Cum Laude</td>
+                                            <td  class="text-center"><input type="radio" id="ten-points" name="groupE" value="1" ></td>
+                                            <td  class="text-center">10 pts</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="ps-4">Magna Cum Laude</td>
+                                            <td  class="text-center"><input type="radio" id="ten-points" name="groupE" value="1" ></td>
+                                            <td  class="text-center">8 pts</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="ps-4">Cum Laude</td>
+                                            <td  class="text-center"><input type="radio" id="ten-points" name="groupE" value="1" ></td>
+                                            <td  class="text-center">6 pts</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="ps-4">With Distinction</td>
+                                            <td  class="text-center"><input type="radio" id="ten-points" name="groupE" value="1" ></td>
+                                            <td  class="text-center">3 pts</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>TOTAL CREDIT POINTS EARNED (I)</strong></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>TOTAL CREDIT POINTS EARNED x 30%</strong></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            
+                            </div>
+
+
+                            <!-- TEACHING EXPERIENCE AND PROFESSIONAL/ WORK EXPERIENCE -->
+
+                            <div class="tab-pane fade" id="content2" role="tabpanel">
+
+                                <table class="table table-bordered mt-5">
+                                    <thead>
+                                        <tr>
+                                            <th>Job Factors</th>
+                                            <th>Actions</th>
+                                            <th>Credit Points</th>
+                                            <th>Weights</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>II. TEACHING EXPERIENCE AND PROFESSIONAL/ WORK EXPERIENCE</strong></td>
+                                            <td></td>
+                                            <td><strong>100 POINTS</strong></td>
+                                            <td><strong>x 20%</strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>A. Teacher Experience</strong></td>
+                                            <td   class="text-center"><input type="radio" id="sixty-points" name="group" value="1"></td>
+                                            <td><strong>(60 pts maximum)</strong></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Every year of full-time teaching in CC</td>
+                                            <td  class="text-center"><input type="radio" id="ten-points" name="groupIIA" value="1" ></td>
+                                            <td  class="text-center">2 pts</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Every year of full-time teaching in other schools</td>
+                                            <td  class="text-center"><input type="radio" id="ten-points" name="groupIIA" value="1" ></td>
+                                            <td  class="text-center">1 pt</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Every year of part-time teaching in CC</td>
+                                            <td  class="text-center"><input type="radio" id="ten-points" name="groupIIA" value="1" ></td>
+                                            <td  class="text-center">1/2 pt</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Every year of part-time teaching in other schools</td>
+                                            <td  class="text-center"><input type="radio" id="ten-points" name="groupIIA" value="1" ></td>
+                                            <td  class="text-center">1/4 pt</td>
+                                            <td></td>
+                                        </tr>
+
+                                        <!-- LETTER B -->
+
+                                        <tr>
+                                            <td><strong>B. Professional Growth and Leadership</strong></td>
+                                            <td  class="text-center"><input type="radio" id="ten-points" name="groupIIB" value="1" ></td>
+                                            <td><strong>(40 pts maximum)</strong></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>B.1 Research Output (Class Based; School Based; Community based)</td>
+                                            <td  class="text-center"><input type="radio" id="ten-points" name="groupIIB1" value="1" ></td>
+                                            <td  class="text-center">15 pts</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>B.2 Publication/ Scholarly Ability</td>
+                                            <td   class="text-center"><input type="radio" id="fifteen-points" name="group" value="1"></td>
+                                            <td  class="text-center">(15 pts maximum)</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="ps-4">Teaching/ Course Module</td>
+                                            <td  class="text-center"><input type="radio" id="ten-points" name="groupIIB2" value="1" ></td>
+                                            <td  class="text-center">5 pts</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="ps-4">Workbook/ Lab Manual/ Textbook/ Reference Book</td>
+                                            <td  class="text-center"><input type="radio" id="ten-points" name="groupIIB2" value="1" ></td>
+                                            <td  class="text-center">5 pts</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="ps-4">Research/ Professional Articles</td>
+                                            <td  class="text-center"><input type="radio" id="ten-points" name="groupIIB2" value="1" ></td>
+                                            <td  class="text-center">2 pts</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="ps-4">Editorship of professional journals</td>
+                                            <td  class="text-center"><input type="radio" id="ten-points" name="groupIIB2" value="1" ></td>
+                                            <td  class="text-center">2 pts</td>
+                                            <td></td>
+                                        </tr>
+
+                                        <!-- B.3 -->
+
+
+                                        <tr>
+                                            <td>B.3 Participation in Area/Dept/Program Dev't. (Ranking; Research; Sportfest; 
+                                                Institutional Planning; Accreditation Process etc.) as: </td>
+                                            <td   class="text-center"><input type="radio" id="five-points" name="group" value="1"></td>
+                                            <td  class="text-center">(5 pts maximum)</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="ps-4">Chairman</td>
+                                            <td  class="text-center"><input type="radio" id="ten-points" name="groupIIB3" value="1" ></td>
+                                            <td  class="text-center">5 pts</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="ps-4">Member</td>
+                                            <td  class="text-center"><input type="radio" id="ten-points" name="groupIIB3" value="1" ></td>
+                                            <td  class="text-center">3 pts</td>
+                                            <td></td>
+                                        </tr>
+
+
+                                        <!-- B.4 -->
+
+
+                                        <tr>
+                                            <td>B.4 Professional Leadership</td>
+                                            <td   class="text-center"><input type="radio" id="five-points" name="group" value="1"></td>
+                                            <td  class="text-center">(5 pts maximum)</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="ps-4">B.4.1 Resource person as consultant/facilitator</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="ps-4"><div class="ps-4">Within the School</div></td>
+                                            <td contenteditable="true"></td>
+                                            <td class="text-center">1 pt/ activity</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="ps-4"><div class="ps-4">Outside the school/RQAT</div></td>
+                                            <td contenteditable="true"></td>
+                                            <td class="text-center">1 pt/ activity</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="ps-4">B.4.2 Involvement/ Membership in educational, culturals, religious or similar nationally/ 
+                                                internationally recognized organization as:</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="ps-4"><div class="ps-4">Officer/ National Accreditor</div></td>
+                                            <td contenteditable="true"></td>
+                                            <td class="text-center">2 pts/ year</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="ps-4"><div class="ps-4">Member (last 3 years)</div></td>
+                                            <td contenteditable="true"></td>
+                                            <td class="text-center">1 pt/ year</td>
+                                            <td></td>
+                                        </tr>
+
+                                        <tr>
+                                            <td><strong>TOTAL CREDIT POINTS EARNED (II)</strong></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>TOTAL CREDIT POINTS EARNED x 20%</strong></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+
+
+                                    </tbody>
+                                </table>
+                                
+                            </div>
+
+
+
+                            <!-- FACULTY PERFORMANCE AS A PROFESSIONAL EDUCATOR -->
+
+                            <div class="tab-pane fade" id="content3" role="tabpanel">
+                                
+                                <table class="table table-bordered mt-5">
+                                    <thead>
+                                        <tr>
+                                            <th>Job Factors</th>
+                                            <th>Actions</th>
+                                            <th>Credit Points</th>
+                                            <th>Weights</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>III. FACULTY PERFORMANCE AS A PROFESSIONAL EDUCATOR</strong></td>
+                                            <td></td>
+                                            <td><strong>100 POINTS</strong></td>
+                                            <td><strong>x 35%</strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td>A. Classroom/ Teacher Performance Evaluation (seperate evaluation instrument of Dean, 
+                                                Director/ Chairperson/ Coordinator, and Student)</td>
+                                            <td  class="text-center"><input type="radio" id="ten-points" name="groupIIIA" value="1" ></td>
+                                            <td  class="text-center">(50 pts maximum)</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>B. Work Performance Evaluation (seperate evaluation instrument)</td>
+                                            <td  class="text-center"><input type="radio" id="ten-points" name="groupIIIB" value="1" ></td>
+                                            <td  class="text-center">(50 pts maximum)</td>
+                                            <td></td>
+                                        </tr>
+
+                                        <tr>
+                                            <td><strong>TOTAL CREDIT POINTS EARNED (II)</strong></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>TOTAL CREDIT POINTS EARNED x 35%</strong></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                
+                            </div>
+
+
+                            <!-- CORPORATE COMMITMENT (IN/ OFF CAMPUS) SERVICES -->
+
+                            <div class="tab-pane fade" id="content4" role="tabpanel">
+                                <table class="table table-bordered mt-5">
+                                    <thead>
+                                        <tr>
+                                            <th>Job Factors</th>
+                                            <th>Actions</th>
+                                            <th>Credit Points</th>
+                                            <th>Weights</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>IV. CORPORATE COMMITMENT (IN/ OFF CAMPUS) SERVICES</strong></td>
+                                            <td></td>
+                                            <td><strong>100 POINTS</strong></td>
+                                            <td><strong>x 15%</strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td>A. Attendance in school-sponsored activities (in-house seminars, retreat/ recollection, 
+                                                masses, meetings, graduations, etc.)</td>
+                                            <td  class="text-center"><input type="radio" id="ten-points" name="groupIVA" value="1" ></td>
+                                            <td  class="text-center">(30 pts maximum)</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>B. Committee Involvement/ voluntary services beyond call of duty 
+                                                (school or student activities outside hours without pay or honorarium)</td>
+                                            <td  class="text-center"><input type="radio" id="ten-points" name="groupIVB" value="1" ></td>
+                                            <td  class="text-center">(30 pts maximum)</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>C. Participation in the CC-Community Extension Program</td>
+                                            <td  class="text-center"><input type="radio" id="ten-points" name="groupIVC" value="1" ></td>
+                                            <td  class="text-center">(40 pts maximum)</td>
+                                            <td></td>
+                                        </tr>
+
+                                        <tr>
+                                            <td><strong>TOTAL CREDIT POINTS EARNED (II)</strong></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>TOTAL CREDIT POINTS EARNED x 35%</strong></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                
+                            </div>
+
+
+                            <!-- SUMMARY -->
+
+                            <div class="tab-pane fade" id="content5" role="tabpanel">
+                                
+                                <table class="table table-bordered mt-5">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center" colspan="4">SUMMARY</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th>Job Factors</th>
+                                            <th>Credit</th>
+                                            <th>Weight</th>
+                                            <th>Rating</th>
+                                        </tr>
+
+                                        <tr>
+                                            <td>I. Academy Preparation & Other Qualifications</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>II. Teaching Experience 7 Professional/ Work Experience</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>III. Faculty Performance as a Professional Educator</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>IV. Corporate Commitment (In/ Off Campus Service)</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+
+                                        <tr>
+                                            <td class="text-end" colspan="3"><strong>OVERALL RATING</strong></td>
+                                            <td></td>
+                                            
+                                        </tr>
+
+                                        <tr>
+                                            <td class="text-start" colspan="3">PREVIOUS RANK: </td>
+                                            <td></td>
+                                            
+                                        </tr>
+
+                                        <tr>
+                                            <td class="text-end" colspan="3"><strong>RANK</strong></td>
+                                            <td></td>
+                                            
+                                        </tr>
+
+                                        <tr>
+                                            <td class="text-start" colspan="4"><strong>N.B. Credit points/ rank will be
+                                                effective only upon submission of supporting documents on specified date.
+                                            </strong></td>
+                                            
+                                        </tr>
+
+                                        
+                                    </tbody>
+                                </table>    
+
+
+                            </div>
+
+                        </div>
+
+                    
+                    </div>
+
+                </div>
+
+                
+
+                        
+
+            </div>
+        </div>
+
+    </div>
+
+
+        <script src="js/ranking-system.js"></script>
+
+        <!-- Bootstrap JavaScript Libraries -->
+        <script
+            src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+            integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+            crossorigin="anonymous"
+        ></script>
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+            integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+            crossorigin="anonymous"
+        ></script>
+
+        <!-- Sidebar JS -->
+        <script src="js/sidebar.js"></script>
+
+    </body>
+
+</html>

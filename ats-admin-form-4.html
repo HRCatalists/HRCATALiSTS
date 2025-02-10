@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>Master List</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+
+        <!-- Bootstrap CSS v5.3.2 -->
+        <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+        crossorigin="anonymous"
+        />
+
+        <!-- Styles CSS -->
+        <link rel="stylesheet" href="css/styles.css">
+
+        <!-- Navbar CSS -->
+        <link rel="stylesheet" href="css/navbar.css">
+
+        <!-- Dashboard CSS -->
+        <link rel="stylesheet" href="css/dashboard.css">
+
+        <!-- Sidebar CSS -->
+        <link rel="stylesheet" href="css/sidebar.css">
+
+        <!-- Online recruitment CSS -->
+        <link rel="stylesheet" href="css/ol-recruitment.css">
+
+        <!-- Application form styles -->
+        <link rel="stylesheet" href="css/application-form-styles.css">
+
+    </head>
+
+    <body>
+
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg fixed-top">
+            <div class="container d-flex justify-content-between">
+
+                <!-- Hamburger Menu Button -->
+                <button class="navbar-toggler me-2" type="button" id="hamburgerMenu">
+                    <div class="imageBox">
+                        <div class="imageInn">
+                            <img src="images/hamburger-1.png" class="card-icon m-auto" alt="Default Image">
+                        </div>
+                        <div class="hoverImg">
+                            <img src="images/hamburger-2.png" class="card-icon m-auto" alt="Profile Image">
+                        </div>
+                    </div>
+                </button>
+                
+                <!-- Left Side (Logo and College Name) -->
+                <a class=" d-flex align-items-center" href="#">
+                    <img src="images/CC_logo.png" alt="Logo" class="cclogo">
+                    <span class="cc-nav-text navbar-text ms-2">Columban College, Inc.</span>
+                </a>
+                
+                <!-- Right Side (User Profile Section) -->
+                <div class="d-flex align-items-center">
+                    <span class="user-name navbar-text me-3">Rhinell Menes</span>
+                    <div class="dropdown">
+                        <a href="#" class="dropdown-toggle d-flex align-items-center text-decoration-none" id="userMenu" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="images/dummy-profile.png" alt="Profile" class="rounded-circle user-img">
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
+                            <li><a class="dropdown-item" href="#">Profile</a></li>
+                            <li><a class="dropdown-item" href="#">Settings</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#">Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <!-- End of Navbar -->
+
+        <div class="d-flex">
+            <!-- Sidebar -->
+            <div class="shadow" id="sidebar" >
+                <ul class="list-unstyled components">
+                    <li class="d-flex align-items-center">
+                        <img src="images/dashboard.png" class="icon" alt="dashboard-icon">
+                        <a href="admin-ats-db.html" class="ms-3">Dashboard</a>
+                    </li>
+                    <li class="d-flex align-items-center">
+                        <img src="images/calendar.png" class="icon" alt="calendar-icon">
+                        <a href="admin-ats-cl.html" class="ms-3">Calendar</a>
+                    </li>
+                    <li class="d-flex align-items-center">
+                        <img src="images/table.png" class="icon" alt="applicant-icon">
+                        <a href="admin-ats-master-list.html" class="ms-3">Master List</a>
+                    </li>
+                    <li class="d-flex align-items-center">
+                        <img src="images/cv.png" class="icon" alt="positions-icon">
+                        <a href="admin-ats-act-post.html" class="ms-3">Active Positions</a>
+                    </li>
+                    <li class="d-flex align-items-center">
+                        <img src="images/archived.png" class="icon" alt="archived-icon">
+                        <a href="admin-ats-arch.html" class="ms-3">Archived Applicants</a>
+                    </li>
+                    <li class="d-flex align-items-center">
+                        <img src="images/log.png" class="icon" alt="log-icon">
+                        <a href="admin-ats-logs.html" class="ms-3">Logs</a>
+                    </li>
+                    <li class="d-flex m-0 px-0 ">
+                        <a href="admin-ems-db.html" class="fw-bold ms-3 ems-button">SWITCH TO EMS</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- End of Sidebar -->
+        
+            <!-- Page 4 Form Content -->
+            <div id="content" class="flex-grow-1">
+                <div class="container mt-5">
+                    
+                    <div class="container mt-5 mb-4" id="target-content">
+                        <a href="admin-ats-master-list.html" class="back-icon">
+                        <i class="fas fa-arrow-left"></i>
+                        </a>
+                    </div>
+    
+                    <h2 class="text-primary mb-4">Application Form</h2>
+          
+                    <!-- page 4: occupational qualifications -->
+                    <div id="form-page-4" class="form-page">
+                
+                        <div id="occupational-qualifications-container" class="mt-5">
+                        <h3 class="qualification-section-title">Occupational Qualifications</h3>
+                
+                        <!-- special skills -->
+                        <label for="special-skills" class="qualification-form-label">Special Skills:</label>
+                        <textarea id="special-skills" class="qualification-form-control" placeholder="Enter your skills"></textarea>
+                
+                        <!-- kind of license -->
+                        <label class="qualification-form-label fw-semibold mb-1 d-block">
+                            License or Certified membership to any trade or profession (CPA, Bar, Etc.)</label>                 
+                    
+                        <div class="qualification-license-form mt-2 p-2 rounded">
+                            <div class="qualification-license-fields row g-4">
+
+                            <div class="col-md">
+                                <div class="qualification-form-group">
+                                <label for="license" class="qualification-form-label">Kind of License</label>
+                                <input type="text" name="license" class="qualification-form-control  shadow-sm mb-3" placeholder="Enter kind of license" />
+                                </div>
+                            </div>
+
+                            <div class="col-md">
+                                <div class="qualification-form-group">
+                                <label for="date-issuance" class="qualification-form-label">Date of Issuance</label>
+                                <input type="date" name="date-issuance" class="qualification-form-control  shadow-sm mb-3" />
+                                </div>
+                            </div>
+
+                            <div class="col-md">
+                                <div class="qualification-form-group">
+                                <label for="place-issuance" class="qualification-form-label">Place of Issuance</label>
+                                <input type="text" name="place-issuance" class="qualification-form-control  shadow-sm mb-3" placeholder="Enter place of issuance" />
+                                </div>
+                            </div>
+                            
+                            </div>
+                        </div>
+                    
+                        <div class="button-group d-flex justify-content-end  gap-2 mt-3">
+                            <img src="images/minus.png"  id="remove-form" class="qualification-remove-button  cursor-pointer">
+                            <img src="images/more.png"  id="add-form" class="qualification-add-button  cursor-pointer">
+                        </div>
+                
+                        </div>
+                
+                        <!-- Employment Record Form -->
+                        <div class="mt-3" id="employment-record-section">
+                        <h3 class="employment-record-title mb-1">Employment Record</h3>
+                        
+                        <div class="employment-record-item p-3 mb-4">
+                            
+                            <div class="row">
+                            <div class="employment-form-group col-md-12 mb-3">
+                                <label for="company" class="employment-form-label">Company <span class="text-danger">*</span></label>
+                                <input type="text" name="company" class="employment-form-control" placeholder="Enter Company Name" />
+                            </div>
+                            </div>
+                        
+                            <div class="row">
+                            <div class="employment-form-group col-md-6 mb-3">
+                                <label for="start-date" class="employment-form-label">Start Date <span class="text-danger">*</span></label>
+                                <input type="date" name="start-date" class="employment-form-control" />
+                            </div>
+                            <div class="employment-form-group col-md-6 mb-3">
+                                <label for="end-date" class="employment-form-label">End Date <span class="text-danger">*</span></label>
+                                <input type="date" name="end-date" class="employment-form-control" />
+                            </div>
+                            </div>
+                        
+                            <div class="row">
+                            <div class="employment-form-group col-md-6 mb-3">
+                                <label for="position" class="employment-form-label">Position <span class="text-danger">*</span></label>
+                                <input type="text" name="position" class="employment-form-control" placeholder="Enter Duties and Responsibilities" />
+                            </div>
+                            <div class="employment-form-group col-md-6 mb-3">
+                                <label for="income" class="employment-form-label">Income <span class="text-danger">*</span></label>
+                                <input type="text" name="income" class="employment-form-control" placeholder="Enter Income" />
+                            </div>
+                            </div>
+                        
+                            <h4 class="references-title fw-semibold mt-3 mb-2">Character References <span class="text-danger">*</span></h4>
+                            <div class="row">
+                            <div class="employment-form-group col-md-4 mb-3">
+                                <label for="name" class="employment-form-label">Name</label>
+                                <input type="text" name="name" class="employment-form-control" placeholder="Enter Name" />
+                            </div>
+                            <div class="employment-form-group col-md-4 mb-3">
+                                <label for="occupation" class="employment-form-label">Occupation</label>
+                                <input type="text" name="occupation" class="employment-form-control" placeholder="Enter Occupation" />
+                            </div>
+                            <div class="employment-form-group col-md-4 mb-3">
+                                <label for="contact" class="employment-form-label">Contact</label>
+                                <input type="text" name="contact" class="employment-form-control" placeholder="Enter Contact" />
+                            </div>
+                            </div>
+                        
+                            <div class="row">
+                            <div class="employment-form-group col-md-4 mb-3">
+                                <label for="name" class="employment-form-label">Name</label>
+                                <input type="text" name="name" class="employment-form-control" placeholder="Enter Name" />
+                            </div>
+                            <div class="employment-form-group col-md-4 mb-3">
+                                <label for="occupation" class="employment-form-label">Occupation</label>
+                                <input type="text" name="occupation" class="employment-form-control" placeholder="Enter Occupation" />
+                            </div>
+                            <div class="employment-form-group col-md-4 mb-3">
+                                <label for="contact" class="employment-form-label">Contact</label>
+                                <input type="text" name="contact" class="employment-form-control" placeholder="Enter Contact" />
+                            </div>
+                            </div>
+                        
+                            
+                        </div>
+                        
+                        <div class="employment-button-group d-flex justify-content-end gap-2 mt-3">
+                            <img id="remove-employment-record" class="employment-minus-icon" src="images/minus.png" alt="Remove Record" />
+                            <img id="add-employment-record" class="employment-plus-icon" src="images/more.png" alt="Add Record" />
+                            
+                        </div>
+                
+                        </div>
+                        
+                        <!-- attach cv -->
+                        
+                        <div class="col-md-7 mb-5 mt-5">
+                            <label for="cv" class="form-label">Attach CV <span class="text-danger">*</span></label>
+                            <div class="file-upload">
+                                <label for="cv" class="upload-label">
+                                    <button type="button" class="btn btn-primary">Upload</button> 
+                                    <span class="file-name">or drag your file here</span>
+                                </label>
+                                <input type="file" id="cv" class="file-input" accept=".pdf" required>
+                            </div>
+                    
+                                <small class="form-text text-muted">Submit your file in .pdf format (Max: 2 MB)</small>
+                                <small class="form-text text-danger" id="error-message" style="display: none;"></small>
+                        </div>
+                    
+                        <p class="privacy-policy mb-5">
+                        Before providing any information or data, please read and understand our 
+                        <a href="#">Privacy Policy</a>, 
+                        specifically on the collection, use, disclosure, retention, and correction of the data you provide to us. 
+                        By providing us with any information or data, you signify your understanding and agreement to our 
+                        <a href="#">Privacy Policy</a>.
+                        </p>
+                        
+                        <div class="form-group form-check mb-5">
+                        <input type="checkbox" class="form-check-input shadow" id="privacyPolicy" required>
+                        <label class="form-check-label" for="privacyPolicy">I agree to the Privacy Policy and consent to the collection of information as 
+                            stated in the Privacy Policy and Terms & Conditions.</label>
+                        </div>
+                
+                    <div class="pagination-container my-5 d-flex justify-content-between align-items-center mt-3">
+                        <button class="btn btn-secondary back-button">Back</button>
+                        <nav>
+                        <ul class="pagination mt-3">
+                            <li class="page-item"><a class="page-link rounded d-flex align-items-center justify-content-center mx-1" 
+                            href="ats-admin-form-1.html">1</a></li>
+                            <li class="page-item"><a class="page-link rounded d-flex align-items-center justify-content-center mx-1" 
+                            href="ats-admin-form-2.html">2</a></li>
+                            <li class="page-item"><a class="page-link rounded d-flex align-items-center justify-content-center mx-1" 
+                            href="ats-admin-form-3.html">3</a></li>
+                            <li class="page-item"><a class="page-link rounded d-flex align-items-center justify-content-center mx-1" 
+                            href="ats-admin-form-4.html">4</a></li>
+                        </ul>
+                        </nav>
+                        
+                        <button class="btn btn-primary">Submit</button>
+                    </div>
+            
+                    </div>
+                    
+                </div>
+            </div>
+    
+        </div>
+
+        <!-- Bootstrap JavaScript Libraries -->
+        <script
+            src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+            integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+            crossorigin="anonymous"
+        ></script>
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+            integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+            crossorigin="anonymous"
+        ></script>
+
+        <!-- Sidebar JS -->
+        <script src="js/sidebar.js"></script>
+
+        <!-- Form JS -->
+        <script src="js/ats-admin-appform_pagination.js"></script>
+        <script src="js/ats-famInfo_children.js"></script>
+        <script src="js/ats-cv.js"></script>
+        <script src="js/ats-license_cloning.js"></script>
+        <script src="js/ats-emp_form_cloning.js"></script>
+
+    </body>
+</html>

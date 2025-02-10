@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="en">
+    <head>
+      <title>Dashboard</title>
+      <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+
+      <!-- CSRF Token -->
+      <meta name="csrf-token" content="{{ csrf_token() }}">
+
+      <!-- Bootstrap CSS v5.3.2 -->
+      <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+          crossorigin="anonymous"
+      />
+
+      <!-- Styles CSS -->
+      <link rel="stylesheet" href="css/styles.css">
+
+      <!-- Navbar CSS -->
+      <link rel="stylesheet" href="css/navbar.css">
+
+      <!-- Dashboard CSS -->
+      <link rel="stylesheet" href="css/dashboard.css">
+
+      <!-- Sidebar CSS -->
+      <link rel="stylesheet" href="css/sidebar.css">
+
+      <!-- DB Calendar CSS -->
+      <link rel="stylesheet" href="css/db-ems-calendar.css">
+
+      <!-- Gender Chart CSS -->
+      <link rel="stylesheet" href="css/gender-stat.css">
+
+      <!-- Dept. Chart CSS -->
+      <link rel="stylesheet" href="css/dept-chart.css">
+    </head>
+
+    <body>
+      <!-- Navbar -->
+      <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container d-flex justify-content-between">
+
+            <!-- Hamburger Menu Button -->
+            <button class="navbar-toggler me-2" type="button" id="hamburgerMenu">
+                <div class="imageBox">
+                    <div class="imageInn">
+                        <img src="images/hamburger-1.png" class="card-icon m-auto" alt="Default Image">
+                    </div>
+                    <div class="hoverImg">
+                        <img src="images/hamburger-2.png" class="card-icon m-auto" alt="Profile Image">
+                    </div>
+                </div>
+            </button>
+            
+            <!-- Left Side (Logo and College Name) -->
+            <a class=" d-flex align-items-center" href="#">
+                <img src="images/CC_logo.png" alt="Logo" class="cclogo">
+                <span class="cc-nav-text navbar-text ms-2">Columban College, Inc.</span>
+            </a>
+            
+            <!-- Right Side (User Profile Section) -->
+            <div class="d-flex align-items-center">
+                <span class="user-name navbar-text me-3">Rhinell Menes</span>
+                <div class="dropdown">
+                    <a href="#" class="dropdown-toggle d-flex align-items-center text-decoration-none" id="userMenu" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="images/dummy-profile.png" alt="Profile" class="rounded-circle user-img">
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
+                        <li><a class="dropdown-item" href="#">Profile</a></li>
+                        <li><a class="dropdown-item" href="#">Settings</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+      </nav>
+      <!-- End of Navbar -->
+
+      <!-- Dashboard Content -->
+      <div class="d-flex">
+
+        <!-- Sidebar -->
+        <div id="sidebar" class="shadow">
+          <ul class="list-unstyled components">
+              <li class="d-flex align-items-center">
+                <img src="images/dashboard.png" class="icon" alt="dashboard-icon">
+                <a href="admin-ems-db.html" class="ms-3">Dashboard</a>
+              </li>
+
+              <li class="d-flex align-items-center">
+                  <img src="images/calendar.png" class="icon" alt="calendar-icon">
+                  <a href="admin-ems-cl.html" class="ms-3">Calendar</a>
+              </li>
+
+              <li class="d-flex align-items-center">
+              <img src="images/employee.png" class="icon" alt="applicant-icon">
+              <a href="admin-ems-emp.html" class="ms-3">Employees</a>
+              </li>
+
+              <li class="d-flex align-items-center">
+                  <img src="images/note.png" class="icon" alt="positions-icon">
+                  <a href="admin-ems-note.html" class="ms-3">Notes</a>
+              </li>
+
+              <li class="d-flex align-items-center">
+                  <img src="images/faqs.png" class="icon" alt="archived-icon">
+                  <a href="admin-ems-policy.html" class="ms-3">Company Policy</a>
+              </li>
+
+              <li class="d-flex align-items-center">
+                <img src="images/log.png" class="icon" alt="log-icon">
+                <a href="admin-ems-logs.html" class="ms-3">Logs</a>
+              </li>
+
+              <li class="d-flex m-0 px-0 ">
+                  <a href="admin-ats-db.html" class="fw-bold ms-3 ems-button">SWITCH TO ATS</a>
+              </li>
+          </ul>
+      </div>
+      <!-- End of Sidebar -->
+    
+        <!-- Dashboard Content -->
+        <div id="content" class="flex-grow-1">
+            <div class="container mt-5">
+                <div class="welcome-text-only">Welcome, {user.name}!</div>
+
+                <div class="d-flex justify-content-between align-items-center mt-4">
+                    <div>
+                        <h2 class="db-h2">DASHBOARD</h2>
+                        <h4 class="db-h4 mt-4">Overview</h4>
+                    </div>
+
+                    <!-- Banner -->
+                    <div class="d-flex banner banner-gradient text-white align-items-center justify-content-center px-4 py-2">
+                        <h4 class="banner-text mx-5">Welcome, {user.name}!</h4>
+                        <img src="images/db-icon.png" class="banner-icon " alt="banner-icon">
+                    </div>
+                </div>
+
+                <div class="row mt-4 dashboard-row d-flex justify-content-between align-items-start mt-5">
+                
+                  <div class="col-md-7">
+
+                    <div class="row">
+                      <!-- Employees Card -->
+                      <div class="col-md-6">
+                          <div class="card emp-card text-center shadow">
+                              <div class="card-body emp-card-text">
+                                  <div class="d-flex align-items-center justify-content-center mt-4">
+                                      <h5 class="card-title m-auto">Employees</h5>
+                                      <img src="images/cv-2.png" class="card-icon m-auto" alt="doc-icon">
+                                  </div>
+                                  <p class="emp-counter text-wrap fw-bold mt-2">234</p>
+                              </div>
+                          </div>
+                      </div>
+                      <!-- End Employees Card -->
+      
+                      <!-- Employee Structure Statistics -->
+                      <div class="col-md-6">
+                        <div class="card shadow p-4">
+      
+                          <h6 class="text-secondary">Statistics</h6>
+                          <h5 class="card-title db-h5">Employee Structure</h5>
+      
+                          <div class="position-relative d-flex justify-content-center align-items-center my-2">
+                            <div class="progress-circle">
+                              <div class="circle">
+                                  <span class="circle-text fw-bold">100%</span>
+                              </div>
+                            </div>
+                          </div>
+                            
+                          <div class="d-flex justify-content-around">
+                            <div class="d-flex align-items-center">
+                              <span class="dot bg-primary me-2"></span>
+                              <span>Male 65%</span>
+                            </div>
+      
+                            <div class="d-flex align-items-center">
+                              <span class="dot bg-info me-2"></span>
+                              <span>Female 35%</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- End Employee Structure Statistics -->
+                    </div>
+      
+                    <!-- Dept. Count -->
+                    <div class="mt-4">
+                      
+                      <div class="card shadow p-2">
+                        <div class="card-body">
+                          <h5 class="card-title mb-4">Employee Count by Department</h5>
+                          <div class="mb-2">
+                            <div class="department-name">Department of Engineering</div>
+                            <div class="progress">
+                                <div class="progress-bar eng" style="width: 40%;"></div>
+                            </div>
+                          </div>
+      
+                          <div class="mb-2">
+                            <div class="department-name">Department of Arts & Science and Education</div>
+                            <div class="progress">
+                                <div class="progress-bar cased" style="width: 60%;"></div>
+                            </div>
+                          </div>
+      
+                          <div class="mb-2">
+                            <div class="department-name">Department of Business and Accountancy</div>
+                            <div class="progress">
+                                <div class="progress-bar cba" style="width: 50%;"></div>
+                            </div>
+                          </div>
+      
+                          <div class="mb-2">
+                            <div class="department-name">Department of Nursing</div>
+                            <div class="progress">
+                                <div class="progress-bar nursing" style="width: 70%;"></div>
+                            </div>
+                          </div>
+      
+                          <div class="mb-2">
+                            <div class="department-name">Department of Computer Studies</div>
+                            <div class="progress">
+                                <div class="progress-bar ccs" style="width: 80%;"></div>
+                            </div>
+                          </div>
+      
+                          <div class="mb-2">
+                            <div class="department-name">Department of Architecture</div>
+                            <div class="progress">
+                                <div class="progress-bar arch" style="width: 35%;"></div>
+                            </div>
+                          </div>
+                          
+                        </div>
+                      </div>
+                    </div>
+                    <!--  End Dept. Count -->
+                  </div>
+      
+                  <!-- Calendar, Events, & Logs Section -->
+                  <div class="col-md-5 card-size">
+                    
+                    <!-- Calendar -->
+                    <div class="card shadow">
+                      <div class="card-body">
+                        <div class="calendar-container">
+                          <div class="calendar-header d-flex justify-content-between align-items-center">
+                            <button id="prev-month">&lt;</button>
+                            <span id="calendar-header" class="text-center"></span>
+                            <button id="next-month">&gt;</button>
+                          </div>
+                          <div id="calendar" class="mb-4"></div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <!-- Events -->
+                    <div class="card shadow mt-4">
+                      <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                          <h5 id="event-title" class="fw-bold">Events</h5>
+                          <a href="emp-ems-events.html" class="view-link">See more...</a>
+                        </div>
+                        <ul id="event-list" class="list-group mt-3">
+                          <!-- Dynamic Event Items -->
+                        </ul>
+                      </div>
+                    </div>
+
+                    <!-- Logs -->
+                    <div class="card shadow mt-4">
+                      <div class="card-body">
+
+                          <div class="d-flex justify-content-between align-items-center">
+                              <h5 class="fw-bold">Recent Activities</h5>
+                              <a href="admin-ats-logs.html" class="view-link">See more...</a>
+                          </div>
+
+                          <table class="table table-bordered m-0">
+                              <thead class="small">
+                                  <tr>
+                                      <th>USER</th>
+                                      <th>POSITION</th>
+                                      <th>ACTIVITIES</th>
+                                      <th>TIME</th>
+                                      <th>DATE</th>
+                                  </tr>
+                              </thead>
+
+                              <tbody class="small">
+                                  <tr>
+                                      <td>Fate Gamboa</td>
+                                      <td>Employee</td>
+                                      <td>Updated Mobile Number</td>
+                                      <td>1:00 p.m.</td>
+                                      <td>1/19/2025</td>
+                                  </tr>
+      
+                                  <tr>
+                                      <td>Dr. Mora</td>
+                                      <td>Super Admin</td>
+                                      <td>Deleted Applicant Profile</td>
+                                      <td>10:00 a.m.</td>
+                                      <td>1/19/2025</td>
+                                  </tr>
+      
+                                  <tr>
+                                      <td>Secretary</td>
+                                      <td>Admin</td>
+                                      <td>Posted a Position</td>
+                                      <td>1:00 p.m.</td>
+                                      <td>1/11/2025</td>
+                                  </tr>
+                              </tbody>
+                          </table>
+                      </div>
+                    </div>
+      
+                  </div>
+                  <!-- End Calendar, Events, & Logs Section -->
+
+                </div>
+            </div>
+        </div>
+
+      </div>
+      
+      <!-- Sidebar JS -->
+      <script src="js/sidebar.js"></script>
+
+      <!-- Calendar JS -->
+      <script src="js/db-calendar.js"></script>
+
+      <!-- Bootstrap JavaScript Libraries -->
+      <script
+          src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+          integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+          crossorigin="anonymous"
+      ></script>
+      <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+          integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+          crossorigin="anonymous"
+      ></script>
+    </body>
+</html>
