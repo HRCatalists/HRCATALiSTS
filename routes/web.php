@@ -22,6 +22,10 @@ use Illuminate\Http\Request;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
 
+Route::get('/jobs/{id}', [HomeController::class, 'show'])->name('jobs.show');
+
+
+
 
 
 // Route::get('/', function () {
