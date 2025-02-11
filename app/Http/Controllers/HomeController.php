@@ -18,6 +18,12 @@ class HomeController extends Controller
         // Always show the welcome page for guests
         return view('hrcatalists.index', compact('jobs'));
     }
+    public function show($id)
+{
+    $job = Job::findOrFail($id); // Fetch job by ID or return 404 if not found
+    return view('jobs.show', compact('job'));
+}
+
 
    
 
