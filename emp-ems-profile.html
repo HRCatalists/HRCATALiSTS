@@ -1,0 +1,611 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Profile</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+        <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"rel="stylesheet"integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"crossorigin="anonymous"/>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css">
+        <!-- {{-- JQuery  --}} -->
+        <script
+            src="https://code.jquery.com/jquery-3.7.1.js"
+            integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+            crossorigin="anonymous"></script>
+
+        <!-- Styles CSS -->
+        <link rel="stylesheet" href="css/styles.css">
+
+        <!-- Navbar CSS -->
+        <link rel="stylesheet" href="css/navbar.css">
+
+        <!-- Dashboard CSS -->
+        <link rel="stylesheet" href="css/dashboard.css">
+
+        <!-- Sidebar CSS -->
+        <link rel="stylesheet" href="css/sidebar.css">
+
+       <!-- Emp profile CSS -->
+        <link rel="stylesheet" href="css/ems-emp-profile-styles.css">
+
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container d-flex justify-content-between">
+
+            <!-- Hamburger Menu Button -->
+            <button class="navbar-toggler me-2" type="button" id="hamburgerMenu">
+                <div class="imageBox">
+                    <div class="imageInn">
+                        <img src="images/hamburger-1.png" class="card-icon m-auto" alt="Default Image">
+                    </div>
+                    <div class="hoverImg">
+                        <img src="images/hamburger-2.png" class="card-icon m-auto" alt="Profile Image">
+                    </div>
+                </div>
+            </button>
+            
+            <!-- Left Side (Logo and College Name) -->
+            <a class=" d-flex align-items-center" href="#">
+                <img src="images/CC_logo.png" alt="Logo" class="cclogo">
+                <span class="cc-nav-text navbar-text ms-2">Columban College, Inc.</span>
+            </a>
+            
+            <!-- Right Side (User Profile Section) -->
+            <div class="d-flex align-items-center">
+                <span class="user-name navbar-text me-3">Rhinell Menes</span>
+                <div class="dropdown">
+                    <a href="#" class="dropdown-toggle d-flex align-items-center text-decoration-none" id="userMenu" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="images/dummy-profile.png" alt="Profile" class="rounded-circle user-img">
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
+                        <li><a class="dropdown-item" href="#">Profile</a></li>
+                        <li><a class="dropdown-item" href="#">Settings</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- End of Navbar -->
+     
+    <!-- Profile Content -->
+    <div class="d-flex">
+            <!-- Sidebar -->
+            <div id="sidebar" class="shadow">
+                <ul class="list-unstyled components">
+                    <li class="d-flex align-items-center">
+                        <img src="images/dashboard.png" class="icon" alt="dashboard-icon">
+                        <a href="emp-ems-db.html" class="ms-3">Dashboard</a>
+                    </li>
+                    <li class="d-flex align-items-center">
+                        <img src="images/user.png" class="icon" alt="calendar-icon">
+                        <a href="emp-ems-profile.html" class="ms-3">Profile</a>
+                    </li>
+                    <li class="d-flex align-items-center">
+                        <img src="images/calendar.png" class="icon" alt="applicant-icon">
+                        <a href="emp-ems-events.html" class="ms-3">Events</a>
+                    </li>
+                    <li class="d-flex align-items-center">
+                        <img src="images/faqs.png" class="icon" alt="review-icon">
+                        <a href="emp-ems-others.html" class="ms-3">Others</a>
+                    </li>
+                    <li class="d-flex align-items-center">
+                        <img src="images/log.png" class="icon" alt="log-icon">
+                        <a href="emp-ems-logs.html" class="ms-3">Logs</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- End of Sidebar -->
+    
+        <!-- Profile Content -->
+        <div id="content" class="flex-grow-1">
+            <div class="container mt-5">
+
+                <!-- Employment Data Section -->
+                <!-- Main Content -->
+                <div class="content-container container col-md-10 p-3">
+                    <h1 class="mb-4 fs-4">Profile</h1>
+
+                    <!-- Employment Data Section -->
+                    <div>
+                        <div class="mb-5">
+                     
+                            <div class="col-md-6 mb-3">
+                                <div class="d-flex align-items-center">
+                                    <label for="position" class="form-label me-2 fw-bold text-start">Faculty Code:</label>
+                                </div>
+                            </div>
+                          
+                            <div class="col-md-6 mb-3">
+                                <div class="d-flex align-items-center">
+                                    <label for="employment-status" class="form-label me-2 fw-bold text-start">Full Name:</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <div class="d-flex align-items-center">
+                                    <label for="employment-status" class="form-label me-2 fw-bold text-start">School Of:</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <div class="d-flex align-items-center">
+                                    <label for="employment-status" class="form-label me-2 fw-bold text-start">Status:</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <div class="d-flex align-items-center">
+                                    <label for="employment-status" class="form-label me-2 fw-bold text-start">Designation Group:</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <div class="d-flex align-items-center">
+                                    <label for="employment-status" class="form-label me-2 fw-bold text-start">Position:</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <div class="d-flex align-items-center">
+                                    <label for="employment-status" class="form-label me-2 fw-bold text-start">Branch:</label>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                        <!-- Personal Data Section -->
+                    <div class="mb-5">
+                        <div class="section-title fw-bold my-5">Personal Data</div>
+                            <div class="row d-flex flex-wrap mb-3">
+                                <div class="col-md-6 d-flex align-items-center mb-1">
+                                    <label for="Mobile-number" class="form-label me-2 text-start mr-1 fw-bold">Mobile Number:</label>
+                                </div>
+                                <div class="col-md-6 d-flex align-items-center mb-1">
+                                    <label for="e-address" class="form-label me-2 text-start mr-1 fw-bold">E-mail Address:</label>
+                                </div>
+                            </div>
+
+                            <div class="row d-flex flex-wrap mb-3">
+                                <div class="col-md-6 d-flex align-items-center mb-1">
+                                    <label for="Address" class="form-label me-2 text-start mr-1 fw-bold">Address:</label>
+                                </div>
+                                <div class="col-md-6 d-flex align-items-center mb-1">
+                                    <label for="tel-no" class="form-label me-2 text-start mr-1 fw-bold">Tel No.:</label>
+                                </div>
+                            </div>
+
+
+                            <div class="row d-flex flex-wrap mb-3">
+                                <div class="col-md-6 d-flex align-items-center mb-1">
+                                    <label for="date-of-birth" class="form-label me-2 text-start mr-1 fw-bold">Date of Birth:</label>
+                                </div>
+                                <div class="col-md-6 d-flex align-items-center mb-1">
+                                    <label for="place-of-birth" class="form-label me-2 text-start mr-1 fw-bold">Place of birth:</label>
+                                </div>
+                            </div>
+
+
+                            <div class="row d-flex flex-wrap mb-3">
+                                <div class="col-md-6 d-flex align-items-center mb-1">
+                                    <label for="Gender" class="form-label me-2 text-start mr-1 fw-bold">Gender:</label>
+                                </div>
+                                <div class="col-md-6 d-flex align-items-center mb-1">
+                                    <label for="Religion" class="form-label me-2 text-start mr-1 fw-bold">Religion:</label>
+                                </div>
+                            </div>
+
+
+                            <div class="row d-flex flex-wrap mb-3">
+                                <div class="col-md-6 d-flex align-items-center mb-1">
+                                    <label for="Citizenship" class="form-label me-2 text-start mr-1 fw-bold">Citizenship:</label>
+                                </div>
+                                <div class="col-md-6 d-flex align-items-center mb-1">
+                                    <label for="Civil-Status" class="form-label me-2 text-start mr-1 fw-bold">Civil Status:</label>
+                                </div>
+                            </div>
+
+
+                            <div class="row d-flex flex-wrap mb-3">
+                                <div class="col-md-6 d-flex align-items-center mb-1">
+                                    <label for="Spouse" class="form-label me-2 text-start mr-1 fw-bold">Name of spouse:</label>
+                                </div>
+                                <div class="col-md-6 d-flex align-items-center mb-1">
+                                    <label for="s-address" class="form-label me-2 text-start mr-1 fw-bold">Address:</label>
+                                </div>
+                            </div>
+
+
+                            <div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="d-flex align-items-center">
+                                        <label for="spouse-occupation" class="form-label me-2 fw-bold text-start">Spouse's Occupation:</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="d-flex align-items-center">
+                                        <label for="num-dependent" class="form-label me-2 fw-bold text-start">No. of Dependent:</label>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="row d-flex flex-wrap mb-3">
+                                <div class="col-md-6 d-flex align-items-center mb-1">
+                                    <label for="Spouse" class="form-label me-2 text-start mr-1 fw-bold">Name of Children:</label>
+                                </div>
+                                <div class="col-md-6 d-flex align-items-center mb-1">
+                                    <label for="s-address" class="form-label me-2 text-start mr-1 fw-bold">Date of Birth of Children:</label>
+                                </div>
+                            </div>
+
+
+                            <div class="row d-flex flex-wrap mb-3">
+                                <div class="col-md-6 d-flex align-items-center mb-1">
+                                    <label for="Father" class="form-label me-2 text-start mr-1 fw-bold">Father:</label>
+                                </div>
+                                <div class="col-md-6 d-flex align-items-center mb-1">
+                                    <label for="f-address" class="form-label me-2 text-start mr-1 fw-bold">Address:</label>
+                                </div>
+                            </div>
+            
+
+                            <div class="row d-flex flex-wrap mb-3">
+                                <div class="col-md-6 d-flex align-items-center mb-1">
+                                    <label for="Father" class="form-label me-2 text-start mr-1 fw-bold">Mother:</label>
+                                </div>
+                                <div class="col-md-6 d-flex align-items-center mb-1">
+                                    <label for="m-address" class="form-label me-2 text-start mr-1 fw-bold">Address:</label>
+                                </div>
+                            </div>
+
+                            <div class="row d-flex flex-wrap mb-3">
+                                <div class="col-md-6 d-flex align-items-center mb-1">
+                                    <label for="Father" class="form-label me-2 text-start mr-1 fw-bold">SSS No.:</label>
+                                </div>
+                                <div class="col-md-6 d-flex align-items-center mb-1">
+                                    <label for="m-address" class="form-label me-2 text-start mr-1 fw-bold">PhilHealth No.:</label>
+                                </div>
+                            </div>
+
+                            <div class="row d-flex flex-wrap mb-3">
+                                <div class="col-md-6 d-flex align-items-center mb-1">
+                                    <label for="Father" class="form-label me-2 text-start mr-1 fw-bold">TIN No.:</label>
+                                </div>
+                                <div class="col-md-6 d-flex align-items-center mb-1">
+                                    <label for="m-address" class="form-label me-2 text-start mr-1 fw-bold">Pag-Ibig No.:</label>
+                                </div>
+                            </div>
+                    </div>
+
+
+                    <!-- Educational Background -->
+
+                    <div class="section-title fw-bold mb-5">Educational Background</div>
+                        <div class=" my-5">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Education</th>
+                                            <th>School</th>
+                                            <th>Course</th>
+                                            <th>Major</th>
+                                            <th>Remarks</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Bachelor's Degree</td>
+                                            <td>Columban College</td>
+                                            <td>Computer Science</td>
+                                            <td>Software Development</td>
+                                            <td>Graduated with Honors</td>
+                                        </tr>
+                                        <tr>
+                                            <td>High School</td>
+                                            <td>Sample High School</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>With High Honors</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        
+
+                    </div>
+
+
+
+                    <!-- Employment Data 1 -->
+
+                    <div>
+
+                        <div class="mb-5">
+                            <div class="section-title fw-bold my-5">Employment Data</div>
+
+                     
+                            <div class="col-md-6 mb-3">
+                                <div class="d-flex align-items-center">
+                                    <label for="position" class="form-label me-2 fw-bold text-start">Parent Department:</label>
+                                </div>
+                            </div>
+                          
+                            <div class="col-md-6 mb-3">
+                                <div class="d-flex align-items-center">
+                                    <label for="employment-status" class="form-label me-2 fw-bold text-start">Parent College:</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <div class="d-flex align-items-center">
+                                    <label for="employment-status" class="form-label me-2 fw-bold text-start">Employment Classification:</label>
+                                </div>
+                            </div>
+
+                            <div class="row d-flex flex-wrap mb-3">
+                                <div class="col-md-6 d-flex align-items-center mb-1">
+                                    <label for="teaching-load" class="form-label me-2 text-start mr-1 fw-bold">Employment Status:</label>
+                                </div>
+                                <div class="col-md-6 d-flex align-items-center mb-1">
+                                    <label for="date-of-employment" class="form-label me-2 text-start mr-1 fw-bold">Date of Employment:</label>
+                                </div>
+                            </div>
+
+                            <div class="row d-flex flex-wrap mb-3">
+                                <div class="col-md-6 d-flex align-items-center mb-1">
+                                    <label for="teaching-load" class="form-label me-2 text-start mr-1 fw-bold">Accreditation:</label>
+                                </div>
+                                <div class="col-md-6 d-flex align-items-center mb-1">
+                                    <label for="date-of-employment" class="form-label me-2 text-start mr-1 fw-bold">Date of Permanent Status:</label>
+                                </div>
+                            </div>
+
+                            
+
+
+                        </div>
+
+
+
+                        <!-- Professional Board Exam or Civil Service Eligibility -->
+
+                    <div class="section-title fw-bold mb-5">Professional Board Exam or Civil Service Eligibility</div>
+                        <div class=" my-5">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>License</th>
+                                            <th>License Number</th>
+                                            <th>Expiry Date</th>
+                                            <th>Renewal Date From</th>
+                                            <th>Renewal Date To</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                        </tr>
+                                        <tr>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                        </div>
+                        
+
+                    </div>
+
+                        
+
+                    <!-- Employemtn Service Record -->
+                        
+                    <div class="section-title fw-bold mb-5">Employment Service Record</div>
+                        <div class=" my-5">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Department</th>
+                                            <th>Inclusive Date</th>
+                                            <th>Appointment Record</th>
+                                            <th>Position/Designation</th>
+                                            <th>Rank</th>
+                                            <th>Remarks</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                        </tr>
+                                        <tr>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+
+
+
+
+                        <!-- Training and Seminars Attended -->
+                        
+                    <div class="section-title fw-bold mb-5">Training and Seminars Attended</div>
+                    <div class=" my-5">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Title</th>
+                                        <th>Venue</th>
+                                        <th>Remark</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        
+                                    </tr>
+                                    <tr>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+
+
+                    <!-- Organizational Membership / Officeship -->
+
+
+                    <div class="section-title fw-bold mb-5">Organizational Membership / Officeship</div>
+                    <div class=" my-5">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Date of Registration</th>
+                                        <th>Validity Date</th>
+                                        <th>Name of Organization</th>
+                                        <th>Place</th>
+                                        <th>Position</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                    </tr>
+                                    <tr>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+
+
+                    <!-- Others -->
+
+                    <div class="section-title fw-bold mb-5">Others</div>
+                    <div class=" my-5">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Description / Particular</th>
+                                       
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        
+                                    </tr>
+                                    <tr>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    
+                 
+                </div>
+                     
+                    </div>
+
+                    
+
+
+
+                    
+
+                       
+
+                        
+
+                    </div>
+
+                    
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+
+        <!-- Bootstrap JavaScript Libraries -->
+        <script
+            src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+            integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+            crossorigin="anonymous"
+        ></script>
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+            integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+            crossorigin="anonymous"
+        ></script>
+
+        <!-- Sidebar JS -->
+        <script src="js/sidebar.js"></script>
+
+    </body>
+
+</html>

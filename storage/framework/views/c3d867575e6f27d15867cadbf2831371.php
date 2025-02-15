@@ -49,207 +49,74 @@
         </div>
     </div>
 
-
-    <!-- Latest Opening -->
+    <!-- Latest Openings -->
     <div class="latest-opening justify-content-center align-items-center mx-auto pb-5">
-        <h1>LATEST OPENING</h1>
+        <h1>LATEST OPENINGS</h1>
 
         <div class="container mt-5 g-1">
             <div class="row">
-                <!-- Job Card 1 -->
-                <div class="col-md-4">
-                    <div class="card job-card p-4">
-                        <h5>Medical Staff</h5>
-                        <p class="requirements">
-                            Requirements:<br>
-                            • Graduate of any medical-related course (BS Nursing, Midwifery, etc.)<br>
-                            • A practicing Catholic of good moral character
-                        </p>
-                        <div class="tags">
-                            <span class="tag">Med</span>
-                            <span class="tag">Nurse</span>
-                            <span class="tag">Midwifery</span>
+                <?php $__currentLoopData = $jobs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $job): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <div class="col-md-4">
+                        <div class="card job-card p-4">
+                            <h5><?php echo e($job->job_title); ?></h5>
+                            <p class="requirements">
+                                Requirements:<br>
+                                <?php echo nl2br(e($job->requirements)); ?>
+
+                            </p>
+                            <div class="tags">
+                                <?php $__currentLoopData = explode(',', $job->tags); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $tag): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <span class="tag"><?php echo e(trim($tag)); ?></span>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            </div>
+
+                            <!-- Apply Now Button linking to the job details page -->
+                            <a style="--clr: #000" class="btn-3" href="<?php echo e(route('jobs.show', $job->id)); ?>">
+                                <span class="button__icon-wrapper">
+                                    <svg width="10" class="button__icon-svg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 15">
+                                        <path fill="currentColor" d="M13.376 11.552l-.264-10.44-10.44-.24.024 2.28 6.96-.048L.2 12.56l1.488 1.488 9.432-9.432-.048 6.912 2.304.024z"></path>
+                                    </svg>
+                                    <svg class="button__icon-svg button__icon-svg--copy" xmlns="http://www.w3.org/2000/svg" width="10" fill="none" viewBox="0 0 14 15">
+                                        <path fill="currentColor" d="M13.376 11.552l-.264-10.44-10.44-.24.024 2.28 6.96-.048L.2 12.56l1.488 1.488 9.432-9.432-.048 6.912 2.304.024z"></path>
+                                    </svg>
+                                </span>
+                                APPLY NOW
+                            </a>
                         </div>
-
-                        <!-- Apply button -->
-                        <a style="--clr: #000" class="btn-3" href="job-selected.html">
-                            <span class="button__icon-wrapper">
-                            <svg
-                                width="10"
-                                class="button__icon-svg"
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 14 15"
-                            >
-                                <path
-                                fill="currentColor"
-                                d="M13.376 11.552l-.264-10.44-10.44-.24.024 2.28 6.96-.048L.2 12.56l1.488 1.488 9.432-9.432-.048 6.912 2.304.024z"
-                                ></path>
-                            </svg>
-                
-                            <svg
-                                class="button__icon-svg button__icon-svg--copy"
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="10"
-                                fill="none"
-                                viewBox="0 0 14 15"
-                            >
-                                <path
-                                fill="currentColor"
-                                d="M13.376 11.552l-.264-10.44-10.44-.24.024 2.28 6.96-.048L.2 12.56l1.488 1.488 9.432-9.432-.048 6.912 2.304.024z"
-                                ></path>
-                            </svg>
-                            </span>
-                            APPLY NOW
-                        </a>
-                        
                     </div>
-                </div>
-
-                <!-- Job Card 2 -->
-                <div class="col-md-4">
-                    <div class="card job-card p-4">
-                        <h5>Research Assistant</h5>
-                        <p class="requirements">
-                            Requirements:<br>
-                            • IT or any Computer-related programs graduate<br>
-                            • A practicing Catholic of good moral character <br>
-                            
-                        </p>
-                        <div class="tags">
-                            <span class="tag">tag1</span>
-                            <span class="tag">tag-2</span>
-                            <span class="tag">Research</span>
-                        </div>
-                        
-                        <!-- Apply button -->
-                        <a style="--clr: #000" class="btn-3" href="#">
-                            <span class="button__icon-wrapper">
-                            <svg
-                                width="10"
-                                class="button__icon-svg"
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 14 15"
-                            >
-                                <path
-                                fill="currentColor"
-                                d="M13.376 11.552l-.264-10.44-10.44-.24.024 2.28 6.96-.048L.2 12.56l1.488 1.488 9.432-9.432-.048 6.912 2.304.024z"
-                                ></path>
-                            </svg>
-                
-                            <svg
-                                class="button__icon-svg button__icon-svg--copy"
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="10"
-                                fill="none"
-                                viewBox="0 0 14 15"
-                            >
-                                <path
-                                fill="currentColor"
-                                d="M13.376 11.552l-.264-10.44-10.44-.24.024 2.28 6.96-.048L.2 12.56l1.488 1.488 9.432-9.432-.048 6.912 2.304.024z"
-                                ></path>
-                            </svg>
-                            </span>
-                            APPLY NOW
-                        </a>
-
-                    </div>
-                </div>
-
-                <!-- Job Card 3 -->
-                <div class="col-md-4">
-                    <div class="card job-card p-4">
-                        <h5>Guidance Staff</h5>
-                        <p class="requirements">
-                            Requirements:<br>
-                            • Must have a bachelor's degree in psychology<br>
-                            • Licensed is an advantage<br>
-                            • A practicing Catholic of good moral character
-                        </p>
-                        <div class="tags">
-                            <span class="tag">tag1</span>
-                            <span class="tag">Staff</span>
-                            <span class="tag">Guidance</span>
-                        </div>
-
-                        <!-- Apply button -->
-                        <a style="--clr: #000" class="btn-3" href="#">
-                            <span class="button__icon-wrapper">
-                            <svg
-                                width="10"
-                                class="button__icon-svg"
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 14 15"
-                            >
-                                <path
-                                fill="currentColor"
-                                d="M13.376 11.552l-.264-10.44-10.44-.24.024 2.28 6.96-.048L.2 12.56l1.488 1.488 9.432-9.432-.048 6.912 2.304.024z"
-                                ></path>
-                            </svg>
-                
-                            <svg
-                                class="button__icon-svg button__icon-svg--copy"
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="10"
-                                fill="none"
-                                viewBox="0 0 14 15"
-                            >
-                                <path
-                                fill="currentColor"
-                                d="M13.376 11.552l-.264-10.44-10.44-.24.024 2.28 6.96-.048L.2 12.56l1.488 1.488 9.432-9.432-.048 6.912 2.304.024z"
-                                ></path>
-                            </svg>
-                            </span>
-                            APPLY NOW
-                        </a>
-                    </div>
-                </div>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </div>
         </div>
     </div>
 
     <!-- List of openings -->
-
-    <div class="table-container ">
+    <div class="table-container">
         <h1 class="list-ttl mb-5">LIST OF OPENINGS</h1>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">Job Title</th>
-                    <th scope="col">Tags</th>
-                    <th scope="col"></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Medical Staff</td>
-                    <td>Med, Nurse, Midwifery</td>
-                    <td><a href="job-selected.html" class="find-out-more">Find out more →</a></td>
-                </tr>
-                <tr>
-                    <td>Medical Staff</td>
-                    <td>Med, Nurse, Midwifery</td>
-                    <td><a href="#" class="find-out-more">Find out more →</a></td>
-                </tr>
-                <tr>
-                    <td>Medical Staff</td>
-                    <td>Med, Nurse, Midwifery</td>
-                    <td><a href="#" class="find-out-more">Find out more →</a></td>
-                </tr>
-                <tr>
-                    <td>Medical Staff</td>
-                    <td>Med, Nurse, Midwifery</td>
-                    <td><a href="#" class="find-out-more">Find out more →</a></td>
-                </tr>
-                <tr>
-                    <td>Medical Staff</td>
-                    <td>Med, Nurse, Midwifery</td>
-                    <td><a href="#" class="find-out-more">Find out more →</a></td>
-                </tr>
-            </tbody>
-        </table>
+
+        <?php if($jobs->isEmpty()): ?>
+            <p>No job listings available at the moment.</p>
+        <?php else: ?>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Job Title</th>
+                        <th scope="col">Tags</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php $__currentLoopData = $jobs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $job): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <tr>
+                            <td><?php echo e($job->job_title); ?></td>
+                            <td><?php echo e(implode(', ', explode(',', $job->tags))); ?></td>
+                            <td>
+                                <a href="<?php echo e(route('jobs.show', $job->id)); ?>" class="find-out-more">Find out more →</a>
+                            </td>
+                        </tr>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                </tbody>
+            </table>
+        <?php endif; ?>
     </div>
 
  <?php echo $__env->renderComponent(); ?>
@@ -261,4 +128,5 @@
 <?php if (isset($__componentOriginal22420923a32db135c994bb2339cfe9f5)): ?>
 <?php $component = $__componentOriginal22420923a32db135c994bb2339cfe9f5; ?>
 <?php unset($__componentOriginal22420923a32db135c994bb2339cfe9f5); ?>
-<?php endif; ?><?php /**PATH C:\laragon\www\hr_catalists\resources\views/hrcatalists/index.blade.php ENDPATH**/ ?>
+<?php endif; ?>
+<?php /**PATH C:\laragon\www\hr_catalists\resources\views/hrcatalists/index.blade.php ENDPATH**/ ?>

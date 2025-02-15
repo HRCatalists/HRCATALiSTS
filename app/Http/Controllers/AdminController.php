@@ -3,9 +3,25 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
+use App\Models\Job;
+use App\Models\Log; // Ensure Log model exists
+
+
 
 class AdminController extends Controller
 {
+    public function atsLogs()
+    {
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+    
+        $logs = Log::with('user')->latest()->get(); // Fetch logs with user details
+    
+        return view('hrcatalists.ats.admin-ats-logs', compact('logs'));
+    }
+    
+
     public function mainMenu()
     {
         if (!Auth::check()) {
@@ -132,7 +148,7 @@ class AdminController extends Controller
         if (!Auth::check()) {
             return redirect()->route('login');
         }
-        return view('hrcatalists.ats.admin-ats-cl'); // EMS Calendar
+        return view('hrcatalists.ats.admin-ats-cl'); // ATS Calendar
     }
 
     public function atsApplicants()
@@ -140,7 +156,7 @@ class AdminController extends Controller
         if (!Auth::check()) {
             return redirect()->route('login');
         }
-        return view('hrcatalists.ats.admin-ats-master-list'); // EMS Calendar
+        return view('hrcatalists.ats.admin-ats-master-list'); // ATS Applicants
     }
 
     public function atsScreening()
@@ -148,7 +164,7 @@ class AdminController extends Controller
         if (!Auth::check()) {
             return redirect()->route('login');
         }
-        return view('hrcatalists.ats.admin-ats-screening'); // EMS Calendar
+        return view('hrcatalists.ats.admin-ats-screening'); // ATS Screening
     }
 
     public function atsInterview()
@@ -156,7 +172,7 @@ class AdminController extends Controller
         if (!Auth::check()) {
             return redirect()->route('login');
         }
-        return view('hrcatalists.ats.admin-ats-interview'); // EMS Calendar
+        return view('hrcatalists.ats.admin-ats-interview'); // ATS Interview
     }
 
     public function atsArchived()
@@ -164,7 +180,7 @@ class AdminController extends Controller
         if (!Auth::check()) {
             return redirect()->route('login');
         }
-        return view('hrcatalists.ats.admin-ats-archived'); // EMS Calendar
+        return view('hrcatalists.ats.admin-ats-archived'); // ATS Archived
     }
 
     public function atsJobs()
@@ -172,19 +188,11 @@ class AdminController extends Controller
         if (!Auth::check()) {
             return redirect()->route('login');
         }
-        return view('hrcatalists.ats.admin-ats-jobs'); // EMS Calendar
-    }
-
-    public function atsLogs()
-    {
-        if (!Auth::check()) {
-            return redirect()->route('login');
-        }
-        return view('hrcatalists.ats.admin-ats-logs'); // EMS Calendar
+        
+        $jobPosts = Job::with('user')->get(); 
+        return view('hrcatalists.ats.admin-ats-jobs', compact('jobPosts'));
     }
 }
-
-
 
 // class AdminController extends Controller
 // {

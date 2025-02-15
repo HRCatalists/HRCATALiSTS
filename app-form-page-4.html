@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Columban College - HR Management pepeyt</title>
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&display=swap">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+  <!-- Styles CCS -->
+  <link rel="stylesheet" href="css/styles.css">
+
+  <!-- Navbar CCS -->
+  <link rel="stylesheet" href="css/navbar.css">
+
+  <!-- application form styles -->
+  <link rel="stylesheet" href="css/application-form-styles.css">
+
+  <!-- Online Recruitment CCS -->
+  <link rel="stylesheet" href="css/ol-recruitment.css">
+</head>
+
+<header>
+  
+</header>
+
+<body>
+
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg sticky-top">
+          <div class="container d-flex justify-content-between">
+              
+              <!-- Left Side (Logo and College Name) -->
+              <a class=" d-flex align-items-center" href="#">
+                  <img src="images/CC_logo.png" alt="Logo" class="cclogo">
+                  <span class="cc-nav-text navbar-text ms-2">Columban College, Inc.</span>
+              </a>
+              
+              <!-- Right Side (User Profile Section) -->
+              <div class="d-flex align-items-center">
+                  <span class="user-name navbar-text me-3">Rhinell Menes</span>
+                  <div class="dropdown">
+                      <a href="#" class="dropdown-toggle d-flex align-items-center text-decoration-none" id="userMenu" data-bs-toggle="dropdown" aria-expanded="false">
+                          <img src="images/dummy-profile.png" alt="Profile" class="rounded-circle user-img">
+                      </a>
+                      <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
+                          <li><a class="dropdown-item" href="#">Profile</a></li>
+                          <li><a class="dropdown-item" href="#">Settings</a></li>
+                          <li><hr class="dropdown-divider"></li>
+                          <li><a class="dropdown-item" href="#">Logout</a></li>
+                      </ul>
+                  </div>
+              </div>
+          </div>
+        </nav>
+        <!-- End of Navbar -->
+
+
+
+
+
+  <!-- Banner Section with Search Bar -->
+    <div class="banner" style="background-image: url(images/cc-bg-pic.png)">
+        <div> Lorem ipsum Lorem Ipsum </div>
+       
+    </div>
+
+    <div class="container mt-5" id="target-content">
+      <a href="job-selected.html" class="back-icon">
+        <i class="fas fa-arrow-left"></i>
+      </a>
+
+    </div>
+
+
+    <div class="container my-5">
+      <h3 class="text-primary">Application Form</h3>
+      
+  
+      <!-- page 4: occupational qualifications -->
+  
+      <div id="form-page-4" class="form-page">
+  
+  
+        <div id="occupational-qualifications-container" class="mt-5">
+          <h3 class="qualification-section-title">Occupational Qualifications</h3>
+  
+          <!-- special skills -->
+          <label for="special-skills" class="qualification-form-label">Special Skills:</label>
+          <textarea id="special-skills" class="qualification-form-control" placeholder="Enter your skills"></textarea>
+  
+          <!-- kind of license -->
+          <label class="qualification-form-label fw-semibold mb-1 d-block">
+            License or Certified membership to any trade or profession (CPA, Bar, Etc.)</label>
+          
+      
+          <div class="qualification-license-form mt-2 p-2 rounded">
+            <div class="qualification-license-fields row g-4">
+
+              <div class="col-md">
+                <div class="qualification-form-group">
+                  <label for="license" class="qualification-form-label">Kind of License</label>
+                  <input type="text" name="license" class="qualification-form-control  shadow-sm mb-3" placeholder="Enter kind of license" />
+                </div>
+              </div>
+
+              <div class="col-md">
+                <div class="qualification-form-group">
+                  <label for="date-issuance" class="qualification-form-label">Date of Issuance</label>
+                  <input type="date" name="date-issuance" class="qualification-form-control  shadow-sm mb-3" />
+                </div>
+              </div>
+
+              <div class="col-md">
+                <div class="qualification-form-group">
+                  <label for="place-issuance" class="qualification-form-label">Place of Issuance</label>
+                  <input type="text" name="place-issuance" class="qualification-form-control  shadow-sm mb-3" placeholder="Enter place of issuance" />
+                </div>
+              </div>
+              
+               
+            </div>
+          </div>
+      
+          <div class="button-group d-flex justify-content-end  gap-2 mt-3">
+            <img src="images/minus.png"  id="remove-form" class="qualification-remove-button  cursor-pointer">
+            <img src="images/more.png"  id="add-form" class="qualification-add-button  cursor-pointer">
+            
+  
+          </div>
+  
+         
+          
+      
+        </div>
+  
+  
+  
+        <!-- Employment Record Form -->
+  
+        <div class="mt-5"  id="employment-record-section">
+          <h3 class="employment-record-title mb-1">Employment Record</h3>
+        
+          <div class="employment-record-item p-3 mb-4">
+            
+            <div class="row">
+              <div class="employment-form-group col-md-12 mb-3">
+                <label for="company" class="employment-form-label">Company <span class="text-danger">*</span></label>
+                <input type="text" name="company" class="employment-form-control" placeholder="Enter Company Name" />
+              </div>
+            </div>
+        
+            <div class="row">
+              <div class="employment-form-group col-md-6 mb-3">
+                <label for="start-date" class="employment-form-label">Start Date <span class="text-danger">*</span></label>
+                <input type="date" name="start-date" class="employment-form-control" />
+              </div>
+              <div class="employment-form-group col-md-6 mb-3">
+                <label for="end-date" class="employment-form-label">End Date <span class="text-danger">*</span></label>
+                <input type="date" name="end-date" class="employment-form-control" />
+              </div>
+            </div>
+        
+            <div class="row">
+              <div class="employment-form-group col-md-6 mb-3">
+                <label for="position" class="employment-form-label">Position <span class="text-danger">*</span></label>
+                <input type="text" name="position" class="employment-form-control" placeholder="Enter Duties and Responsibilities" />
+              </div>
+              <div class="employment-form-group col-md-6 mb-3">
+                <label for="income" class="employment-form-label">Income <span class="text-danger">*</span></label>
+                <input type="text" name="income" class="employment-form-control" placeholder="Enter Income" />
+              </div>
+            </div>
+        
+            
+        
+            
+          </div>
+
+          
+          
+          <div class="employment-button-group d-flex justify-content-end gap-2 mt-3">
+            <img id="remove-employment-record" class="employment-minus-icon" src="images/minus.png" alt="Remove Record" />
+            <img id="add-employment-record" class="employment-plus-icon" src="images/more.png" alt="Add Record" />
+            
+          </div>
+  
+  
+        </div>
+
+        <h4 class="references-title fw-semibold mt-3 mb-2 employment-form-label">Character References (Not related to you) <span class="text-danger">*</span></h4>
+              <div class="row">
+                <div class="employment-form-group col-md-4 mb-3">
+                  <label for="name" class="employment-form-label">Name</label>
+                  <input type="text" name="name" class="employment-form-control" placeholder="Enter Name" />
+                </div>
+                <div class="employment-form-group col-md-4 mb-3">
+                  <label for="occupation" class="employment-form-label">Occupation</label>
+                  <input type="text" name="occupation" class="employment-form-control" placeholder="Enter Occupation" />
+                </div>
+                <div class="employment-form-group col-md-4 mb-3">
+                  <label for="contact" class="employment-form-label">Contact</label>
+                  <input type="text" name="contact" class="employment-form-control" placeholder="Enter Contact" />
+                </div>
+              </div>
+        
+              <div class="row">
+                <div class="employment-form-group col-md-4 mb-3">
+                  <label for="name" class="employment-form-label">Name</label>
+                  <input type="text" name="name" class="employment-form-control" placeholder="Enter Name" />
+                </div>
+                <div class="employment-form-group col-md-4 mb-3">
+                  <label for="occupation" class="employment-form-label">Occupation</label>
+                  <input type="text" name="occupation" class="employment-form-control" placeholder="Enter Occupation" />
+                </div>
+                <div class="employment-form-group col-md-4 mb-3">
+                  <label for="contact" class="employment-form-label">Contact</label>
+                  <input type="text" name="contact" class="employment-form-control" placeholder="Enter Contact" />
+                </div>
+              </div>
+        
+ 
+        <div class="form-group form-check my-5">
+          <input type="checkbox" class="form-check-input shadow" id="privacyPolicy" required>
+          <label class="form-check-label" for="privacyPolicy">I HEREBY CERTIFY that the information provided in 
+            this form is complete, true and correct to the best of my knowledge..</label>
+        </div>
+  
+        
+        <div class="pagination-container my-5 d-flex justify-content-between align-items-center mt-3">
+          <button class="btn btn-secondary back-button">Back</button>
+          <nav>
+            <ul class="pagination mt-3">
+              <li class="page-item"><a class="page-link rounded d-flex align-items-center justify-content-center mx-1" 
+                href="app-form-page-1.html">1</a></li>
+              <li class="page-item"><a class="page-link rounded d-flex align-items-center justify-content-center mx-1" 
+                href="app-form-page-2.html">2</a></li>
+              <li class="page-item"><a class="page-link rounded d-flex align-items-center justify-content-center mx-1" 
+                href="app-form-page-3.html">3</a></li>
+              <li class="page-item"><a class="page-link rounded d-flex align-items-center justify-content-center mx-1" 
+                href="app-form-page-4.html">4</a></li>
+            </ul>
+          </nav>
+          
+          <button id="submit-btn" class="btn btn-primary next-button">Submit</button>
+        </div>
+  
+      </div>
+  
+  
+  
+    </div>
+  
+  </div>
+
+      <!-- Footer Section -->
+      <footer class="footer text-white">
+        <div class="container">
+            <div class="row">
+                <!-- Logo and Main Text -->
+                <div class="col-md-4 d-flex justify-content-center footer-brand logo-section">
+                    <img src="images/CC_logo.png" alt="Columban College Logo" class="img-fluid footer-logo me-2">
+                    <div class="text-center">
+                        <h3 class="fw-bold mb-3">Columban College, Inc.</h3>
+                        <p>Christi Simus Non Nostri<br>We are Christ's and not our own</p>
+                    </div>
+                </div>
+
+                <!-- Contact Information -->
+                <div class="col-md-3 contact-section">
+
+                    <div class="mb-3">
+                        <h4 class="fw-bold mb-3">Contact Us</h4>
+                        
+                    </div>
+                    
+                    <ul>
+                        <li class="mb-3">
+                            <i class="fas fa-map-marker-alt me-2"></i> # 1 First St. New Asinan Olongapo City 
+                        </li>
+                        <li class="mb-3">
+                            <i class="fas fa-envelope me-2"></i> hamdo@columban.edu.ph 
+                        </li>
+                        <li class="mb-3">
+                            <i class="fas fa-phone me-2"></i> (047) 222-3329
+                        </li>
+                    </ul>    
+                </div>
+
+                <!-- Legal -->
+                <div class="col-md-2 legal-section">
+                    <h4 class="fw-bold mb-3">Legal</h4>
+
+                    <ul>
+                        <li class="mb-3">
+                            <a href="#" class="text-white">Terms of Use</a>
+                        </li>
+                        <li class="mb-3">
+                            <a href="#" class="text-white">Privacy Policy</a>
+                        </li>
+                    </ul>  
+                </div>
+
+                <!-- Admin Log in -->
+                <div class="col-md-3 login-section">
+                    <h4 class="fw-bold mb-3">Log in as Admin</h4>
+                    
+                    <div class="d-flex flex-column">
+                        
+                        <a href="#" >
+                            <div>Click here</div>
+                        </a>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container d-flex justify-content-between copyright">
+            <!-- Copyright Text -->
+            <p class="small">
+                Copyright Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            </p>
+
+            <a href="https://www.facebook.com/profile.php?id=100085747780035" target="_blank"><i class="fab fa-facebook-square fa-lg"></i></a>
+        </div>
+    </footer>
+  
+  <script src="js/ats-appform_pagination.js"></script>
+  <script src="js/ats-famInfo_children.js"></script>
+  <script src="js/ats-cv.js"></script>
+  <script src="js/ats-license_cloning.js"></script>
+  <script src="js/ats-emp_form_cloning.js"></script>
+  
+  
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  </body>
+  </html>
