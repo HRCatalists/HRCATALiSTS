@@ -34,30 +34,16 @@
                     </thead>
 
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Dr. Mora</td>
-                            <td>Updated Applicant Profile</td>
-                            <td>10:00 a.m.</td>
-                            <td>January 19, 2025</td>
-                        </tr>
-
-                        <tr>
-                            <td>2</td>
-                            <td>Dr. Mora</td>
-                            <td>Deleted Applicant Profile</td>
-                            <td>10:00 a.m.</td>
-                            <td>January 19, 2025</td>
-                        </tr>
-
-                        <tr>
-                            <td>3</td>
-                            <td>Secretary</td>
-                            <td>Posted a Position</td>
-                            <td>1:00 p.m.</td>
-                            <td>January 11, 2025</td>
-                        </tr>
-                    </tbody>
+    @foreach($logs as $log)
+        <tr>
+            <td>{{ $loop->iteration }}</td>
+            <td>{{ $log->user->name }}</td>
+            <td>{{ $log->activity }}</td>
+            <td>{{ $log->created_at->format('h:i a') }}</td>
+            <td>{{ $log->created_at->format('F d, Y') }}</td>
+        </tr>
+    @endforeach
+</tbody>
                 </table>
             </div>
         </div>
