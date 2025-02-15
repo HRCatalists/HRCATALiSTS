@@ -22,7 +22,7 @@
         
         <!-- Right Side (User Profile Section) -->
         <div class="d-flex align-items-center">
-            <span class="user-name navbar-text me-3">Rhinell Menes</span>
+            <span class="user-name navbar-text me-3"><?php echo e(auth()->user()->name); ?>!</span>
             <div class="dropdown">
                 <a href="#" class="dropdown-toggle d-flex align-items-center text-decoration-none" id="userMenu" data-bs-toggle="dropdown" aria-expanded="false">
                     <img src="images/dummy-profile.png" alt="Profile" class="rounded-circle user-img">

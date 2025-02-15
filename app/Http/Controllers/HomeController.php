@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
+use App\Models\Job;
 
 class HomeController extends Controller
 {
@@ -12,10 +13,18 @@ class HomeController extends Controller
         if (Auth::check()) {
             return redirect()->route('main-menu');
         }
+        $jobs = Job::all();  // Or use a query to fetch the job posts
 
         // Always show the welcome page for guests
-        // return view('hrcatalists.index');
-        return response()->view('hrcatalists.index');
+        return view('hrcatalists.index', compact('jobs'));
     }
+    public function show($id)
+{
+    $job = Job::findOrFail($id); // Fetch job by ID or return 404 if not found
+    return view('jobs.show', compact('job'));
 }
 
+
+   
+
+}

@@ -41,7 +41,7 @@
         <!-- Dashboard Content -->
         <div id="content" class="flex-grow-1">
             <div class="container mt-5">
-                <div class="welcome-text-only">Welcome, {user.name}!</div>
+                <div class="welcome-text-only">Welcome, <?php echo e(auth()->user()->name); ?>!</div>
 
                 <div class="d-flex justify-content-between align-items-center mt-4">
                     <div>
@@ -51,7 +51,7 @@
 
                     <!-- Banner -->
                     <div class="d-flex banner banner-gradient text-white align-items-center justify-content-center px-4 py-2">
-                        <h4 class="banner-text mx-5">Welcome, {user.name}!</h4>
+                        <h4 class="banner-text mx-5">Welcome, <?php echo e(auth()->user()->name); ?>!</h4>
                         <img src="images/db-icon.png" class="banner-icon " alt="banner-icon">
                     </div>
                 </div>
@@ -160,7 +160,6 @@
                         <!-- Calendar -->
                         <div class="card shadow">
                             <div class="card-body">
-
                                 <div class="calendar-container">
                                     <div class="calendar-header d-flex justify-content-between align-items-center">
                                         <button id="prev-month">&lt;</button>
@@ -169,14 +168,12 @@
                                     </div>
                                     <div id="calendar" class="mb-4"></div>
                                 </div>
-
                             </div>
                         </div>
                         
                         <!-- Events -->
                         <div class="card shadow mt-4">
                             <div class="card-body">
-
                                 <div class="d-flex justify-content-between align-items-center">
                                     <h5 id="event-title" class="fw-bold">Events</h5>
                                     <a href="emp-ems-events.html" class="view-link">See more...</a>
@@ -184,19 +181,16 @@
                                 <ul id="event-list" class="list-group mt-3">
                                 <!-- Dynamic Event Items -->
                                 </ul>
-
                             </div>
                         </div>
 
                         <!-- Logs -->
                         <div class="card shadow mt-4">
                             <div class="card-body">
-
                                 <div class="d-flex justify-content-between align-items-center">
                                     <h5 class="fw-bold">Recent Activities</h5>
                                     <a href="admin-ats-logs.html" class="view-link">See more...</a>
                                 </div>
-
                                 <table class="table table-bordered m-0">
                                     <thead class="small">
                                         <tr>
@@ -206,7 +200,6 @@
                                             <th>DATE</th>
                                         </tr>
                                     </thead>
-
                                     <tbody class="small">
                                         <tr>
                                             <td>Dr. Mora</td>
@@ -214,14 +207,12 @@
                                             <td>10:00 a.m.</td>
                                             <td>1/19/2025</td>
                                         </tr>
-            
                                         <tr>
                                             <td>Dr. Mora</td>
                                             <td>Deleted Applicant Profile</td>
                                             <td>10:00 a.m.</td>
                                             <td>1/19/2025</td>
                                         </tr>
-            
                                         <tr>
                                             <td>Secretary</td>
                                             <td>Posted a Position</td>
@@ -237,7 +228,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 
  <?php echo $__env->renderComponent(); ?>

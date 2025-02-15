@@ -4,7 +4,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ApplicantController;
-use App\Http\Controllers\JobPositionController;
+use App\Http\Controllers\JobPostController;
 use App\Http\Controllers\InterviewController;
 use Illuminate\Support\Facades\Auth; // Ensure Auth is imported
 use Illuminate\Http\Request;
@@ -20,6 +20,13 @@ use Illuminate\Http\Request;
 
 // Public Route for Welcome Page
 Route::get('/', [HomeController::class, 'index'])->name('home');
+
+
+Route::get('/jobs/{id}', [HomeController::class, 'show'])->name('jobs.show');
+
+
+
+
 
 // Route::get('/', function () {
 //     // If the user is authenticated, redirect to the last visited page or categories page
@@ -52,10 +59,19 @@ Route::middleware(['auth'])->group(function () {
 // })->name('login');
 
 
+// Public Route for Welcome Page
+Route::get('/', [HomeController::class, 'index'])->name('home');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/login', function () {
+        return view('auth.login');
+    })->name('login');
+});
+
 // Apply authentication middleware to protect routes
 Route::middleware(['auth'])->group(function () {
 
-    // Main Menu (Choose between EMS or ATS)
+    // Main Menu
     Route::get('/main-menu', [AdminController::class, 'mainMenu'])->name('main-menu');
 
     // EMS Routes
@@ -81,6 +97,33 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/ats-interview', [AdminController::class, 'atsInterview'])->name('ats-interview');
     Route::get('/ats-archived', [AdminController::class, 'atsArchived'])->name('ats-archived');
     Route::get('/ats-job-openings', [AdminController::class, 'atsJobs'])->name('ats-jobs');
+
+    // ** Job Post Routes (Nested under Job Openings) **
+
+
+
+
+    Route::prefix('ats-job-openings')->group(function () {
+        // Show the list of job posts
+        Route::get('/job-posts', [JobPostController::class, 'index'])->name('job-posts.index');
+    
+        // Show the form to create a new job post
+        Route::get('/job-posts/create', [JobPostController::class, 'create'])->name('job-posts.create');
+    
+        // Store a new job post
+        Route::post('/job-posts/store', [JobPostController::class, 'store'])->name('job-posts.store');
+    
+        // Show the form to edit an existing job post
+        Route::get('/job-posts/{id}/edit', [JobPostController::class, 'edit'])->name('job-posts.edit');
+    
+        // Update the existing job post
+        Route::put('/job-posts/{id}', [JobPostController::class, 'update'])->name('job-posts.update');
+    
+        // Delete a job post
+        Route::delete('/job-posts/{id}', [JobPostController::class, 'destroy'])->name('job-posts.destroy'); 
+    });
+    
+    
     Route::get('/ats-logs', [AdminController::class, 'atsLogs'])->name('ats-logs');
 });
 
@@ -97,6 +140,7 @@ Route::post('/jobs/store', [JobPositionController::class, 'store'])->name('jobs.
 // Interviews Routes
 Route::get('/interviews', [InterviewController::class, 'index'])->name('interviews.index');
 Route::post('/interviews/store', [InterviewController::class, 'store'])->name('interviews.store');
+
 
 // Route::middleware('auth')->group(function () {
 //     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
