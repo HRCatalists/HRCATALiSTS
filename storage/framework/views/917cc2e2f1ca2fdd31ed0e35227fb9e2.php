@@ -52,9 +52,14 @@
                 
                 <div class="d-flex flex-column">
                     
-                    <a href="<?php echo e(route('login')); ?>" >
-                        <div>Login Here</div>
-                    </a>
+                <?php if(Auth::check()): ?>   
+                    <!-- Redirects to dashboard if logged in -->
+                    <a href="<?php echo e(route('main-menu')); ?>">Go to menu</a>
+                <?php else: ?>
+                    <!-- Shows login page only if not logged in -->
+                    <a href="<?php echo e(route('login')); ?>">Login Here</a>
+                <?php endif; ?>
+                
                     
                 </div>
             </div>

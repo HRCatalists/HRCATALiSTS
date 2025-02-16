@@ -1,0 +1,791 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title> Active Positions</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+
+        <!-- Bootstrap CSS v5.3.2 -->
+        <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+        crossorigin="anonymous"
+        />
+
+        <!-- Data Table -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+        <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css">
+
+        <!-- {{-- JQuery  --}} -->
+        <script 
+            src="https://code.jquery.com/jquery-3.7.1.js" 
+            integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" 
+            crossorigin="anonymous">
+        </script>
+
+        <!-- Buttons for datatables -->
+        <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.dataTables.min.css">
+        
+        <!-- Styles CCS -->
+        <link rel="stylesheet" href="css/styles.css">
+
+        <!-- Navbar CSS -->
+        <link rel="stylesheet" href="css/navbar.css">
+
+        <!-- Sidebar CSS -->
+        <link rel="stylesheet" href="css/sidebar.css">
+
+        <!-- Dashboard CSS -->
+        <link rel="stylesheet" href="css/dashboard.css">
+        
+        <!-- Data tables CSS -->
+        <link rel="stylesheet" href="css/data-tables.css">
+
+    </head>
+
+    <body>
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg fixed-top">
+            <div class="container d-flex justify-content-between">
+
+                <!-- Hamburger Menu Button -->
+                <button class="navbar-toggler me-2" type="button" id="hamburgerMenu">
+                    <div class="imageBox">
+                        <div class="imageInn">
+                            <img src="images/hamburger-1.png" class="card-icon m-auto" alt="Default Image">
+                        </div>
+                        <div class="hoverImg">
+                            <img src="images/hamburger-2.png" class="card-icon m-auto" alt="Profile Image">
+                        </div>
+                    </div>
+                </button>
+                
+                <!-- Left Side (Logo and College Name) -->
+                <a class=" d-flex align-items-center" href="#">
+                    <img src="images/CC_logo.png" alt="Logo" class="cclogo">
+                    <span class="cc-nav-text navbar-text ms-2">Columban College, Inc.</span>
+                </a>
+                
+                <!-- Right Side (User Profile Section) -->
+                <div class="d-flex align-items-center">
+                    <span class="user-name navbar-text me-3">Rhinell Menes</span>
+                    <div class="dropdown">
+                        <a href="#" class="dropdown-toggle d-flex align-items-center text-decoration-none" id="userMenu" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="images/dummy-profile.png" alt="Profile" class="rounded-circle user-img">
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
+                            <li><a class="dropdown-item" href="#">Profile</a></li>
+                            <li><a class="dropdown-item" href="#">Settings</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#">Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <!-- End of Navbar -->
+
+        <!-- Sidebar & Active Position List -->
+        <div class="d-flex">
+            <!-- Sidebar -->
+            <div class="shadow" id="sidebar" >
+                <ul class="list-unstyled components">
+                    <li class="d-flex align-items-center pe-5">
+                        <a href="admin-ats-db.html" class="nav-link px-0 align-middle">
+                            <img src="images/dashboard.png" class="icon" alt="dashboard-icon">
+
+                            <span class="ms-3 sidebar-effect">DASHBOARD</span> 
+                        </a> 
+                    </li>
+
+                    <li class="d-flex align-items-center pe-5">   
+                        <a href="admin-ats-cl.html" class="nav-link px-0 align-middle">
+                            <img src="images/calendar.png" class="icon" alt="calendar-icon">
+
+                            <span class="ms-3 sidebar-effect">CALENDAR</span> 
+                        </a>
+                    </li>
+
+                    <li class="d-flex align-items-center ranking pe-5">   
+                        <a href="#applicants" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
+                            <img src="images/table.png" class="icon" alt="applicant-icon">
+
+                            <span class="ms-3 sidebar-effect">APPLICANTS</span> 
+
+                            <i class="fa-solid fa-chevron-up chevron-icon" id="chevron-arrow"></i>
+                        </a>
+
+                        <ul class="collapse flex-column ms-1" id="applicants" data-bs-parent="#menu">
+                            <li class="mt-2">
+                                <a href="admin-ats-master-list.html" class="nav-link px-0"> <span class="sidebar-effect">Applicant List</span> </a>
+                            </li>
+
+                            <li>
+                                <a href="admin-ats-screening.html" class="nav-link px-0"> <span class="sidebar-effect">Screening</span> </a>
+                            </li>
+
+                            <li>
+                                <a href="admin-ats-interview.html" class="nav-link px-0"> <span class="sidebar-effect">Interview</span> </a>
+                            </li>
+
+                            <li class="d-flex align-items-center pe-5">   
+                                <a href="admin-ats-arch.html" class="nav-link px-0 align-middle">
+                                    <span class="sidebar-effect">Archived</span> 
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="d-flex align-items-center pe-5">   
+                        <a href="admin-ats-act-post.html" class="nav-link px-0 align-middle">
+                            <img src="images/cv.png" class="icon" alt="positions-icon">
+
+                            <span class="ms-3 sidebar-effect">OPENINGS</span> 
+                        </a>
+                    </li>
+
+                    <li class="d-flex align-items-center pe-5">   
+                        <a href="admin-ats-logs.html" class="nav-link px-0 align-middle">
+                            <img src="images/log.png" class="icon" alt="positions-icon">
+
+                            <span class="ms-3 sidebar-effect">LOGS</span> 
+                        </a>
+                    </li>
+
+                    <li class="d-flex align-items-center mt-3 pe-5">
+                        <a href="admin-ems-db.html" class="fw-bold ms-3 sidebar-effect">SWITCH TO EMS</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- End of Sidebar -->
+        
+            <!-- Active Position List -->
+            <div id="content" class="flex-grow-1">
+
+                <!-- New Data Table for Job List -->
+                <div class="container mt-5">
+                    <div class="d-flex justify-content-between align-items-center mt-5 mb-3">
+                        <div>
+                            <h2 class="dt-h2">Opening List</h2>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex">
+                        <div class="card checkbox-card" data-table="jobListingsTable">
+                            <div class="container d-flex">
+                
+                                <!-- Select All Checkbox -->
+                                <div class="d-flex me-4 py-3">
+                                    <input type="checkbox" class="selectAllTable" data-table="jobListingsTable">
+                                </div>
+                                
+                                <!-- Delete Button -->
+                                <div class="d-flex py-1">
+                                    <button type="button" class="btn btn-success btn-sm bulk-activate-btn me-1">ACTIVATE</button>
+                                    <button class="btn reject-btn btn-sm" style="display: none;">DELETE</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-around ms-3">
+                            <!-- Add Position Button -->
+                            <button type="button" class="btn add-btn me-2" data-bs-toggle="modal" data-bs-target="#addPositionModal">
+                                ADD POSITION
+                            </button>
+    
+                            <button class="btn shadow print-btn">
+                                <i class="fa fa-print"></i> PRINT
+                                <a href=""></a>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <table id="jobListingsTable" class="table table-bordered display">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>JOB TITLE</th>
+                                <th>DEPARTMENT</th>
+                                <th>STATUS</th>
+                                <th>DATE CREATED</th>
+                                <th>ACTIONS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="text-center"><input type="checkbox" class="rowCheckbox" data-table="jobListingsTable"></td>
+                                <td>HR Assistant</td>
+                                <td>Human Resource Department</td>
+                                <td class="status-column text-center"><span class="badge bg-danger">Inactive</span></td> <!-- Status Column -->
+                                <td>February 10, 2025</td>
+                                <td class="text-center">
+                                    <div class="d-flex justify-content-between">
+                                        <button class="btn btn-ap-edit me-1" data-bs-toggle="modal" data-bs-target="#viewPositionModal">VIEW</button>
+                                        <button class="btn btn-ap-edit me-1" data-bs-toggle="modal" data-bs-target="#editPositionModal">EDIT</button>
+                                        <button class="btn btn-success btn-ap-edit activate-btn">ACTIVATE</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-center"><input type="checkbox" class="rowCheckbox" data-table="jobListingsTable"></td>
+                                <td>IT Support Specialist</td>
+                                <td>IT Department</td>
+                                <td class="status-column text-center"><span class="badge bg-danger">Inactive</span></td> <!-- Status Column -->
+                                <td>February 12, 2025</td>
+                                <td class="text-center">
+                                    <div class="d-flex justify-content-between">
+                                        <button class="btn btn-ap-edit me-1" data-bs-toggle="modal" data-bs-target="#viewPositionModal">VIEW</button>
+                                        <button class="btn btn-ap-edit me-1" data-bs-toggle="modal" data-bs-target="#editPositionModal">EDIT</button>
+                                        <button class="btn btn-success btn-ap-edit activate-btn" >ACTIVATE</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-center"><input type="checkbox" class="rowCheckbox" data-table="jobListingsTable"></td>
+                                <td>Library Staff</td>
+                                <td>Library Department</td>
+                                <td class="status-column text-center"><span class="badge bg-danger">Inactive</span></td> <!-- Status Column -->
+                                <td>February 14, 2025</td>
+                                <td class="text-center">
+                                    <div class="d-flex justify-content-between">
+                                        <button class="btn btn-ap-edit me-1" data-bs-toggle="modal" data-bs-target="#viewPositionModal">VIEW</button>
+                                        <button class="btn btn-ap-edit me-1" data-bs-toggle="modal" data-bs-target="#editPositionModal">EDIT</button>
+                                        <button class="btn btn-success btn-ap-edit activate-btn">ACTIVATE</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-center"><input type="checkbox" class="rowCheckbox" data-table="jobListingsTable"></td>
+                                <td>Guidance Counselor</td>
+                                <td>Guidance Office</td>
+                                <td class="status-column text-center"><span class="badge bg-danger">Inactive</span></td> <!-- Status Column -->
+                                <td>February 15, 2025</td>
+                                <td class="text-center">
+                                    <div class="d-flex justify-content-between">
+                                        <button class="btn btn-ap-edit me-1" data-bs-toggle="modal" data-bs-target="#viewPositionModal">VIEW</button>
+                                        <button class="btn btn-ap-edit me-1" data-bs-toggle="modal" data-bs-target="#editPositionModal">EDIT</button>
+                                        <button class="btn btn-success btn-ap-edit activate-btn">ACTIVATE</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Activate Confirmation Popup -->
+                <div id="activatePopup" class="custom-popup">
+                    <div class="popup-content">
+                        <p>Are you sure you want to activate this opening?</p>
+                        <button id="confirmActivate" class="btn btn-success">Yes</button>
+                        <button class="btn btn-outline-secondary" onclick="closePopup('activatePopup')">Cancel</button>
+                    </div>
+                </div>
+
+                <!-- Deactivate Confirmation Popup -->
+                <div id="deactivatePopup" class="custom-popup">
+                    <div class="popup-content">
+                        <p>Are you sure you want to deactivate this opening?</p>
+                        <button id="confirmDeactivate" class="btn btn-danger">Yes</button>
+                        <button class="btn btn-outline-secondary" onclick="closePopup('deactivatePopup')">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Offcanvas for Candidate Profile View -->
+        <!-- Add Position Modal -->
+        <div class="modal fade" id="addPositionModal" tabindex="-1" aria-labelledby="addPositionModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addPositionModalLabel">ADD A POSITION</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="jobTitle" class="form-label">Job Title <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="jobTitle" placeholder="Enter Job Title" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="department" class="form-label">Department <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="department" placeholder="Enter Department" required>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="requirements" class="form-label">Job Description <span class="text-danger">*</span></label>
+                                    <textarea class="form-control" id="description" rows="4" required placeholder="Enter job description..."></textarea>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="duties" class="form-label">Requirements <span class="text-danger">*</span></label>
+                                    <textarea class="form-control" id="requirements" rows="4" required placeholder="Enter requirements..."></textarea>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="tags" class="form-label">Tags <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="tags" placeholder="Enter tags">
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="dateIssued" class="form-label">Date Issued <span class="text-danger">*</span></label>
+                                    <input type="date" class="form-control" id="dateIssued" required>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="endDate" class="form-label">End Date <span class="text-danger">*</span></label>
+                                    <input type="date" class="form-control" id="endDate" required>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-post">POST</button>
+                        <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">CANCEL</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End of Add -->
+
+        <!-- View Position Modal -->
+        <div class="modal fade" id="viewPositionModal" tabindex="-1" aria-labelledby="viewPositionModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="viewPositionModalLabel">VIEW POSITION</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="tags" class="form-label">Job Title:</label>
+                                <span id="viewJobTitle"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="tags" class="form-label">Department:</label>
+                                <span id="viewDepartment"></span>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="tags" class="form-label">Job Description:</label>
+                                <p id="viewJobDescription"></p>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="tags" class="form-label">Requirements:</label>
+                                <p id="viewRequirements"></p>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="tags" class="form-label">Tags: </label>
+                                <p id="viewTags"></p>
+                            </div>
+                            <div class="col-md-3">
+                                <strong>Date Issued:</strong> 
+                                <span id="viewDateIssued"></span>
+                            </div>
+                            <div class="col-md-3">
+                                <strong>End Date:</strong> 
+                                <span id="viewEndDate"></span>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">CLOSE</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End of View -->
+
+        <!-- Edit Position Modal -->
+        <div class="modal fade" id="editPositionModal" tabindex="-1" aria-labelledby="editPositionModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editPositionModalLabel">EDIT POSITION</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="jobTitle" class="form-label">Job Title <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="jobTitle" placeholder="Enter Job Title" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="department" class="form-label">Department <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="department" placeholder="Enter Department" required>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="requirements" class="form-label">Job Description <span class="text-danger">*</span></label>
+                                    <textarea class="form-control" id="description" rows="4" required placeholder="Enter job description..."></textarea>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="duties" class="form-label">Requirements <span class="text-danger">*</span></label>
+                                    <textarea class="form-control" id="requirements" rows="4" required placeholder="Enter requirements..."></textarea>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="tags" class="form-label">Tags <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="tags" placeholder="Enter tags">
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="dateIssued" class="form-label">Date Issued <span class="text-danger">*</span></label>
+                                    <input type="date" class="form-control" id="dateIssued" required>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="endDate" class="form-label">End Date <span class="text-danger">*</span></label>
+                                    <input type="date" class="form-control" id="endDate" required>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-post">SAVE</button>
+                        <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">CANCEL</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End of Edit -->
+
+        <!-- Bootstrap JavaScript Libraries -->
+        <script
+            src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+            integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+            crossorigin="anonymous"
+        ></script>
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+            integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+            crossorigin="anonymous"
+        ></script>
+
+        <!-- jQuery and DataTables JS -->
+        <script src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
+
+        <script src="https://cdn.datatables.net/buttons/2.2.3/js/dataTables.buttons.min.js"></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/pdfmake@0.1.53/build/pdfmake.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/pdfmake@0.1.53/build/vfs_fonts.js"></script>
+
+        <!-- Sidebar JS -->
+        <script src="js/sidebar.js"></script>
+
+        <!-- Position List Data Table JS -->
+        <script>
+            $(document).ready(function () {
+                let table = $('#jobListingsTable').DataTable({
+                    paging: true,
+                    searching: true,
+                    ordering: true,
+                    pageLength: 10,
+                    language: {
+                        paginate: {
+                            previous: 'Previous',
+                            next: 'Next',
+                        },
+                        search: '',
+                        searchPlaceholder: 'Search',
+                    },
+                    columnDefs: [
+                        { targets: 0, orderable: false, className: 'text-center' }, // Disable sorting for the checkbox column
+                        { targets: 4, orderable: true, className: 'text-center' }, // Enable sorting for STATUS column
+                        { targets: 5, orderable: false, className: 'text-center' }  // Disable sorting for actions column
+                    ],
+                    order: [[2, 'desc']], // Sort by DATE CREATED by default
+                });
+
+                let selectedRow = null; // Store the selected row
+
+                // Handle ACTIVATE button in the Action Column (Single row activation)
+                $('#jobListingsTable').on('click', '.activate-btn', function () {
+                    selectedRow = $(this).closest('tr'); // Store the selected row
+                    showPopup('activatePopup'); // Show Activate Confirmation Popup
+                });
+
+                // Handle confirmation for single row activation
+                $('#confirmActivate').off('click').on('click', function () {
+                    if (selectedRow) {
+                        let statusBadge = selectedRow.find('.status-column span');
+                        let actionButton = selectedRow.find('.activate-btn');
+
+                        // Change status to Active
+                        statusBadge.removeClass('bg-danger').addClass('bg-success').text('Active');
+
+                        // Change button to DEACTIVATE
+                        actionButton.text('DEACTIVATE')
+                            .removeClass('btn-success activate-btn')
+                            .addClass('btn-danger deactivate-btn');
+
+                        closePopup('activatePopup'); // Close popup
+
+                        // Remove old event and attach the DEACTIVATE event
+                        actionButton.off('click').on('click', function () {
+                            selectedRow = $(this).closest('tr');
+                            showPopup('deactivatePopup'); // Show deactivate confirmation popup
+                        });
+
+                        table.row(selectedRow).invalidate().draw(); // Update DataTable
+                    }
+                });
+
+                // Handle ACTIVATE button beside "Select All" (Bulk activation)
+                $('.bulk-activate-btn').on('click', function () {
+                    let selectedRows = $('.rowCheckbox:checked').closest('tr'); // Get all selected rows
+                    if (selectedRows.length > 0) {
+                        showPopup('bulkActivatePopup'); // Show bulk Activate Confirmation Popup
+                    }
+                });
+
+                // Handle confirmation for bulk activation
+                $('#confirmBulkActivate').off('click').on('click', function () {
+                    let selectedRows = $('.rowCheckbox:checked').closest('tr');
+
+                    selectedRows.each(function () {
+                        let statusBadge = $(this).find('.status-column span');
+                        let actionButton = $(this).find('.activate-btn');
+
+                        // Change status to Active
+                        statusBadge.removeClass('bg-danger').addClass('bg-success').text('Active');
+
+                        // Change button to DEACTIVATE
+                        actionButton.text('DEACTIVATE')
+                            .removeClass('btn-success activate-btn')
+                            .addClass('btn-danger deactivate-btn');
+
+                        // Remove old event and attach the DEACTIVATE event
+                        actionButton.off('click').on('click', function () {
+                            selectedRow = $(this).closest('tr');
+                            showPopup('deactivatePopup'); // Show deactivate confirmation popup
+                        });
+                    });
+
+                    closePopup('bulkActivatePopup'); // Close popup
+                    table.rows().invalidate().draw(); // Update DataTable
+                });
+
+                // Handle DEACTIVATE button click (opens DEACTIVATE confirmation popup)
+                $('#jobListingsTable').on('click', '.deactivate-btn', function () {
+                    selectedRow = $(this).closest('tr'); // Store reference to the row
+                    showPopup('deactivatePopup'); // Show deactivate confirmation popup
+                });
+
+                // Handle confirmation for DEACTIVATE action
+                $('#confirmDeactivate').off('click').on('click', function () {
+                    if (selectedRow) {
+                        let statusBadge = selectedRow.find('.status-column span');
+                        let actionButton = selectedRow.find('.deactivate-btn');
+
+                        // Change status to Inactive
+                        statusBadge.removeClass('bg-success').addClass('bg-danger').text('Inactive');
+
+                        // Change button back to ACTIVATE
+                        actionButton.text('ACTIVATE')
+                            .removeClass('btn-danger deactivate-btn')
+                            .addClass('btn-success activate-btn');
+
+                        closePopup('deactivatePopup'); // Close popup
+
+                        // Remove old event and attach the ACTIVATE event
+                        actionButton.off('click').on('click', function () {
+                            selectedRow = $(this).closest('tr');
+                            showPopup('activatePopup'); // Show activate confirmation popup
+                        });
+
+                        table.row(selectedRow).invalidate().draw(); // Update DataTable
+                    }
+                });
+
+                // Function to show the popup
+                function showPopup(popupId) {
+                    $('#' + popupId).css({ visibility: 'visible', opacity: '1' });
+                }
+
+                // Function to close the popup
+                function closePopup(popupId) {
+                    $('#' + popupId).css({ opacity: '0', visibility: 'hidden' });
+                }
+            });                                                                                                      
+
+                function toggleDeleteButton() {
+                    const selectedCount = $('.rowCheckbox:checked').length;
+                    const deleteButton = $('#deleteSelected');
+        
+                    if (selectedCount > 0) {
+                        deleteButton.fadeIn();
+                    } else {
+                        deleteButton.fadeOut();
+                    }
+                }
+        
+                $('#selectAllRows').on('change', function () {
+                    $('.rowCheckbox').prop('checked', this.checked);
+                    toggleDeleteButton();
+                });
+        
+                $('#jobListingsTable').on('change', '.rowCheckbox', function () {
+                    const allChecked = $('.rowCheckbox:checked').length === $('.rowCheckbox').length;
+                    $('#selectAllRows').prop('checked', allChecked);
+                    toggleDeleteButton();
+                });
+        
+                $('#deleteSelected').on('click', function () {
+                    if (confirm('Are you sure you want to delete the selected job listings?')) {
+                        $('.rowCheckbox:checked').closest('tr').fadeOut(500, function () {
+                            $(this).remove();
+                            toggleDeleteButton();
+                        });
+                    }
+                });
+
+            // Handle Card Expansion and Delete Button Visibility
+            $(document).ready(function () {
+                function toggleDeleteButton(tableId) {
+                    const selectedCount = $(`.rowCheckbox[data-table='${tableId}']:checked`).length;
+                    const deleteButton = $(`.checkbox-card[data-table='${tableId}'] .reject-btn`);
+                    const checkboxCard = $(`.checkbox-card[data-table='${tableId}']`);
+
+                    if (selectedCount > 0) {
+                        deleteButton.fadeIn();
+                        checkboxCard.addClass('expanded');
+                    } else {
+                        deleteButton.fadeOut();
+                        checkboxCard.removeClass('expanded');
+                    }
+                }
+
+                // Handle "Select All" checkbox click
+                $('.selectAllTable').on('change', function () {
+                    const tableId = $(this).data('table');
+                    const isChecked = $(this).is(':checked');
+                    $(`.rowCheckbox[data-table='${tableId}']`).prop('checked', isChecked);
+                    toggleDeleteButton(tableId);
+                });
+
+                // Handle individual row checkbox click
+                $('.rowCheckbox').on('change', function () {
+                    const tableId = $(this).data('table');
+                    const allChecked = $(`.rowCheckbox[data-table='${tableId}']:checked`).length === $(`.rowCheckbox[data-table='${tableId}']`).length;
+                    $(`.selectAllTable[data-table='${tableId}']`).prop('checked', allChecked);
+                    toggleDeleteButton(tableId);
+                });
+            });
+        </script>
+
+
+
+
+
+
+
+
+        <!-- Active Position Openings Data Table JS -->
+        <script>
+            $(document).ready(function () {
+                // Initialize DataTable
+                const table = $('#activePositionsTable').DataTable({
+                    paging: true,
+                    searching: true,
+                    ordering: true,
+                    pageLength: 10,
+                    language: {
+                        paginate: {
+                            previous: 'Previous',
+                            next: 'Next',
+                        },
+                        search: '',
+                        searchPlaceholder: 'Search',
+                    },
+                    columnDefs: [
+                        { targets: 0, orderable: false, className: 'text-center' }, // Disable sorting for the checkbox column
+                    ],
+                    order: [[1, 'asc']], // Set default sorting to "JOB TITLE" column
+                });
+        
+                function toggleDeleteButton() {
+                    const selectedCount = $('.rowCheckbox:checked').length;
+                    const deleteButton = $('.reject-btn');
+                    const checkboxCard = $('.checkbox-card-2');
+        
+                    if (selectedCount > 0) {
+                        deleteButton.show();
+                        checkboxCard.addClass('expanded');
+                    } else {
+                        deleteButton.hide();
+                        checkboxCard.removeClass('expanded');
+                    }
+                }
+        
+                // Handle "Select All" checkbox inside the card
+                $('.checkbox-card-2 .rowCheckbox').on('change', function () {
+                    const isChecked = $(this).is(':checked');
+                    $('#activePositionsTable .rowCheckbox').prop('checked', isChecked).trigger('change');
+                });
+        
+                // Handle individual row checkbox click
+                $('#activePositionsTable').on('change', '.rowCheckbox', function () {
+                    const allChecked = $('#activePositionsTable .rowCheckbox:checked').length === $('#activePositionsTable .rowCheckbox').length;
+                    $('.checkbox-card-2 .rowCheckbox').prop('checked', allChecked);
+                    toggleDeleteButton();
+                });
+        
+                function showDeletePopup() {
+                    let selectedCount = $('.rowCheckbox:checked').length;
+                    let totalApplicants = $('.rowCheckbox').length;
+        
+                    if (selectedCount === 1) {
+                        $('#rejectPopup p').text("Are you sure you want to delete this opening?");
+                    } else if (selectedCount === totalApplicants) {
+                        $('#rejectPopup p').text("Are you sure you want to delete ALL the openings?");
+                    } else {
+                        $('#rejectPopup p').text("Are you sure you want to delete the selected openings?");
+                    }
+        
+                    $('#rejectPopup').css({ visibility: 'visible', opacity: '1' });
+                }
+        
+                function closePopup() {
+                    $('#rejectPopup').css({ opacity: '0', visibility: 'hidden' });
+                }
+        
+                function deleteAction() {
+                    alert("Selected opening(s) deleted successfully!");
+                    closePopup();
+                }
+        
+                // Handle delete button click
+                $('.reject-btn').on('click', function () {
+                    if ($('.rowCheckbox:checked').length > 0) {
+                        showDeletePopup();
+                    }
+                });
+        
+                // Close popup when clicking cancel
+                $('.btn-outline-secondary').on('click', function () {
+                    closePopup();
+                });
+        
+                // Confirm delete action
+                $('.btn-danger').on('click', function () {
+                    deleteAction();
+                });
+        
+                // Initially hide the delete button and collapse the card
+                $('.reject-btn').hide();
+                $('.checkbox-card-2').removeClass('expanded');
+            });
+        </script>
+    </body>
+</html>

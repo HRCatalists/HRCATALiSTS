@@ -9,22 +9,24 @@ class HomeController extends Controller
 {
     public function index()
     {
-        // If the user is logged in, redirect to the main menu
-        if (Auth::check()) {
-            return redirect()->route('main-menu');
-        }
-        $jobs = Job::all();  // Or use a query to fetch the job posts
+        // Fetch only active jobs
+        $jobs = Job::where('status', 'active')->get();
 
-        // Always show the welcome page for guests
         return view('hrcatalists.index', compact('jobs'));
     }
+
     public function show($id)
-{
-    $job = Job::findOrFail($id); // Fetch job by ID or return 404 if not found
-    return view('jobs.show', compact('job'));
-}
+    {
+        $job = Job::findOrFail($id); // Fetch job by ID or return 404 if not found
+        return view('jobs.show', compact('job'));
+    }
 
-
-   
+    public function openings()
+    {
+        // Fetch only active jobs
+        $jobs = Job::where('status', 'active')->get();
+        
+        return view('hrcatalists.openings', compact('jobs'));
+    }
 
 }

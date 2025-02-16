@@ -66,9 +66,6 @@ class Kernel extends HttpKernel
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
-
-        // ✅ Register PreventBackHistory middleware for individual routes
-        // 'prevent-back-history' => \App\Http\Middleware\PreventBackHistory::class,
     ];
 
     protected $middlewareAliases = [
@@ -76,4 +73,9 @@ class Kernel extends HttpKernel
         'prevent-back-history' => \App\Http\Middleware\PreventBackHistory::class, // ✅ Add this
     ];
     
+    protected function schedule(\Illuminate\Console\Scheduling\Schedule $schedule)
+    {
+        // ✅ Run the job expiration command daily at midnight
+        $schedule->command('jobs:deactivate-expired')->daily();
+    }
 }
