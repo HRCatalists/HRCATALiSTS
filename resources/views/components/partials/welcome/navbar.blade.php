@@ -4,7 +4,7 @@
         
         <!-- Left Side (Logo and College Name) -->
         <a class=" d-flex align-items-center" href="{{ route('home') }}">
-            <img src="images/CC_logo.png" alt="Logo" class="cclogo">
+            <img src="{{ asset('images/CC_logo.png') }}" alt="Logo" class="cclogo">
             <span class="cc-nav-text navbar-text fw-bold ms-2">Columban College, Inc.</span>
         </a>
         

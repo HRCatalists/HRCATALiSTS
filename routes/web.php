@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 // Public Route for Welcome Page
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-Route::get('/jobs/{id}', [HomeController::class, 'show'])->name('jobs.show');
+// Route::get('/jobs/{id}', [HomeController::class, 'show'])->name('jobs.show');
 
 Route::get('/openings', [HomeController::class, 'openings'])->name('openings');
 
@@ -27,6 +27,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/main-menu', [AdminController::class, 'mainMenu'])->name('main-menu');
 });
 
+
+Route::get('/job-selected/{slug}', [JobPostController::class, 'jobSelected'])->name('job-selected');
 
 // Apply authentication middleware to protect routes
 Route::middleware(['auth'])->group(function () {
@@ -76,7 +78,7 @@ Route::middleware(['auth'])->group(function () {
         Route::put('/job-posts/{id}', [JobPostController::class, 'update'])->name('job-posts.update');
     
         // Delete a job post
-        Route::delete('/job-posts/{id}', [JobPostController::class, 'destroy'])->name('job-posts.destroy'); 
+        Route::delete('/job-posts/{id}', [JobPostController::class, 'destroy'])->name('job-posts.destroy');
     });
     
     Route::get('/ats-logs', [AdminController::class, 'atsLogs'])->name('ats-logs');

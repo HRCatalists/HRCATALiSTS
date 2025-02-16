@@ -4,7 +4,7 @@
         <div class="row">
             <!-- Logo and Main Text -->
             <div class="col-md-4 d-flex justify-content-center footer-brand logo-section">
-                <img src="images/CC_logo.png" alt="Columban College Logo" class="img-fluid footer-logo me-2">
+                <img src="<?php echo e(asset('images/CC_logo.png')); ?>" alt="Columban College Logo" class="img-fluid footer-logo me-2">
                 <div class="text-center">
                     <h3 class="fw-bold mb-3">Columban College, Inc.</h3>
                     <p>Christi Simus Non Nostri<br>We are Christ's and not our own</p>

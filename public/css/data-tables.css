@@ -294,7 +294,7 @@ transform: scale(0.98);
     background-color: white;
 }
 
-.btn-ap-edit {
+.btn-view {
     flex: 1;
     background-color: #111D5B;
     color: white;
@@ -302,9 +302,31 @@ transform: scale(0.98);
     border: solid 1px #3377cc !important;
 }
 
-.btn-ap-edit:hover {
+.btn-view:hover {
     background-color: white;
-    color: black;
+    color: #111D5B;
+}
+
+.btn-ap-edit {
+    flex: 1;
+    background-color: white;
+    color: #111D5B;
+    border: solid 1px #3377cc !important;
+}
+
+.btn-ap-edit:hover {
+    background-color: #111D5B;
+    color: white;
+}
+
+.btn-activate {
+    flex: 1;
+    border: solid 1px #3377cc !important;
+}
+
+.btn-activate:hover {
+    background-color: white;
+    color: #111D5B;
 }
 
 .btn-success {

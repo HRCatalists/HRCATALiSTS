@@ -128,4 +128,22 @@ class JobPostController extends Controller
             'message' => 'Job deleted successfully!'
         ]);
     }
+
+    /**
+     * View job selected.
+     */
+    public function jobSelected($slug)
+    {
+        // Find the job by slug (or by ID if necessary)
+        $job = Job::where('slug', $slug)->where('status', 'active')->firstOrFail();
+    
+        // ✅ Decode JSON fields if they are stored as JSON strings
+        $job->tags = explode(',', $job->tags);
+        $job->requirements = explode(',', $job->requirements);
+        $job->description = explode(',', $job->description);
+    
+        return view('hrcatalists.job-selected', compact('job'));
+    }
+    
+    
 }
