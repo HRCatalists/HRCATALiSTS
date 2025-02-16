@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Routing\Controller;
 use App\Models\Job;
 use App\Models\Log; // Ensure Log model exists
-
 
 
 class AdminController extends Controller
@@ -35,7 +35,7 @@ class AdminController extends Controller
         if (!Auth::check()) {
             return redirect()->route('login');
         }
-        return view('hrcatalists.admin-ems-db'); // EMS dashboard
+        return view('hrcatalists.ems.admin-ems-db'); // EMS dashboard
     }
 
     public function employees()
@@ -43,7 +43,7 @@ class AdminController extends Controller
         if (!Auth::check()) {
             return redirect()->route('login');
         }
-        return view('hrcatalists.admin-ems-emp'); // EMS Employee List
+        return view('hrcatalists.ems.admin-ems-emp'); // EMS Employee List
     }
 
     public function calendar()
@@ -51,7 +51,7 @@ class AdminController extends Controller
         if (!Auth::check()) {
             return redirect()->route('login');
         }
-        return view('hrcatalists.admin-ems-cl'); // EMS Calendar
+        return view('hrcatalists.ems.admin-ems-cl'); // EMS Calendar
     }
 
     public function deptCOA()
@@ -59,7 +59,7 @@ class AdminController extends Controller
         if (!Auth::check()) {
             return redirect()->route('login');
         }
-        return view('hrcatalists.admin-ems-dept-coa');
+        return view('hrcatalists.ems.admin-ems-dept-coa');
     }
 
     public function deptCASED()
@@ -67,7 +67,7 @@ class AdminController extends Controller
         if (!Auth::check()) {
             return redirect()->route('login');
         }
-        return view('hrcatalists.admin-ems-dept-cased'); // College of Arts & Science and Education
+        return view('hrcatalists.ems.admin-ems-dept-cased'); // College of Arts & Science and Education
     }
 
     public function deptCBA()
@@ -75,7 +75,7 @@ class AdminController extends Controller
         if (!Auth::check()) {
             return redirect()->route('login');
         }
-        return view('hrcatalists.admin-ems-dept-cba'); // College of Business and Accountancy
+        return view('hrcatalists.ems.admin-ems-dept-cba'); // College of Business and Accountancy
     }
 
     public function deptCCS()
@@ -83,7 +83,7 @@ class AdminController extends Controller
         if (!Auth::check()) {
             return redirect()->route('login');
         }
-        return view('hrcatalists.admin-ems-dept-ccs'); // College of Computer Studies
+        return view('hrcatalists.ems.admin-ems-dept-ccs'); // College of Computer Studies
     }
 
     public function deptCOE()
@@ -91,7 +91,7 @@ class AdminController extends Controller
         if (!Auth::check()) {
             return redirect()->route('login');
         }
-        return view('hrcatalists.admin-ems-dept-coe'); // College of Engineering
+        return view('hrcatalists.ems.admin-ems-dept-coe'); // College of Engineering
     }
 
     public function deptCON()
@@ -99,7 +99,7 @@ class AdminController extends Controller
         if (!Auth::check()) {
             return redirect()->route('login');
         }
-        return view('hrcatalists.admin-ems-dept-con'); // College of Nursing
+        return view('hrcatalists.ems.admin-ems-dept-con'); // College of Nursing
     }
 
     public function deptBasicEd()
@@ -107,7 +107,7 @@ class AdminController extends Controller
         if (!Auth::check()) {
             return redirect()->route('login');
         }
-        return view('hrcatalists.admin-ems-dept-basicEd'); // College of Basic Education
+        return view('hrcatalists.ems.admin-ems-dept-basicEd'); // College of Basic Education
     }
 
     public function ranking()
@@ -115,7 +115,7 @@ class AdminController extends Controller
         if (!Auth::check()) {
             return redirect()->route('login');
         }
-        return view('hrcatalists.admin-ems-ranking'); // EMS Faculty/Non-teaching Ranking
+        return view('hrcatalists.ems.admin-ems-ranking'); // EMS Faculty/Non-teaching Ranking
     }
 
     public function companyPolicy()
@@ -123,7 +123,7 @@ class AdminController extends Controller
         if (!Auth::check()) {
             return redirect()->route('login');
         }
-        return view('hrcatalists.admin-ems-policy'); // Logs Page
+        return view('hrcatalists.ems.admin-ems-policy'); // Logs Page
     }
 
     public function logs()
@@ -131,7 +131,7 @@ class AdminController extends Controller
         if (!Auth::check()) {
             return redirect()->route('login');
         }
-        return view('hrcatalists.admin-ems-logs'); // Logs Page
+        return view('hrcatalists.ems.admin-ems-logs'); // Logs Page
     }
 
     // ATS
@@ -193,81 +193,3 @@ class AdminController extends Controller
         return view('hrcatalists.ats.admin-ats-jobs', compact('jobPosts'));
     }
 }
-
-// class AdminController extends Controller
-// {
-//     public function mainMenu()
-//     {
-//         return view('hrcatalists.main-menu-ats-ems'); // Main menu view
-//     }
-
-//     public function emsDashboard()
-//     {
-//         return view('hrcatalists.admin-ems-db'); // EMS dashboard
-//     }
-
-    // public function atsDashboard()
-    // {
-    //     return view('hrcatalists.admin-ats-db'); // ATS dashboard
-    // }
-
-//     public function employees()
-//     {
-//         return view('hrcatalists.admin-ems-emp'); // EMS Employee List
-//     }
-
-//     public function deptCOA()
-//     {
-//         return view('hrcatalists.admin-ems-dept-coa'); // College of Architecture
-//     }
-
-//     public function deptCASED()
-//     {
-//         return view('hrcatalists.admin-ems-dept-cased'); // College of Arts & Science and Education
-//     }
-
-//     public function deptCBA()
-//     {
-//         return view('hrcatalists.admin-ems-dept-cba'); // College of Business and Accountancy
-//     }
-
-//     public function deptCCS()
-//     {
-//         return view('hrcatalists.admin-ems-dept-ccs'); // College of Computer Studies
-//     }
-
-//     public function deptCOE()
-//     {
-//         return view('hrcatalists.admin-ems-dept-coe'); // College of Engineering
-//     }
-
-//     public function deptCON()
-//     {
-//         return view('hrcatalists.admin-ems-dept-con'); // College of Nursing
-//     }
-
-//     public function deptBasicEd()
-//     {
-//         return view('hrcatalists.admin-ems-dept-basicEd'); // College of Basic Education
-//     }
-
-//     public function calendar()
-//     {
-//         return view('hrcatalists.admin-ems-cl'); // EMS Calendar
-//     }
-
-//     public function ranking()
-//     {
-//         return view('hrcatalists.admin-ems-ranking'); // EMS Faculty/Non-teaching Ranking
-//     }
-
-//     public function companyPolicy()
-//     {
-//         return view('hrcatalists.admin-ems-policy'); // Logs Page
-//     }
-
-//     public function logs()
-//     {
-//         return view('hrcatalists.admin-ems-logs'); // Logs Page
-//     }
-// }

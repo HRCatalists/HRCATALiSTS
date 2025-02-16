@@ -21,7 +21,8 @@ class JobPostController extends Controller
      */
     public function store(Request $request)
     {
-        // Validate incoming request data
+        \Log::info('Received Data:', $request->all()); // ✅ Log received data
+    
         $validatedData = $request->validate([
             'job_title' => 'required|string|max:255',
             'department' => 'required|string|max:255',
@@ -29,21 +30,34 @@ class JobPostController extends Controller
             'requirements' => 'required|string',
             'tags' => 'nullable|string',
             'date_issued' => 'required|date',
-            'end_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:date_issued',
         ]);
-
-        // Add the authenticated user ID to the validated data
-        $validatedData['user_id'] = Auth::id();
-
-        // Create the new job position
-        $job = Job::create($validatedData);
-
-        // Return the success response with job details
-        return response()->json([
-            'success' => true,
-            'message' => 'Job position added successfully!',
-            'job' => $job
-        ]);
+    
+        try {
+            // ✅ Attempt to insert into database
+            $job = Job::create([
+                'user_id' => auth()->id(), // Ensure user is logged in
+                'job_title' => $validatedData['job_title'],
+                'department' => $validatedData['department'],
+                'job_description' => $validatedData['job_description'],
+                'requirements' => $validatedData['requirements'],
+                'tags' => $validatedData['tags'],
+                'date_issued' => $validatedData['date_issued'],
+                'end_date' => $validatedData['end_date'],
+                'status' => 'inactive', // Default status
+            ]);
+    
+            if ($job) {
+                \Log::info('Job Successfully Inserted:', $job->toArray());
+            } else {
+                \Log::error('Job Insertion Failed!');
+            }
+    
+            return redirect()->back()->with('success', 'Job added successfully!');
+        } catch (\Exception $e) {
+            \Log::error('Database Error: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Failed to save job: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -79,6 +93,30 @@ class JobPostController extends Controller
     }
 
     /**
+     * Toggle the status of a job position.
+     */
+    public function toggleStatus(Request $request, $id)
+    {
+        try {
+            $job = Job::findOrFail($id);
+            $today = now()->toDateString(); // Get today's date
+    
+            // ✅ Prevent activation if the job is expired
+            if ($job->status === 'inactive' && $job->end_date < $today) {
+                return redirect()->back()->with('error', "Cannot activate job '{$job->job_title}' because it has expired.");
+            }
+    
+            // ✅ Toggle status only if the job is not expired
+            $newStatus = $job->status === 'active' ? 'inactive' : 'active';
+            $job->update(['status' => $newStatus]);
+    
+            return redirect()->back()->with('success', "Job status updated to $newStatus.");
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Error updating job status: ' . $e->getMessage());
+        }
+    }
+
+    /**
      * Delete a job position.
      */
     public function destroy(Job $job)
@@ -90,4 +128,22 @@ class JobPostController extends Controller
             'message' => 'Job deleted successfully!'
         ]);
     }
+
+    /**
+     * View job selected.
+     */
+    public function jobSelected($slug)
+    {
+        // Find the job by slug (or by ID if necessary)
+        $job = Job::where('slug', $slug)->where('status', 'active')->firstOrFail();
+    
+        // ✅ Decode JSON fields if they are stored as JSON strings
+        $job->tags = explode(',', $job->tags);
+        $job->requirements = explode(',', $job->requirements);
+        $job->description = explode(',', $job->description);
+    
+        return view('hrcatalists.job-selected', compact('job'));
+    }
+    
+    
 }

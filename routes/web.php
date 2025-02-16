@@ -3,70 +3,32 @@
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ApplicantController;
 use App\Http\Controllers\JobPostController;
-use App\Http\Controllers\InterviewController;
-use Illuminate\Support\Facades\Auth; // Ensure Auth is imported
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
-
-// Route::get('/dashboard', function () {
-//     return view('dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
-
 
 // Public Route for Welcome Page
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
+// Route::get('/jobs/{id}', [HomeController::class, 'show'])->name('jobs.show');
 
-Route::get('/jobs/{id}', [HomeController::class, 'show'])->name('jobs.show');
+Route::get('/openings', [HomeController::class, 'openings'])->name('openings');
 
-
-
-
-
-// Route::get('/', function () {
-//     // If the user is authenticated, redirect to the last visited page or categories page
-//     if (Auth::check()) {
-//         return redirect()->intended('/main-menu');
-//     }
-
-//     // If the user is not authenticated, show the home page (techmax)
-//     return view('hrcatalists.index');
-// })->name('home');
-
-Route::middleware(['auth'])->group(function () {
-    Route::get('/login', function () {
-        return view('auth.login'); // Ensure this view exists
-    })->name('login');
-});
-
-// // Redirect to login after logout to prevent going back
-// Route::get('/logout', function () {
-//     Auth::logout();
-//     return redirect('/login')->withHeaders([
-//         'Cache-Control' => 'no-store, no-cache, must-revalidate, max-age=0',
-//         'Pragma' => 'no-cache',
-//         'Expires' => 'Fri, 01 Jan 1990 00:00:00 GMT',
-//     ]);
-// });
-
-// Route::get('/login', function () {
-//     return view('auth.login'); // Ensure this view exists
-// })->name('login');
-
-
-// Public Route for Welcome Page
-Route::get('/', [HomeController::class, 'index'])->name('home');
-
-Route::middleware(['auth'])->group(function () {
+// ✅ Allow only guests to access the login page
+Route::middleware(['guest'])->group(function () {
     Route::get('/login', function () {
         return view('auth.login');
     })->name('login');
 });
+
+// ✅ Redirect logged-in users away from login page
+Route::middleware(['auth'])->group(function () {
+    Route::get('/main-menu', [AdminController::class, 'mainMenu'])->name('main-menu');
+});
+
+
+Route::get('/job-selected/{slug}', [JobPostController::class, 'jobSelected'])->name('job-selected');
 
 // Apply authentication middleware to protect routes
 Route::middleware(['auth'])->group(function () {
@@ -99,10 +61,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/ats-job-openings', [AdminController::class, 'atsJobs'])->name('ats-jobs');
 
     // ** Job Post Routes (Nested under Job Openings) **
-
-
-
-
     Route::prefix('ats-job-openings')->group(function () {
         // Show the list of job posts
         Route::get('/job-posts', [JobPostController::class, 'index'])->name('job-posts.index');
@@ -120,35 +78,13 @@ Route::middleware(['auth'])->group(function () {
         Route::put('/job-posts/{id}', [JobPostController::class, 'update'])->name('job-posts.update');
     
         // Delete a job post
-        Route::delete('/job-posts/{id}', [JobPostController::class, 'destroy'])->name('job-posts.destroy'); 
+        Route::delete('/job-posts/{id}', [JobPostController::class, 'destroy'])->name('job-posts.destroy');
     });
     
-    
     Route::get('/ats-logs', [AdminController::class, 'atsLogs'])->name('ats-logs');
+
+    Route::post('/jobs/{id}/toggle-status', [JobPostController::class, 'toggleStatus'])->name('jobs.toggle-status');
 });
-
-// Applicant Routes
-Route::get('/applicants', [ApplicantController::class, 'index'])->name('applicants.index');
-Route::get('/applicants/create', [ApplicantController::class, 'create'])->name('applicants.create');
-Route::post('/applicants/store', [ApplicantController::class, 'store'])->name('applicants.store');
-Route::delete('/applicants/{applicant}', [ApplicantController::class, 'destroy'])->name('applicants.destroy');
-
-// Job Positions Routes
-Route::get('/jobs', [JobPositionController::class, 'index'])->name('jobs.index');
-Route::post('/jobs/store', [JobPositionController::class, 'store'])->name('jobs.store');
-
-// Interviews Routes
-Route::get('/interviews', [InterviewController::class, 'index'])->name('interviews.index');
-Route::post('/interviews/store', [InterviewController::class, 'store'])->name('interviews.store');
-
-
-// Route::middleware('auth')->group(function () {
-//     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-//     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-//     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
-//     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-// });
 
 require __DIR__.'/auth.php';
 

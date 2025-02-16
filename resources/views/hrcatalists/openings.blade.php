@@ -1,48 +1,30 @@
 <x-welcome-layout>
 
     <x-slot:title>
-        Columban College Inc. | Careers
+        Columban College Inc. | Job Openings
     </x-slot:title>
 
-    <!-- Banner Section with Search Bar -->
-    <div class="banner" style="background-image: url('{{ asset('images/cc-bg-pic.png') }}')">
-        <div class="text-center"> 
-            <p>Christi Simus Non Nostri<br>We are Christ's and not our own</p> 
-        </div>
-        
-        <div class="search-bar">
-            <input type="text" placeholder="Enter key word">
+    <!-- Job Openings start-->
+    <div class="latest-opening table-container justify-content-center align-items-center mx-auto pb-5">
+        <h1 class="my-5">JOB OPENINGS</h1>
 
-            <select>
-                <option>Positions</option>
-                <option>Positions one</option>
-                <option>Positions two</option>
-                <option>Positions three</option>
-                <option>Positions four</option>
-                <option>Positions five</option>
-                <option>Positions wneiurjhewiurherh</option>
-            </select>
-
-            <button>Search</button> 
-        </div>
-    </div>
-
-    <!-- About Us Section -->
-    <div class="about-us">
-        <h1 class="mx-auto mb-3">ABOUT US</h1>
-
-        <div class="d-flex mt-5">
-            <img src="images/ccihr-logo.png" alt="About Us Image"> 
-            <div class="about-us-content px-5">
-                <h2>Human Asset Management and Development Office</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        <div class="search-container">
+            <div class="search-bar-2">
+                <input type="text" placeholder="Enter key word">
+    
+                <select>
+                    <option>Positions</option>
+                    <option>Positions one</option>
+                    <option>Positions two</option>
+                    <option>Positions three</option>
+                    <option>Positions four</option>
+                    <option>Positions five</option>
+                    <option>Positions wneiurjhewiurherh</option>
+                </select>
+    
+                <button>Search</button>  
             </div>
         </div>
-    </div>
-
-    <!-- Latest Openings -->
-    <div class="latest-opening justify-content-center align-items-center mx-auto pb-5">
-        <h1>LATEST OPENINGS</h1>
     
         <div class="container mt-5 g-1">
             <div class="row">
@@ -82,5 +64,6 @@
             </div>
         </div>
     </div>
+    <!-- Job Openings end-->
 
 </x-welcome-layout>

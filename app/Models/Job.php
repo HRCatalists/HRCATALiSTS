@@ -22,7 +22,16 @@ class Job extends Model
         'tags',
         'date_issued',
         'end_date',
+        'status',
     ];
+
+    /**
+     * Scope query to filter active jobs.
+     */
+    public function scopeActive($query)
+    {
+        return $query->where('status', 'active');
+    }
 
     /**
      * Get the user who posted the job.
