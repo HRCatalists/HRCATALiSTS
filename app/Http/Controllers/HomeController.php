@@ -28,5 +28,4 @@ class HomeController extends Controller
         
         return view('hrcatalists.openings', compact('jobs'));
     }
-
 }
