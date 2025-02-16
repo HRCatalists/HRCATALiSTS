@@ -42,6 +42,9 @@
 
     <!-- Calendar CSS -->
     <link rel="stylesheet" href="<?php echo e(asset('css/ats-calendar.css')); ?>">
+
+    <!-- Online Recruitment CCS -->
+    <link rel="stylesheet" href="<?php echo e(asset('css/ol-recruitment.css')); ?>">
 </head>
 
 <body>
@@ -95,7 +98,10 @@
     <!-- Calendar JS -->
     <script src="<?php echo e(asset('js/db-calendar.js')); ?>"></script>
 
-    <!-- Tab JS -->
+    
+    <script src="<?php echo e(asset('js/job-status.js')); ?>"></script>
+
+    <!-- Overview Tab JS -->
     <script>
         function showTab(tabId) {
             // Hide all tab contents
@@ -116,7 +122,7 @@
         }
     </script>
 
-    <!-- Data Tables -->
+    <!-- Data Tables for applicant status change-->
     <script>
         // Function to show the popup
         function showPopup(popupId) {
@@ -307,10 +313,187 @@
         });  
     </script>
 
+    
     <script>
         window.addEventListener('pageshow', function(event) {
             if (event.persisted) {
                 window.location.href = "/login"; // Redirect user back to login
+            }
+        });
+    </script>
+
+    
+    <script>
+        $(document).ready(function () {
+            let table = $('#jobListingsTable').DataTable({
+                paging: true,
+                searching: true,
+                ordering: true,
+                pageLength: 10,
+                language: {
+                    paginate: {
+                        previous: 'Previous',
+                        next: 'Next',
+                    },
+                    search: '',
+                    searchPlaceholder: 'Search',
+                },
+                columnDefs: [
+                    { targets: 0, orderable: false, className: 'text-center' }, // Disable sorting for the checkbox column
+                    { targets: 4, orderable: true, className: 'text-center' }, // Enable sorting for STATUS column
+                    { targets: 5, orderable: false, className: 'text-center' }  // Disable sorting for actions column
+                ],
+                order: [[2, 'desc']], // Sort by DATE CREATED by default
+            });
+
+            // Select all checkbox functionality
+            $(".selectAllTable").on("change", function () {
+                let isChecked = $(this).prop("checked");
+
+                // Select or deselect all row checkboxes
+                $(".rowCheckbox").prop("checked", isChecked).trigger("change");
+            });
+
+            // Row checkbox functionality (delegated event listener for dynamically loaded checkboxes)
+            $(document).on("change", ".rowCheckbox", function () {
+                let totalCheckboxes = $(".rowCheckbox").length;
+                let checkedCheckboxes = $(".rowCheckbox:checked").length;
+
+                // If all checkboxes are checked, check the "Select All" checkbox
+                $(".selectAllTable").prop("checked", totalCheckboxes === checkedCheckboxes);
+
+                // Show/hide the action buttons and expand/collapse card
+                toggleActionButtons();
+            });
+
+            // Function to show/hide action buttons based on selected checkboxes
+            function toggleActionButtons() {
+                let anyChecked = $(".rowCheckbox:checked").length > 0;
+                $(".bulk-activate-btn, .reject-btn").toggle(anyChecked);
+
+                if (anyChecked) {
+                    $(".checkbox-card").addClass("expanded"); // Expand the card
+                } else {
+                    $(".checkbox-card").removeClass("expanded"); // Collapse the card
+                }
+
+                // Update the ACTIVATE/DEACTIVATE button inside the card
+                updateBulkActivateButton();
+            }
+
+            // Activate/Deactivate button functionality for each row
+            $(document).on("click", ".activate-btn", function () {
+                let button = $(this);
+                let row = button.closest("tr");
+                let statusColumn = row.find(".status-column");
+
+                if (button.text().trim() === "ACTIVATE") {
+                    if (confirm("Are you sure you want to activate the job?")) {
+                        // Change the status to Active
+                        statusColumn.html('<span class="badge bg-success">Active</span>');
+
+                        // Change button to DEACTIVATE (red background)
+                        button.text("DEACTIVATE")
+                            .removeClass("btn-success")
+                            .addClass("btn-danger");
+
+                        // Update the ACTIVATE/DEACTIVATE button inside the card
+                        updateBulkActivateButton();
+                    }
+                } else {
+                    if (confirm("Are you sure you want to deactivate the job?")) {
+                        // Change the status to Inactive
+                        statusColumn.html('<span class="badge bg-danger">Inactive</span>');
+
+                        // Change button back to ACTIVATE (green background)
+                        button.text("ACTIVATE")
+                            .removeClass("btn-danger")
+                            .addClass("btn-success");
+
+                        // Update the ACTIVATE/DEACTIVATE button inside the card
+                        updateBulkActivateButton();
+                    }
+                }
+            });
+
+            // Bulk activate/deactivate functionality (Card Button)
+            $(".bulk-activate-btn").on("click", function () {
+                let selectedRows = $(".rowCheckbox:checked").closest("tr");
+                let bulkButton = $(".bulk-activate-btn");
+
+                if (selectedRows.length === 0) {
+                    alert("No jobs selected!");
+                    return;
+                }
+
+                let activeJobs = selectedRows.find(".status-column .bg-success").length;
+                let inactiveJobs = selectedRows.find(".status-column .bg-danger").length;
+
+                // Prevent action if selected jobs have mixed statuses
+                if (activeJobs > 0 && inactiveJobs > 0) {
+                    alert("Cannot proceed with the action because of different statuses.");
+                    return;
+                }
+
+                if (bulkButton.text().trim() === "ACTIVATE") {
+                    if (confirm("Are you sure you want to activate the selected jobs?")) {
+                        selectedRows.each(function () {
+                            let statusColumn = $(this).find(".status-column");
+                            let activateButton = $(this).find(".activate-btn");
+
+                            // Update status to Active
+                            statusColumn.html('<span class="badge bg-success">Active</span>');
+
+                            // Change button to DEACTIVATE
+                            activateButton.text("DEACTIVATE")
+                                .removeClass("btn-success")
+                                .addClass("btn-danger");
+                        });
+
+                        // Change bulk button to DEACTIVATE
+                        bulkButton.text("DEACTIVATE")
+                            .removeClass("btn-success")
+                            .addClass("btn-danger");
+                    }
+                } else {
+                    if (confirm("Are you sure you want to deactivate the selected jobs?")) {
+                        selectedRows.each(function () {
+                            let statusColumn = $(this).find(".status-column");
+                            let activateButton = $(this).find(".activate-btn");
+
+                            // Update status to Inactive
+                            statusColumn.html('<span class="badge bg-danger">Inactive</span>');
+
+                            // Change button back to ACTIVATE
+                            activateButton.text("ACTIVATE")
+                                .removeClass("btn-danger")
+                                .addClass("btn-success");
+                        });
+
+                        // Change bulk button to ACTIVATE
+                        bulkButton.text("ACTIVATE")
+                            .removeClass("btn-danger")
+                            .addClass("btn-success");
+                    }
+                }
+            });
+
+            // Function to update the ACTIVATE/DEACTIVATE button inside the card
+            function updateBulkActivateButton() {
+                let selectedRows = $(".rowCheckbox:checked").closest("tr");
+                let activeJobs = selectedRows.find(".status-column .bg-success").length;
+                let inactiveJobs = selectedRows.find(".status-column .bg-danger").length;
+                let bulkButton = $(".bulk-activate-btn");
+
+                if (activeJobs > 0 && inactiveJobs === 0) {
+                    bulkButton.text("DEACTIVATE")
+                        .removeClass("btn-success")
+                        .addClass("btn-danger");
+                } else {
+                    bulkButton.text("ACTIVATE")
+                        .removeClass("btn-danger")
+                        .addClass("btn-success");
+                }
             }
         });
     </script>

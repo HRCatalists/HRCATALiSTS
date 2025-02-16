@@ -4,7 +4,7 @@
         <div class="row">
             <!-- Logo and Main Text -->
             <div class="col-md-4 d-flex justify-content-center footer-brand logo-section">
-                <img src="images/CC_logo.png" alt="Columban College Logo" class="img-fluid footer-logo me-2">
+                <img src="{{ asset('images/CC_logo.png') }}" alt="Columban College Logo" class="img-fluid footer-logo me-2">
                 <div class="text-center">
                     <h3 class="fw-bold mb-3">Columban College, Inc.</h3>
                     <p>Christi Simus Non Nostri<br>We are Christ's and not our own</p>
@@ -52,9 +52,14 @@
                 
                 <div class="d-flex flex-column">
                     
-                    <a href="{{ route('login') }}" >
-                        <div>Login Here</div>
-                    </a>
+                @if(Auth::check())   
+                    <!-- Redirects to dashboard if logged in -->
+                    <a href="{{ route('main-menu') }}">Go to menu</a>
+                @else
+                    <!-- Shows login page only if not logged in -->
+                    <a href="{{ route('login') }}">Login Here</a>
+                @endif
+                
                     
                 </div>
             </div>

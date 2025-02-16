@@ -15,20 +15,17 @@
 
 /* btn-1 */
 .btn-1 {
-  scale: 0.7;
+  font-family: 'Caudex', sans-serif;
   -webkit-tap-highlight-color: transparent;
   -webkit-appearance: button;
   background-color: #111D5B;
+  border-radius: 5px;
   background-image: none;
   color: #fff;
   cursor: pointer;
-  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-    Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif,
-    Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
-  font-size: 100%;
   line-height: 1.5;
   margin: 0;
-  padding: 0;
+  padding: 15px 30px;
   -webkit-mask-image: -webkit-radial-gradient(#000, #fff);
 }
 
@@ -51,12 +48,10 @@
 
 .btn-1 {
   border: 1px solid;
-  border-radius: 10px;
   box-sizing: border-box;
   display: block;
-  font-weight: 900;
+  font-weight: 800;
   overflow: hidden;
-  padding: 1.2rem 3rem;
   position: relative;
   text-transform: uppercase;
 }
@@ -99,19 +94,31 @@
 }
 
 .btn-1:hover span:nth-child(3) {
-  transition-delay: 0.2s;
+  transition-delay: 0.1s;
 }
 
 .btn-1:hover span:nth-child(4) {
-  transition-delay: 0.3s;
+  transition-delay: 0.1s;
 }
 
 .btn-1:hover span:nth-child(5) {
-  transition-delay: 0.4s;
+  transition-delay: 0.2s;
 }
 
 .btn-1:hover span:nth-child(6) {
-  transition-delay: 0.5s;
+  transition-delay: 0.2s;
+}
+
+.btn-1:hover span:nth-child(7) {
+  transition-delay: 0.3s;
+}
+
+.btn-1:hover span:nth-child(8) {
+  transition-delay: 0.3s;
+}
+
+.btn-1:hover span:nth-child(9) {
+  transition-delay: 0.3s;
 }
 
 /* btn-2 */
