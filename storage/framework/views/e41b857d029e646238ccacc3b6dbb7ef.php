@@ -50,7 +50,7 @@
                     </div>
 
                     <!-- Banner -->
-                    <div class="d-flex banner banner-gradient text-white align-items-center justify-content-center px-4 py-2">
+                    <div class="d-flex banner-db banner-gradient text-white align-items-center justify-content-center px-4 py-2">
                         <h4 class="banner-text mx-5">Welcome, <?php echo e(auth()->user()->name); ?>!</h4>
                         <img src="images/db-icon.png" class="banner-icon " alt="banner-icon">
                     </div>
