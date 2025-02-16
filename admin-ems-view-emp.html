@@ -37,6 +37,9 @@
         <!-- Emp Profile CSS -->
         <link rel="stylesheet" href="css/admin-ems-emp.css">
 
+        <!-- for tables css profile -->
+        <link rel="stylesheet" href="css/admin-ems-emp-view.css">
+
     </head>
 
     <body>
@@ -423,7 +426,7 @@
 
                             <div class=" my-5">
                                 <div class="table-responsive">
-                                    <table class="table table-bordered table-striped">
+                                    <table class="table table-bordered table-striped" id="educationTable">
                                         <thead class="text-center">
                                             <tr>
                                                 <th>Education</th>
@@ -435,25 +438,26 @@
                                         </thead>
 
                                         <tbody>
-                                            <tr>
-                                                <td>Bachelor's Degree</td>
-                                                <td>Columban College</td>
-                                                <td>Computer Science</td>
-                                                <td>Software Development</td>
-                                                <td>Graduated with Honors</td>
-                                            </tr>
-                                            <tr>
-                                                <td>High School</td>
-                                                <td>Sample High School</td>
-                                                <td>-</td>
-                                                <td>-</td>
-                                                <td>With High Honors</td>
-                                            </tr>
+                                            <td contenteditable="true">Enter Degree</td>
+                                            <td contenteditable="true">Enter School</td>
+                                            <td contenteditable="true">Enter Course</td>
+                                            <td contenteditable="true">Enter Major</td>
+                                            <td contenteditable="true">Enter Remarks</td>
+                                                                    
                                         </tbody>
                                     </table>
                                 </div>
+
+                                <div class="btn-container">
+                                    <img src="images/more.png" id="addEducationRow" class="plus-icon">
+                                    <img src="images/minus.png" id="removeEducationRow" class="minus-icon">
+
+                                </div>
+                                
                             </div>
                         </div>
+
+                        
 
                         <!-- Employment Data 1 -->
                         <div class="border-1 border-top border-dark mb-5">
@@ -501,7 +505,7 @@
                         <div class="border-1 border-top border-dark mb-5">
                             <h4 class="db-h4 my-5">Employment Data</h4>
                         
-                            <table class="table table-bordered table-striped">
+                            <table class="table table-bordered table-striped" id="licenseTable">
                                 <thead>
                                     <tr>
                                         <th>License</th>
@@ -513,21 +517,21 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
+                                        <td contenteditable="true">Enter License</td>
+                                        <td contenteditable="true">Enter License Number</td>
+                                        <td contenteditable="true">Enter Exp Date</td>
+                                        <td contenteditable="true">Enter Renewal Date From</td>
+                                        <td contenteditable="true">Enter Renewal Date To</td>
                                     </tr>
-                                    <tr>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                    </tr>
+                                    
                                 </tbody>
                             </table>
+
+                            <div class="btn-container">
+                                <img src="images/more.png" id="addLicenseRow" class="plus-icon">
+                                <img src="images/minus.png" id="removeLicenseRow" class="minus-icon">
+
+                            </div>
 
                         </div>
 
@@ -535,7 +539,7 @@
                         <div class="border-1 border-top border-dark mb-5">
                             <h4 class="db-h4 my-5">Employment Service Record</h4>
 
-                            <table class="table table-bordered table-striped">
+                            <table class="table table-bordered table-striped" id="employmentTable">
                                 <thead>
                                     <tr>
                                         <th>Department</th>
@@ -548,23 +552,24 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
+                                        <td contenteditable="true">Enter Department</td>
+                                        <td contenteditable="true">Enter Inclusive Date</td>
+                                        <td contenteditable="true">Enter Appointment Record</td>
+                                        <td contenteditable="true">Enter Position/Designation</td>
+                                        <td contenteditable="true">Enter Rank</td>
+                                        <td contenteditable="true">Enter Remarks</td>
+                                        
                                     </tr>
-                                    <tr>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                    </tr>
+                                    
                                 </tbody>
                             </table>
+
+
+                            <div class="btn-container">
+                                <img src="images/more.png" id="addEmploymentRow" class="plus-icon">
+                                <img src="images/minus.png" id="removeEmploymentRow" class="minus-icon">
+
+                            </div>
 
                         </div>
 
@@ -572,7 +577,7 @@
                         <div class="border-1 border-top border-dark mb-5">
                             <h4 class="db-h4 my-5">Training and Seminars Attended</h4>
                             
-                            <table class="table table-bordered table-striped">
+                            <table class="table table-bordered table-striped" id="seminarTable">
                                 <thead>
                                     <tr>
                                         <th>Date</th>
@@ -583,27 +588,29 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
+                                        <td contenteditable="true">Enter Date</td>
+                                        <td contenteditable="true">Enter Title</td>
+                                        <td contenteditable="true">Enter Venue</td>
+                                        <td contenteditable="true">Enter Remark</td>
                                         
                                     </tr>
-                                    <tr>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                    </tr>
+                                   
                                 </tbody>
                             </table>
+
+                            <div class="btn-container">
+                                <img src="images/more.png" id="addSeminarRow" class="plus-icon">
+                                <img src="images/minus.png" id="removeSeminarRow" class="minus-icon">
+
+                            </div>
+
                         </div>
 
                         <!-- Organizational Membership / Officeship -->
                         <div class="border-1 border-top border-dark mb-5">
                             <h4 class="db-h4 my-5">Organizational Membership / Officeship</h4>
 
-                                <table class="table table-bordered table-striped">
+                                <table class="table table-bordered table-striped" id="organizationTable">
                                     <thead>
                                         <tr>
                                             <th>Date of Registration</th>
@@ -615,21 +622,21 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td>-</td>
-                                            <td>-</td>
-                                            <td>-</td>
-                                            <td>-</td>
-                                            <td>-</td>
+                                            <td contenteditable="true">Enter Date of Registration</td>
+                                            <td contenteditable="true">Enter Validity Date</td>
+                                            <td contenteditable="true">Enter Name of Organization</td>
+                                            <td contenteditable="true">Enter Place</td>
+                                            <td contenteditable="true">Enter Position</td>
                                         </tr>
-                                        <tr>
-                                            <td>-</td>
-                                            <td>-</td>
-                                            <td>-</td>
-                                            <td>-</td>
-                                            <td>-</td>
-                                        </tr>
+                                        
                                     </tbody>
                                 </table>
+
+                                <div class="btn-container">
+                                    <img src="images/more.png" id="addOrganizationRow" class="plus-icon">
+                                    <img src="images/minus.png" id="removeOrganizationRow" class="minus-icon">
+    
+                                </div>
 
                         </div>
 
@@ -637,7 +644,7 @@
                         <div class="border-1 border-top border-dark mb-5">
                             <h4 class="db-h4 my-5">Others</h4>
 
-                            <table class="table table-bordered table-striped">
+                            <table class="table table-bordered table-striped" id="particularTable">
                                 <thead>
                                     <tr>
                                         <th>Date</th>
@@ -647,17 +654,18 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        
-                                    </tr>
-                                    <tr>
-                                        <td>-</td>
-                                        <td>-</td>
+                                        <td contenteditable="true">Enter Date</td>
+                                        <td contenteditable="true">Enter Description/Particular</td>
                                         
                                     </tr>
                                 </tbody>
                             </table>
+
+                            <div class="btn-container">
+                                <img src="images/more.png" id="addParticularRow" class="plus-icon">
+                                <img src="images/minus.png" id="removeParticularRow" class="minus-icon">
+
+                            </div>
 
                         </div>
 
@@ -682,6 +690,8 @@
 
         <!-- Sidebar JS -->
         <script src="js/sidebar.js"></script>
+
+        <script src="js/emp-ems-prof-table.js"></script>
 
     </body>
 </html>
