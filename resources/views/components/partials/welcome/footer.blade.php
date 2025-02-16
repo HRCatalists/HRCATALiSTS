@@ -52,9 +52,14 @@
                 
                 <div class="d-flex flex-column">
                     
-                    <a href="{{ route('login') }}" >
-                        <div>Login Here</div>
-                    </a>
+                @if(Auth::check())   
+                    <!-- Redirects to dashboard if logged in -->
+                    <a href="{{ route('main-menu') }}">Go to menu</a>
+                @else
+                    <!-- Shows login page only if not logged in -->
+                    <a href="{{ route('login') }}">Login Here</a>
+                @endif
+                
                     
                 </div>
             </div>

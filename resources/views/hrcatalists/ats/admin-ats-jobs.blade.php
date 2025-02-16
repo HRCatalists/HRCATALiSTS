@@ -2,45 +2,81 @@
     <x-slot:title>
         Columban College Inc. | ATS Job Openings
     </x-slot:title>
-    <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    <!-- Sidebar & Active Position List -->
     <div class="d-flex">
+        <!-- Sidebar -->
         <x-partials.system.ats.ats-sidebar />
+        <!-- End of Sidebar -->
+    
+        <!-- Active Position List -->
         <div id="content" class="flex-grow-1">
+
+            <!-- New Data Table for Job List -->
             <div class="container mt-5">
-                <div class="d-flex justify-content-between align-items-center my-5">
-                    <h2 class="dt-h2">Openings</h2>
+
+                <!-- ✅ Flash Messages for changing job status -->
+                <div class="container mt-3">
+                    @if(session('success'))
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            {{ session('success') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    @endif
+
+                    @if(session('error'))
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            {{ session('error') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    @endif
                 </div>
 
+                <div class="d-flex justify-content-between align-items-center mt-5 mb-3">
+                    <div>
+                        <h2 class="dt-h2">Opening List</h2>
+                    </div>
+                </div>
+                
                 <div class="d-flex">
-                    <div class="card checkbox-card-2">
+                    <div class="card checkbox-card" data-table="jobListingsTable">
                         <div class="container d-flex">
+            
+                            <!-- Select All Checkbox -->
                             <div class="d-flex me-4 py-3">
-                                <input type="checkbox" id="selectAll" class="rowCheckbox">
+                                <input type="checkbox" class="selectAllTable" data-table="jobListingsTable">
                             </div>
+                            
+                            <!-- Delete Button -->
                             <div class="d-flex py-1">
-                                <button class="btn reject-btn btn-sm">DELETE</button>
+                                <button type="button" class="btn btn-success btn-sm bulk-activate-btn me-1">ACTIVATE</button>
+                                <button class="btn reject-btn btn-sm" style="display: none;">DELETE</button>
                             </div>
                         </div>
                     </div>
+
                     <div class="d-flex justify-content-around ms-3">
+                        <!-- Add Position Button -->
                         <button type="button" class="btn add-btn me-2" data-bs-toggle="modal" data-bs-target="#addPositionModal">
                             ADD POSITION
                         </button>
+
                         <button class="btn shadow print-btn">
                             <i class="fa fa-print"></i> PRINT
+                            <a href=""></a>
                         </button>
                     </div>
                 </div>
-
-                <table id="activePositionsTable" class="table table-bordered display">
+                
+                <table id="jobListingsTable" class="table table-bordered display mt-3">
                     <thead>
                         <tr>
                             <th></th>
                             <th>JOB TITLE</th>
                             <th>DEPARTMENT</th>
-                            <th>DATE ISSUED</th>
-                            <th>END DATE</th>
+                            <th>STATUS</th>
+                            <th>DATE CREATED</th>
+                            <th>DATE ENDED</th>
                             <th>ACTIONS</th>
                         </tr>
                     </thead>
@@ -50,9 +86,17 @@
                                 <td class="text-center"><input type="checkbox" class="rowCheckbox"></td>
                                 <td>{{ $job->job_title }}</td>
                                 <td>{{ $job->department }}</td>
+                                <td>
+                                    @if ($job->status === 'active')
+                                        <span class="badge bg-success">Active</span>
+                                    @else
+                                        <span class="badge bg-danger">Inactive</span>
+                                    @endif
+                                </td>
                                 <td>{{ \Carbon\Carbon::parse($job->date_issued)->format('F d, Y') }}</td>
                                 <td>{{ \Carbon\Carbon::parse($job->end_date)->format('F d, Y') }}</td>
                                 <td class="text-center">
+                                    <a href="{{ route('jobs.show', $job->id) }}" class="btn btn-ap-edit me-1">VIEW</a>
                                     <button class="btn btn-ap-edit edit-job" data-id="{{ $job->id }}"
                                         data-job_title="{{ $job->job_title }}"
                                         data-department="{{ $job->department }}"
@@ -64,7 +108,17 @@
                                         data-bs-toggle="modal" data-bs-target="#editPositionModal">
                                         EDIT
                                     </button>
-                                </td>
+                                    <form
+                                        action="{{ route('jobs.toggle-status', $job->id) }}"
+                                        method="POST"
+                                        style="display:inline;"
+                                        onsubmit="return confirm('Are you sure you want to {{ $job->status === 'active' ? 'deactivate' : 'activate' }} this job?');"
+                                    >
+                                        @csrf
+                                        <button type="submit" class="btn btn-ap-edit {{ $job->status === 'active' ? 'btn-danger' : 'btn-success' }}">
+                                            {{ $job->status === 'active' ? 'DEACTIVATE' : 'ACTIVATE' }}
+                                        </button>
+                                    </form>
                             </tr>
                         @endforeach
                     </tbody>
@@ -81,39 +135,39 @@
                     <h5 class="modal-title" id="addPositionModalLabel">Add Position</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    <form id="addPositionForm">
+                <div class="modal-body">              
+                    <form id="addPositionForm" action="{{ route('job-posts.store') }}" method="POST">
                         @csrf
                         <div class="mb-3">
                             <label for="jobTitle" class="form-label">Job Title</label>
-                            <input type="text" class="form-control" id="jobTitle" required>
+                            <input type="text" class="form-control" name="job_title" id="jobTitle" required>
                         </div>
                         <div class="mb-3">
                             <label for="department" class="form-label">Department</label>
-                            <input type="text" class="form-control" id="department" required>
+                            <input type="text" class="form-control" name="department" id="department" required>
                         </div>
                         <div class="mb-3">
                             <label for="description" class="form-label">Job Description</label>
-                            <textarea class="form-control" id="description" required></textarea>
+                            <textarea class="form-control" name="job_description" id="description" required></textarea>
                         </div>
                         <div class="mb-3">
                             <label for="requirements" class="form-label">Requirements</label>
-                            <textarea class="form-control" id="requirements" required></textarea>
+                            <textarea class="form-control" name="requirements" id="requirements" required></textarea>
                         </div>
                         <div class="mb-3">
                             <label for="tags" class="form-label">Tags</label>
-                            <input type="text" class="form-control" id="tags">
+                            <input type="text" class="form-control" name="tags" id="tags">
                         </div>
                         <div class="mb-3">
                             <label for="dateIssued" class="form-label">Date Issued</label>
-                            <input type="date" class="form-control" id="dateIssued" required>
+                            <input type="date" class="form-control" name="date_issued" id="dateIssued" required>
                         </div>
                         <div class="mb-3">
                             <label for="endDate" class="form-label">End Date</label>
-                            <input type="date" class="form-control" id="endDate" required>
+                            <input type="date" class="form-control" name="end_date" id="endDate" required>
                         </div>
-                        <button type="button" class="btn btn-primary btn-post">Post Job</button>
-                    </form>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </form>                                      
                 </div>
             </div>
         </div>
@@ -128,45 +182,46 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="editPositionForm">
+                    <form id="editPositionForm" action="{{ route('job-posts.update', ['id' => $job->id]) }}" method="POST">
                         @csrf
                         @method('PUT')
                         <div class="mb-3">
                             <label for="editJobTitle" class="form-label">Job Title</label>
-                            <input type="text" class="form-control" id="editJobTitle" required>
+                            <input type="text" class="form-control" name="job_title" id="editJobTitle" value="{{ $job->job_title }}" required>
                         </div>
                         <div class="mb-3">
                             <label for="editDepartment" class="form-label">Department</label>
-                            <input type="text" class="form-control" id="editDepartment" required>
+                            <input type="text" class="form-control" name="department" id="editDepartment" value="{{ $job->department }}" required>
                         </div>
                         <div class="mb-3">
                             <label for="editDescription" class="form-label">Job Description</label>
-                            <textarea class="form-control" id="editDescription" required></textarea>
+                            <textarea class="form-control" name="job_description" id="editDescription" required>{{ $job->job_description }}</textarea>
                         </div>
                         <div class="mb-3">
                             <label for="editRequirements" class="form-label">Requirements</label>
-                            <textarea class="form-control" id="editRequirements" required></textarea>
+                            <textarea class="form-control" name="requirements" id="editRequirements" required>{{ $job->requirements }}</textarea>
                         </div>
                         <div class="mb-3">
                             <label for="editTags" class="form-label">Tags</label>
-                            <input type="text" class="form-control" id="editTags">
+                            <input type="text" class="form-control" name="tags" id="editTags" value="{{ $job->tags }}">
                         </div>
                         <div class="mb-3">
                             <label for="editDateIssued" class="form-label">Date Issued</label>
-                            <input type="date" class="form-control" id="editDateIssued" required>
+                            <input type="date" class="form-control" name="date_issued" id="editDateIssued" value="{{ $job->date_issued }}" required>
                         </div>
                         <div class="mb-3">
                             <label for="editEndDate" class="form-label">End Date</label>
-                            <input type="date" class="form-control" id="editEndDate" required>
+                            <input type="date" class="form-control" name="end_date" id="editEndDate" value="{{ $job->end_date }}" required>
                         </div>
-                        <button type="button" class="btn btn-primary btn-post">Update Job</button>
+                        <button type="submit" class="btn btn-primary">Update Job</button>
                     </form>
+                    
                 </div>
             </div>
         </div>
     </div>
 
-    <script>
+    {{-- <script>
         document.addEventListener("DOMContentLoaded", function () {
             // Handle adding a job
             document.querySelector("#addPositionModal .btn-post").addEventListener("click", function () {
@@ -269,5 +324,22 @@
                 .catch(error => console.error("Error:", error));
             });
         });
+    </script> --}}
+
+    {{-- Auto-Close Modal & Reset Form After Submission --}}
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let form = document.getElementById("addPositionForm");
+
+            form.addEventListener("submit", function () {
+                // // ✅ Close the modal after submission
+                // var modal = bootstrap.Modal.getInstance(document.getElementById('addPositionModal'));
+                // modal.hide();
+
+                // // ✅ Reset the form
+                // form.reset();
+            });
+        });
     </script>
+
 </x-admin-ats-layout>

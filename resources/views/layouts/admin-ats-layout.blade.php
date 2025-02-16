@@ -38,7 +38,7 @@
     <link rel="stylesheet" href="{{ asset('css/data-tables.css') }}">
 
     <!-- Dashboard Calendar CSS -->
-    <link rel="stylesheet" href="{{ asset('css/db-ats-calendar.css') }}">
+    {{-- <link rel="stylesheet" href="{{ asset('css/db-ats-calendar.css') }}"> --}}
 
     <!-- Calendar CSS -->
     <link rel="stylesheet" href="{{ asset('css/ats-calendar.css') }}">
@@ -73,7 +73,10 @@
     <script src="{{ asset('js/sidebar.js') }}"></script>
 
     <!-- Calendar JS -->
-    <script src="{{ asset('js/db-calendar.js') }}"></script>
+    {{-- <script src="{{ asset('js/db-calendar.js') }}"></script> --}}
+
+    {{-- Job status JS --}}
+    <script src="{{ asset('js/job-status.js') }}"></script>
 
     <!-- Tab JS -->
     <script>
