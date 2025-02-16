@@ -33,8 +33,8 @@
 
                     <!-- Tags (assuming $job->tags is an array) -->
                     <div class="d-flex my-3">
-                        <?php $__currentLoopData = $job->tags; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $tag): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                            <button class="btn btn-outline-primary me-2"><?php echo e($tag); ?></button>
+                        <?php $__currentLoopData = explode(',', $job->tags); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $tag): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <button class="btn btn-outline-primary me-2"><?php echo e(trim($tag)); ?></button>
                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </div>
 
@@ -49,21 +49,13 @@
                 <!-- Requirements -->
                 <div class="mb-5">
                     <h4>Requirements:</h4>
-                    <ul>
-                        <?php $__currentLoopData = $job->requirements; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $requirement): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                            <li><?php echo e($requirement); ?></li>
-                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                    </ul>
+                    <p><?php echo nl2br(e($job->requirements)); ?></p>
                 </div>
 
                 <!-- Job Description -->
                 <div class="mb-5">
                     <h4>Job Description:</h4>
-                    <ul>
-                        <?php $__currentLoopData = $job->description; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $desc): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                            <li><?php echo e($desc); ?></li>
-                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                    </ul>                    
+                    <p><?php echo nl2br(e($job->job_description)); ?></p>
                 </div>
 
                 <!-- Contacts -->

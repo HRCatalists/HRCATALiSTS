@@ -35,15 +35,25 @@
                         <div class="col-md-4">
                             <div class="card job-card p-4">
                                 <h5>{{ $job->job_title }}</h5>
-                                <p class="requirements">
-                                    Requirements:<br>
-                                    {!! nl2br(e($job->requirements)) !!}
-                                </p>
                                 <div class="tags">
                                     @foreach (explode(',', $job->tags) as $tag)
                                         <span class="tag">{{ trim($tag) }}</span>
                                     @endforeach
-                                </div>
+                                </div>                             
+                                <p class="requirements">
+                                    <strong>Job Description:</strong><br>
+                                    <span title="{{ $job->job_description }}">
+                                        @foreach (explode("\n", $job->job_description) as $description)
+                                            {!! nl2br(e(Str::limit(trim($description), 50, '...'))) !!}<br>
+                                        @endforeach
+                                    </span><br>
+                                    <strong>Requirements:</strong><br>
+                                    <span title="{{ $job->requirements }}">
+                                        @foreach (explode("\n", $job->requirements) as $requirement)
+                                            {!! nl2br(e(Str::limit(trim($requirement), 50, '...'))) !!}<br>
+                                        @endforeach
+                                    </span>
+                                </p>
     
                                 <!-- Apply Now Button linking to the job details page -->
                                 <a style="--clr: #000" class="btn-3" href="{{ route('job-selected', $job->slug) }}">
