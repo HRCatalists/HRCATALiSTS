@@ -96,19 +96,186 @@
                                 <td>{{ \Carbon\Carbon::parse($job->date_issued)->format('F d, Y') }}</td>
                                 <td>{{ \Carbon\Carbon::parse($job->end_date)->format('F d, Y') }}</td>
                                 <td class="px-4">
+                                    <div class="dropdown text-center">
+                                        <button class="btn btn-primary border-0" type="button" id="actionsDropdown{{ $job->id }}" 
+                                            data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="fa-solid fa-list"></i> <!-- Bootstrap Icons -->
+                                        </button>
+                                        <ul class="dropdown-menu" aria-labelledby="actionsDropdown{{ $job->id }}">
+                                            <!-- Activate / Deactivate -->
+                                            <li>
+                                                <form action="{{ route('jobs.toggle-status', $job->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to {{ $job->status === 'active' ? 'deactivate' : 'activate' }} this job?');">
+                                                    @csrf
+                                                    <button type="submit" class="dropdown-item">
+                                                        {{ $job->status === 'active' ? 'Deactivate' : 'Activate' }}
+                                                    </button>
+                                                </form>
+                                            </li>
+
+                                            <!-- Edit Job (Opens Modal) -->
+                                            <li>
+                                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#editPositionModal-{{ $job->id }}">
+                                                    Edit
+                                                </a>
+                                            </li>
+
+                                            <!-- View Job -->
+                                            <li><a class="dropdown-item" href="#">View</a></li>
+                                
+                                            <!-- Delete Job -->
+                                            <li>
+                                                <form action="{{ route('job-posts.destroy', $job->id) }}" method="POST" 
+                                                      onsubmit="return confirm('Are you sure you want to delete this job?');" style="display:inline;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="dropdown-item text-danger">Delete</button>
+                                                </form>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                
+                                    <!-- Edit Position Modal (Moved Outside for Cleaner Code) -->
+                                    <div class="modal fade" id="editPositionModal-{{ $job->id }}" tabindex="-1"
+                                        aria-labelledby="editPositionModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg">
+                                            <div class="modal-content">
+                                                <form method="POST" action="{{ route('job-posts.update', $job->id) }}">
+                                                    @csrf
+                                                    @method('PUT')
+                                
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title">EDIT POSITION</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                
+                                                    <div class="modal-body">
+                                                        <input type="hidden" name="job_id" value="{{ $job->id }}">
+                                
+                                                        <div class="row mb-3">
+                                                            <div class="col-md-6">
+                                                                <label class="form-label">Job Title <span class="text-danger">*</span></label>
+                                                                <input type="text" class="form-control" name="job_title"
+                                                                    value="{{ $job->job_title }}" required>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <label class="form-label">Department <span class="text-danger">*</span></label>
+                                                                <input type="text" class="form-control" name="department"
+                                                                    value="{{ $job->department }}" required>
+                                                            </div>
+                                                        </div>
+                                
+                                                        <div class="row mb-3">
+                                                            <div class="col-md-6">
+                                                                <label class="form-label">Job Description <span class="text-danger">*</span></label>
+                                                                <textarea name="job_description" class="form-control" rows="5" required>{{ $job->job_description }}</textarea>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <label class="form-label">Requirements <span class="text-danger">*</span></label>
+                                                                <textarea name="requirements" class="form-control" rows="5" required>{{ $job->requirements }}</textarea>
+                                                            </div>
+                                                        </div>
+                                
+                                                        <div class="row mb-3">
+                                                            <div class="col-md-6">
+                                                                <label class="form-label">Tags</label>
+                                                                <input type="text" class="form-control" name="tags" value="{{ $job->tags }}">
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <label class="form-label">Date Issued <span class="text-danger">*</span></label>
+                                                                <input type="date" class="form-control" name="date_issued"
+                                                                    value="{{ $job->date_issued }}" required>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <label class="form-label">End Date <span class="text-danger">*</span></label>
+                                                                <input type="date" class="form-control" name="end_date"
+                                                                    value="{{ $job->end_date }}" required>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                
+                                                    <div class="modal-footer">
+                                                        <button type="submit" class="btn btn-primary">UPDATE</button>
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">CANCEL</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>                                                               
+                                {{-- <td class="px-4">
                                     <div class="d-flex justify-content-between">
                                         <a href="#" class="btn btn-view me-2">VIEW</a>
-                                        <button class="btn btn-ap-edit edit-job me-2" data-id="{{ $job->id }}"
-                                            data-job_title="{{ $job->job_title }}"
-                                            data-department="{{ $job->department }}"
-                                            data-job_description="{{ $job->job_description }}"
-                                            data-requirements="{{ $job->requirements }}"
-                                            data-tags="{{ $job->tags }}"
-                                            data-date_issued="{{ $job->date_issued }}"
-                                            data-end_date="{{ $job->end_date }}"
-                                            data-bs-toggle="modal" data-bs-target="#editPositionModal">
+                                        <button class="btn btn-ap-edit me-2" data-bs-toggle="modal"
+                                            data-bs-target="#editPositionModal-{{ $job->id }}">
                                             EDIT
                                         </button>
+                                        <!-- Edit Position Modal -->
+                                        <div class="modal fade" id="editPositionModal-{{ $job->id }}" tabindex="-1"
+                                            aria-labelledby="editPositionModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-lg">
+                                                <div class="modal-content">
+                                                    <form method="POST" action="{{ route('job-posts.update', $job->id) }}">
+                                                        @csrf
+                                                        @method('PUT')
+                                    
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title">EDIT POSITION</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                    
+                                                        <div class="modal-body">
+                                                            <input type="hidden" name="job_id" value="{{ $job->id }}">
+                                    
+                                                            <div class="row mb-3">
+                                                                <div class="col-md-6">
+                                                                    <label class="form-label">Job Title <span class="text-danger">*</span></label>
+                                                                    <input type="text" class="form-control" name="job_title"
+                                                                        value="{{ $job->job_title }}" required>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <label class="form-label">Department <span class="text-danger">*</span></label>
+                                                                    <input type="text" class="form-control" name="department"
+                                                                        value="{{ $job->department }}" required>
+                                                                </div>
+                                                            </div>
+                                    
+                                                            <div class="row mb-3">
+                                                                <div class="col-md-6">
+                                                                    <label class="form-label">Job Description <span class="text-danger">*</span></label>
+                                                                    <textarea name="job_description" class="form-control" rows="5" required>{{ $job->job_description }}</textarea>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <label class="form-label">Requirements <span class="text-danger">*</span></label>
+                                                                    <textarea name="requirements" class="form-control" rows="5" required>{{ $job->requirements }}</textarea>
+                                                                </div>
+                                                            </div>
+                                    
+                                                            <div class="row mb-3">
+                                                                <div class="col-md-6">
+                                                                    <label class="form-label">Tags</label>
+                                                                    <input type="text" class="form-control" name="tags" value="{{ $job->tags }}">
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <label class="form-label">Date Issued <span class="text-danger">*</span></label>
+                                                                    <input type="date" class="form-control" name="date_issued"
+                                                                        value="{{ $job->date_issued }}" required>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <label class="form-label">End Date <span class="text-danger">*</span></label>
+                                                                    <input type="date" class="form-control" name="end_date"
+                                                                        value="{{ $job->end_date }}" required>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                    
+                                                        <div class="modal-footer">
+                                                            <button type="submit" class="btn btn-primary">UPDATE</button>
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">CANCEL</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <form
                                             action="{{ route('jobs.toggle-status', $job->id) }}"
                                             method="POST"
@@ -121,7 +288,7 @@
                                             </button>
                                         </form>
                                     </div>
-                                </td>
+                                </td> --}}
                             </tr>
                         @endforeach
                     </tbody>
@@ -200,11 +367,13 @@
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label for="requirements" class="form-label">Job Description <span class="text-danger">*</span></label>
-                                <textarea class="form-control" id="description" name="job_description" rows="4" required placeholder="Enter job description..."></textarea>
+                                <textarea name="job_description" id="description" class="form-control" rows="5" placeholder="Enter each bullet on a new line..." required></textarea>
+                                <small class="text-muted">Enter each bullet on a new line. The system will format it as a list.</small>
                             </div>
                             <div class="col-md-6">
                                 <label for="duties" class="form-label">Requirements <span class="text-danger">*</span></label>
-                                <textarea class="form-control" id="requirements" name="requirements" rows="4" required placeholder="Enter requirements..."></textarea>
+                                <textarea name="requirements" id="requirements" class="form-control" rows="5" placeholder="Enter each bullet on a new line..." required></textarea>
+                                <small class="text-muted">Enter each bullet on a new line. The system will format it as a list.</small>
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -233,7 +402,75 @@
     <!-- End of Add -->
 
     <!-- Edit Position Modal -->
-    <div class="modal fade" id="editPositionModal" tabindex="-1" aria-labelledby="editPositionModalLabel" aria-hidden="true">
+    {{-- <div class="modal fade" id="editPositionModal-{{ $job->id }}" tabindex="-1"
+        aria-labelledby="editPositionModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <form method="POST" action="{{ route('job-posts.update', $job->id) }}">
+                    @csrf
+                    @method('PUT')
+
+                    <div class="modal-header">
+                        <h5 class="modal-title">EDIT POSITION</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <input type="hidden" name="job_id" value="{{ $job->id }}">
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Job Title <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="job_title"
+                                    value="{{ $job->job_title }}" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Department <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="department"
+                                    value="{{ $job->department }}" required>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Job Description <span class="text-danger">*</span></label>
+                                <textarea name="job_description" class="form-control" rows="5" required>{{ $job->job_description }}</textarea>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Requirements <span class="text-danger">*</span></label>
+                                <textarea name="requirements" class="form-control" rows="5" required>{{ $job->requirements }}</textarea>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Tags</label>
+                                <input type="text" class="form-control" name="tags" value="{{ $job->tags }}">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Date Issued <span class="text-danger">*</span></label>
+                                <input type="date" class="form-control" name="date_issued"
+                                    value="{{ $job->date_issued }}" required>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">End Date <span class="text-danger">*</span></label>
+                                <input type="date" class="form-control" name="end_date"
+                                    value="{{ $job->end_date }}" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">UPDATE</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">CANCEL</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div> --}}
+    <!-- End of Edit -->
+
+    {{-- <div class="modal fade" id="editPositionModal" tabindex="-1" aria-labelledby="editPositionModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -241,9 +478,8 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="editPositionForm" action="{{ route('job-posts.update', ['id' => $job->id]) }}" method="POST">
+                    <form id="editPositionForm" action="{{ route('job-posts.update', ['id' => $job->id]) }}" method="PUT">
                         @csrf
-                        @method('PUT')
                         <div class="mb-3">
                             <label for="editJobTitle" class="form-label">Job Title</label>
                             <input type="text" class="form-control" name="job_title" id="editJobTitle" value="{{ $job->job_title }}" required>
@@ -277,7 +513,50 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
+
+    {{-- Fetches job details --}}
+    {{-- <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll(".edit-job").forEach(button => {
+                button.addEventListener("click", function () {
+                    let jobId = this.getAttribute("data-id");
+
+                    console.log("Job ID Clicked:", jobId); // ✅ Debugging
+
+                    fetch(`/job-posts/${jobId}/edit`)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error(`HTTP Error! Status: ${response.status}`);
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            console.log("Received Data:", data); // ✅ Debugging
+
+                            if (data.success) {
+                                let job = data.job;
+
+                                document.getElementById("editJobId").value = job.id;
+                                document.getElementById("editJobTitle").value = job.job_title;
+                                document.getElementById("editDepartment").value = job.department;
+                                document.getElementById("description").value = job.job_description;
+                                document.getElementById("requirements").value = job.requirements;
+                                document.getElementById("editTags").value = job.tags;
+                                document.getElementById("editDateIssued").value = job.date_issued;
+                                document.getElementById("editEndDate").value = job.end_date;
+                            } else {
+                                console.error("Error: Invalid job data");
+                            }
+                        })
+                        .catch(error => {
+                            console.error("Fetch Error:", error);
+                        });
+                });
+            });
+        });
+    </script> --}}
+           
 
     {{-- <script>
         document.addEventListener("DOMContentLoaded", function () {

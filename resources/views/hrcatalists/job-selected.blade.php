@@ -23,8 +23,8 @@
 
                     <!-- Tags (assuming $job->tags is an array) -->
                     <div class="d-flex my-3">
-                        @foreach($job->tags as $tag)
-                            <button class="btn btn-outline-primary me-2">{{ $tag }}</button>
+                        @foreach(explode(',', $job->tags) as $tag)
+                            <button class="btn btn-outline-primary me-2">{{ trim($tag) }}</button>
                         @endforeach
                     </div>
 
@@ -39,21 +39,13 @@
                 <!-- Requirements -->
                 <div class="mb-5">
                     <h4>Requirements:</h4>
-                    <ul>
-                        @foreach($job->requirements as $requirement)
-                            <li>{{ $requirement }}</li>
-                        @endforeach
-                    </ul>
+                    <p>{!! nl2br(e($job->requirements)) !!}</p>
                 </div>
 
                 <!-- Job Description -->
                 <div class="mb-5">
                     <h4>Job Description:</h4>
-                    <ul>
-                        @foreach($job->description as $desc)
-                            <li>{{ $desc }}</li>
-                        @endforeach
-                    </ul>                    
+                    <p>{!! nl2br(e($job->job_description)) !!}</p>
                 </div>
 
                 <!-- Contacts -->

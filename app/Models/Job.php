@@ -16,6 +16,7 @@ class Job extends Model
     protected $fillable = [
         'user_id',
         'job_title',
+        'slug',
         'department',
         'job_description',
         'requirements',
@@ -66,5 +67,25 @@ class Job extends Model
                 'activity' => ucfirst($action) . ': ' . $job->job_title,
             ]);
         }
+    }
+
+    /**
+     * Automatically create slug from job_title
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($job) {
+            if (empty($job->slug)) {
+                $job->slug = Str::slug($job->job_title, '-'); // ✅ Auto-generates slug
+            }
+        });
+
+        static::updating(function ($job) {
+            if (empty($job->slug)) {
+                $job->slug = Str::slug($job->job_title, '-'); // ✅ Ensures slug updates if missing
+            }
+        });
     }
 }

@@ -58,20 +58,29 @@
                 <?php if($jobs->isEmpty()): ?>
                     <p>No job openings are available at the moment.</p>
                 <?php else: ?>
-                    <?php $__currentLoopData = $jobs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $job): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <?php $__currentLoopData = $jobs->sortByDesc('created_at')->take(3); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $job): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?> 
                         <div class="col-md-4">
                             <div class="card job-card p-4">
                                 <h5><?php echo e($job->job_title); ?></h5>
-                                <p class="requirements">
-                                    Requirements:<br>
-                                    <?php echo nl2br(e($job->requirements)); ?>
-
-                                </p>
                                 <div class="tags">
                                     <?php $__currentLoopData = explode(',', $job->tags); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $tag): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                         <span class="tag"><?php echo e(trim($tag)); ?></span>
                                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                </div>
+                                </div>                             
+                                <p class="requirements">
+                                    <strong>Job Description:</strong><br>
+                                    <span title="<?php echo e($job->job_description); ?>">
+                                        <?php $__currentLoopData = explode("\n", $job->job_description); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $description): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <?php echo nl2br(e(Str::limit(trim($description), 50, '...'))); ?><br>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                    </span><br>
+                                    <strong>Requirements:</strong><br>
+                                    <span title="<?php echo e($job->requirements); ?>">
+                                        <?php $__currentLoopData = explode("\n", $job->requirements); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $requirement): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <?php echo nl2br(e(Str::limit(trim($requirement), 50, '...'))); ?><br>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                    </span>
+                                </p>
     
                                 <!-- Apply Now Button linking to the job details page -->
                                 <a style="--clr: #000" class="btn-3" href="<?php echo e(route('job-selected', $job->slug)); ?>">
@@ -92,6 +101,9 @@
             </div>
         </div>
     </div>
+    
+    
+    
 
  <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>

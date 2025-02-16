@@ -126,33 +126,114 @@
                                 <td><?php echo e(\Carbon\Carbon::parse($job->date_issued)->format('F d, Y')); ?></td>
                                 <td><?php echo e(\Carbon\Carbon::parse($job->end_date)->format('F d, Y')); ?></td>
                                 <td class="px-4">
-                                    <div class="d-flex justify-content-between">
-                                        <a href="#" class="btn btn-view me-2">VIEW</a>
-                                        <button class="btn btn-ap-edit edit-job me-2" data-id="<?php echo e($job->id); ?>"
-                                            data-job_title="<?php echo e($job->job_title); ?>"
-                                            data-department="<?php echo e($job->department); ?>"
-                                            data-job_description="<?php echo e($job->job_description); ?>"
-                                            data-requirements="<?php echo e($job->requirements); ?>"
-                                            data-tags="<?php echo e($job->tags); ?>"
-                                            data-date_issued="<?php echo e($job->date_issued); ?>"
-                                            data-end_date="<?php echo e($job->end_date); ?>"
-                                            data-bs-toggle="modal" data-bs-target="#editPositionModal">
-                                            EDIT
+                                    <div class="dropdown text-center">
+                                        <button class="btn btn-primary border-0" type="button" id="actionsDropdown<?php echo e($job->id); ?>" 
+                                            data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="fa-solid fa-list"></i> <!-- Bootstrap Icons -->
                                         </button>
-                                        <form
-                                            action="<?php echo e(route('jobs.toggle-status', $job->id)); ?>"
-                                            method="POST"
-                                            style="display:inline;"
-                                            onsubmit="return confirm('Are you sure you want to <?php echo e($job->status === 'active' ? 'deactivate' : 'activate'); ?> this job?');"
-                                        >
-                                            <?php echo csrf_field(); ?>
-                                            <button type="submit" class="btn <?php echo e($job->status === 'active' ? 'btn-danger' : 'btn-success'); ?> btn-activate">
-                                                <?php echo e($job->status === 'active' ? 'DEACTIVATE' : 'ACTIVATE'); ?>
+                                        <ul class="dropdown-menu" aria-labelledby="actionsDropdown<?php echo e($job->id); ?>">
+                                            <!-- Activate / Deactivate -->
+                                            <li>
+                                                <form action="<?php echo e(route('jobs.toggle-status', $job->id)); ?>" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to <?php echo e($job->status === 'active' ? 'deactivate' : 'activate'); ?> this job?');">
+                                                    <?php echo csrf_field(); ?>
+                                                    <button type="submit" class="dropdown-item">
+                                                        <?php echo e($job->status === 'active' ? 'Deactivate' : 'Activate'); ?>
 
-                                            </button>
-                                        </form>
+                                                    </button>
+                                                </form>
+                                            </li>
+
+                                            <!-- Edit Job (Opens Modal) -->
+                                            <li>
+                                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#editPositionModal-<?php echo e($job->id); ?>">
+                                                    Edit
+                                                </a>
+                                            </li>
+
+                                            <!-- View Job -->
+                                            <li><a class="dropdown-item" href="#">View</a></li>
+                                
+                                            <!-- Delete Job -->
+                                            <li>
+                                                <form action="<?php echo e(route('job-posts.destroy', $job->id)); ?>" method="POST" 
+                                                      onsubmit="return confirm('Are you sure you want to delete this job?');" style="display:inline;">
+                                                    <?php echo csrf_field(); ?>
+                                                    <?php echo method_field('DELETE'); ?>
+                                                    <button type="submit" class="dropdown-item text-danger">Delete</button>
+                                                </form>
+                                            </li>
+                                        </ul>
                                     </div>
-                                </td>
+                                
+                                    <!-- Edit Position Modal (Moved Outside for Cleaner Code) -->
+                                    <div class="modal fade" id="editPositionModal-<?php echo e($job->id); ?>" tabindex="-1"
+                                        aria-labelledby="editPositionModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg">
+                                            <div class="modal-content">
+                                                <form method="POST" action="<?php echo e(route('job-posts.update', $job->id)); ?>">
+                                                    <?php echo csrf_field(); ?>
+                                                    <?php echo method_field('PUT'); ?>
+                                
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title">EDIT POSITION</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                
+                                                    <div class="modal-body">
+                                                        <input type="hidden" name="job_id" value="<?php echo e($job->id); ?>">
+                                
+                                                        <div class="row mb-3">
+                                                            <div class="col-md-6">
+                                                                <label class="form-label">Job Title <span class="text-danger">*</span></label>
+                                                                <input type="text" class="form-control" name="job_title"
+                                                                    value="<?php echo e($job->job_title); ?>" required>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <label class="form-label">Department <span class="text-danger">*</span></label>
+                                                                <input type="text" class="form-control" name="department"
+                                                                    value="<?php echo e($job->department); ?>" required>
+                                                            </div>
+                                                        </div>
+                                
+                                                        <div class="row mb-3">
+                                                            <div class="col-md-6">
+                                                                <label class="form-label">Job Description <span class="text-danger">*</span></label>
+                                                                <textarea name="job_description" class="form-control" rows="5" required><?php echo e($job->job_description); ?></textarea>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <label class="form-label">Requirements <span class="text-danger">*</span></label>
+                                                                <textarea name="requirements" class="form-control" rows="5" required><?php echo e($job->requirements); ?></textarea>
+                                                            </div>
+                                                        </div>
+                                
+                                                        <div class="row mb-3">
+                                                            <div class="col-md-6">
+                                                                <label class="form-label">Tags</label>
+                                                                <input type="text" class="form-control" name="tags" value="<?php echo e($job->tags); ?>">
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <label class="form-label">Date Issued <span class="text-danger">*</span></label>
+                                                                <input type="date" class="form-control" name="date_issued"
+                                                                    value="<?php echo e($job->date_issued); ?>" required>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <label class="form-label">End Date <span class="text-danger">*</span></label>
+                                                                <input type="date" class="form-control" name="end_date"
+                                                                    value="<?php echo e($job->end_date); ?>" required>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                
+                                                    <div class="modal-footer">
+                                                        <button type="submit" class="btn btn-primary">UPDATE</button>
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">CANCEL</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>                                                               
+                                
                             </tr>
                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </tbody>
@@ -188,11 +269,13 @@
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label for="requirements" class="form-label">Job Description <span class="text-danger">*</span></label>
-                                <textarea class="form-control" id="description" name="job_description" rows="4" required placeholder="Enter job description..."></textarea>
+                                <textarea name="job_description" id="description" class="form-control" rows="5" placeholder="Enter each bullet on a new line..." required></textarea>
+                                <small class="text-muted">Enter each bullet on a new line. The system will format it as a list.</small>
                             </div>
                             <div class="col-md-6">
                                 <label for="duties" class="form-label">Requirements <span class="text-danger">*</span></label>
-                                <textarea class="form-control" id="requirements" name="requirements" rows="4" required placeholder="Enter requirements..."></textarea>
+                                <textarea name="requirements" id="requirements" class="form-control" rows="5" placeholder="Enter each bullet on a new line..." required></textarea>
+                                <small class="text-muted">Enter each bullet on a new line. The system will format it as a list.</small>
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -221,51 +304,14 @@
     <!-- End of Add -->
 
     <!-- Edit Position Modal -->
-    <div class="modal fade" id="editPositionModal" tabindex="-1" aria-labelledby="editPositionModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editPositionModalLabel">Edit Position</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="editPositionForm" action="<?php echo e(route('job-posts.update', ['id' => $job->id])); ?>" method="POST">
-                        <?php echo csrf_field(); ?>
-                        <?php echo method_field('PUT'); ?>
-                        <div class="mb-3">
-                            <label for="editJobTitle" class="form-label">Job Title</label>
-                            <input type="text" class="form-control" name="job_title" id="editJobTitle" value="<?php echo e($job->job_title); ?>" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="editDepartment" class="form-label">Department</label>
-                            <input type="text" class="form-control" name="department" id="editDepartment" value="<?php echo e($job->department); ?>" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="editDescription" class="form-label">Job Description</label>
-                            <textarea class="form-control" name="job_description" id="editDescription" required><?php echo e($job->job_description); ?></textarea>
-                        </div>
-                        <div class="mb-3">
-                            <label for="editRequirements" class="form-label">Requirements</label>
-                            <textarea class="form-control" name="requirements" id="editRequirements" required><?php echo e($job->requirements); ?></textarea>
-                        </div>
-                        <div class="mb-3">
-                            <label for="editTags" class="form-label">Tags</label>
-                            <input type="text" class="form-control" name="tags" id="editTags" value="<?php echo e($job->tags); ?>">
-                        </div>
-                        <div class="mb-3">
-                            <label for="editDateIssued" class="form-label">Date Issued</label>
-                            <input type="date" class="form-control" name="date_issued" id="editDateIssued" value="<?php echo e($job->date_issued); ?>" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="editEndDate" class="form-label">End Date</label>
-                            <input type="date" class="form-control" name="end_date" id="editEndDate" value="<?php echo e($job->end_date); ?>" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Update Job</button>
-                    </form>          
-                </div>
-            </div>
-        </div>
-    </div>
+    
+    <!-- End of Edit -->
+
+    
+
+    
+    
+           
 
     
 
