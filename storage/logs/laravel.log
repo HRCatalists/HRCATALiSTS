@@ -14906,3 +14906,21 @@ Ipsum Lorem","tags":"Nurse, Nursing, clinic","date_issued":"2025-02-17","end_dat
 #58 C:\\laragon\\www\\hr_catalists\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\resources\\server.php(23): require_once('C:\\\\laragon\\\\www\\\\...')
 #59 {main}
 "} 
+[2025-02-17 07:54:43] local.INFO: Received Data: {"_token":"CD80Mmxpx2NFgoZBvyf2f2sM1jcQvbTrbUeTXTb9","job_title":"Dummy","department":"dummy","job_description":"dummy
+
+dummy
+
+dummy","requirements":"dummy
+
+dummy
+
+dummy","tags":"dummy, dummy, dummy","date_issued":"2025-02-17","end_date":"2025-02-22"} 
+[2025-02-17 07:54:43] local.INFO: Job Successfully Inserted: {"user_id":1,"job_title":"Dummy","slug":"dummy","department":"dummy","job_description":"dummy
+
+dummy
+
+dummy","requirements":"dummy
+
+dummy
+
+dummy","tags":"dummy, dummy, dummy","date_issued":"2025-02-17","end_date":"2025-02-22","status":"inactive","updated_at":"2025-02-16T23:54:43.000000Z","created_at":"2025-02-16T23:54:43.000000Z","id":7} 

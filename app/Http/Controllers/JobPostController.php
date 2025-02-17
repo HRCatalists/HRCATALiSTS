@@ -147,14 +147,18 @@ class JobPostController extends Controller
     /**
      * Delete a job position.
      */
-    public function destroy(Job $job)
+    public function destroy($id)
     {
+        $job = Job::findOrFail($id);
+    
+        // Prevent deletion if job is active
+        if ($job->status === 'active') {
+            return redirect()->back()->with('error', 'You cannot delete an active job. Please deactivate it first.');
+        }
+    
         $job->delete();
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Job deleted successfully!'
-        ]);
+    
+        return redirect()->back()->with('success', 'Job deleted successfully!');
     }
 
     /**
