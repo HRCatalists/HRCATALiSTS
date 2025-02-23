@@ -68,10 +68,11 @@
                                             <div class="me-3">
                                                 <img src="images/applicant.png" class="card-icon m-auto" alt="table-icon">
                                             </div>
-                                            <h5 class="card-title">New Applications</h5>
+                                            <h5 class="card-title">New Applicants</h5>
                                         </div>
                                         <div class="text-end me-4">
-                                            <h2 class="card-number">4</h2>
+                                            <a href="<?php echo e(route('ats-screening')); ?>" class="view-link d-block">View all</a>
+                                            <h2 class="card-number text-white"><?php echo e($applicantsByStatus['pending'] ?? 0); ?></h2>
                                         </div>
                                     </div>
                                 </div>
@@ -93,8 +94,8 @@
                                             <h5 class="card-title">Master List</h5>
                                         </div>
                                         <div class="text-end me-4">
-                                            <a href="admin-ats-master-list.html" class="view-link d-block">View all</a>
-                                            <h2 class="card-number">17</h2>
+                                            <a href="<?php echo e(route('ats-applicants')); ?>" class="view-link d-block">View all</a>
+                                            <h2 class="card-number"><?php echo e($totalApplicants ?? 0); ?></h2>
                                         </div>
                                     </div>
                                 </div>
@@ -116,8 +117,8 @@
                                             <h5 class="card-title">Active Positions</h5>
                                         </div>
                                         <div class="text-end me-4">
-                                            <a href="admin-ats-act-post.html" class="view-link d-block">View all</a>
-                                            <h2 class="card-number">6</h2>
+                                            <a href="<?php echo e(route('ats-jobs')); ?>" class="view-link d-block">View all</a>
+                                            <h2 class="card-number"><?php echo e($totalJobs ?? 0); ?></h2>
                                         </div>
                                     </div>
                                 </div>
@@ -139,8 +140,8 @@
                                             <h5 class="card-title">Archived Applicants</h5>
                                         </div>
                                         <div class="text-end me-4">
-                                            <a href="admin-ats-arch.html" class="view-link d-block">View all</a>
-                                            <h2 class="card-number">9</h2>
+                                            <a href="<?php echo e(route('ats-archived')); ?>" class="view-link d-block">View all</a>
+                                            <h2 class="card-number"><?php echo e(($applicantsByStatus['rejected'] ?? 0) + ($applicantsByStatus['archived'] ?? 0)); ?></h2>
                                         </div>
                                     </div>
                                 </div>

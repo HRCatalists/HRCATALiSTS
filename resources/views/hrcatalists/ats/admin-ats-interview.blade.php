@@ -59,52 +59,91 @@
                                 <th></th>
                                 <th>NAME</th>
                                 <th>STATUS</th>
-                                <th>STAGES</th>
                                 <th>APPLIED DATE</th>
                                 <th>POSITION APPLIED TO</th>
                                 <th>ACTION</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td class="text-center"><input type="checkbox" class="rowCheckbox"></td>
-                                <td>Rhinell Menes</td>
-                                <td>APPLICANT</td>
-                                <td>2 - Interview</td>
-                                <td>November 11, 2024</td>
-                                <td>Medical Staff</td>
-                                <td>
-                                    <div class="d-flex justify-content-around">
-                                        <button class="btn btn-ap-edit" data-bs-toggle="offcanvas" data-bs-target="#candidateProfile">VIEW</button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="text-center"><input type="checkbox" class="rowCheckbox"></td>
-                                <td>Raiden Monsalud</td>
-                                <td>APPLICANT</td>
-                                <td>2 - Interview</td>
-                                <td>June 14, 2020</td>
-                                <td>CCS Professor</td>
-                                <td>
-                                    <div class="d-flex justify-content-around">
-                                        <button class="btn btn-ap-edit" data-bs-toggle="offcanvas" data-bs-target="#candidateProfile">VIEW</button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="text-center"><input type="checkbox" class="rowCheckbox"></td>
-                                <td>Fate Gamboa</td>
-                                <td>APPLICANT</td>
-                                <td>2 - Interview</td>
-                                <td>May 18, 2022</td>
-                                <td>Medical Staff</td>
-                                <td>
-                                    <div class="d-flex justify-content-around">
-                                        <button class="btn btn-ap-edit" data-bs-toggle="offcanvas" data-bs-target="#candidateProfile">VIEW</button>
-                                    </div>
-                                </td>
-                            </tr>
+                            @php
+                                // Define status colors outside the loop for reusability
+                                $statusColors = [
+                                    'pending' => '#555555',      // Gray
+                                    'screening' => '#ffe135',    // Yellow
+                                    'scheduled' => '#ff8c00',    // Orange
+                                    'interviewed' => '#ff8c00',  // Orange
+                                    'hired' => '#4CAF50',        // Green
+                                    'rejected' => '#8b0000',     // Red
+                                    'archived' => '#4b0082'      // Indigo
+                                ];
+                            @endphp
+                        
+                            @if(is_countable($interviewedApplicants) && count($interviewedApplicants) > 0)
+                                @php $hasResults = false; @endphp
+                        
+                                @foreach($interviewedApplicants as $applicant)
+                                    @if(in_array($applicant->status, ['scheduled', 'interviewed']))
+                                        @php $hasResults = true; @endphp
+                                        @php
+                                            $statusColor = $statusColors[$applicant->status] ?? '#000000'; // Default Black
+                                        @endphp
+                        
+                                        <tr>
+                                            <td class="text-center">
+                                                <input type="checkbox" class="rowCheckbox" value="{{ $applicant->id }}">
+                                            </td>
+                                            <td>{{ $applicant->first_name }} {{ $applicant->last_name }}</td>
+                                            <td>
+                                                <form method="POST" action="{{ route('applicants.updateStatus', $applicant->id) }}" class="status-update-form">
+                                                    @csrf
+                                                    <select name="status" class="form-select status-dropdown"
+                                                        data-applicant-name="{{ $applicant->first_name }} {{ $applicant->last_name }}" 
+                                                        data-current-status="{{ $applicant->status }}"
+                                                        style="color: #fff; border-radius: 4px; padding: 4px; text-align: center;"
+                                                    >
+                                                        <option value="pending" {{ $applicant->status == 'pending' ? 'selected' : '' }}>Pending</option>
+                                                        <option value="screening" {{ $applicant->status == 'screening' ? 'selected' : '' }}>Screening</option>
+                                                        <option value="scheduled" {{ $applicant->status == 'scheduled' ? 'selected' : '' }}>Scheduled</option>
+                                                        <option value="interviewed" {{ $applicant->status == 'interviewed' ? 'selected' : '' }}>Interviewed</option>
+                                                        <option value="hired" {{ $applicant->status == 'hired' ? 'selected' : '' }}>Hired</option>
+                                                        <option value="rejected" {{ $applicant->status == 'rejected' ? 'selected' : '' }}>Rejected</option>
+                                                        <option value="archived" {{ $applicant->status == 'archived' ? 'selected' : '' }}>Archived</option>
+                                                    </select>
+                                                </form>
+                                            </td>
+                                            <td>{{ \Carbon\Carbon::parse($applicant->applied_at)->format('F d, Y') }}</td>
+                                            <td>{{ $applicant->job->job_title ?? 'N/A' }}</td>
+                                            <td>
+                                                <div class="d-flex justify-content-around">
+                                                    <button class="btn btn-ap-edit" 
+                                                        data-bs-toggle="offcanvas" 
+                                                        data-bs-target="#candidateProfile" 
+                                                        data-applicant-id="{{ $applicant->id }}"
+                                                        data-applicant-name="{{ $applicant->first_name }} {{ $applicant->last_name }}"
+                                                        data-applicant-status="{{ $applicant->status }}"
+                                                        data-applicant-email="{{ $applicant->email }}"
+                                                        data-applicant-phone="{{ $applicant->phone_number }}"
+                                                        data-applicant-position="{{ $applicant->job->job_title ?? 'N/A' }}"
+                                                        data-applicant-address="{{ $applicant->address }}">
+                                                        VIEW
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                @endforeach
+                        
+                                {{-- Show "No applicants found" if no results --}}
+                                @if(!$hasResults)
+                                    <tr>
+                                        <td colspan="6" class="text-center">No pending or screening applicants found.</td>
+                                    </tr>
+                                @endif
+                            @else
+                                <tr>
+                                    <td colspan="6" class="text-center">No applicants available.</td>
+                                </tr>
+                            @endif
                         </tbody>
                     </table>
 
