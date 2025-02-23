@@ -13,6 +13,7 @@
         <!-- Master List -->
         <div id="content" class="flex-grow-1">
             <div class="container mt-5">
+
                 
                 <div class="d-flex justify-content-between align-items-center my-5">
                     <div>
@@ -59,78 +60,78 @@
                             <th></th>
                             <th>NAME</th>
                             <th>STATUS</th>
-                            <th>STAGES</th>
                             <th>APPLIED DATE</th>
                             <th>POSITION APPLIED TO</th>
                             <th>ACTION</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td class="text-center"><input type="checkbox" class="rowCheckbox"></td>
-                            <td>Rhinell Menes</td>
-                            <td>APPLICANT</td>
-                            <td>1 - Screening</td>
-                            <td>November 11, 2024</td>
-                            <td>Medical Staff</td>
-                            <td>
-                                <div class="d-flex justify-content-around">
-                                    <button class="btn btn-ap-edit" data-bs-toggle="offcanvas" data-bs-target="#candidateProfile">VIEW</button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="text-center"><input type="checkbox" class="rowCheckbox"></td>
-                            <td>Rhinell Menes</td>
-                            <td>APPLICANT</td>
-                            <td>2 - Interview</td>
-                            <td>November 11, 2024</td>
-                            <td>Medical Staff</td>
-                            <td>
-                                <div class="d-flex justify-content-around">
-                                    <button class="btn btn-ap-edit" data-bs-toggle="offcanvas" data-bs-target="#candidateProfile">VIEW</button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="text-center"><input type="checkbox" class="rowCheckbox"></td>
-                            <td>Fate Gamboa</td>
-                            <td>APPLICANT</td>
-                            <td>2 - Interview</td>
-                            <td>November 11, 2024</td>
-                            <td>Medical Staff</td>
-                            <td>
-                                <div class="d-flex justify-content-around">
-                                    <button class="btn btn-ap-edit" data-bs-toggle="offcanvas" data-bs-target="#candidateProfile">VIEW</button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="text-center"><input type="checkbox" class="rowCheckbox"></td>
-                            <td>Raiden Monsalud</td>
-                            <td>APPLICANT</td>
-                            <td>2 - Interview</td>
-                            <td>April 15, 2024</td>
-                            <td>CCS Professor</td>
-                            <td>
-                                <div class="d-flex justify-content-around">
-                                    <button class="btn btn-ap-edit" data-bs-toggle="offcanvas" data-bs-target="#candidateProfile">VIEW</button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="text-center"><input type="checkbox" class="rowCheckbox"></td>
-                            <td>John Rafael De Venencia</td>
-                            <td>APPLICANT</td>
-                            <td>1 - Screening</td>
-                            <td>April 15, 2024</td>
-                            <td>COA Professor</td>
-                            <td>
-                                <div class="d-flex justify-content-around">
-                                    <button class="btn btn-ap-edit" data-bs-toggle="offcanvas" data-bs-target="#candidateProfile">VIEW</button>
-                                </div>
-                            </td>
-                        </tr>
+                        @if(count($allApplicants) > 0)
+                            @foreach($allApplicants as $applicant)
+                                @php
+                                    // Define status colors inside the loop
+                                    $statusColors = [
+                                        'pending' => '#555555',      // Gray
+                                        'screening' => '#ffe135',    // Yellow
+                                        'scheduled' => '#ff8c00',    // Orange
+                                        'interviewed' => '#ff8c00',  // Orange
+                                        'hired' => '#4CAF50',        // Green
+                                        'rejected' => '#8b0000',     // Red
+                                        'archived' => '#4b0082'      // Indigo
+                                    ];
+                
+                                    $statusColor = $statusColors[$applicant->status] ?? '#000000'; // Default Black
+                                @endphp
+                                <tr>
+                                    <td class="text-center">
+                                        <input type="checkbox" class="rowCheckbox" value="{{ $applicant->id }}">
+                                    </td>
+                                    <td>{{ $applicant->first_name }} {{ $applicant->last_name }}</td>
+                                    <td>
+                                        <form method="POST" action="{{ route('applicants.updateStatus', $applicant->id) }}" class="status-update-form">
+                                            @csrf
+                                            <select name="status" class="form-select status-dropdown"
+                                                data-applicant-name="{{ $applicant->first_name }} {{ $applicant->last_name }}" 
+                                                data-current-status="{{ $applicant->status }}"
+                                                style="color: #fff; border-radius: 4px; padding: 4px; text-align: center;"
+                                            >
+                                                <option value="pending" {{ $applicant->status == 'pending' ? 'selected' : '' }}>Pending</option>
+                                                <option value="screening" {{ $applicant->status == 'screening' ? 'selected' : '' }}>Screening</option>
+                                                <option value="scheduled" {{ $applicant->status == 'scheduled' ? 'selected' : '' }}>Scheduled</option>
+                                                <option value="interviewed" {{ $applicant->status == 'interviewed' ? 'selected' : '' }}>Interviewed</option>
+                                                <option value="hired" {{ $applicant->status == 'hired' ? 'selected' : '' }}>Hired</option>
+                                                <option value="rejected" {{ $applicant->status == 'rejected' ? 'selected' : '' }}>Rejected</option>
+                                                <option value="archived" {{ $applicant->status == 'archived' ? 'selected' : '' }}>Archived</option>
+                                            </select>
+                                        </form>
+                                    </td>
+                                    <td>{{ \Carbon\Carbon::parse($applicant->applied_at)->format('F d, Y') }}</td>
+                                    <td>{{ $applicant->job->job_title ?? 'N/A' }}</td>
+                                    <td>
+                                        <div class="d-flex justify-content-around">
+                                            <button class="btn btn-ap-edit" 
+                                                data-bs-toggle="offcanvas" 
+                                                data-bs-target="#candidateProfile" 
+                                                data-applicant-id="{{ $applicant->id }}"
+                                                data-applicant-name="{{ $applicant->first_name }} {{ $applicant->last_name }}"
+                                                data-applicant-status="{{ $applicant->status }}"
+                                                data-applicant-email="{{ $applicant->email }}"
+                                                data-applicant-phone="{{ $applicant->phone_number }}"
+                                                data-applicant-position="{{ $applicant->job->job_title ?? 'N/A' }}"
+                                                data-applicant-address="{{ $applicant->address }}">
+                                                VIEW
+                                            </button>
+                                        
+                                    
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        @else
+                            <tr>
+                                <td colspan="6" class="text-center">No applicants found.</td>
+                            </tr>
+                        @endif
                     </tbody>
                 </table>
 
@@ -192,6 +193,7 @@
         </div>
     </div>
 
+
     <!-- Offcanvas for Candidate Profile View -->
     <div class="offcanvas offcanvas-end p-0" tabindex="-1" id="candidateProfile" aria-labelledby="candidateProfileLabel">
 
@@ -203,10 +205,10 @@
         <div class="offcanvas-body-wrapper px-4">
             <div class="content-section">
                 <div class="d-flex align-items-center justify-content-between my-4">
-                    <h5 class="mt-2">RHINELL MENES</h5>
-
-                    <span class="stage border px-3 py-1">
-                        STAGE: INTERVIEW
+                    <h5 id="applicantName" class="mt-2">Applicant Name</h5>
+    
+                    <span id="applicantStatus" class="stage border px-3 py-1" style="border-radius: 4px;">
+                        STAGE: N/A
                     </span>
                 </div>
                 
@@ -226,55 +228,80 @@
                 <!-- Tab Content -->
                 <!-- Overview Tab -->
                 <div id="overview" class="tab-content">
-                    
-                    <!-- Applicant Section -->
                     <div class="applicant-section">
-                        
                         <div class="applicant-data">
                             <h5>Applicant Data</h5>
 
                             <div class="row">
                                 <div class="col-md-12">
-                                    <p> <strong>Position:</strong> Medical Staff</p>
+                                    <p><strong>Position:</strong> <span id="applicantPosition">N/A</span></p>
                                 </div>
                             </div>
 
-                            <div class="row">
+                            {{-- <div class="row">
                                 <div class="col-md-6">
-                                    <p> <strong>Full Name:</strong> Rhinell menes</p>
+                                    <p><strong>Name:</strong> <span id="applicantNameOverview">N/A</span></p>
                                 </div>
-                            </div>
+                            </div> --}}
 
                             <div class="row">
                                 <div class="col-md-6">
-                                    <i class="fa-solid fa-envelope me-2"></i> menesj@gmail.com
+                                    <i class="fa-solid fa-envelope me-2"></i> <span id="applicantEmail">N/A</span>
                                 </div>
                                 <div class="col-md-6">
-                                    <i class="fa-solid fa-phone me-2"></i> 09313 4567 89
+                                    <i class="fa-solid fa-phone me-2"></i> <span id="applicantPhone">N/A</span>
                                 </div>
                             </div>
 
                             <div class="row mt-3">
                                 <div class="col-md-12">
-                                    <i class="fa-solid fa-location-dot me-2"></i> 37-B 7th St., West Tapinac, Olongapo City
+                                    <i class="fa-solid fa-location-dot me-2"></i> <span id="applicantAddress">N/A</span>
                                 </div>
                             </div>
                         </div>
-                        
+
                         <!-- Attachment -->
                         <div class="file-attachment my-4">
                             <img src="images/pdf-img.png" alt="PDF icon">
-                            <span>Severus_Snape_CVfinalfinal.pdf</span>
+                            <span id="applicantResume">Resume.pdf</span>
                             <span class="ms-auto">200 KB</span>
                         </div>
-
+                        
                         <div class="d-grid mt-5">
-                            <!-- <button class="btn btn-primary">EDIT APPLICANT DATA</button> -->
+                            <!-- APPROVE -->
+                            <form method="POST" action="{{ route('applicants.updateStatus', $applicant->id) }}">
+                                @csrf
+                                <input type="hidden" name="action" value="approve">
+                                <input type="hidden" name="email" value="{{ $applicant->email }}">
+                                <input type="hidden" name="name" value="{{ $applicant->first_name }} {{ $applicant->last_name }}">
+                                <button type="submit" class="btn btn-success">APPROVE</button>
+                            </form>
+                        
+                            <!-- REJECT -->
+                            <form method="POST" action="{{ route('applicants.updateStatus', $applicant->id) }}">
+                                @csrf
+                                <input type="hidden" name="action" value="reject">
+                                <input type="hidden" name="email" value="{{ $applicant->email }}">
+                                <input type="hidden" name="name" value="{{ $applicant->first_name }} {{ $applicant->last_name }}">
+                                <button type="submit" class="btn btn-danger">REJECT</button>
+                            </form>
+                        
+                            <!-- ARCHIVE -->
+                            <form method="POST" action="{{ route('applicants.updateStatus', $applicant->id) }}">
+                                @csrf
+                                <input type="hidden" name="action" value="archive">
+                                <input type="hidden" name="email" value="{{ $applicant->email }}">
+                                <input type="hidden" name="name" value="{{ $applicant->first_name }} {{ $applicant->last_name }}">
+                                <button type="submit" class="btn btn-outline-danger">ARCHIVE</button>
+                            </form>
                         </div>
-                        <div class="d-grid button-container mt-5">
-                            <button class="btn btn-success" onclick="showPopup('approvePopup')">APPROVE</button>
-                        </div>
-
+                                                                   
+                        {{-- <div class="d-grid mt-5">
+                            <button class="btn btn-success mb-2" onclick="updateStatus('approve')">APPROVE</button>
+                            <button class="btn btn-danger mb-2" onclick="updateStatus('reject')">REJECT</button>
+                            <button class="btn btn-outline-danger mb-2" onclick="updateStatus('archive')">ARCHIVE</button>
+                            <input type="hidden" id="applicantId" value="{{ $applicant->id }}">
+                        </div>                         --}}
                     </div>
                 </div>
                 <!-- End Overview Tab -->
@@ -344,7 +371,139 @@
             </div>
             
         </div>
-    </div>  
+    </div>
+
+    {{-- <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const offcanvas = document.getElementById('candidateProfile');
+    
+            offcanvas.addEventListener('show.bs.offcanvas', function (event) {
+                const button = event.relatedTarget;
+    
+                // Get applicant data from data attributes
+                const applicantName = button.getAttribute('data-applicant-name');
+                const applicantStatus = button.getAttribute('data-applicant-status');
+                const applicantEmail = button.getAttribute('data-applicant-email');
+                const applicantPhone = button.getAttribute('data-applicant-phone');
+                const applicantPosition = button.getAttribute('data-applicant-position');
+                const applicantAddress = button.getAttribute('data-applicant-address');
+    
+                // Status color mapping
+                const statusColors = {
+                    'pending': '#555555',      // Gray
+                    'screening': '#ffe135',    // Yellow
+                    'scheduled': '#ff8c00',    // Orange
+                    'interviewed': '#ff8c00',  // Orange
+                    'hired': '#4CAF50',        // Green
+                    'rejected': '#8b0000',     // Red
+                    'archived': '#4b0082'      // Indigo
+                };
+    
+                const statusColor = statusColors[applicantStatus] || '#000000'; // Default black
+    
+                // Populate the Offcanvas fields
+                document.getElementById('applicantName').innerText = applicantName;
+                document.getElementById('applicantStatus').innerText = 'STAGE: ' + applicantStatus.toUpperCase();
+                document.getElementById('applicantStatus').style.backgroundColor = statusColor;
+    
+                document.getElementById('applicantEmail').innerText = applicantEmail;
+                document.getElementById('applicantPhone').innerText = applicantPhone;
+                document.getElementById('applicantPosition').innerText = applicantPosition;
+                document.getElementById('applicantAddress').innerText = applicantAddress;
+            });
+        });
+    </script>       --}}
+
+    {{-- Applying button color changes based on the status --}}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const offcanvas = document.getElementById('candidateProfile');
+    
+            offcanvas.addEventListener('show.bs.offcanvas', function (event) {
+                const button = event.relatedTarget;
+    
+                // Get applicant data from data attributes
+                const applicantName = button.getAttribute('data-applicant-name');
+                const applicantStatus = button.getAttribute('data-applicant-status');
+                const applicantEmail = button.getAttribute('data-applicant-email');
+                const applicantPhone = button.getAttribute('data-applicant-phone');
+                const applicantPosition = button.getAttribute('data-applicant-position');
+                const applicantAddress = button.getAttribute('data-applicant-address');
+                const applicantResume = button.getAttribute('data-applicant-resume') || 'N/A';
+    
+                // Status color mapping
+                const statusColors = {
+                    'pending': '#6c757d',       // Gray
+                    'screening': '#17a2b8',     // Teal
+                    'scheduled': '#ffc107',     // Yellow
+                    'interviewed': '#007bff',   // Blue
+                    'hired': '#28a745',         // Green
+                    'rejected': '#dc3545',      // Red
+                    'archived': '#4b0082'      // Indigo
+                };
+    
+                const statusColor = statusColors[applicantStatus] || '#000000'; // Default black
+    
+                // Populate the Offcanvas fields
+                document.getElementById('applicantName').innerText = applicantName;
+                document.getElementById('applicantStatus').innerText = 'STAGE: ' + applicantStatus.toUpperCase();
+                document.getElementById('applicantEmail').innerText = applicantEmail;
+                document.getElementById('applicantPhone').innerText = applicantPhone;
+                document.getElementById('applicantPosition').innerText = applicantPosition;
+                document.getElementById('applicantAddress').innerText = applicantAddress;
+                document.getElementById('applicantResume').innerText = applicantResume;
+    
+                // Apply color and border to status
+                const statusElement = document.getElementById('applicantStatus');
+                statusElement.setAttribute('style', `
+                    color: ${statusColor} !important;
+                    border: 2px solid ${statusColor} !important;
+                    background-color: transparent !important;
+                `);
+            });
+        });
+    </script>
+
+    {{-- {{-- Approve, Reject, Archive overview confirmation start --}}
+    {{-- <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Select all buttons with class sweetalert-btn
+            document.querySelectorAll('.sweetalert-btn').forEach(button => {
+                button.addEventListener('click', function () {
+                    const action = this.getAttribute('data-action'); // approve, reject, archive
+                    const form = this.closest('form');
+    
+                    // Define readable action text
+                    const actionText = {
+                        'approve': 'hire',
+                        'reject': 'reject',
+                        'archive': 'archive'
+                    };
+    
+                    // Color mapping for SweetAlert
+                    const actionColors = {
+                        'approve': '#28a745',
+                        'reject': '#dc3545',
+                        'archive': '#6c757d'
+                    };
+    
+                    // Trigger SweetAlert confirmation
+                    Swal.fire({
+                        title: `Are you sure you want to ${actionText[action]} this applicant?`,
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: actionColors[action],
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: `Yes, ${actionText[action]}!`
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            form.submit(); // ✅ Submit the form if confirmed
+                        }
+                    });
+                });
+            });
+        });
+    </script>     --}}
+    {{-- Approve, Reject, Archive overview confirmation end --}}
 
 </x-admin-ats-layout>
-

@@ -2,14 +2,24 @@
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminController;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\JobPostController;
+use App\Http\Controllers\ApplicantController;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 
+Route::get('/api/check-auth', function () {
+    return response()->json(['authenticated' => Auth::check()]);
+});
+
+
 // Public Route for Welcome Page
 Route::get('/', [HomeController::class, 'index'])->name('home');
+// Route::get('/', function () {
+//     return Auth::check() ? redirect()->route('main-menu') : view('welcome');
+// })->name('home');
+
 
 // Route::get('/jobs/{id}', [HomeController::class, 'show'])->name('jobs.show');
 
@@ -23,10 +33,9 @@ Route::middleware(['guest'])->group(function () {
 });
 
 // ✅ Redirect logged-in users away from login page
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth',])->group(function () {
     Route::get('/main-menu', [AdminController::class, 'mainMenu'])->name('main-menu');
 });
-
 
 Route::get('/job-selected/{slug}', [JobPostController::class, 'jobSelected'])->name('job-selected');
 
@@ -54,11 +63,15 @@ Route::middleware(['auth'])->group(function () {
     // ATS Routes
     Route::get('/ats-dashboard', [AdminController::class, 'atsDashboard'])->name('ats-dashboard');
     Route::get('/ats-calendar', [AdminController::class, 'atsCalendar'])->name('ats-calendar');
-    Route::get('/ats-applicants', [AdminController::class, 'atsApplicants'])->name('ats-applicants');
-    Route::get('/ats-screening', [AdminController::class, 'atsScreening'])->name('ats-screening');
-    Route::get('/ats-interview', [AdminController::class, 'atsInterview'])->name('ats-interview');
-    Route::get('/ats-archived', [AdminController::class, 'atsArchived'])->name('ats-archived');
     Route::get('/ats-job-openings', [AdminController::class, 'atsJobs'])->name('ats-jobs');
+
+    // Applicant Routes
+    Route::get('/ats-applicants', [ApplicantController::class, 'index'])->name('ats-applicants');
+    Route::get('/ats-screening', [ApplicantController::class, 'pending'])->name('ats-screening');
+    Route::get('/ats-interview', [ApplicantController::class, 'interviewed'])->name('ats-interview');
+    Route::get('/ats-archived', [ApplicantController::class, 'archived'])->name('ats-archived');
+    Route::get('/applicants/{id}', [ApplicantController::class, 'show']);
+    Route::post('/applicants/{id}/update-status', [ApplicantController::class, 'updateStatus'])->name('applicants.updateStatus');
 
     // ** Job Post Routes (Nested under Job Openings) **
     Route::prefix('ats-job-openings')->group(function () {
@@ -85,6 +98,13 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/jobs/{id}/toggle-status', [JobPostController::class, 'toggleStatus'])->name('jobs.toggle-status');
 });
+
+Route::post('/logout', function () {
+    Auth::logout();
+    Session::flush(); // Clear all session data
+    return redirect('/login');
+})->name('logout');
+
 
 require __DIR__.'/auth.php';
 

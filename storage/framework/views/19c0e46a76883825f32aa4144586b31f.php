@@ -41,6 +41,7 @@
         <!-- Master List -->
         <div id="content" class="flex-grow-1">
             <div class="container mt-5">
+
                 
                 <div class="d-flex justify-content-between align-items-center my-5">
                     <div>
@@ -87,78 +88,78 @@
                             <th></th>
                             <th>NAME</th>
                             <th>STATUS</th>
-                            <th>STAGES</th>
                             <th>APPLIED DATE</th>
                             <th>POSITION APPLIED TO</th>
                             <th>ACTION</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td class="text-center"><input type="checkbox" class="rowCheckbox"></td>
-                            <td>Rhinell Menes</td>
-                            <td>APPLICANT</td>
-                            <td>1 - Screening</td>
-                            <td>November 11, 2024</td>
-                            <td>Medical Staff</td>
-                            <td>
-                                <div class="d-flex justify-content-around">
-                                    <button class="btn btn-ap-edit" data-bs-toggle="offcanvas" data-bs-target="#candidateProfile">VIEW</button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="text-center"><input type="checkbox" class="rowCheckbox"></td>
-                            <td>Rhinell Menes</td>
-                            <td>APPLICANT</td>
-                            <td>2 - Interview</td>
-                            <td>November 11, 2024</td>
-                            <td>Medical Staff</td>
-                            <td>
-                                <div class="d-flex justify-content-around">
-                                    <button class="btn btn-ap-edit" data-bs-toggle="offcanvas" data-bs-target="#candidateProfile">VIEW</button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="text-center"><input type="checkbox" class="rowCheckbox"></td>
-                            <td>Fate Gamboa</td>
-                            <td>APPLICANT</td>
-                            <td>2 - Interview</td>
-                            <td>November 11, 2024</td>
-                            <td>Medical Staff</td>
-                            <td>
-                                <div class="d-flex justify-content-around">
-                                    <button class="btn btn-ap-edit" data-bs-toggle="offcanvas" data-bs-target="#candidateProfile">VIEW</button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="text-center"><input type="checkbox" class="rowCheckbox"></td>
-                            <td>Raiden Monsalud</td>
-                            <td>APPLICANT</td>
-                            <td>2 - Interview</td>
-                            <td>April 15, 2024</td>
-                            <td>CCS Professor</td>
-                            <td>
-                                <div class="d-flex justify-content-around">
-                                    <button class="btn btn-ap-edit" data-bs-toggle="offcanvas" data-bs-target="#candidateProfile">VIEW</button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="text-center"><input type="checkbox" class="rowCheckbox"></td>
-                            <td>John Rafael De Venencia</td>
-                            <td>APPLICANT</td>
-                            <td>1 - Screening</td>
-                            <td>April 15, 2024</td>
-                            <td>COA Professor</td>
-                            <td>
-                                <div class="d-flex justify-content-around">
-                                    <button class="btn btn-ap-edit" data-bs-toggle="offcanvas" data-bs-target="#candidateProfile">VIEW</button>
-                                </div>
-                            </td>
-                        </tr>
+                        <?php if(count($allApplicants) > 0): ?>
+                            <?php $__currentLoopData = $allApplicants; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $applicant): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <?php
+                                    // Define status colors inside the loop
+                                    $statusColors = [
+                                        'pending' => '#555555',      // Gray
+                                        'screening' => '#ffe135',    // Yellow
+                                        'scheduled' => '#ff8c00',    // Orange
+                                        'interviewed' => '#ff8c00',  // Orange
+                                        'hired' => '#4CAF50',        // Green
+                                        'rejected' => '#8b0000',     // Red
+                                        'archived' => '#4b0082'      // Indigo
+                                    ];
+                
+                                    $statusColor = $statusColors[$applicant->status] ?? '#000000'; // Default Black
+                                ?>
+                                <tr>
+                                    <td class="text-center">
+                                        <input type="checkbox" class="rowCheckbox" value="<?php echo e($applicant->id); ?>">
+                                    </td>
+                                    <td><?php echo e($applicant->first_name); ?> <?php echo e($applicant->last_name); ?></td>
+                                    <td>
+                                        <form method="POST" action="<?php echo e(route('applicants.updateStatus', $applicant->id)); ?>" class="status-update-form">
+                                            <?php echo csrf_field(); ?>
+                                            <select name="status" class="form-select status-dropdown"
+                                                data-applicant-name="<?php echo e($applicant->first_name); ?> <?php echo e($applicant->last_name); ?>" 
+                                                data-current-status="<?php echo e($applicant->status); ?>"
+                                                style="color: #fff; border-radius: 4px; padding: 4px; text-align: center;"
+                                            >
+                                                <option value="pending" <?php echo e($applicant->status == 'pending' ? 'selected' : ''); ?>>Pending</option>
+                                                <option value="screening" <?php echo e($applicant->status == 'screening' ? 'selected' : ''); ?>>Screening</option>
+                                                <option value="scheduled" <?php echo e($applicant->status == 'scheduled' ? 'selected' : ''); ?>>Scheduled</option>
+                                                <option value="interviewed" <?php echo e($applicant->status == 'interviewed' ? 'selected' : ''); ?>>Interviewed</option>
+                                                <option value="hired" <?php echo e($applicant->status == 'hired' ? 'selected' : ''); ?>>Hired</option>
+                                                <option value="rejected" <?php echo e($applicant->status == 'rejected' ? 'selected' : ''); ?>>Rejected</option>
+                                                <option value="archived" <?php echo e($applicant->status == 'archived' ? 'selected' : ''); ?>>Archived</option>
+                                            </select>
+                                        </form>
+                                    </td>
+                                    <td><?php echo e(\Carbon\Carbon::parse($applicant->applied_at)->format('F d, Y')); ?></td>
+                                    <td><?php echo e($applicant->job->job_title ?? 'N/A'); ?></td>
+                                    <td>
+                                        <div class="d-flex justify-content-around">
+                                            <button class="btn btn-ap-edit" 
+                                                data-bs-toggle="offcanvas" 
+                                                data-bs-target="#candidateProfile" 
+                                                data-applicant-id="<?php echo e($applicant->id); ?>"
+                                                data-applicant-name="<?php echo e($applicant->first_name); ?> <?php echo e($applicant->last_name); ?>"
+                                                data-applicant-status="<?php echo e($applicant->status); ?>"
+                                                data-applicant-email="<?php echo e($applicant->email); ?>"
+                                                data-applicant-phone="<?php echo e($applicant->phone_number); ?>"
+                                                data-applicant-position="<?php echo e($applicant->job->job_title ?? 'N/A'); ?>"
+                                                data-applicant-address="<?php echo e($applicant->address); ?>">
+                                                VIEW
+                                            </button>
+                                        
+                                    
+                                        </div>
+                                    </td>
+                                </tr>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        <?php else: ?>
+                            <tr>
+                                <td colspan="6" class="text-center">No applicants found.</td>
+                            </tr>
+                        <?php endif; ?>
                     </tbody>
                 </table>
 
@@ -220,6 +221,7 @@
         </div>
     </div>
 
+
     <!-- Offcanvas for Candidate Profile View -->
     <div class="offcanvas offcanvas-end p-0" tabindex="-1" id="candidateProfile" aria-labelledby="candidateProfileLabel">
 
@@ -231,10 +233,10 @@
         <div class="offcanvas-body-wrapper px-4">
             <div class="content-section">
                 <div class="d-flex align-items-center justify-content-between my-4">
-                    <h5 class="mt-2">RHINELL MENES</h5>
-
-                    <span class="stage border px-3 py-1">
-                        STAGE: INTERVIEW
+                    <h5 id="applicantName" class="mt-2">Applicant Name</h5>
+    
+                    <span id="applicantStatus" class="stage border px-3 py-1" style="border-radius: 4px;">
+                        STAGE: N/A
                     </span>
                 </div>
                 
@@ -254,55 +256,71 @@
                 <!-- Tab Content -->
                 <!-- Overview Tab -->
                 <div id="overview" class="tab-content">
-                    
-                    <!-- Applicant Section -->
                     <div class="applicant-section">
-                        
                         <div class="applicant-data">
                             <h5>Applicant Data</h5>
 
                             <div class="row">
                                 <div class="col-md-12">
-                                    <p> <strong>Position:</strong> Medical Staff</p>
+                                    <p><strong>Position:</strong> <span id="applicantPosition">N/A</span></p>
                                 </div>
                             </div>
 
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <p> <strong>Full Name:</strong> Rhinell menes</p>
-                                </div>
-                            </div>
+                            
 
                             <div class="row">
                                 <div class="col-md-6">
-                                    <i class="fa-solid fa-envelope me-2"></i> menesj@gmail.com
+                                    <i class="fa-solid fa-envelope me-2"></i> <span id="applicantEmail">N/A</span>
                                 </div>
                                 <div class="col-md-6">
-                                    <i class="fa-solid fa-phone me-2"></i> 09313 4567 89
+                                    <i class="fa-solid fa-phone me-2"></i> <span id="applicantPhone">N/A</span>
                                 </div>
                             </div>
 
                             <div class="row mt-3">
                                 <div class="col-md-12">
-                                    <i class="fa-solid fa-location-dot me-2"></i> 37-B 7th St., West Tapinac, Olongapo City
+                                    <i class="fa-solid fa-location-dot me-2"></i> <span id="applicantAddress">N/A</span>
                                 </div>
                             </div>
                         </div>
-                        
+
                         <!-- Attachment -->
                         <div class="file-attachment my-4">
                             <img src="images/pdf-img.png" alt="PDF icon">
-                            <span>Severus_Snape_CVfinalfinal.pdf</span>
+                            <span id="applicantResume">Resume.pdf</span>
                             <span class="ms-auto">200 KB</span>
                         </div>
-
+                        
                         <div class="d-grid mt-5">
-                            <!-- <button class="btn btn-primary">EDIT APPLICANT DATA</button> -->
+                            <!-- APPROVE -->
+                            <form method="POST" action="<?php echo e(route('applicants.updateStatus', $applicant->id)); ?>">
+                                <?php echo csrf_field(); ?>
+                                <input type="hidden" name="action" value="approve">
+                                <input type="hidden" name="email" value="<?php echo e($applicant->email); ?>">
+                                <input type="hidden" name="name" value="<?php echo e($applicant->first_name); ?> <?php echo e($applicant->last_name); ?>">
+                                <button type="submit" class="btn btn-success">APPROVE</button>
+                            </form>
+                        
+                            <!-- REJECT -->
+                            <form method="POST" action="<?php echo e(route('applicants.updateStatus', $applicant->id)); ?>">
+                                <?php echo csrf_field(); ?>
+                                <input type="hidden" name="action" value="reject">
+                                <input type="hidden" name="email" value="<?php echo e($applicant->email); ?>">
+                                <input type="hidden" name="name" value="<?php echo e($applicant->first_name); ?> <?php echo e($applicant->last_name); ?>">
+                                <button type="submit" class="btn btn-danger">REJECT</button>
+                            </form>
+                        
+                            <!-- ARCHIVE -->
+                            <form method="POST" action="<?php echo e(route('applicants.updateStatus', $applicant->id)); ?>">
+                                <?php echo csrf_field(); ?>
+                                <input type="hidden" name="action" value="archive">
+                                <input type="hidden" name="email" value="<?php echo e($applicant->email); ?>">
+                                <input type="hidden" name="name" value="<?php echo e($applicant->first_name); ?> <?php echo e($applicant->last_name); ?>">
+                                <button type="submit" class="btn btn-outline-danger">ARCHIVE</button>
+                            </form>
                         </div>
-                        <div class="d-grid button-container mt-5">
-                            <button class="btn btn-success" onclick="showPopup('approvePopup')">APPROVE</button>
-                        </div>
-
+                                                                   
+                        
                     </div>
                 </div>
                 <!-- End Overview Tab -->
@@ -372,7 +390,63 @@
             </div>
             
         </div>
-    </div>  
+    </div>
+
+    
+
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const offcanvas = document.getElementById('candidateProfile');
+    
+            offcanvas.addEventListener('show.bs.offcanvas', function (event) {
+                const button = event.relatedTarget;
+    
+                // Get applicant data from data attributes
+                const applicantName = button.getAttribute('data-applicant-name');
+                const applicantStatus = button.getAttribute('data-applicant-status');
+                const applicantEmail = button.getAttribute('data-applicant-email');
+                const applicantPhone = button.getAttribute('data-applicant-phone');
+                const applicantPosition = button.getAttribute('data-applicant-position');
+                const applicantAddress = button.getAttribute('data-applicant-address');
+                const applicantResume = button.getAttribute('data-applicant-resume') || 'N/A';
+    
+                // Status color mapping
+                const statusColors = {
+                    'pending': '#6c757d',       // Gray
+                    'screening': '#17a2b8',     // Teal
+                    'scheduled': '#ffc107',     // Yellow
+                    'interviewed': '#007bff',   // Blue
+                    'hired': '#28a745',         // Green
+                    'rejected': '#dc3545',      // Red
+                    'archived': '#4b0082'      // Indigo
+                };
+    
+                const statusColor = statusColors[applicantStatus] || '#000000'; // Default black
+    
+                // Populate the Offcanvas fields
+                document.getElementById('applicantName').innerText = applicantName;
+                document.getElementById('applicantStatus').innerText = 'STAGE: ' + applicantStatus.toUpperCase();
+                document.getElementById('applicantEmail').innerText = applicantEmail;
+                document.getElementById('applicantPhone').innerText = applicantPhone;
+                document.getElementById('applicantPosition').innerText = applicantPosition;
+                document.getElementById('applicantAddress').innerText = applicantAddress;
+                document.getElementById('applicantResume').innerText = applicantResume;
+    
+                // Apply color and border to status
+                const statusElement = document.getElementById('applicantStatus');
+                statusElement.setAttribute('style', `
+                    color: ${statusColor} !important;
+                    border: 2px solid ${statusColor} !important;
+                    background-color: transparent !important;
+                `);
+            });
+        });
+    </script>
+
+    
+    
+    
 
  <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
@@ -383,6 +457,4 @@
 <?php if (isset($__componentOriginal5fc7b6c708ff08bbce49411545a9c035)): ?>
 <?php $component = $__componentOriginal5fc7b6c708ff08bbce49411545a9c035; ?>
 <?php unset($__componentOriginal5fc7b6c708ff08bbce49411545a9c035); ?>
-<?php endif; ?>
-
-<?php /**PATH C:\laragon\www\hr_catalists\resources\views/hrcatalists/ats/admin-ats-master-list.blade.php ENDPATH**/ ?>
+<?php endif; ?><?php /**PATH C:\laragon\www\hr_catalists\resources\views/hrcatalists/ats/admin-ats-master-list.blade.php ENDPATH**/ ?>

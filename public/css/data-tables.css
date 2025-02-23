@@ -199,7 +199,7 @@ transform: scale(0.98);
     text-transform: uppercase;
     font-size: 15px;
     color: #FF2600;
-    border-color: #FF2600 !important;
+    /* border-color: #FF2600 !important; */
     border-radius: 5px;
     display: inline-block;
 }

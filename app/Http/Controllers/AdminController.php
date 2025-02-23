@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Routing\Controller;
+use App\Models\Applicant;
 use App\Models\Job;
-use App\Models\Log; // Ensure Log model exists
+use App\Models\Log;
+use Carbon\Carbon;
+
 
 
 class AdminController extends Controller
@@ -16,8 +19,14 @@ class AdminController extends Controller
             return redirect()->route('login');
         }
     
-        $logs = Log::with('user')->latest()->get(); // Fetch logs with user details
-    
+        // Fetch only logs where the user role is 'admin'
+        $logs = Log::with('user')
+            ->whereHas('user', function ($query) {
+                $query->where('role', 'admin'); // Change 'role' if you use 'role_id'
+            })
+            ->latest()
+            ->get();
+
         return view('hrcatalists.ats.admin-ats-logs', compact('logs'));
     }
     
@@ -140,7 +149,36 @@ class AdminController extends Controller
         if (!Auth::check()) {
             return redirect()->route('login');
         }
-        return view('hrcatalists.ats.admin-ats-db'); // ATS dashboard
+
+        // ✅ Get total applicants
+        $totalApplicants = Applicant::count();
+
+        // ✅ Get applicants count by status
+        $applicantsByStatus = Applicant::selectRaw('LOWER(TRIM(status)) as status, COUNT(*) as count')
+            ->groupBy('status')
+            ->pluck('count', 'status')
+            ->toArray();
+
+        // ✅ Get all jobs
+        $allJobs = Job::all();
+        $totalJobs = $allJobs->count();
+
+        // ✅ Active jobs (end_date in future or today)
+        $activeJobs = Job::where('end_date', '>=', Carbon::now())->get();
+        $activeJobCount = $activeJobs->count();
+
+        // ✅ Inactive jobs (end_date has passed)
+        $inactiveJobs = Job::where('end_date', '<', Carbon::now())->get();
+        $inactiveJobCount = $inactiveJobs->count();
+
+        return view('hrcatalists.ats.admin-ats-db', [
+            'totalApplicants' => $totalApplicants,
+            'applicantsByStatus' => $applicantsByStatus,
+            'activeJobCount' => $activeJobCount,
+            'inactiveJobCount' => $inactiveJobCount,
+            'totalJobs' => $totalJobs,
+            'allJobs' => $allJobs,
+        ]);
     }
 
     public function atsCalendar()
