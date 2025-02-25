@@ -39,6 +39,11 @@ Route::middleware(['auth',])->group(function () {
 
 Route::get('/job-selected/{slug}', [JobPostController::class, 'jobSelected'])->name('job-selected');
 
+// Form Submission for Job Applications
+Route::post('/job-selected/{slug}/apply', [ApplicantController::class, 'store'])->name('applicants.store');
+
+
+
 // Apply authentication middleware to protect routes
 Route::middleware(['auth'])->group(function () {
 
