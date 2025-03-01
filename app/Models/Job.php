@@ -5,13 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use App\Models\Log;
 
 class Job extends Model
 {
     use HasFactory;
 
-    protected $table = 'job_posts'; // Change if your actual table is named 'jobs'
+    protected $table = 'job_posts'; // Ensures model references the correct table
 
     protected $fillable = [
         'user_id',
@@ -43,10 +44,16 @@ class Job extends Model
     }
 
     /**
-     * Automatically log job posting activities.
+     * Booted method for model events.
      */
     protected static function booted()
     {
+        // Automatically generate unique slug before creating a job
+        static::creating(function ($job) {
+            $job->slug = self::generateUniqueSlug($job->job_title);
+        });
+
+        // Log job activities
         static::created(function ($job) {
             self::logActivity($job, 'added a new job posting');
         });
@@ -54,6 +61,17 @@ class Job extends Model
         static::updated(function ($job) {
             self::logActivity($job, 'updated a job posting');
         });
+    }
+
+    /**
+     * Generate a unique slug for a job title.
+     */
+    private static function generateUniqueSlug($title)
+    {
+        $slug = Str::slug($title, '-');
+        $count = Job::where('slug', 'like', "$slug%")->count();
+
+        return $count ? "{$slug}-" . ($count + 1) : $slug;
     }
 
     /**
@@ -67,25 +85,5 @@ class Job extends Model
                 'activity' => ucfirst($action) . ': ' . $job->job_title,
             ]);
         }
-    }
-
-    /**
-     * Automatically create slug from job_title
-     */
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::creating(function ($job) {
-            if (empty($job->slug)) {
-                $job->slug = Str::slug($job->job_title, '-'); // ✅ Auto-generates slug
-            }
-        });
-
-        static::updating(function ($job) {
-            if (empty($job->slug)) {
-                $job->slug = Str::slug($job->job_title, '-'); // ✅ Ensures slug updates if missing
-            }
-        });
     }
 }

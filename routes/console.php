@@ -1,8 +1,20 @@
 <?php
 
-use Illuminate\Foundation\Inspiring;
-use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Schedule;
+use Illuminate\Support\Facades\Log;
+use App\Models\Job;
+use Illuminate\Support\Carbon;
 
-Artisan::command('inspire', function () {
-    $this->comment(Inspiring::quote());
-})->purpose('Display an inspiring quote');
+Schedule::everyMinute()->call(function () {
+    Log::info('⚡ Running job expiration check...');
+
+    $updated = Job::whereDate('end_date', '<', Carbon::today())
+                  ->where('status', 'active')
+                  ->update(['status' => 'inactive']);
+
+    if ($updated) {
+        Log::info("✅ {$updated} expired job(s) updated to inactive.");
+    } else {
+        Log::warning("⚠️ No expired jobs found.");
+    }
+});
