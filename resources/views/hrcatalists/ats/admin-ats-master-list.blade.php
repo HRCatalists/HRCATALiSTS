@@ -42,8 +42,8 @@
 
                     <div class="d-flex justify-content-around ms-3">
                         <!-- Add Position Button -->
-                        <button type="button" class="btn add-btn me-2">
-                            <a href="ats-admin-form.html">ADD APPLICANT</a>
+                        <button type="button" class="btn add-btn me-2" data-bs-toggle="modal" data-bs-target="#addApplicantModal">
+                            <a href="">ADD APPLICANT</a>
                         </button>
 
                         <button class="btn shadow print-btn">
@@ -192,6 +192,67 @@
             </div>
         </div>
     </div>
+
+    <!-- Add Applicant Modal -->
+    <div class="modal fade" id="addApplicantModal" tabindex="-1" aria-labelledby="addApplicantModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <form id="addApplicantForm" action="" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-header text-white" style="background-color: #111D5B;">
+                        <h5 class="modal-title" id="addApplicantModalLabel">Add New Applicant</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <h5 class="text-primary mb-3">Application Form</h5>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="firstName" class="form-label">First Name <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="firstName" name="first_name" placeholder="Enter First Name" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="lastName" class="form-label">Last Name <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="lastName" name="last_name" placeholder="Enter Last Name" required>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="emailAddress" class="form-label">E-mail Address <span class="text-danger">*</span></label>
+                                <input type="email" class="form-control" id="emailAddress" name="email" placeholder="Enter E-mail Address" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="phoneNumber" class="form-label">Phone Number <span class="text-danger">*</span></label>
+                                <input type="tel" class="form-control" id="phoneNumber" name="phone" placeholder="Enter Phone Number" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="address" class="form-label">Address <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="address" name="address" placeholder="Enter Address" required>
+                        </div>
+                        <!-- CV Upload -->
+                        <div class="mb-4">
+                            <label for="cv" class="form-label">Attach CV <span class="text-danger">*</span></label>
+                            <div class="file-upload">
+                                <label for="cv" class="upload-label">
+                                    <button type="button" class="btn btn-primary">Upload</button>
+                                    <span class="file-name">or drag your file here</span>
+                                </label>
+                                <input type="file" id="cv" name="cv" class="file-input" accept=".pdf" required>
+                            </div>
+                            <small class="form-text text-muted">Submit your file in .pdf format (Max: 2 MB)</small>
+                            <small class="form-text text-danger" id="error-message" style="display: none;"></small>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">ADD</button>
+                        <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">CANCEL</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- End of Add Applicant Modal -->
 
 
     <!-- Offcanvas for Candidate Profile View -->
