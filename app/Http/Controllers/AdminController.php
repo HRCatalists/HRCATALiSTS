@@ -36,6 +36,12 @@ class AdminController extends Controller
         if (!Auth::check()) {
             return redirect()->route('login');
         }
+
+        // ✅ Automatically expire job postings when admin logs in
+        Job::whereDate('end_date', '<', Carbon::today())
+        ->where('status', 'active')
+        ->update(['status' => 'inactive']);
+        
         return view('hrcatalists.main-menu-ats-ems'); // Main menu view
     }
 
