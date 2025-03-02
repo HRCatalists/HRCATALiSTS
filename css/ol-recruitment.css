@@ -129,6 +129,13 @@
   padding: 150px 0;
 }
 
+.about-us h1 {
+  font-weight: bolder;
+  color: #111D5B;
+  letter-spacing: 8px;
+  text-align: center;
+}
+
 .about-us .container {
   display: flex;
   justify-content: center;
@@ -626,4 +633,18 @@ input::-webkit-inner-spin-button {
   background-size: cover;
   width: 450px;
   height: 372.89px;
+}
+
+/* Styles for Latest Opening Image Container */
+.latest-opening-image-container {
+  width: 800px;
+  height: 500px;
+  justify-content: center;
+  align-items: center;
+}
+
+.latest-opening-image-container img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: cover;
 }
