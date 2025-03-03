@@ -68,6 +68,9 @@ Route::middleware(['auth'])->group(function () {
     // ATS Routes
     Route::get('/ats-dashboard', [AdminController::class, 'atsDashboard'])->name('ats-dashboard');
     Route::get('/ats-calendar', [AdminController::class, 'atsCalendar'])->name('ats-calendar');
+    Route::post('/events', [AdminController::class, 'storeEvent'])->name('events.store');
+    Route::delete('/events/{id}', [AdminController::class, 'deleteEvent'])->name('events.destroy');
+
     Route::get('/ats-job-openings', [AdminController::class, 'atsJobs'])->name('ats-jobs');
 
     // Applicant Routes

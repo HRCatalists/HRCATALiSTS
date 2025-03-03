@@ -1,12 +1,15 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator; // Also add this for validation
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Routing\Controller;
 use App\Models\Applicant;
 use App\Models\Job;
 use App\Models\Log;
+use App\Models\Event;
 use Carbon\Carbon;
 
 
@@ -182,12 +185,34 @@ class AdminController extends Controller
     }
 
     public function atsCalendar()
-    {
-        if (!Auth::check()) {
-            return redirect()->route('login');
-        }
-        return view('hrcatalists.ats.admin-ats-cl'); // ATS Calendar
+{
+    if (!Auth::check()) {
+        return redirect()->route('login');
     }
+
+    $events = Event::where('user_id', Auth::id())->get(); // Fetch events for logged-in user
+    return view('hrcatalists.ats.admin-ats-cl', compact('events'));
+}
+
+public function storeEvent(Request $request)
+{
+    $request->validate([
+        'title' => 'required|string|max:255',
+        'description' => 'required|string',
+        'event_date' => 'required|date',
+        'event_time' => 'required'
+    ]);
+
+    Event::create([
+        'user_id' => Auth::id(),
+        'title' => $request->title,
+        'description' => $request->description,
+        'event_date' => $request->event_date,
+        'event_time' => $request->event_time,
+    ]);
+
+    return redirect()->back()->with('success', 'Event added successfully!');
+}
 
     public function atsApplicants()
     {

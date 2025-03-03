@@ -1,5 +1,4 @@
 <x-admin-ats-layout>
-
     <x-slot:title>
         Columban College Inc. | ATS Calendar
     </x-slot:title>
@@ -13,35 +12,55 @@
         <!-- Calendar Content -->
         <div id="content" class="flex-grow-1">
             <div class="container mt-5">
+
+                <!-- Success Alert -->
+                @if(session('success'))
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{ session('success') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
+
+                <!-- Error Alert -->
+                @if(session('error'))
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        {{ session('error') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
                 
                 <!-- Calendar -->
                 <div class="calendar-wrapper mt-5">
                     <div class="container-calendar">
                         <div id="left">
-
                             <h1>Calendar</h1>
-
+                            
                             <div id="event-section">
                                 <h3>Add Event</h3>
-                                <input type="date" id="eventDate">
-                                <input type="time" id="eventTime" placeholder="Event Time">
-                                <input type="text" id="eventTitle" placeholder="Event Title">
-                                <input type="text" id="eventDescription" placeholder="Event Description">
-                                <button id="addEvent" onclick="addEvent()">Add</button>
+                                <form action="{{ route('events.store') }}" method="POST">
+                                    @csrf
+                                    <input type="date" name="event_date" required>
+                                    <input type="time" name="event_time" required>
+                                    <input type="text" name="title" placeholder="Event Title" required>
+                                    <input type="text" name="description" placeholder="Event Description" required>
+                                    <button type="submit">Add</button>
+                                </form>
                             </div>
-
+                            
                             <div id="reminder-section">
                                 <h3>Reminders</h3>
-                                <!-- List to display reminders -->
                                 <ul id="reminderList">
-                                    <li data-event-id="1">
-                                        <strong>Event Title</strong>
-                                        - Event Description on Event Date
-                                        <button class="delete-event"
-                                            onclick="deleteEvent(1)">
-                                            Delete
-                                        </button>
-                                    </li>
+                                    @foreach($events->where('user_id', Auth::id()) as $event)
+                                        <li>
+                                            <strong>{{ $event->title }}</strong>
+                                            - {{ $event->description }} on {{ $event->event_date }}
+                                            <form action="{{ route('events.destroy', $event->id) }}" method="POST" style="display:inline;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit">Delete</button>
+                                            </form>
+                                        </li>
+                                    @endforeach
                                 </ul>
                             </div>
                         </div>
@@ -49,25 +68,15 @@
                         <div id="right" class="ms-4">
                             <h3 id="monthAndYear"></h3>
                             <div class="button-container-calendar">
-                                <button id="previous"
-                                        onclick="previous()">
-                                    ‹
-                                </button>
-                                <button id="next"
-                                        onclick="next()">
-                                    ›
-                                </button>
+                                <button id="previous" onclick="previous()">‹</button>
+                                <button id="next" onclick="next()">›</button>
                             </div>
-                            <table class="table-calendar"
-                                id="calendar"
-                                data-lang="en">
+                            <table class="table-calendar" id="calendar" data-lang="en">
                                 <thead id="thead-month"></thead>
-                                <!-- Table body for displaying the calendar -->
                                 <tbody id="calendar-body"></tbody>
                             </table>
                             <div class="footer-container-calendar">
                                 <label for="month">Jump To: </label>
-                                <!-- Dropdowns to select a specific month and year -->
                                 <select id="month" onchange="jump()">
                                     <option value=0>Jan</option>
                                     <option value=1>Feb</option>
@@ -82,17 +91,13 @@
                                     <option value=10>Nov</option>
                                     <option value=11>Dec</option>
                                 </select>
-                                <!-- Dropdown to select a specific year -->
                                 <select id="year" onchange="jump()"></select>
                             </div>
                         </div>
                     </div>
                 </div>
                 <!-- End of Calendar -->
-                
             </div>
         </div>
-
     </div>
-
 </x-admin-ats-layout>
