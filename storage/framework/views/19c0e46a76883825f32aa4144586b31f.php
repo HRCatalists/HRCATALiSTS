@@ -71,7 +71,7 @@
                     <div class="d-flex justify-content-around ms-3">
                         <!-- Add Position Button -->
                         <button type="button" class="btn add-btn me-2" data-bs-toggle="modal" data-bs-target="#addApplicantModal">
-                            <a href="">ADD APPLICANT</a>
+                            ADD APPLICANT
                         </button>
 
                         <button class="btn shadow print-btn">
@@ -149,8 +149,6 @@
                                                 data-applicant-address="<?php echo e($applicant->address); ?>">
                                                 VIEW
                                             </button>
-                                        
-                                    
                                         </div>
                                     </td>
                                 </tr>
@@ -220,7 +218,8 @@
             </div>
         </div>
     </div>
-
+    <!-- End of Sidebar & Master List -->
+    
     <!-- Add Applicant Modal -->
     <div class="modal fade" id="addApplicantModal" tabindex="-1" aria-labelledby="addApplicantModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -233,54 +232,108 @@
                     </div>
                     <div class="modal-body">
                         <h5 class="text-primary mb-3">Application Form</h5>
+
+                        <!-- First & Last Name -->
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label for="firstName" class="form-label">First Name <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" id="firstName" name="first_name" placeholder="Enter First Name" required>
+                                <div class="error-message text-danger"></div>
                             </div>
                             <div class="col-md-6">
                                 <label for="lastName" class="form-label">Last Name <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" id="lastName" name="last_name" placeholder="Enter Last Name" required>
+                                <div class="error-message text-danger"></div>
                             </div>
                         </div>
+
+                        <!-- Email & Phone Number -->
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label for="emailAddress" class="form-label">E-mail Address <span class="text-danger">*</span></label>
                                 <input type="email" class="form-control" id="emailAddress" name="email" placeholder="Enter E-mail Address" required>
+                                <div class="error-message text-danger"></div>
                             </div>
                             <div class="col-md-6">
                                 <label for="phoneNumber" class="form-label">Phone Number <span class="text-danger">*</span></label>
                                 <input type="tel" class="form-control" id="phoneNumber" name="phone" placeholder="Enter Phone Number" required>
+                                <div class="error-message text-danger"></div>
                             </div>
                         </div>
+
+                        <!-- Full Address -->
                         <div class="mb-3">
-                            <label for="address" class="form-label">Address <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="address" name="address" placeholder="Enter Address" required>
+                            <label for="address" class="form-label">Full Address <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="address" name="address" placeholder="Enter Full Address" required>
+                            <div class="error-message text-danger"></div>
                         </div>
+
+                        <!-- Job Selection Dropdown -->
+                        <label for="job_id" class="form-label">Select Job <span class="text-danger">*</span></label>
+                        <select name="job_id" id="job_id" class="form-select" required>
+                            <option value="" selected disabled>Select a Job</option>
+                            <?php $__currentLoopData = $jobs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $job): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <option value="<?php echo e($job->id); ?>" data-slug="<?php echo e($job->slug); ?>">
+                                    <?php echo e($job->job_title); ?> (<?php echo e($job->department); ?>)
+                                </option>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        </select>
+                        <div class="error-message text-danger"></div>
+
+                        <!-- Hidden Slug Field -->
+                        <input type="hidden" id="jobSlug" name="slug" value="">
+
                         <!-- CV Upload -->
-                        <div class="mb-4">
-                            <label for="cv" class="form-label">Attach CV <span class="text-danger">*</span></label>
-                            <div class="file-upload">
-                                <label for="cv" class="upload-label">
-                                    <button type="button" class="btn btn-primary">Upload</button>
-                                    <span class="file-name">or drag your file here</span>
-                                </label>
-                                <input type="file" id="cv" name="cv" class="file-input" accept=".pdf" required>
+                        <div class="my-4">
+                            <label for="cv" class="form-label fw-bold">Attach CV <span class="text-danger">*</span></label>
+
+                            <div class="input-group">
+                                <input type="file" name="cv" id="cv" class="form-control d-none <?php $__errorArgs = ['cv'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" accept=".pdf" required>
+                                <label for="cv" class="btn btn-primary">Choose File</label>
+                                <span class="input-group-text file-label">No file selected</span>
                             </div>
+
                             <small class="form-text text-muted">Submit your file in .pdf format (Max: 2 MB)</small>
-                            <small class="form-text text-danger" id="error-message" style="display: none;"></small>
+
+                            <?php $__errorArgs = ['cv'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> 
+                                <div class="invalid-feedback d-block"><?php echo e($message); ?></div> 
+                            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                        </div>
+                        
+                        <!-- ✅ Privacy Policy Agreement -->
+                        <div class="mb-3">
+                            <input type="checkbox" id="privacy_policy_agreed" name="privacy_policy_agreed" value="1" required>
+                            <label for="privacy_policy_agreed" class="form-label">
+                                I agree to the <a href="#" target="_blank">Privacy Policy</a>
+                            </label>
+                            <div class="error-message text-danger"></div>
                         </div>
                     </div>
+
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-primary">ADD</button>
-                        <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">CANCEL</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">CANCEL</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
-    
     <!-- End of Add Applicant Modal -->
+
 
 
     <!-- Offcanvas for Candidate Profile View -->
@@ -504,11 +557,154 @@
             });
         });
     </script>
-
-    
-    
     
 
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const fileInput = document.getElementById("cv");
+            const fileLabel = document.querySelector(".file-label");
+    
+            fileInput.addEventListener("change", function () {
+                if (this.files.length > 0) {
+                    const file = this.files[0];
+    
+                    // File Validation - Max Size 2MB
+                    if (file.size > 2 * 1024 * 1024) { // 2MB limit
+                        Swal.fire({
+                            icon: "error",
+                            title: "File Too Large!",
+                            text: "The selected file exceeds the 2MB size limit. Please upload a smaller file.",
+                            confirmButtonColor: "#d33",
+                            confirmButtonText: "Okay"
+                        });
+                        this.value = ""; // Reset file input
+                        fileLabel.textContent = "No file selected"; // Reset label
+                        return;
+                    }
+    
+                    fileLabel.textContent = file.name; // ✅ Update Label with Selected File Name
+                } else {
+                    fileLabel.textContent = "No file selected"; // Reset if no file
+                }
+            });
+        });
+    </script>
+    
+    
+
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const jobDropdown = document.getElementById("job_id");
+            const form = document.getElementById("addApplicantForm");
+
+            jobDropdown.addEventListener("change", function () {
+                const selectedOption = jobDropdown.options[jobDropdown.selectedIndex];
+                const slug = selectedOption.getAttribute("data-slug");
+
+                if (slug) {
+                    form.action = `/job-selected/${slug}/apply`;
+                    document.getElementById("jobSlug").value = slug;
+                }
+            });
+        });
+    </script>
+    
+
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const form = document.getElementById("addApplicantForm");
+            const modal = new bootstrap.Modal(document.getElementById("addApplicantModal"));
+    
+            form.addEventListener("submit", async function (event) {
+                event.preventDefault(); // Prevent default form submission
+    
+                const formData = new FormData(form);
+    
+                // Clear previous error messages
+                document.querySelectorAll(".error-message").forEach(el => el.innerText = "");
+                document.querySelectorAll(".is-invalid").forEach(el => el.classList.remove("is-invalid"));
+    
+                try {
+                    const response = await fetch(form.action, {
+                        method: "POST",
+                        body: formData,
+                        headers: {
+                            "Accept": "application/json", // Ensures Laravel returns JSON
+                            "X-CSRF-TOKEN": document.querySelector('input[name="_token"]').value,
+                        },
+                    });
+    
+                    let result;
+                    try {
+                        result = await response.json(); // Attempt to parse JSON response
+                    } catch (jsonError) {
+                        result = { message: "Invalid server response. Please check backend logs." };
+                    }
+    
+                    if (response.ok) {
+                        // ✅ SUCCESS: Show SweetAlert and reset form
+                        Swal.fire({
+                            icon: "success",
+                            title: "Application Submitted!",
+                            text: "Your application has been successfully submitted.",
+                            confirmButtonColor: "#28a745",
+                        }).then(() => {
+                            form.reset(); // Clear form fields
+                            modal.hide(); // Close modal
+                        });
+    
+                    } else if (response.status === 422) {
+                        // ❌ VALIDATION ERROR: Display errors below fields
+                        for (const field in result.errors) {
+                            const inputField = document.querySelector(`[name="${field}"]`);
+                            if (inputField) {
+                                inputField.classList.add("is-invalid");
+    
+                                const errorDiv = document.createElement("div");
+                                errorDiv.className = "text-danger error-message mt-1";
+                                errorDiv.innerText = result.errors[field][0];
+    
+                                if (inputField.closest('.input-group')) {
+                                    inputField.closest('.input-group').after(errorDiv);
+                                } else {
+                                    inputField.after(errorDiv);
+                                }
+                            }
+                        }
+    
+                        // ✅ Show SweetAlert when submission fails (e.g., Email already taken)
+                        Swal.fire({
+                            icon: "error",
+                            title: "Submission Failed",
+                            text: result.errors.email ? "The email has already been taken. Please use another email." : "There was an issue submitting your application.",
+                            confirmButtonColor: "#d33",
+                        });
+    
+                    } else {
+                        // ❌ OTHER ERRORS: Show SweetAlert
+                        Swal.fire({
+                            icon: "error",
+                            title: "Submission Failed",
+                            text: result.message || "An error occurred. Please try again.",
+                            confirmButtonColor: "#d33",
+                        });
+                    }
+                } catch (error) {
+                    // ❌ NETWORK ERROR: Show SweetAlert
+                    Swal.fire({
+                        icon: "error",
+                        title: "Network Error",
+                        text: "Something went wrong. Please check your internet connection and try again.",
+                        confirmButtonColor: "#d33",
+                    });
+                }
+            });
+        });
+    </script>    
+    
  <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginal5fc7b6c708ff08bbce49411545a9c035)): ?>

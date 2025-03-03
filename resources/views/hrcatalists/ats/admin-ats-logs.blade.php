@@ -37,7 +37,7 @@
                         @foreach($logs as $log)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $log->user->name }}</td>
+                                <td>{{ $log->user->name ?? 'Guest' }}</td>
                                 <td>{{ $log->activity }}</td>
                                 <td>{{ $log->created_at->format('h:i a') }}</td>
                                 <td>{{ $log->created_at->format('F d, Y') }}</td>
