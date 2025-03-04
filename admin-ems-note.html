@@ -85,38 +85,117 @@
             <!-- Sidebar -->
             <div id="sidebar" class="shadow">
                 <ul class="list-unstyled components">
-                    <li class="d-flex align-items-center">
-                        <img src="images/dashboard.png" class="icon" alt="dashboard-icon">
-                        <a href="admin-ems-db.html" class="ms-3">Dashboard</a>
+                    <li class="d-flex align-items-center pe-5">
+                        
+                        <a href="admin-ems-db.html" class="nav-link px-0 align-middle">
+                            <img src="images/dashboard.png" class="icon" alt="dashboard-icon">
+
+                            <span class="ms-3 sidebar-effect">DASHBOARD</span> 
+                        </a> 
                     </li>
 
-                    <li class="d-flex align-items-center">
-                        <img src="images/calendar.png" class="icon" alt="calendar-icon">
-                        <a href="admin-ems-cl.html" class="ms-3">Calendar</a>
+                    <li class="d-flex align-items-center pe-5">
+                        
+                        <a href="admin-ems-cl.html" class="nav-link px-0 align-middle">
+                            <img src="images/calendar.png" class="icon" alt="calendar-icon">
+
+                            <span class="ms-3 sidebar-effect">CALENDAR</span> 
+                        </a>
                     </li>
 
-                    <li class="d-flex align-items-center">
-                        <img src="images/employee.png" class="icon" alt="applicant-icon">
-                        <a href="admin-ems-emp.html" class="ms-3">Employees</a>
+                    <li class="d-flex align-items-center employee pe-5">
+                        
+
+                        <a href="#employee" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
+                            <img src="images/employee.png" class="icon" alt="applicant-icon">
+
+                            <span class="ms-3 sidebar-effect">EMPLOYEES</span> 
+                            
+                            <i class="fa-solid fa-chevron-up chevron-icon" id="chevron-arrow"></i>
+                        </a>
+
+                        <ul class="collapse flex-column ms-1" id="employee" data-bs-parent="#menu">
+                            <li class="mt-2">
+                                <a href="admin-ems-emp.html" class="nav-link px-0"> <span class="sidebar-effect">Employee List</span> </a>
+                            </li>
+
+                            <li class="department">
+                                <a href="#department" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
+                                    <span class="sidebar-effect">Departments</span>
+                                    
+                                    <i class="fa-solid fa-chevron-up chevron-icon ms-5"></i>
+                                </a>
+
+                                <ul class="collapse flex-column" id="department" data-bs-parent="#menu">
+                                    <li>
+                                        <a href="admin-ems-dept-coa.html" class="nav-link px-0"> <span class="sidebar-effect">College of Architecture</span> </a>
+                                    </li>
+                                    <li>
+                                        <a href="admin-ems-dept-cased.html" class="nav-link px-0"> <span class="sidebar-effect">College of Arts & Science and Education</span> </a>
+                                    </li>
+                                    <li>
+                                        <a href="admin-ems-dept-cba.html" class="nav-link px-0"> <span class="sidebar-effect">College of Business and Accountancy</span> </a>
+                                    </li>
+                                    <li>
+                                        <a href="admin-ems-dept-ccs.html" class="nav-link px-0"> <span class="sidebar-effect">College of Computer Studies</span> </a>
+                                    </li>
+                                    <li>
+                                      <a href="admin-ems-dept-coe.html" class="nav-link px-0"> <span class="sidebar-effect">College of Engineering</span> </a>
+                                    </li>
+                                    <li>
+                                        <a href="admin-ems-dept-con.html" class="nav-link px-0"> <span class="sidebar-effect">College of Nursing</span> </a>
+                                    </li>
+                                    <li>
+                                        <a href="admin-ems-dept-basicEd.html" class="nav-link px-0"> <span class="sidebar-effect">College of Basic Education</span> </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                        
                     </li>
 
-                    <li class="d-flex align-items-center">
-                        <img src="images/note.png" class="icon" alt="positions-icon">
-                        <a href="admin-ems-note.html" class="ms-3">Notes</a>
+                    <li class="d-flex align-items-center ranking pe-5">
+
+                        <a href="#ranking" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
+                            <img src="images/rank.png" class="icon" alt="positions-icon">
+
+                            <span class="ms-3 sidebar-effect">RANKING</span> 
+
+                            <i class="fa-solid fa-chevron-up chevron-icon" id="chevron-arrow"></i>
+                        </a>
+
+                        <ul class="collapse flex-column ms-1" id="ranking" data-bs-parent="#menu">
+                            <li class="mt-2">
+                                <a href="emp-faculty-ranking-system.html" class="nav-link px-0"> <span class="sidebar-effect-1">Faculty Ranking</span> </a>
+                            </li>
+
+                            <li>
+                                <a href="emp-faculty-nonteaching-system.html" class="nav-link px-0"> <span class="sidebar-effect-1">Non-Teaching Ranking</span> </a>
+                            </li>
+                        </ul>
                     </li>
 
-                    <li class="d-flex align-items-center">
-                        <img src="images/faqs.png" class="icon" alt="archived-icon">
-                        <a href="admin-ems-policy.html" class="ms-3">Company Policy</a>
+                    <li class="d-flex align-items-center pe-5">
+                        
+                        <a href="admin-ems-policy.html" class="nav-link px-0 align-middle">
+                            <img src="images/faqs.png" class="icon" alt="archived-icon">
+
+                            <span class="ms-3 sidebar-effect">COMPANY POLICY</span> 
+                        </a>
                     </li>
 
-                    <li class="d-flex align-items-center">
-                        <img src="images/log.png" class="icon" alt="log-icon">
-                        <a href="admin-ems-logs.html" class="ms-3">Logs</a>
+                    <li class="d-flex align-items-center pe-5">
+                        
+                        <a href="admin-ems-logs.html" class="nav-link px-0 align-middle">
+                            <img src="images/log.png" class="icon" alt="log-icon">
+
+                            <span class="ms-3 sidebar-effect">LOGS</span> 
+                            
+                        </a>
                     </li>
-                      
-                    <li class="d-flex m-0 px-0 ">
-                        <a href="admin-ats-db.html" class="fw-bold ms-3 ems-button">SWITCH TO ATS</a>
+                        
+                    <li class="d-flex align-items-center mt-3 pe-5">
+                        <a href="admin-ats-db.html" class="fw-bold ms-3 sidebar-effect">SWITCH TO ATS</a>
                     </li>
                 </ul>
             </div>
