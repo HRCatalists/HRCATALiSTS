@@ -158,34 +158,27 @@ class AdminController extends Controller
         return view('hrcatalists.ems.admin-ems-logs'); // Logs Page
     }
 
-    // ATS
     public function atsDashboard()
     {
         if (!Auth::check()) {
             return redirect()->route('login');
         }
-
-        // ✅ Get total applicants
+    
+        // ✅ Fetch all required data
         $totalApplicants = Applicant::count();
-
-        // ✅ Get applicants count by status
         $applicantsByStatus = Applicant::selectRaw('LOWER(TRIM(status)) as status, COUNT(*) as count')
             ->groupBy('status')
             ->pluck('count', 'status')
             ->toArray();
-
-        // ✅ Get all jobs
         $allJobs = Job::all();
         $totalJobs = $allJobs->count();
-
-        // ✅ Active jobs (end_date in future or today)
-        $activeJobs = Job::where('end_date', '>=', Carbon::now())->get();
-        $activeJobCount = $activeJobs->count();
-
-        // ✅ Inactive jobs (end_date has passed)
-        $inactiveJobs = Job::where('end_date', '<', Carbon::now())->get();
-        $inactiveJobCount = $inactiveJobs->count();
-
+        $activeJobCount = Job::where('end_date', '>=', Carbon::now())->count();
+        $inactiveJobCount = Job::where('end_date', '<', Carbon::now())->count();
+    
+        // ✅ Fetch events for the calendar
+        $events = Event::select('event_date', 'title')->get();
+    
+        // ✅ Return view with all data
         return view('hrcatalists.ats.admin-ats-db', [
             'totalApplicants' => $totalApplicants,
             'applicantsByStatus' => $applicantsByStatus,
@@ -193,9 +186,9 @@ class AdminController extends Controller
             'inactiveJobCount' => $inactiveJobCount,
             'totalJobs' => $totalJobs,
             'allJobs' => $allJobs,
+            'events' => $events, // ✅ Send events to Blade
         ]);
     }
-
     public function atsCalendar()
 {
     if (!Auth::check()) {
@@ -205,7 +198,15 @@ class AdminController extends Controller
     $events = Event::where('user_id', Auth::id())->get(); // Fetch events for logged-in user
     return view('hrcatalists.ats.admin-ats-cl', compact('events'));
 }
+public function getEvents()
+{
+    if (!Auth::check()) {
+        return response()->json(['error' => 'Unauthorized'], 401);
+    }
 
+    $events = Event::select('event_date', 'title')->get();
+    return response()->json($events);
+}
 public function storeEvent(Request $request)
 {
     $request->validate([
@@ -225,6 +226,22 @@ public function storeEvent(Request $request)
 
     return redirect()->back()->with('success', 'Event added successfully!');
 }
+public function deleteEvent($id)
+{
+    if (!Auth::check()) {
+        return response()->json(['error' => 'Unauthorized'], 401);
+    }
+
+    $event = Event::where('id', $id)->where('user_id', Auth::id())->first();
+
+    if (!$event) {
+        return response()->json(['error' => 'Event not found or permission denied'], 403);
+    }
+
+    $event->delete();
+    return redirect()->back()->with('success', 'Event deleted successfully!');
+}
+
 
     public function atsApplicants()
     {

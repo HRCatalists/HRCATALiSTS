@@ -230,6 +230,7 @@
             </div>
         </div>
     </div>
+    
 
  <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
