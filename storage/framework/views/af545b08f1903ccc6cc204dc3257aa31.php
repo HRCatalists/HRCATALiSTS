@@ -233,7 +233,6 @@
                                         </div>
                                     </div>
                                 </td>                                                               
-                                
                             </tr>
                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </tbody>
@@ -241,9 +240,6 @@
             </div>
         </div>
     </div>
-
-    <!-- Add Position Modal -->
-    
 
     <!-- Add Position Modal -->
     <div class="modal fade" id="addPositionModal" tabindex="-1" aria-labelledby="addPositionModalLabel" aria-hidden="true">
