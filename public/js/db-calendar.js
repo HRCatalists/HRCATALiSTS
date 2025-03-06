@@ -9,15 +9,25 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
     }
 
-    const events = [
-        { date: "2025-01-12", description: "Board Meeting - 3:00 p.m." },
-        { date: "2025-01-14", description: "Training Workshop - 1:00 p.m." },
-        { date: "2025-01-16", description: "Company Anniversary - 5:00 p.m." },
-    ];
+    let events = [];
 
     const today = new Date();
     let currentMonth = today.getMonth();
     let currentYear = today.getFullYear();
+
+    function fetchEvents() {
+        fetch("/api/events") // Fetch from Laravel backend
+            .then(response => response.json())
+            .then(data => {
+                events = data.map(event => ({
+                    date: event.event_date,
+                    description: event.title
+                }));
+                generateCalendar(currentYear, currentMonth);
+                populateEvents();
+            })
+            .catch(error => console.error("❌ Error fetching events:", error));
+    }
 
     function generateCalendar(year, month) {
         const firstDay = new Date(year, month, 1).getDay();
@@ -96,6 +106,5 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     updateCalendarHeader();
-    generateCalendar(currentYear, currentMonth);
-    populateEvents();
+    fetchEvents(); // Fetch events from Laravel
 });
