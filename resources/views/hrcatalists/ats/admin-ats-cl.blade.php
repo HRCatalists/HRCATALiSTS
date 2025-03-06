@@ -9,10 +9,7 @@
         <x-partials.system.ats.ats-sidebar />
         <!-- End of Sidebar -->
  <!-- FullCalendar -->
- <div id="center" class="ms-4 flex-grow-1">
-                            <h3>Event Calendar</h3>
-                            <div id="main-calendar"></div>
-                        </div>
+ 
                     </div>
                 </div>
         <!-- Calendar Content -->
@@ -37,6 +34,10 @@
                 
                 <!-- Calendar Section -->
                 <div class="calendar-wrapper mt-5">
+                <div id="right" class="ms-4 flex-grow-1">
+                            <h3>Event Calendar</h3>
+                            <div id="main-calendar"></div>
+                        </div>
                     <div class="container-calendar">
                         <!-- Event Form -->
                         <div id="left">
