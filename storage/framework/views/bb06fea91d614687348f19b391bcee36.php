@@ -36,7 +36,13 @@
 <?php unset($__componentOriginald5876c07269e58343b8102e8c5f829ec); ?>
 <?php endif; ?>
         <!-- End of Sidebar -->
-    
+ <!-- FullCalendar -->
+ <div id="center" class="ms-4 flex-grow-1">
+                            <h3>Event Calendar</h3>
+                            <div id="main-calendar"></div>
+                        </div>
+                    </div>
+                </div>
         <!-- Calendar Content -->
         <div id="content" class="flex-grow-1">
             <div class="container mt-5">
@@ -59,24 +65,26 @@
                     </div>
                 <?php endif; ?>
                 
-                <!-- Calendar -->
+                <!-- Calendar Section -->
                 <div class="calendar-wrapper mt-5">
                     <div class="container-calendar">
+                        <!-- Event Form -->
                         <div id="left">
                             <h1>Calendar</h1>
                             
                             <div id="event-section">
                                 <h3>Add Event</h3>
-                                <form action="<?php echo e(route('events.store')); ?>" method="POST">
+                                <form id="eventForm">
                                     <?php echo csrf_field(); ?>
-                                    <input type="date" name="event_date" required>
-                                    <input type="time" name="event_time" required>
-                                    <input type="text" name="title" placeholder="Event Title" required>
-                                    <input type="text" name="description" placeholder="Event Description" required>
+                                    <input type="date" id="event_date" name="event_date" required>
+                                    <input type="time" id="event_time" name="event_time" required>
+                                    <input type="text" id="title" name="title" placeholder="Event Title" required>
+                                    <input type="text" id="description" name="description" placeholder="Event Description" required>
                                     <button type="submit">Add</button>
                                 </form>
                             </div>
                             
+                            <!-- Reminders Section -->
                             <div id="reminder-section">
                                 <h3>Reminders</h3>
                                 <ul id="reminderList">
@@ -96,41 +104,77 @@
                             </div>
                         </div>
 
-                        <div id="right" class="ms-4">
-                            <h3 id="monthAndYear"></h3>
-                            <div class="button-container-calendar">
-                                <button id="previous" onclick="previous()">‹</button>
-                                <button id="next" onclick="next()">›</button>
-                            </div>
-                            <table class="table-calendar" id="calendar" data-lang="en">
-                                <thead id="thead-month"></thead>
-                                <tbody id="calendar-body"></tbody>
-                            </table>
-                            <div class="footer-container-calendar">
-                                <label for="month">Jump To: </label>
-                                <select id="month" onchange="jump()">
-                                    <option value=0>Jan</option>
-                                    <option value=1>Feb</option>
-                                    <option value=2>Mar</option>
-                                    <option value=3>Apr</option>
-                                    <option value=4>May</option>
-                                    <option value=5>Jun</option>
-                                    <option value=6>Jul</option>
-                                    <option value=7>Aug</option>
-                                    <option value=8>Sep</option>
-                                    <option value=9>Oct</option>
-                                    <option value=10>Nov</option>
-                                    <option value=11>Dec</option>
-                                </select>
-                                <select id="year" onchange="jump()"></select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- End of Calendar -->
+                       
+                <!-- End of Calendar Section -->
             </div>
         </div>
     </div>
+
+    <!-- FullCalendar Script -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var calendarEl = document.getElementById('main-calendar');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                selectable: true,
+                editable: true,
+                events: "<?php echo e(route('events.index')); ?>", // Fetch events from database
+                
+                dateClick: function(info) {
+                    let title = prompt("Enter event title:");
+                    if (title) {
+                        fetch("<?php echo e(route('events.store')); ?>", {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>'
+                            },
+                            body: JSON.stringify({
+                                title: title,
+                                event_date: info.dateStr
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(event => {
+                            calendar.addEvent({
+                                title: event.title,
+                                start: event.event_date
+                            });
+                        });
+                    }
+                }
+            });
+            calendar.render();
+        });
+
+        // Handle Form Submission for Event Creation
+        document.getElementById('eventForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            let formData = {
+                title: document.getElementById('title').value,
+                event_date: document.getElementById('event_date').value,
+                event_time: document.getElementById('event_time').value,
+                description: document.getElementById('description').value,
+                _token: "<?php echo e(csrf_token()); ?>"
+            };
+
+            fetch("<?php echo e(route('events.store')); ?>", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert("Event Added Successfully!");
+                location.reload();
+            })
+            .catch(error => console.log(error));
+        });
+    </script>
+
  <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginal5fc7b6c708ff08bbce49411545a9c035)): ?>
