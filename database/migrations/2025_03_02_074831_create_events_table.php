@@ -10,8 +10,8 @@ return new class extends Migration {
         Schema::create('events', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade'); // Links event to a user
-            $table->string('event_title');
-            $table->text('event_description')->nullable();
+            $table->string('title');
+            $table->text('description')->nullable();
             $table->date('event_date');
             $table->time('event_time');
             $table->timestamps();

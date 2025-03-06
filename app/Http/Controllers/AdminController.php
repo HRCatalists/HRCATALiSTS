@@ -22,23 +22,35 @@ class AdminController extends Controller
             return redirect()->route('login');
         }
     
-        // Fetch only logs where the user role is 'admin'
-        $logs = Log::with('user')
-            ->whereHas('user', function ($query) {
-                $query->where('role', 'admin'); // Change 'role' if you use 'role_id'
-            })
-            ->latest()
-            ->get();
-
+        // Fetch logs where:
+        // - user_id is NULL (guest submissions)
+        // - OR user role is 'admin'
+        $logs = Log::with(['user' => function ($query) {
+            $query->select('id', 'name', 'role'); // Fetch only necessary columns
+        }])
+        ->where(function ($query) {
+            $query->whereNull('user_id') // Include guest logs
+                  ->orWhereHas('user', function ($q) {
+                      $q->where('role', 'admin'); // Include only admin logs
+                  });
+        })
+        ->latest()
+        ->get();
+    
         return view('hrcatalists.ats.admin-ats-logs', compact('logs'));
     }
-    
 
     public function mainMenu()
     {
         if (!Auth::check()) {
             return redirect()->route('login');
         }
+
+        // ✅ Automatically expire job postings when admin logs in
+        Job::whereDate('end_date', '<', Carbon::today())
+        ->where('status', 'active')
+        ->update(['status' => 'inactive']);
+        
         return view('hrcatalists.main-menu-ats-ems'); // Main menu view
     }
 
