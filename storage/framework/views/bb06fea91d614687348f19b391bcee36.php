@@ -12,9 +12,7 @@
         Columban College Inc. | ATS Calendar
      <?php $__env->endSlot(); ?>
 
-    <!-- Sidebar & Calendar -->
     <div class="d-flex">
-        <!-- Sidebar -->
         <?php if (isset($component)) { $__componentOriginald5876c07269e58343b8102e8c5f829ec = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginald5876c07269e58343b8102e8c5f829ec = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.partials.system.ats.ats-sidebar','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -35,78 +33,66 @@
 <?php $component = $__componentOriginald5876c07269e58343b8102e8c5f829ec; ?>
 <?php unset($__componentOriginald5876c07269e58343b8102e8c5f829ec); ?>
 <?php endif; ?>
-        <!-- End of Sidebar -->
- <!-- FullCalendar -->
- 
+    </div>
+
+    <div id="content" class="flex-grow-1">
+        <div class="container mt-5">
+
+            <?php if(session('success')): ?>
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <?php echo e(session('success')); ?>
+
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            <?php endif; ?>
+
+            <?php if(session('error')): ?>
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <?php echo e(session('error')); ?>
+
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            <?php endif; ?>
+
+            <div class="calendar-wrapper mt-5">
+                <div id="right" class="ms-4 flex-grow-1">
+                    <h3>Event Calendar</h3>
+                    <div id="main-calendar"></div>
+                </div>
+
+                <div class="container-calendar">
+                    <div id="left">
+                        <h1>Calendar</h1>
+                        <div id="event-section">
+                            <h3>Add Event</h3>
+                            <form id="eventForm">
+                                <?php echo csrf_field(); ?>
+                                <input type="date" id="event_date" name="event_date" required>
+                                <input type="time" id="event_time" name="event_time" required>
+                                <input type="text" id="title" name="title" placeholder="Event Title" required>
+                                <input type="text" id="description" name="description" placeholder="Event Description" required>
+                                <button type="submit">Add</button>
+                            </form>
+                        </div>
+
+                        <div id="reminder-section">
+                            <h3>Reminders</h3>
+                            <ul id="reminderList">
+                                <?php $__currentLoopData = $events; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $event): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <li>
+                                        <strong><?php echo e($event->title); ?></strong> - <?php echo e($event->description); ?> on <?php echo e($event->event_date); ?>
+
+                                        <form action="<?php echo e(route('events.destroy', $event->id)); ?>" method="POST" style="display:inline;">
+                                            <?php echo csrf_field(); ?>
+                                            <?php echo method_field('DELETE'); ?>
+                                            <button type="submit">Delete</button>
+                                        </form>
+                                    </li>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-        <!-- Calendar Content -->
-        <div id="content" class="flex-grow-1">
-            <div class="container mt-5">
-
-                <!-- Success Alert -->
-                <?php if(session('success')): ?>
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        <?php echo e(session('success')); ?>
-
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                <?php endif; ?>
-
-                <!-- Error Alert -->
-                <?php if(session('error')): ?>
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <?php echo e(session('error')); ?>
-
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                <?php endif; ?>
-                
-                <!-- Calendar Section -->
-                <div class="calendar-wrapper mt-5">
-                <div id="right" class="ms-4 flex-grow-1">
-                            <h3>Event Calendar</h3>
-                            <div id="main-calendar"></div>
-                        </div>
-                    <div class="container-calendar">
-                        <!-- Event Form -->
-                        <div id="left">
-                            <h1>Calendar</h1>
-                            
-                            <div id="event-section">
-                                <h3>Add Event</h3>
-                                <form id="eventForm">
-                                    <?php echo csrf_field(); ?>
-                                    <input type="date" id="event_date" name="event_date" required>
-                                    <input type="time" id="event_time" name="event_time" required>
-                                    <input type="text" id="title" name="title" placeholder="Event Title" required>
-                                    <input type="text" id="description" name="description" placeholder="Event Description" required>
-                                    <button type="submit">Add</button>
-                                </form>
-                            </div>
-                            
-                            <!-- Reminders Section -->
-                            <div id="reminder-section">
-                                <h3>Reminders</h3>
-                                <ul id="reminderList">
-                                    <?php $__currentLoopData = $events->where('user_id', Auth::id()); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $event): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                        <li>
-                                            <strong><?php echo e($event->title); ?></strong>
-                                            - <?php echo e($event->description); ?> on <?php echo e($event->event_date); ?>
-
-                                            <form action="<?php echo e(route('events.destroy', $event->id)); ?>" method="POST" style="display:inline;">
-                                                <?php echo csrf_field(); ?>
-                                                <?php echo method_field('DELETE'); ?>
-                                                <button type="submit">Delete</button>
-                                            </form>
-                                        </li>
-                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                </ul>
-                            </div>
-                        </div>
-
-                       
-                <!-- End of Calendar Section -->
             </div>
         </div>
     </div>
@@ -119,63 +105,65 @@
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth',
                 selectable: true,
-                editable: true,
-                events: "<?php echo e(route('events.index')); ?>", // Fetch events from database
-                
+                editable: false,
+                events: function(fetchInfo, successCallback, failureCallback) {
+                    fetch("<?php echo e(route('events.index')); ?>")
+                        .then(response => response.json())
+                        .then(events => {
+                            let formattedEvents = events.map(event => ({
+                                title: event.title,
+                                start: event.event_date 
+                            }));
+                            successCallback(formattedEvents);
+                        })
+                        .catch(error => failureCallback(error));
+                },
                 dateClick: function(info) {
                     let title = prompt("Enter event title:");
                     if (title) {
-                        fetch("<?php echo e(route('events.index')); ?>", {
+                        fetch("<?php echo e(route('events.store')); ?>", {
                             method: 'POST',
                             headers: {
-                                'Content-Type': 'application/json',
+                                'Content-Type': 'application/x-www-form-urlencoded',
                                 'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>'
                             },
-                            body: JSON.stringify({
+                            body: new URLSearchParams({
                                 title: title,
-                                event_date: info.dateStr
+                                description: "No description",
+                                event_date: info.dateStr,
+                                event_time: "00:00"
                             })
                         })
-                        .then(response => response.json())
-                        .then(event => {
-                            calendar.addEvent({
-                                title: event.title,
-                                start: event.event_date
-                            });
-                        });
+                        .then(response => {
+                            if (response.ok) {
+                                alert("Event added successfully!");
+                                location.reload();
+                            }
+                        })
+                        .catch(error => console.log(error));
                     }
                 }
             });
             calendar.render();
         });
 
-        // Handle Form Submission for Event Creation
         document.getElementById('eventForm').addEventListener('submit', function(event) {
             event.preventDefault();
-            let formData = {
-                title: document.getElementById('title').value,
-                event_date: document.getElementById('event_date').value,
-                event_time: document.getElementById('event_time').value,
-                description: document.getElementById('description').value,
-                _token: "<?php echo e(csrf_token()); ?>"
-            };
+            let formData = new FormData(this);
 
             fetch("<?php echo e(route('events.store')); ?>", {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData)
+                body: formData
             })
-            .then(response => response.json())
-            .then(data => {
-                alert("Event Added Successfully!");
-                location.reload();
+            .then(response => {
+                if (response.ok) {
+                    alert("Event Added Successfully!");
+                    location.reload();
+                }
             })
             .catch(error => console.log(error));
         });
     </script>
-
  <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginal5fc7b6c708ff08bbce49411545a9c035)): ?>
