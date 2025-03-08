@@ -1,4 +1,3 @@
-<!-- Start Offcanvas for Candidate Profile View -->
 <div class="offcanvas offcanvas-end p-0" tabindex="-1" id="candidateProfile" aria-labelledby="candidateProfileLabel">
 
     <div class="offcanvas-header">
@@ -42,11 +41,7 @@
                             </div>
                         </div>
 
-                        {{-- <div class="row">
-                            <div class="col-md-6">
-                                <p><strong>Name:</strong> <span id="applicantNameOverview">N/A</span></p>
-                            </div>
-                        </div> --}}
+                        
 
                         <div class="row">
                             <div class="col-md-6">
@@ -73,39 +68,34 @@
                     
                     <div class="d-grid mt-5">
                         <!-- APPROVE -->
-                        <form method="POST" action="{{ route('applicants.updateStatus', $applicant->id) }}">
-                            @csrf
+                        <form method="POST" action="<?php echo e(route('applicants.updateStatus', $applicant->id)); ?>">
+                            <?php echo csrf_field(); ?>
                             <input type="hidden" name="action" value="approve">
-                            <input type="hidden" name="email" value="{{ $applicant->email }}">
-                            <input type="hidden" name="name" value="{{ $applicant->first_name }} {{ $applicant->last_name }}">
+                            <input type="hidden" name="email" value="<?php echo e($applicant->email); ?>">
+                            <input type="hidden" name="name" value="<?php echo e($applicant->first_name); ?> <?php echo e($applicant->last_name); ?>">
                             <button type="submit" class="btn btn-success">APPROVE</button>
                         </form>
                     
                         <!-- REJECT -->
-                        <form method="POST" action="{{ route('applicants.updateStatus', $applicant->id) }}">
-                            @csrf
+                        <form method="POST" action="<?php echo e(route('applicants.updateStatus', $applicant->id)); ?>">
+                            <?php echo csrf_field(); ?>
                             <input type="hidden" name="action" value="reject">
-                            <input type="hidden" name="email" value="{{ $applicant->email }}">
-                            <input type="hidden" name="name" value="{{ $applicant->first_name }} {{ $applicant->last_name }}">
+                            <input type="hidden" name="email" value="<?php echo e($applicant->email); ?>">
+                            <input type="hidden" name="name" value="<?php echo e($applicant->first_name); ?> <?php echo e($applicant->last_name); ?>">
                             <button type="submit" class="btn btn-danger">REJECT</button>
                         </form>
                     
                         <!-- ARCHIVE -->
-                        <form method="POST" action="{{ route('applicants.updateStatus', $applicant->id) }}">
-                            @csrf
+                        <form method="POST" action="<?php echo e(route('applicants.updateStatus', $applicant->id)); ?>">
+                            <?php echo csrf_field(); ?>
                             <input type="hidden" name="action" value="archive">
-                            <input type="hidden" name="email" value="{{ $applicant->email }}">
-                            <input type="hidden" name="name" value="{{ $applicant->first_name }} {{ $applicant->last_name }}">
+                            <input type="hidden" name="email" value="<?php echo e($applicant->email); ?>">
+                            <input type="hidden" name="name" value="<?php echo e($applicant->first_name); ?> <?php echo e($applicant->last_name); ?>">
                             <button type="submit" class="btn btn-outline-danger">ARCHIVE</button>
                         </form>
                     </div>
                                                                 
-                    {{-- <div class="d-grid mt-5">
-                        <button class="btn btn-success mb-2" onclick="updateStatus('approve')">APPROVE</button>
-                        <button class="btn btn-danger mb-2" onclick="updateStatus('reject')">REJECT</button>
-                        <button class="btn btn-outline-danger mb-2" onclick="updateStatus('archive')">ARCHIVE</button>
-                        <input type="hidden" id="applicantId" value="{{ $applicant->id }}">
-                    </div>                         --}}
+                    
                 </div>
             </div>
             <!-- End Overview Tab -->
@@ -175,5 +165,4 @@
         </div>
         
     </div>
-</div>
-<!-- End Offcanvas for Candidate Profile View -->
+</div><?php /**PATH C:\laragon\www\hr_catalists\resources\views/components/partials/system/ats/ats-candidate-profile-offcanvas.blade.php ENDPATH**/ ?>
