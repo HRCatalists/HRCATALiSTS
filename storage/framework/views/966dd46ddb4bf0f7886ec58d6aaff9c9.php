@@ -1,4 +1,3 @@
-<!-- Add Applicant Modal -->
 <div class="modal fade" id="addApplicantModal" tabindex="-1" aria-labelledby="addApplicantModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -109,5 +108,4 @@ unset($__errorArgs, $__bag); ?>
             </form>
         </div>
     </div>
-</div>
-<!-- End of Add Applicant Modal --><?php /**PATH C:\laragon\www\hr_catalists\resources\views/components/partials/system/ats/ats-add-applicant-modal.blade.php ENDPATH**/ ?>
+</div><?php /**PATH C:\laragon\www\hr_catalists\resources\views/components/partials/system/ats/ats-add-applicant-modal.blade.php ENDPATH**/ ?>
