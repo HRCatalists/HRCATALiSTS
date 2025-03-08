@@ -1,7 +1,12 @@
 /* styles.css */
+h2 {
+  font-weight: bold;
+  color: #111D5B;
+}
+
 #main-calendar{
-  max-width: 1100px;
-  margin: 40px auto;
+  max-width: 100%;
+  /* margin: 40px auto; */
 }
 .calendar-wrapper {
   width: 100%;

@@ -209,7 +209,7 @@ class AdminController extends Controller
    
            // Fetch only the events for the logged-in user
            $events = Event::where('user_id', Auth::id())
-                           ->select('id', 'title', 'event_date as start', 'event_time', 'description')
+                           ->select('id', 'title', 'event_date', 'event_time', 'description')
                            ->get();
    
            return response()->json($events);
