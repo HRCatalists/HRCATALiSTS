@@ -202,24 +202,15 @@
                                         </tr>
                                     </thead>
                                     <tbody class="small">
-                                        <tr>
-                                            <td>Dr. Mora</td>
-                                            <td>Updated Applicant Profile</td>
-                                            <td>10:00 a.m.</td>
-                                            <td>1/19/2025</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Dr. Mora</td>
-                                            <td>Deleted Applicant Profile</td>
-                                            <td>10:00 a.m.</td>
-                                            <td>1/19/2025</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Secretary</td>
-                                            <td>Posted a Position</td>
-                                            <td>1:00 p.m.</td>
-                                            <td>1/11/2025</td>
-                                        </tr>
+                                    <?php $__currentLoopData = $logs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $log): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <tr>
+                                <td><?php echo e($loop->iteration); ?></td>
+                                <td><?php echo e($log->user->name ?? 'Guest'); ?></td>
+                                <td><?php echo e($log->activity); ?></td>
+                                <td><?php echo e($log->created_at->format('h:i a')); ?></td>
+                                <td><?php echo e($log->created_at->format('F d, Y')); ?></td>
+                            </tr>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                     </tbody>
                                 </table>
                             </div>

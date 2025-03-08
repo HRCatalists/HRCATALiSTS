@@ -174,24 +174,15 @@
                                         </tr>
                                     </thead>
                                     <tbody class="small">
-                                        <tr>
-                                            <td>Dr. Mora</td>
-                                            <td>Updated Applicant Profile</td>
-                                            <td>10:00 a.m.</td>
-                                            <td>1/19/2025</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Dr. Mora</td>
-                                            <td>Deleted Applicant Profile</td>
-                                            <td>10:00 a.m.</td>
-                                            <td>1/19/2025</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Secretary</td>
-                                            <td>Posted a Position</td>
-                                            <td>1:00 p.m.</td>
-                                            <td>1/11/2025</td>
-                                        </tr>
+                                    @foreach($logs as $log)
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $log->user->name ?? 'Guest' }}</td>
+                                <td>{{ $log->activity }}</td>
+                                <td>{{ $log->created_at->format('h:i a') }}</td>
+                                <td>{{ $log->created_at->format('F d, Y') }}</td>
+                            </tr>
+                                    @endforeach
                                     </tbody>
                                 </table>
                             </div>

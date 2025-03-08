@@ -158,37 +158,44 @@ class AdminController extends Controller
         return view('hrcatalists.ems.admin-ems-logs'); // Logs Page
     }
 
-    public function atsDashboard()
-    {
-        if (!Auth::check()) {
-            return redirect()->route('login');
-        }
-    
-        // ✅ Fetch all required data
-        $totalApplicants = Applicant::count();
-        $applicantsByStatus = Applicant::selectRaw('LOWER(TRIM(status)) as status, COUNT(*) as count')
-            ->groupBy('status')
-            ->pluck('count', 'status')
-            ->toArray();
-        $allJobs = Job::all();
-        $totalJobs = $allJobs->count();
-        $activeJobCount = Job::where('end_date', '>=', Carbon::now())->count();
-        $inactiveJobCount = Job::where('end_date', '<', Carbon::now())->count();
-    
-        // ✅ Fetch events for the calendar
-        $events = Event::select('event_date', 'title')->get();
-    
-        // ✅ Return view with all data
-        return view('hrcatalists.ats.admin-ats-db', [
-            'totalApplicants' => $totalApplicants,
-            'applicantsByStatus' => $applicantsByStatus,
-            'activeJobCount' => $activeJobCount,
-            'inactiveJobCount' => $inactiveJobCount,
-            'totalJobs' => $totalJobs,
-            'allJobs' => $allJobs,
-            'events' => $events, // ✅ Send events to Blade
-        ]);
+   
+public function atsDashboard()
+{
+    if (!Auth::check()) {
+        return redirect()->route('login');
     }
+
+    // ✅ Fetch logs with user data
+    $logs = Log::with('user')->latest()->limit(10)->get();
+
+    // ✅ Fetch applicants data
+    $totalApplicants = Applicant::count();
+    $applicantsByStatus = Applicant::selectRaw('LOWER(TRIM(status)) as status, COUNT(*) as count')
+        ->groupBy('status')
+        ->pluck('count', 'status')
+        ->toArray();
+
+    // ✅ Fetch jobs data
+    $allJobs = Job::all();
+    $totalJobs = $allJobs->count();
+    $activeJobCount = Job::where('end_date', '>=', Carbon::now())->count();
+    $inactiveJobCount = Job::where('end_date', '<', Carbon::now())->count();
+
+    // ✅ Fetch events for the calendar
+    $events = Event::select('event_date', 'title')->get();
+
+    // ✅ Return view with all data, including logs
+    return view('hrcatalists.ats.admin-ats-db', [
+        'logs' => $logs, // ✅ Add logs to the view
+        'totalApplicants' => $totalApplicants,
+        'applicantsByStatus' => $applicantsByStatus,
+        'activeJobCount' => $activeJobCount,
+        'inactiveJobCount' => $inactiveJobCount,
+        'totalJobs' => $totalJobs,
+        'allJobs' => $allJobs,
+        'events' => $events, // ✅ Send events to Blade
+    ]);
+}
        // Load the ATS Calendar View
        public function atsCalendar()
 {
