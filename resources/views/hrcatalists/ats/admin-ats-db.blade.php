@@ -149,7 +149,7 @@
                             <div class="card-body">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <h5 id="event-title" class="fw-bold">Events</h5>
-                                    <a href="emp-ems-events.html" class="view-link">See more...</a>
+                                    <a href="{{ route('ats-calendar') }}" class="view-link">See more...</a>
                                 </div>
                                 <ul id="event-list" class="list-group mt-3">
                                 <!-- Dynamic Event Items -->
@@ -162,11 +162,12 @@
                             <div class="card-body">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <h5 class="fw-bold">Recent Activities</h5>
-                                    <a href="admin-ats-logs.html" class="view-link">See more...</a>
+                                    <a href="{{ route('ats-logs') }}" class="view-link">See more...</a>
                                 </div>
                                 <table class="table table-bordered m-0">
                                     <thead class="small">
                                         <tr>
+                                            <th>NO</th>
                                             <th>USER</th>
                                             <th>ACTIVITIES</th>
                                             <th>TIME</th>

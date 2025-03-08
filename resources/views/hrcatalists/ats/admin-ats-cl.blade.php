@@ -25,27 +25,26 @@
             @endif
 
             <div class="calendar-wrapper mt-5">
-                <div id="right" class="ms-4 flex-grow-1">
-                    <h3>Event Calendar</h3>
+                <div id="right" class="flex-grow-1">
+                    <h2>Event Calendar</h2>
                     <div id="main-calendar"></div>
                 </div>
 
                 <div class="container-calendar">
-                    <div id="left">
-                        <h1>Calendar</h1>
-                        <div id="event-section">
-                            <h3>Add Event</h3>
+                    <h1>Add Event</h1>
+                    <div class="calendar-event-wrapper">
+                        <div id="event-section" class="col-lg-6">
                             <form id="eventForm">
                                 @csrf
                                 <input type="date" id="event_date" name="event_date" required>
                                 <input type="time" id="event_time" name="event_time" required>
                                 <input type="text" id="title" name="title" placeholder="Event Title" required>
-                                <input type="text" id="description" name="description" placeholder="Event Description" required>
+                                <input type="text" id="description" name="description" placeholder="Short description" required>
                                 <button type="submit">Add</button>
                             </form>
                         </div>
 
-                        <div id="reminder-section">
+                        <div id="reminder-section" class="col-lg-6">
                             <h3>Reminders</h3>
                             <ul id="reminderList">
                                 @foreach($events as $event)
@@ -68,7 +67,7 @@
 
     <!-- FullCalendar Script -->
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
-    <script>
+    {{-- <script>
         document.addEventListener('DOMContentLoaded', function() {
             var calendarEl = document.getElementById('main-calendar');
             var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -132,5 +131,77 @@
             })
             .catch(error => console.log(error));
         });
+    </script> --}}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('main-calendar');
+
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            selectable: true,
+            editable: false,
+            eventDidMount: function(info) {
+                // Create tooltip element
+                let tooltip = document.createElement("div");
+                tooltip.classList.add("fc-tooltip");
+                tooltip.innerHTML = `<strong>Time:</strong> ${info.event.extendedProps.event_time} <br> 
+                                    <strong>Description:</strong> ${info.event.extendedProps.description}`;
+                document.body.appendChild(tooltip);
+
+                // Show tooltip on mouse enter
+                info.el.addEventListener("mouseenter", function(event) {
+                    tooltip.style.display = "block";
+                    tooltip.style.left = event.pageX + 10 + "px";
+                    tooltip.style.top = event.pageY + 10 + "px";
+                });
+
+                // Hide tooltip on mouse leave
+                info.el.addEventListener("mouseleave", function() {
+                    tooltip.style.display = "none";
+                });
+            },
+            events: function(fetchInfo, successCallback, failureCallback) {
+                fetch("{{ route('events.index') }}")
+                    .then(response => response.json())
+                    .then(events => {
+                        let formattedEvents = events.map(event => ({
+                            title: event.title,
+                            start: event.event_date,
+                            event_time: event.event_time,  // Add event time
+                            description: event.description // Add event description
+                        }));
+                        successCallback(formattedEvents);
+                    })
+                    .catch(error => failureCallback(error));
+            },
+            dateClick: function(info) {
+                let title = prompt("Enter event title:");
+                if (title) {
+                    fetch("{{ route('events.store') }}", {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: new URLSearchParams({
+                            title: title,
+                            description: "No description",
+                            event_date: info.dateStr,
+                            event_time: "00:00"
+                        })
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            alert("Event added successfully!");
+                            location.reload();
+                        }
+                    })
+                    .catch(error => console.log(error));
+                }
+            }
+        });
+
+        calendar.render();
+    });
     </script>
 </x-admin-ats-layout>

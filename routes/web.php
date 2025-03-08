@@ -1,18 +1,19 @@
 <?php
 
+use App\Http\Middleware\PreventBackHistory;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\JobPostController;
 use App\Http\Controllers\ApplicantController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 
 
 Route::get('/api/check-auth', function () {
     return response()->json(['authenticated' => Auth::check()]);
 });
-
 
 // Public Route for Welcome Page
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -26,26 +27,22 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/openings', [HomeController::class, 'openings'])->name('openings');
 
 // ✅ Allow only guests to access the login page
-Route::middleware(['guest'])->group(function () {
-    Route::get('/login', function () {
-        return view('auth.login');
-    })->name('login');
-});
+Route::get('/login', function () {
+    return view('auth.login');
+})->name('login')->middleware('guest');
 
 // ✅ Redirect logged-in users away from login page
-Route::middleware(['auth',])->group(function () {
-    Route::get('/main-menu', [AdminController::class, 'mainMenu'])->name('main-menu');
-});
+// Route::middleware(['auth', PreventBackHistory::class])->group(function () {
+//     Route::get('/main-menu', [AdminController::class, 'mainMenu'])->name('main-menu');
+// });
 
 Route::get('/job-selected/{slug}', [JobPostController::class, 'jobSelected'])->name('job-selected');
 
 // Form Submission for Job Applications
 Route::post('/job-selected/{slug}/apply', [ApplicantController::class, 'store'])->name('applicants.store');
 
-
-
 // Apply authentication middleware to protect routes
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', PreventBackHistory::class])->group(function () {
 
     // Main Menu
     Route::get('/main-menu', [AdminController::class, 'mainMenu'])->name('main-menu');

@@ -373,7 +373,7 @@
 {{-- *** --}}
 {{-- ** --}}
 {{-- * --}}
-<script>
+{{-- <script>
     window.addEventListener('pageshow', function (event) {
         if (event.persisted || (window.performance && window.performance.getEntriesByType("navigation")[0].type === "back_forward")) {
             // Perform AJAX call to check if the user is still authenticated
@@ -397,6 +397,23 @@
             });
         }
     });
+</script> --}}
+<script>
+    fetch('/api/check-auth', {
+        method: 'GET',
+        credentials: 'same-origin',
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'Accept': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (!data.authenticated) {
+            window.location.replace("/login"); // Redirect if logged out
+        }
+    })
+    .catch(error => console.error('Auth check error:', error));
 </script>
 {{-- * --}}
 {{-- ** --}}
