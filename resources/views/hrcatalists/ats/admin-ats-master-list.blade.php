@@ -191,7 +191,7 @@
         </div>
     </div>
     <!-- End of Sidebar & Master List -->
-    
+
     <!-- Add Applicant Modal -->
     <div class="modal fade" id="addApplicantModal" tabindex="-1" aria-labelledby="addApplicantModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -292,9 +292,7 @@
     </div>
     <!-- End of Add Applicant Modal -->
 
-
-
-    <!-- Offcanvas for Candidate Profile View -->
+    <!-- Start Offcanvas for Candidate Profile View -->
     <div class="offcanvas offcanvas-end p-0" tabindex="-1" id="candidateProfile" aria-labelledby="candidateProfileLabel">
 
         <div class="offcanvas-header">
@@ -306,7 +304,7 @@
             <div class="content-section">
                 <div class="d-flex align-items-center justify-content-between my-4">
                     <h5 id="applicantName" class="mt-2">Applicant Name</h5>
-    
+
                     <span id="applicantStatus" class="stage border px-3 py-1" style="border-radius: 4px;">
                         STAGE: N/A
                     </span>
@@ -395,7 +393,7 @@
                                 <button type="submit" class="btn btn-outline-danger">ARCHIVE</button>
                             </form>
                         </div>
-                                                                   
+                                                                    
                         {{-- <div class="d-grid mt-5">
                             <button class="btn btn-success mb-2" onclick="updateStatus('approve')">APPROVE</button>
                             <button class="btn btn-danger mb-2" onclick="updateStatus('reject')">REJECT</button>
@@ -472,6 +470,7 @@
             
         </div>
     </div>
+    <!-- End Offcanvas for Candidate Profile View -->
 
     {{-- <script>
         document.addEventListener('DOMContentLoaded', function () {

@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator; // Also add this for validation
-
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Routing\Controller;
 use App\Models\Applicant;
@@ -166,7 +165,7 @@ public function atsDashboard()
     }
 
     // ✅ Fetch logs with user data
-    $logs = Log::with('user')->latest()->limit(10)->get();
+    $logs = Log::with('user')->latest()->limit(5)->get();
 
     // ✅ Fetch applicants data
     $totalApplicants = Applicant::count();
@@ -182,7 +181,7 @@ public function atsDashboard()
     $inactiveJobCount = Job::where('end_date', '<', Carbon::now())->count();
 
     // ✅ Fetch events for the calendar
-    $events = Event::select('event_date', 'title')->get();
+    $events = Event::select('event_date', 'event_time', 'title', 'description')->get();
 
     // ✅ Return view with all data, including logs
     return view('hrcatalists.ats.admin-ats-db', [
@@ -212,7 +211,7 @@ public function getEvents()
         return response()->json(['error' => 'Unauthorized'], 401);
     }
 
-    $events = Event::select('event_date', 'title')->get();
+    $events = Event::select('event_date', 'event_time', 'title', 'description')->get();
     return response()->json($events);
 }
 public function storeEvent(Request $request)
