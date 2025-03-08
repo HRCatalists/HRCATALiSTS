@@ -125,7 +125,7 @@
                 dateClick: function(info) {
                     let title = prompt("Enter event title:");
                     if (title) {
-                        fetch("<?php echo e(route('events.store')); ?>", {
+                        fetch("<?php echo e(route('events.index')); ?>", {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',

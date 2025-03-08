@@ -94,7 +94,7 @@
                 dateClick: function(info) {
                     let title = prompt("Enter event title:");
                     if (title) {
-                        fetch("{{ route('events.store') }}", {
+                        fetch("{{ route('events.index') }}", {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
