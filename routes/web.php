@@ -73,8 +73,6 @@ Route::middleware(['auth', PreventBackHistory::class])->group(function () {
     Route::post('/update-expired-jobs', [AdminController::class, 'updateExpiredJobs']);
 
     // Applicant Routes
-
-
     Route::get('/ats-applicants', [ApplicantController::class, 'index'])->name('ats-applicants');
     Route::get('/ats-screening', [ApplicantController::class, 'pending'])->name('ats-screening');
     Route::get('/ats-interview', [ApplicantController::class, 'interviewed'])->name('ats-interview');

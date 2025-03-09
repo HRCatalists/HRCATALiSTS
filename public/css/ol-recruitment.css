@@ -124,41 +124,50 @@
 
 /* About Us Section */
 .about-us {
-  margin-top: 150px;
-  width: 1324px;
-  height: auto;
-  background-color: #1a75d2;
-  color: white;
-  padding: 20px;
-  border-radius: 10px;
-  margin-left: auto;
-  margin-right: auto;
-  padding: 80px;
+  background-color: #D0E5FF;
+  padding: 150px 0;
 }
 
 .about-us h1 {
+  font-weight: bolder;
+  color: #111D5B;
+  letter-spacing: 8px;
   text-align: center;
-  margin-bottom: 20px;
+}
+
+.about-us .container {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+}
+
+.info-card {
+  background: white;
+  padding: 50px;
+  border-radius: 20px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px !important; 
+  justify-content: center; /* Centers text vertically */
+  align-items: center; /* Centers text horizontally */
+  min-height: 200px; /* Ensures all cards have the same height */
+  font-size: 18px;
+}
+
+.info-card:hover {
+  transform: translateY(-5px);
+}
+
+.info-card h3 {
   font-weight: bold;
+  color: #111D5B;
 }
 
-.about-us img {
-  width: 300px;
-  height: 300px;
-  background-color: #336699;
-  border-radius: 10px;
-  margin-right: 20px;
-}
-
-.about-us-content h2 {
-  font-size: 24px;
-  margin-bottom: 20px;
-  font-weight: 600;
-}
-
-.about-us-content p {
-  font-size: 16px;
-  line-height: 1.6;
+.info-card p {
+  text-align: justify;
 }
 
 /* Latest Opening Section */
@@ -174,10 +183,54 @@
   text-align: center;
 }
 
-.job-card {
-  width: 364px;
-  height: 372.89px;
+.swiper-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.mySwiper {
+  max-width: 380px;
+  height: 400px;
+}
+
+.swiper-slide {
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Style and position Swiper navigation buttons */
+.swiper-button-prev,
+.swiper-button-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #3377cc !important;
+  font-size: 30px;
+  font-weight: bold;
+  z-index: 10;
+}
+
+/* Move the Previous button to the left of the card */
+.swiper-button-prev {
+  left: -40px;
+}
+
+/* Move the Next button to the right of the card */
+.swiper-button-next {
+  right: -40px;
+}
+
+/* Ensure the buttons are clearly visible */
+.swiper-button-prev::after,
+.swiper-button-next::after {
+  font-size: 30px !important;
+}
+
+
+.job-card {
+  max-width: 380px;
+  height: 100%;
+  /* box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); */
   border-radius: 5px;
   margin: 20px;
   background-color: white;
@@ -261,61 +314,16 @@
 
 /* List of Openings */
 .table-container {
-  /* max-width: auto; */
   background-color: #eaf4ff;
-  /* padding: 100px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  overflow-x: auto;  */
 }
 
-/* .list-ttl {
-  font-weight: bolder;
-  color: #111D5B;
-  text-align: center;
+.latest-opening-img {
+  max-width: 100%;
+  object-fit: contain;
+  border-radius: 5px;
 }
 
-.table {
-  width: 1324px;
-  border-collapse: collapse;
-  margin: 0 auto;
-  border-color: #111D5B !important;
-  border: 1px solid #ccc;
-} */
 
-/* .table th,
-.table td {
-  padding: 25px 20px;
-  text-align: left;
-  min-height: 60px;
-  border-bottom: 1px solid #ddd;
-  white-space: nowrap; 
-}
-
-.table thead th {
-  border-top: none;
-  border-bottom: 2px solid #ccc;
-  font-weight: bold;
-  text-transform: uppercase;
-  color: #111D5B;
-  padding: 30px;
-}
-
-.table tbody td {
-  border-top: none;
-  vertical-align: middle;
-  padding: 30px;
-}
-
-.find-out-more {
-  color: #111D5B;
-  font-weight: bold;
-  text-decoration: none;
-}
-
-.find-out-more:hover {
-  text-decoration: underline;
-  color: #3377CC;
-} */
 
 /* Footer Styling */
 .footer {
