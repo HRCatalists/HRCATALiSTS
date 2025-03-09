@@ -69,6 +69,8 @@ Route::middleware(['auth', PreventBackHistory::class])->group(function () {
     Route::post('/events', [AdminController::class, 'storeEvent'])->name('events.store');
     Route::delete('/events/{id}', [AdminController::class, 'deleteEvent'])->name('events.destroy');
     Route::get('/ats-job-openings', [AdminController::class, 'atsJobs'])->name('ats-jobs');
+    // Update the status of expired jobs
+    Route::post('/update-expired-jobs', [AdminController::class, 'updateExpiredJobs']);
 
     // Applicant Routes
     Route::get('/ats-applicants', [ApplicantController::class, 'index'])->name('ats-applicants');

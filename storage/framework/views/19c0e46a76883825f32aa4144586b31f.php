@@ -1,13 +1,41 @@
-<x-admin-ats-layout>
+<?php if (isset($component)) { $__componentOriginal5fc7b6c708ff08bbce49411545a9c035 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal5fc7b6c708ff08bbce49411545a9c035 = $attributes; } ?>
+<?php $component = App\View\Components\AdminAtsLayout::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('admin-ats-layout'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\App\View\Components\AdminAtsLayout::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?>
 
-    <x-slot:title>
+     <?php $__env->slot('title', null, []); ?> 
         Columban College Inc. | ATS Applicants
-    </x-slot:title>
+     <?php $__env->endSlot(); ?>
 
     <!-- Sidebar & Master List -->
     <div class="d-flex">
         <!-- Sidebar -->
-        <x-partials.system.ats.ats-sidebar />
+        <?php if (isset($component)) { $__componentOriginald5876c07269e58343b8102e8c5f829ec = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginald5876c07269e58343b8102e8c5f829ec = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.partials.system.ats.ats-sidebar','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('partials.system.ats.ats-sidebar'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginald5876c07269e58343b8102e8c5f829ec)): ?>
+<?php $attributes = $__attributesOriginald5876c07269e58343b8102e8c5f829ec; ?>
+<?php unset($__attributesOriginald5876c07269e58343b8102e8c5f829ec); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginald5876c07269e58343b8102e8c5f829ec)): ?>
+<?php $component = $__componentOriginald5876c07269e58343b8102e8c5f829ec; ?>
+<?php unset($__componentOriginald5876c07269e58343b8102e8c5f829ec); ?>
+<?php endif; ?>
         <!-- End of Sidebar -->
     
         <!-- Master List -->
@@ -63,9 +91,9 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @if(count($allApplicants) > 0)
-                            @foreach($allApplicants as $applicant)
-                                @php
+                        <?php if(count($allApplicants) > 0): ?>
+                            <?php $__currentLoopData = $allApplicants; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $applicant): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <?php
                                     // Define status colors inside the loop
                                     $statusColors = [
                                         'pending' => '#555555',      // Gray
@@ -78,55 +106,55 @@
                                     ];
                 
                                     $statusColor = $statusColors[$applicant->status] ?? '#000000'; // Default Black
-                                @endphp
+                                ?>
                                 <tr>
                                     <td class="text-center">
-                                        <input type="checkbox" class="rowCheckbox" value="{{ $applicant->id }}">
+                                        <input type="checkbox" class="rowCheckbox" value="<?php echo e($applicant->id); ?>">
                                     </td>
-                                    <td>{{ $applicant->first_name }} {{ $applicant->last_name }}</td>
+                                    <td><?php echo e($applicant->first_name); ?> <?php echo e($applicant->last_name); ?></td>
                                     <td>
-                                        <form method="POST" action="{{ route('applicants.updateStatus', $applicant->id) }}" class="status-update-form">
-                                            @csrf
+                                        <form method="POST" action="<?php echo e(route('applicants.updateStatus', $applicant->id)); ?>" class="status-update-form">
+                                            <?php echo csrf_field(); ?>
                                             <select name="status" class="form-select status-dropdown"
-                                                data-applicant-name="{{ $applicant->first_name }} {{ $applicant->last_name }}" 
-                                                data-current-status="{{ $applicant->status }}"
+                                                data-applicant-name="<?php echo e($applicant->first_name); ?> <?php echo e($applicant->last_name); ?>" 
+                                                data-current-status="<?php echo e($applicant->status); ?>"
                                                 style="color: #fff; border-radius: 4px; padding: 4px; text-align: center;"
                                             >
-                                                <option value="pending" {{ $applicant->status == 'pending' ? 'selected' : '' }}>Pending</option>
-                                                <option value="screening" {{ $applicant->status == 'screening' ? 'selected' : '' }}>Screening</option>
-                                                <option value="scheduled" {{ $applicant->status == 'scheduled' ? 'selected' : '' }}>Scheduled</option>
-                                                <option value="interviewed" {{ $applicant->status == 'interviewed' ? 'selected' : '' }}>Interviewed</option>
-                                                <option value="hired" {{ $applicant->status == 'hired' ? 'selected' : '' }}>Hired</option>
-                                                <option value="rejected" {{ $applicant->status == 'rejected' ? 'selected' : '' }}>Rejected</option>
-                                                <option value="archived" {{ $applicant->status == 'archived' ? 'selected' : '' }}>Archived</option>
+                                                <option value="pending" <?php echo e($applicant->status == 'pending' ? 'selected' : ''); ?>>Pending</option>
+                                                <option value="screening" <?php echo e($applicant->status == 'screening' ? 'selected' : ''); ?>>Screening</option>
+                                                <option value="scheduled" <?php echo e($applicant->status == 'scheduled' ? 'selected' : ''); ?>>Scheduled</option>
+                                                <option value="interviewed" <?php echo e($applicant->status == 'interviewed' ? 'selected' : ''); ?>>Interviewed</option>
+                                                <option value="hired" <?php echo e($applicant->status == 'hired' ? 'selected' : ''); ?>>Hired</option>
+                                                <option value="rejected" <?php echo e($applicant->status == 'rejected' ? 'selected' : ''); ?>>Rejected</option>
+                                                <option value="archived" <?php echo e($applicant->status == 'archived' ? 'selected' : ''); ?>>Archived</option>
                                             </select>
                                         </form>
                                     </td>
-                                    <td>{{ \Carbon\Carbon::parse($applicant->applied_at)->format('F d, Y') }}</td>
-                                    <td>{{ $applicant->job->job_title ?? 'N/A' }}</td>
+                                    <td><?php echo e(\Carbon\Carbon::parse($applicant->applied_at)->format('F d, Y')); ?></td>
+                                    <td><?php echo e($applicant->job->job_title ?? 'N/A'); ?></td>
                                     <td>
                                         <div class="d-flex justify-content-around">
                                             <button class="btn btn-ap-edit" 
                                                 data-bs-toggle="offcanvas" 
                                                 data-bs-target="#candidateProfile" 
-                                                data-applicant-id="{{ $applicant->id }}"
-                                                data-applicant-name="{{ $applicant->first_name }} {{ $applicant->last_name }}"
-                                                data-applicant-status="{{ $applicant->status }}"
-                                                data-applicant-email="{{ $applicant->email }}"
-                                                data-applicant-phone="{{ $applicant->phone_number }}"
-                                                data-applicant-position="{{ $applicant->job->job_title ?? 'N/A' }}"
-                                                data-applicant-address="{{ $applicant->address }}">
+                                                data-applicant-id="<?php echo e($applicant->id); ?>"
+                                                data-applicant-name="<?php echo e($applicant->first_name); ?> <?php echo e($applicant->last_name); ?>"
+                                                data-applicant-status="<?php echo e($applicant->status); ?>"
+                                                data-applicant-email="<?php echo e($applicant->email); ?>"
+                                                data-applicant-phone="<?php echo e($applicant->phone_number); ?>"
+                                                data-applicant-position="<?php echo e($applicant->job->job_title ?? 'N/A'); ?>"
+                                                data-applicant-address="<?php echo e($applicant->address); ?>">
                                                 VIEW
                                             </button>
                                         </div>
                                     </td>
                                 </tr>
-                            @endforeach
-                        @else
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        <?php else: ?>
                             <tr>
                                 <td colspan="6" class="text-center">No applicants found.</td>
                             </tr>
-                        @endif
+                        <?php endif; ?>
                     </tbody>
                 </table>
 
@@ -190,53 +218,14 @@
     <!-- End of Sidebar & Master List -->
 
     <!-- Add Applicant Modal -->
-    @include('components.partials.system.ats.ats-add-applicant-modal')
+    <?php echo $__env->make('components.partials.system.ats.ats-add-applicant-modal', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
     
     <!-- Candidate Profile Offcanvas -->
-    @include('components.partials.system.ats.ats-candidate-profile-offcanvas')
+    <?php echo $__env->make('components.partials.system.ats.ats-candidate-profile-offcanvas', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 
-    {{-- <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const offcanvas = document.getElementById('candidateProfile');
     
-            offcanvas.addEventListener('show.bs.offcanvas', function (event) {
-                const button = event.relatedTarget;
-    
-                // Get applicant data from data attributes
-                const applicantName = button.getAttribute('data-applicant-name');
-                const applicantStatus = button.getAttribute('data-applicant-status');
-                const applicantEmail = button.getAttribute('data-applicant-email');
-                const applicantPhone = button.getAttribute('data-applicant-phone');
-                const applicantPosition = button.getAttribute('data-applicant-position');
-                const applicantAddress = button.getAttribute('data-applicant-address');
-    
-                // Status color mapping
-                const statusColors = {
-                    'pending': '#555555',      // Gray
-                    'screening': '#ffe135',    // Yellow
-                    'scheduled': '#ff8c00',    // Orange
-                    'interviewed': '#ff8c00',  // Orange
-                    'hired': '#4CAF50',        // Green
-                    'rejected': '#8b0000',     // Red
-                    'archived': '#4b0082'      // Indigo
-                };
-    
-                const statusColor = statusColors[applicantStatus] || '#000000'; // Default black
-    
-                // Populate the Offcanvas fields
-                document.getElementById('applicantName').innerText = applicantName;
-                document.getElementById('applicantStatus').innerText = 'STAGE: ' + applicantStatus.toUpperCase();
-                document.getElementById('applicantStatus').style.backgroundColor = statusColor;
-    
-                document.getElementById('applicantEmail').innerText = applicantEmail;
-                document.getElementById('applicantPhone').innerText = applicantPhone;
-                document.getElementById('applicantPosition').innerText = applicantPosition;
-                document.getElementById('applicantAddress').innerText = applicantAddress;
-            });
-        });
-    </script>       --}}
 
-    {{-- Applying button color changes based on the status --}}
+    
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const offcanvas = document.getElementById('candidateProfile');
@@ -285,9 +274,9 @@
             });
         });
     </script>
-    {{-- Applying button color changes based on the status --}}
+    
 
-    {{-- File upload and validation --}}
+    
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const fileInput = document.getElementById("cv");
@@ -319,9 +308,9 @@
         });
     </script>
     
-    {{-- File upload and validation --}}
+    
 
-    {{-- Job Selection Dropdown --}}
+    
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const jobDropdown = document.getElementById("job_id");
@@ -338,9 +327,9 @@
             });
         });
     </script>
-    {{-- Job Selection Dropdown --}}
+    
 
-    {{-- Handle Form Submission & Display Success/Error Alerts --}}
+    
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const form = document.getElementById("addApplicantForm");
@@ -432,6 +421,15 @@
             });
         });
     </script>    
-    {{-- Handle Form Submission & Display Success/Error Alerts --}}
+    
         
-</x-admin-ats-layout>
+ <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal5fc7b6c708ff08bbce49411545a9c035)): ?>
+<?php $attributes = $__attributesOriginal5fc7b6c708ff08bbce49411545a9c035; ?>
+<?php unset($__attributesOriginal5fc7b6c708ff08bbce49411545a9c035); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal5fc7b6c708ff08bbce49411545a9c035)): ?>
+<?php $component = $__componentOriginal5fc7b6c708ff08bbce49411545a9c035; ?>
+<?php unset($__componentOriginal5fc7b6c708ff08bbce49411545a9c035); ?>
+<?php endif; ?><?php /**PATH C:\laragon\www\hr_catalists\resources\views/hrcatalists/ats/admin-ats-master-list.blade.php ENDPATH**/ ?>
