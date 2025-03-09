@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Applicant;
-use App\Models\Log;
-use App\Models\Job;
+use App\Models\{Applicant, Log, Job, Event};
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log as LaravelLog;
 
 class ApplicantController extends Controller
 {
@@ -24,83 +23,83 @@ class ApplicantController extends Controller
 
         return view('hrcatalists.ats.admin-ats-master-list', compact('allApplicants', 'jobs'));
     }
-
-    public function pending()
-    {
-        if (!Auth::check()) {
-            return redirect()->route('login')->with('error', 'Please log in to view pending applicants.');
-        }
-
-        $allApplicants = Applicant::whereIn('status', ['pending', 'screening'])->get();
-        return view('hrcatalists.ats.admin-ats-screening', compact('allApplicants'));
-    }
-
-    public function archived()
-    {
-        if (!Auth::check()) {
-            return redirect()->route('login')->with('error', 'Please log in to view archived applicants.');
-        }
-
-        $allApplicants = Applicant::whereIn('status', ['archived', 'rejected'])->get();
-        return view('hrcatalists.ats.admin-ats-archived', compact('allApplicants'));
-    }
-
-    public function interviewed()
-    {
-        if (!Auth::check()) {
-            return redirect()->route('login')->with('error', 'Please log in to view interviewed applicants.');
-        }
-
-        $interviewedApplicants = Applicant::whereIn('status', ['scheduled', 'interviewed'])->get();
-        return view('hrcatalists.ats.admin-ats-interview', compact('interviewedApplicants'));
-    }
-
-    public function show($id)
-    {
-        if (!Auth::check()) {
-            return redirect()->route('login')->with('error', 'Please log in to view applicant details.');
-        }
-
-        $applicant = Applicant::findOrFail($id);
-        return view('hrcatalists.ats.show-applicant', compact('applicant'));
-    }
-
     public function updateStatus(Request $request, $id)
-    {
-        if (!Auth::check()) {
-            return redirect()->route('login')->with('error', 'Please log in to update applicant status.');
-        }
+{
+    if (!Auth::check()) {
+        return redirect()->route('login')->with('error', 'Please log in to update status.');
+    }
 
-        $applicant = Applicant::find($id);
-        if (!$applicant) {
-            return redirect()->back()->with('error', 'Applicant not found.');
-        }
+    $request->validate([
+        'action' => 'required|string|in:approve,reject,archive'
+    ]);
 
-        $validStatuses = ['pending', 'screening', 'scheduled', 'interviewed', 'hired', 'rejected', 'archived'];
-        $newStatus = $request->input('status');
+    try {
+        $applicant = Applicant::findOrFail($id);
 
-        if (!in_array($newStatus, $validStatuses)) {
-            return redirect()->back()->with('error', 'Invalid status provided.');
-        }
+        // Map actions to statuses
+        $statusMap = [
+            'approve' => 'interviewed',
+            'reject' => 'rejected',
+            'archive' => 'archived',
+        ];
 
-        // Combine first & last name for logging
-        $applicantName = trim($applicant->first_name . ' ' . $applicant->last_name);
-        $oldStatus = $applicant->status;
-
-        // Update status
-        $applicant->status = $newStatus;
+        $applicant->status = $statusMap[$request->action];
         $applicant->save();
 
-        // Log the update
+        // Log action
         Log::create([
             'user_id' => Auth::id(),
-            'activity' => "Updated status for applicant: {$applicantName} from " . ucfirst($oldStatus) . " to " . ucfirst($newStatus),
+            'activity' => "Applicant {$applicant->first_name} {$applicant->last_name} marked as {$applicant->status}",
             'created_at' => now(),
-            'updated_at' => $applicant->updated_at,
         ]);
 
-        return redirect()->back()->with('success', "Applicant status updated to " . ucfirst($newStatus) . ".");
+        return redirect()->back()->with('success', 'Applicant status updated successfully.');
+    } catch (\Exception $e) {
+        \Log::error("Failed to update status: " . $e->getMessage());
+        return redirect()->back()->with('error', 'Failed to update status. Please try again.');
     }
+}
+
+    
+    public function scheduleInterview(Request $request, $id)
+{
+    if (!Auth::check()) {
+        return redirect()->route('login')->with('error', 'Please log in to schedule interviews.');
+    }
+
+    $request->validate([
+        'title' => 'required|string|max:255',
+        'event_date' => 'required|date',
+        'event_time' => 'required',
+        'applicant_email' => 'required|email',
+        'applicant_name' => 'required|string|max:255'
+    ]);
+
+    try {
+        $applicant = Applicant::findOrFail($id);
+
+        // Create new event
+        Event::create([
+            'user_id' => Auth::id(),
+            'title' => $request->title,
+            'description' => "Interview scheduled for {$request->applicant_name} ({$request->applicant_email})",
+            'event_date' => $request->event_date,
+            'event_time' => $request->event_time,
+        ]);
+
+        // Update applicant status
+        $applicant->status = 'scheduled';
+        $applicant->save();
+
+        return redirect()->back()->with('success', 'Interview scheduled successfully.');
+    } catch (\Exception $e) {
+        \Log::error("Interview scheduling failed: " . $e->getMessage());
+        return redirect()->back()->with('error', 'Failed to schedule the interview. Please try again.');
+    }
+}
+
+
+
     // public function store(Request $request)
     // {
     //     // Validate input
