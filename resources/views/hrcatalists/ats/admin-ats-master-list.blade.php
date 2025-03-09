@@ -22,7 +22,7 @@
                 </div>
 
                 <div class="d-flex">
-                    <div class="card checkbox-card ">
+                    <div class="card checkbox-card me-3">
                         <div class="container d-flex">
 
                             <!-- Select All heckbox -->
@@ -37,20 +37,17 @@
                             </div>
                             
                         </div>
-                        
                     </div>
 
-                    <div class="d-flex justify-content-around ms-3">
-                        <!-- Add Position Button -->
-                        <button type="button" class="btn add-btn me-2" data-bs-toggle="modal" data-bs-target="#addApplicantModal">
-                            ADD APPLICANT
-                        </button>
+                    <!-- Add Position Button -->
+                    <button type="button" class="btn add-btn me-2" data-bs-toggle="modal" data-bs-target="#addApplicantModal">
+                        ADD APPLICANT
+                    </button>                 
 
-                        <button class="btn shadow print-btn">
-                            <i class="fa fa-print"></i> PRINT
-                            <a href=""></a>
-                        </button>
-                    </div>
+                    <button class="btn shadow print-btn ms-auto">
+                        <i class="fa fa-print"></i> PRINT
+                        <a href=""></a>
+                    </button>
                 </div>
                 
                 <!-- Applicant Table -->
@@ -191,287 +188,12 @@
         </div>
     </div>
     <!-- End of Sidebar & Master List -->
-    
+
     <!-- Add Applicant Modal -->
-    <div class="modal fade" id="addApplicantModal" tabindex="-1" aria-labelledby="addApplicantModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <form id="addApplicantForm" action="" method="POST" enctype="multipart/form-data">
-                    @csrf
-                    <div class="modal-header text-white" style="background-color: #111D5B;">
-                        <h5 class="modal-title" id="addApplicantModalLabel">Add New Applicant</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <h5 class="text-primary mb-3">Application Form</h5>
-
-                        <!-- First & Last Name -->
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label for="firstName" class="form-label">First Name <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="firstName" name="first_name" placeholder="Enter First Name" required>
-                                <div class="error-message text-danger"></div>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="lastName" class="form-label">Last Name <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="lastName" name="last_name" placeholder="Enter Last Name" required>
-                                <div class="error-message text-danger"></div>
-                            </div>
-                        </div>
-
-                        <!-- Email & Phone Number -->
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label for="emailAddress" class="form-label">E-mail Address <span class="text-danger">*</span></label>
-                                <input type="email" class="form-control" id="emailAddress" name="email" placeholder="Enter E-mail Address" required>
-                                <div class="error-message text-danger"></div>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="phoneNumber" class="form-label">Phone Number <span class="text-danger">*</span></label>
-                                <input type="tel" class="form-control" id="phoneNumber" name="phone" placeholder="Enter Phone Number" required>
-                                <div class="error-message text-danger"></div>
-                            </div>
-                        </div>
-
-                        <!-- Full Address -->
-                        <div class="mb-3">
-                            <label for="address" class="form-label">Full Address <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="address" name="address" placeholder="Enter Full Address" required>
-                            <div class="error-message text-danger"></div>
-                        </div>
-
-                        <!-- Job Selection Dropdown -->
-                        <label for="job_id" class="form-label">Select Job <span class="text-danger">*</span></label>
-                        <select name="job_id" id="job_id" class="form-select" required>
-                            <option value="" selected disabled>Select a Job</option>
-                            @foreach($jobs as $job)
-                                <option value="{{ $job->id }}" data-slug="{{ $job->slug }}">
-                                    {{ $job->job_title }} ({{ $job->department }})
-                                </option>
-                            @endforeach
-                        </select>
-                        <div class="error-message text-danger"></div>
-
-                        <!-- Hidden Slug Field -->
-                        <input type="hidden" id="jobSlug" name="slug" value="">
-
-                        <!-- CV Upload -->
-                        <div class="my-4">
-                            <label for="cv" class="form-label fw-bold">Attach CV <span class="text-danger">*</span></label>
-
-                            <div class="input-group">
-                                <input type="file" name="cv" id="cv" class="form-control d-none @error('cv') is-invalid @enderror" accept=".pdf" required>
-                                <label for="cv" class="btn btn-primary">Choose File</label>
-                                <span class="input-group-text file-label">No file selected</span>
-                            </div>
-
-                            <small class="form-text text-muted">Submit your file in .pdf format (Max: 2 MB)</small>
-
-                            @error('cv') 
-                                <div class="invalid-feedback d-block">{{ $message }}</div> 
-                            @enderror
-                        </div>
-                        
-                        <!-- ✅ Privacy Policy Agreement -->
-                        <div class="mb-3">
-                            <input type="checkbox" id="privacy_policy_agreed" name="privacy_policy_agreed" value="1" required>
-                            <label for="privacy_policy_agreed" class="form-label">
-                                I agree to the <a href="#" target="_blank">Privacy Policy</a>
-                            </label>
-                            <div class="error-message text-danger"></div>
-                        </div>
-                    </div>
-
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">ADD</button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">CANCEL</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    <!-- End of Add Applicant Modal -->
-
-
-
-    <!-- Offcanvas for Candidate Profile View -->
-    <div class="offcanvas offcanvas-end p-0" tabindex="-1" id="candidateProfile" aria-labelledby="candidateProfileLabel">
-
-        <div class="offcanvas-header">
-            <h3 class="offcanvas-title" id="candidateProfileLabel">Candidate Profile View</h3>
-            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
-
-        <div class="offcanvas-body-wrapper px-4">
-            <div class="content-section">
-                <div class="d-flex align-items-center justify-content-between my-4">
-                    <h5 id="applicantName" class="mt-2">Applicant Name</h5>
+    @include('components.partials.system.ats.ats-add-applicant-modal')
     
-                    <span id="applicantStatus" class="stage border px-3 py-1" style="border-radius: 4px;">
-                        STAGE: N/A
-                    </span>
-                </div>
-                
-                <!-- Tabs -->
-                <ul class="nav nav-tabs">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#" onclick="showTab('overview')">Overview</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" onclick="showTab('notes')">Notes</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" onclick="showTab('interview')">Schedule an Interview</a>
-                    </li>
-                </ul>
-
-                <!-- Tab Content -->
-                <!-- Overview Tab -->
-                <div id="overview" class="tab-content">
-                    <div class="applicant-section">
-                        <div class="applicant-data">
-                            <h5>Applicant Data</h5>
-
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <p><strong>Position:</strong> <span id="applicantPosition">N/A</span></p>
-                                </div>
-                            </div>
-
-                            {{-- <div class="row">
-                                <div class="col-md-6">
-                                    <p><strong>Name:</strong> <span id="applicantNameOverview">N/A</span></p>
-                                </div>
-                            </div> --}}
-
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <i class="fa-solid fa-envelope me-2"></i> <span id="applicantEmail">N/A</span>
-                                </div>
-                                <div class="col-md-6">
-                                    <i class="fa-solid fa-phone me-2"></i> <span id="applicantPhone">N/A</span>
-                                </div>
-                            </div>
-
-                            <div class="row mt-3">
-                                <div class="col-md-12">
-                                    <i class="fa-solid fa-location-dot me-2"></i> <span id="applicantAddress">N/A</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Attachment -->
-                        <div class="file-attachment my-4">
-                            <img src="images/pdf-img.png" alt="PDF icon">
-                            <span id="applicantResume">Resume.pdf</span>
-                            <span class="ms-auto">200 KB</span>
-                        </div>
-                        
-                        <div class="d-grid mt-5">
-                            <!-- APPROVE -->
-                            <form method="POST" action="{{ route('applicants.updateStatus', $applicant->id) }}">
-                                @csrf
-                                <input type="hidden" name="action" value="approve">
-                                <input type="hidden" name="email" value="{{ $applicant->email }}">
-                                <input type="hidden" name="name" value="{{ $applicant->first_name }} {{ $applicant->last_name }}">
-                                <button type="submit" class="btn btn-success">APPROVE</button>
-                            </form>
-                        
-                            <!-- REJECT -->
-                            <form method="POST" action="{{ route('applicants.updateStatus', $applicant->id) }}">
-                                @csrf
-                                <input type="hidden" name="action" value="reject">
-                                <input type="hidden" name="email" value="{{ $applicant->email }}">
-                                <input type="hidden" name="name" value="{{ $applicant->first_name }} {{ $applicant->last_name }}">
-                                <button type="submit" class="btn btn-danger">REJECT</button>
-                            </form>
-                        
-                            <!-- ARCHIVE -->
-                            <form method="POST" action="{{ route('applicants.updateStatus', $applicant->id) }}">
-                                @csrf
-                                <input type="hidden" name="action" value="archive">
-                                <input type="hidden" name="email" value="{{ $applicant->email }}">
-                                <input type="hidden" name="name" value="{{ $applicant->first_name }} {{ $applicant->last_name }}">
-                                <button type="submit" class="btn btn-outline-danger">ARCHIVE</button>
-                            </form>
-                        </div>
-                                                                   
-                        {{-- <div class="d-grid mt-5">
-                            <button class="btn btn-success mb-2" onclick="updateStatus('approve')">APPROVE</button>
-                            <button class="btn btn-danger mb-2" onclick="updateStatus('reject')">REJECT</button>
-                            <button class="btn btn-outline-danger mb-2" onclick="updateStatus('archive')">ARCHIVE</button>
-                            <input type="hidden" id="applicantId" value="{{ $applicant->id }}">
-                        </div>                         --}}
-                    </div>
-                </div>
-                <!-- End Overview Tab -->
-                
-                <!-- Notes Tab -->
-                <div id="notes" class="tab-content" style="display: none;">
-                    <div class="notes-section">
-                        <p><strong>Lorem ipsum dolor sit amet.</strong> consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...</p>
-                        <p><strong>Lorem ipsum dolor sit amet.</strong> consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...</p>
-                        <p><strong>Lorem ipsum dolor sit amet.</strong> consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...</p>
-
-                        <div class="notes-btn">
-                            <button class="btn btn-primary mt-3">Add</button>
-                            <button class="btn btn-success mt-3">Edit</button>
-                        </div>
-                    </div>
-                </div>
-                <!-- End Notes Tab -->
-
-                <!-- Interview Tab -->
-                <div id="interview" class="tab-content" style="display: none;">
-                    <div class="interview-section">
-                        <form>
-                            <!-- Schedule Name -->
-                            <div class="mb-3">
-                                <label for="scheduleName" class="form-label">Schedule Name <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="scheduleName" required>
-                            </div>
-                            <!-- Name of Applicant -->
-                            <div class="mb-3">
-                                <label for="applicantName" class="form-label">Name of Applicant <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="applicantName" required>
-                            </div>
-                            <!-- Applicant Email -->
-                            <div class="mb-3">
-                                <label for="applicantEmail" class="form-label">Applicant Email <span class="text-danger">*</span></label>
-                                <input type="email" class="form-control" id="applicantEmail" required>
-                            </div>
-                            <!-- Schedule Date and Time -->
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label for="scheduleDate" class="form-label">Schedule Date <span class="text-danger">*</span></label>
-                                    <input type="date" class="form-control" id="scheduleDate" placeholder="Select date" required>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label for="scheduleTime" class="form-label">Time <span class="text-danger">*</span></label>
-                                    <input type="time" class="form-control" id="scheduleTime" required>
-                                </div>
-                            </div>
-                            <!-- Submit Button -->
-                            <div class="d-grid">
-                                <button type="submit" class="btn btn-primary mt-3">SCHEDULE INTERVIEW</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                <!-- End Interview Tab -->
-            </div>
-
-            <!-- Approve Popup -->
-            <div id="approvePopup" class="custom-popup">
-                <div class="popup-content">
-                    <p>Are you sure you want to approve this applicant and proceed to the next stage?</p>
-                    <button class="btn btn-success" onclick="approveAction()">Yes</button>
-                    <button class="btn btn-outline-secondary" onclick="closePopup('approvePopup')">Cancel</button>
-                </div>
-            </div>
-            
-        </div>
-    </div>
+    <!-- Candidate Profile Offcanvas -->
+    @include('components.partials.system.ats.ats-candidate-profile-offcanvas')
 
     {{-- <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -711,4 +433,5 @@
         });
     </script>    
     {{-- Handle Form Submission & Display Success/Error Alerts --}}
+        
 </x-admin-ats-layout>
