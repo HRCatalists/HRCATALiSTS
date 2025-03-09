@@ -97,6 +97,8 @@
 <?php $component = $__componentOriginalda3062cffc092fcc96b2a905f3967236; ?>
 <?php unset($__componentOriginalda3062cffc092fcc96b2a905f3967236); ?>
 <?php endif; ?>
+    
+
 
 </body>
 </html><?php /**PATH C:\laragon\www\hr_catalists\resources\views/layouts/admin-ats-layout.blade.php ENDPATH**/ ?>

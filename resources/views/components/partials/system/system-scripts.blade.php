@@ -24,7 +24,7 @@
 <script src="{{ asset('js/sidebar.js') }}"></script>
 
 <!-- Calendar JS -->
-<script src="{{ asset('js/db-calendar.js') }}"></script>
+{{-- <script src="{{ asset('js/db-calendar.js') }}"></script> --}}
 
 {{-- Job status JS --}}
 <script src="{{ asset('js/job-status.js') }}"></script>

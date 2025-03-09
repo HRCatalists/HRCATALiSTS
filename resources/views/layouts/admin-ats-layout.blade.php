@@ -58,6 +58,8 @@
     {{ $slot }}
 
     <x-partials.system.system-scripts />
+    {{-- @include('components.partials.system.system-scripts') --}}
+
 
 </body>
 </html>
