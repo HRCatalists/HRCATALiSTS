@@ -82,7 +82,11 @@ Route::middleware(['auth', PreventBackHistory::class])->group(function () {
     Route::get('/applicants/{id}', [ApplicantController::class, 'show']);
     Route::post('/events/schedule/{id}', [ApplicantController::class, 'scheduleInterview'])->name('events.schedule');
 
+    //overview buttons
     Route::post('/applicants/{id}/update-status', [ApplicantController::class, 'updateStatus'])->name('applicants.updateStatus');
+
+    //applicant ats update dropdown buttons
+    Route::post('/applicants/{id}/choose-status', [ApplicantController::class, 'chooseStatus'])->name('applicants.chooseStatus');
 
     // ** Job Post Routes (Nested under Job Openings) **
     Route::prefix('ats-job-openings')->group(function () {
