@@ -312,4 +312,23 @@ class AdminController extends Controller
         $jobPosts = Job::with('user')->get(); 
         return view('hrcatalists.ats.admin-ats-jobs', compact('jobPosts'));
     }
+    public function updateExpiredJobs(Request $request)
+    {
+        // Get count of expired jobs before updating
+        $expiredJobCount = Job::where('end_date', '<', Carbon::today())
+                              ->where('status', 'active')
+                              ->count();
+    
+        if ($expiredJobCount > 0) {
+            // Update only expired active jobs
+            Job::where('end_date', '<', Carbon::today())
+                ->where('status', 'active')
+                ->update(['status' => 'inactive']);
+        }
+    
+        return response()->json([
+            'message' => $expiredJobCount > 0 ? 'Expired jobs updated successfully!' : 'No expired jobs to update.',
+            'count' => $expiredJobCount
+        ]);
+    }
 }

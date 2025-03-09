@@ -69,7 +69,7 @@
                 </div>
                 
                 <div class="d-flex">
-                    <div class="card checkbox-card" data-table="jobListingsTable">
+                    <div class="card checkbox-card me-3" data-table="jobListingsTable">
                         <div class="container d-flex">
             
                             <!-- Select All Checkbox -->
@@ -85,17 +85,19 @@
                         </div>
                     </div>
 
-                    <div class="d-flex justify-content-around ms-3">
-                        <!-- Add Position Button -->
-                        <button type="button" class="btn add-btn me-2" data-bs-toggle="modal" data-bs-target="#addPositionModal">
-                            ADD POSITION
-                        </button>
+                    <!-- Add Position Button -->
+                    <button type="button" class="btn add-btn me-2" data-bs-toggle="modal" data-bs-target="#addPositionModal">
+                        ADD POSITION
+                    </button>
 
-                        <button class="btn shadow print-btn">
-                            <i class="fa fa-print"></i> PRINT
-                            <a href=""></a>
-                        </button>
-                    </div>
+                    <button id="refreshBtn" class="btn shadow bg-danger-subtle refresh-btn me-3">
+                        <i class="fa fa-refresh"></i>
+                    </button>                    
+
+                    <button class="btn shadow print-btn ms-auto">
+                        <i class="fa fa-print"></i> PRINT
+                        <a href=""></a>
+                    </button>
                 </div>
                 
                 <table id="jobListingsTable" class="table table-bordered display mt-3">
@@ -309,6 +311,64 @@
     
            
 
+    
+
+    
+    
+    <script>
+        document.getElementById("refreshBtn").addEventListener("click", function() {
+            Swal.fire({
+                title: "Are you sure?",
+                text: "This will update all expired jobs to inactive status!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, update them!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch("/update-expired-jobs", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content")
+                        },
+                        body: JSON.stringify({})
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.count > 0) {
+                            Swal.fire({
+                                title: "Updated!",
+                                text: `${data.count} expired job(s) have been updated to inactive.`,
+                                icon: "success",
+                                timer: 2000,
+                                showConfirmButton: false
+                            }).then(() => {
+                                location.reload(); // Refresh page after success message
+                            });
+                        } else {
+                            Swal.fire({
+                                title: "No Updates Needed",
+                                text: "There are no expired jobs to update.",
+                                icon: "info",
+                                timer: 2000,
+                                showConfirmButton: false
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        Swal.fire({
+                            title: "Error!",
+                            text: "Something went wrong. Please try again.",
+                            icon: "error"
+                        });
+                        console.error("Error:", error);
+                    });
+                }
+            });
+        });
+    </script>
     
 
  <?php echo $__env->renderComponent(); ?>
