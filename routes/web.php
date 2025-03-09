@@ -65,10 +65,9 @@ Route::middleware(['auth', PreventBackHistory::class])->group(function () {
     // ATS Routes
     Route::get('/ats-dashboard', [AdminController::class, 'atsDashboard'])->name('ats-dashboard');
     Route::get('/ats-calendar', [AdminController::class, 'atsCalendar'])->name('ats-calendar');
-    Route::get('/api/events', [AdminController::class, 'getEvents'])->name('events.index');
+    Route::get('/events', [AdminController::class, 'getEvents'])->name('events.index');
     Route::post('/events', [AdminController::class, 'storeEvent'])->name('events.store');
-    Route::delete('/events/{id}', [AdminController::class, 'deleteEvent'])->name('events.destroy');
-
+    Route::delete('/events/{id}', [AdminController::class, 'deleteEvent'])->name('events.destroy');   
     Route::get('/ats-job-openings', [AdminController::class, 'atsJobs'])->name('ats-jobs');
 
     // Applicant Routes

@@ -158,97 +158,119 @@ class AdminController extends Controller
     }
 
    
-public function atsDashboard()
-{
-    if (!Auth::check()) {
-        return redirect()->route('login');
+    public function atsDashboard()
+    {
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+
+        // ✅ Fetch logs with user data
+        $logs = Log::with('user')->latest()->limit(5)->get();
+
+        // ✅ Fetch applicants data
+        $totalApplicants = Applicant::count();
+        $applicantsByStatus = Applicant::selectRaw('LOWER(TRIM(status)) as status, COUNT(*) as count')
+            ->groupBy('status')
+            ->pluck('count', 'status')
+            ->toArray();
+
+        // ✅ Fetch jobs data
+        $allJobs = Job::all();
+        $totalJobs = $allJobs->count();
+        $activeJobCount = Job::where('end_date', '>=', Carbon::now())->count();
+        $inactiveJobCount = Job::where('end_date', '<', Carbon::now())->count();
+
+        // ✅ Fetch events for the calendar
+        $events = Event::select('event_date', 'event_time', 'title', 'description')->get();
+
+        // ✅ Return view with all data, including logs
+        return view('hrcatalists.ats.admin-ats-db', [
+            'logs' => $logs, // ✅ Add logs to the view
+            'totalApplicants' => $totalApplicants,
+            'applicantsByStatus' => $applicantsByStatus,
+            'activeJobCount' => $activeJobCount,
+            'inactiveJobCount' => $inactiveJobCount,
+            'totalJobs' => $totalJobs,
+            'allJobs' => $allJobs,
+            'events' => $events, // ✅ Send events to Blade
+        ]);
     }
-
-    // ✅ Fetch logs with user data
-    $logs = Log::with('user')->latest()->limit(5)->get();
-
-    // ✅ Fetch applicants data
-    $totalApplicants = Applicant::count();
-    $applicantsByStatus = Applicant::selectRaw('LOWER(TRIM(status)) as status, COUNT(*) as count')
-        ->groupBy('status')
-        ->pluck('count', 'status')
-        ->toArray();
-
-    // ✅ Fetch jobs data
-    $allJobs = Job::all();
-    $totalJobs = $allJobs->count();
-    $activeJobCount = Job::where('end_date', '>=', Carbon::now())->count();
-    $inactiveJobCount = Job::where('end_date', '<', Carbon::now())->count();
-
-    // ✅ Fetch events for the calendar
-    $events = Event::select('event_date', 'event_time', 'title', 'description')->get();
-
-    // ✅ Return view with all data, including logs
-    return view('hrcatalists.ats.admin-ats-db', [
-        'logs' => $logs, // ✅ Add logs to the view
-        'totalApplicants' => $totalApplicants,
-        'applicantsByStatus' => $applicantsByStatus,
-        'activeJobCount' => $activeJobCount,
-        'inactiveJobCount' => $inactiveJobCount,
-        'totalJobs' => $totalJobs,
-        'allJobs' => $allJobs,
-        'events' => $events, // ✅ Send events to Blade
-    ]);
-}
        // Load the ATS Calendar View
-       public function atsCalendar()
-{
-    if (!Auth::check()) {
-        return redirect()->route('login');
+    public function atsCalendar()
+    {
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+
+        $events = Event::where('user_id', Auth::id())->get(); // Fetch events for logged-in user
+        return view('hrcatalists.ats.admin-ats-cl', compact('events'));
     }
+    public function getEvents()
+    {
+        if (!Auth::check()) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
 
-    $events = Event::where('user_id', Auth::id())->get(); // Fetch events for logged-in user
-    return view('hrcatalists.ats.admin-ats-cl', compact('events'));
-}
-public function getEvents()
-{
-    if (!Auth::check()) {
-        return response()->json(['error' => 'Unauthorized'], 401);
+        $events = Event::select('event_date', 'event_time', 'title', 'description')->get();
+        return response()->json($events);
     }
+    public function storeEvent(Request $request)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'event_date' => 'required|date',
+            'event_time' => 'required'
+        ]);
 
-    $events = Event::select('event_date', 'event_time', 'title', 'description')->get();
-    return response()->json($events);
-}
-public function storeEvent(Request $request)
-{
-    $request->validate([
-        'title' => 'required|string|max:255',
-        'description' => 'required|string',
-        'event_date' => 'required|date',
-        'event_time' => 'required'
-    ]);
+        $event = Event::create([
+            'user_id' => Auth::id(),
+            'title' => $request->title,
+            'description' => $request->description,
+            'event_date' => $request->event_date,
+            'event_time' => $request->event_time,
+        ]);
 
-    Event::create([
-        'user_id' => Auth::id(),
-        'title' => $request->title,
-        'description' => $request->description,
-        'event_date' => $request->event_date,
-        'event_time' => $request->event_time,
-    ]);
+        // Log event creation
+        Log::create([
+            'user_id' => Auth::id(),
+            'activity' => "Created an event: {$event->title} on {$event->event_date} at {$event->event_time}",
+        ]);
 
-    return redirect()->back()->with('success', 'Event added successfully!');
-}
-public function deleteEvent($id)
-{
-    if (!Auth::check()) {
-        return response()->json(['error' => 'Unauthorized'], 401);
+        return response()->json(['success' => true, 'event' => $event]);
     }
-
-    $event = Event::where('id', $id)->where('user_id', Auth::id())->first();
-
-    if (!$event) {
-        return response()->json(['error' => 'Event not found or permission denied'], 403);
-    }
-
-    $event->delete();
-    return redirect()->back()->with('success', 'Event deleted successfully!');
-} 
-
+    public function deleteEvent($id)
+    {
+        if (!Auth::check()) {
+            return response()->json([
+                'success' => false,
+                'error' => 'Unauthorized'
+            ], 401);
+        }
+    
+        $event = Event::where('id', $id)->where('user_id', Auth::id())->first();
+    
+        if (!$event) {
+            return response()->json([
+                'success' => false,
+                'error' => 'Event not found or permission denied'
+            ], 403);
+        }
+    
+        // Log event deletion
+        Log::create([
+            'user_id' => Auth::id(),
+            'activity' => "Deleted an event: {$event->title} scheduled on {$event->event_date}",
+        ]);
+    
+        $event->delete();
+    
+        return response()->json([
+            'success' => true,
+            'message' => 'Event deleted successfully!',
+            'event_id' => $id
+        ]);
+    }    
     public function atsApplicants()
     {
         if (!Auth::check()) {

@@ -24,7 +24,7 @@
 <script src="<?php echo e(asset('js/sidebar.js')); ?>"></script>
 
 <!-- Calendar JS -->
-<script src="<?php echo e(asset('js/db-calendar.js')); ?>"></script>
+
 
 
 <script src="<?php echo e(asset('js/job-status.js')); ?>"></script>

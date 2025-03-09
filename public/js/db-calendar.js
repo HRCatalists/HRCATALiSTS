@@ -122,6 +122,12 @@
 
 
 document.addEventListener("DOMContentLoaded", function () {
+    console.log("Checking elements...");
+    console.log("Calendar:", document.getElementById("calendar"));
+    console.log("Prev Button:", document.getElementById("prev-month"));
+    console.log("Next Button:", document.getElementById("next-month"));
+    console.log("Calendar Header:", document.getElementById("calendar-header"));
+
     const calendarElement = document.getElementById("calendar");
     const eventListElement = document.getElementById("event-list");
     const prevMonthBtn = document.getElementById("prev-month");
@@ -144,22 +150,38 @@ document.addEventListener("DOMContentLoaded", function () {
     document.body.appendChild(tooltip);
 
     function fetchEvents() {
-        fetch("/api/events") // Fetch from Laravel backend
-            .then(response => response.json())
-            .then(data => {
-                console.log("✅ Fetched Events:", data); // Debugging
-
-                events = data.map(event => ({
-                    date: event.event_date,
-                    time: event.event_time,
-                    title: event.title,
-                    description: event.description
-                }));
-                generateCalendar(currentYear, currentMonth);
-                populateEvents();
-            })
-            .catch(error => console.error("❌ Error fetching events:", error));
+        fetch("http://127.0.0.1:8000/api/events", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+            },
+            credentials: "include" // Ensures Laravel Breeze session authentication works
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log("✅ Fetched Events:", data);
+            events = data.map(event => ({
+                date: event.event_date || "N/A",
+                time: event.event_time || "N/A",
+                title: event.title || "No Title",
+                description: event.description || "No Description"
+            }));
+    
+            generateCalendar(currentYear, currentMonth);
+            populateEvents();
+        })
+        .catch(error => {
+            console.error("❌ Error fetching events:", error);
+            alert("Failed to load events. Please try again later.");
+        });
     }
+      
 
     function generateCalendar(year, month) {
         const firstDay = new Date(year, month, 1).getDay();

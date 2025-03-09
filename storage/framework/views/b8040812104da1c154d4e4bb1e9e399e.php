@@ -74,22 +74,23 @@
                             </form>
                         </div>
 
+                        
                         <div id="reminder-section" class="col-lg-6">
                             <h3>Reminders</h3>
-                            <ul id="reminderList">
+                            <ul id="reminderList" class="list-group">
                                 <?php $__currentLoopData = $events; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $event): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                    <li>
-                                        <strong><?php echo e($event->title); ?></strong> - <?php echo e($event->description); ?> on <?php echo e($event->event_date); ?>
+                                    <li id="event-<?php echo e($event->id); ?>" class="list-group-item d-flex justify-content-between align-items-center">
+                                        <div class="event-text flex-grow-1">
+                                            <strong><?php echo e($event->title); ?></strong> - <?php echo e($event->description); ?> on <?php echo e($event->event_date); ?>
 
-                                        <form action="<?php echo e(route('events.destroy', $event->id)); ?>" method="POST" style="display:inline;">
-                                            <?php echo csrf_field(); ?>
-                                            <?php echo method_field('DELETE'); ?>
-                                            <button type="submit">Delete</button>
-                                        </form>
+                                        </div>
+                                        <button type="button" class="btn btn-danger delete-btn">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
                                     </li>
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </ul>
-                        </div>
+                        </div>                                                                                           
                     </div>
                 </div>
             </div>
@@ -97,79 +98,104 @@
     </div>
 
     <!-- FullCalendar Script -->
-    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js'></script>
+    
     
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-        var calendarEl = document.getElementById('main-calendar');
+        document.addEventListener("DOMContentLoaded", function () {
+            var calendarEl = document.getElementById("main-calendar");
+            var reminderListEl = document.getElementById("reminderList");
 
-        var calendar = new FullCalendar.Calendar(calendarEl, {
-            initialView: 'dayGridMonth',
-            selectable: true,
-            editable: false,
-            eventDidMount: function(info) {
-                // Create tooltip element
-                let tooltip = document.createElement("div");
-                tooltip.classList.add("fc-tooltip");
-                tooltip.innerHTML = `<strong>Time:</strong> ${info.event.extendedProps.event_time} <br> 
-                                    <strong>Description:</strong> ${info.event.extendedProps.description}`;
-                document.body.appendChild(tooltip);
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: "dayGridMonth",
+                selectable: true,
+                editable: false,
+                events: function (fetchInfo, successCallback, failureCallback) {
+                    fetch("<?php echo e(route('events.index')); ?>")
+                        .then(response => response.json())
+                        .then(events => {
+                            let today = new Date();
+                            today.setHours(0, 0, 0, 0);
 
-                // Show tooltip on mouse enter
-                info.el.addEventListener("mouseenter", function(event) {
-                    tooltip.style.display = "block";
-                    tooltip.style.left = event.pageX + 10 + "px";
-                    tooltip.style.top = event.pageY + 10 + "px";
-                });
+                            let formattedEvents = events.map(event => {
+                                let eventDate = new Date(event.event_date);
+                                eventDate.setHours(0, 0, 0, 0);
 
-                // Hide tooltip on mouse leave
-                info.el.addEventListener("mouseleave", function() {
-                    tooltip.style.display = "none";
-                });
-            },
-            events: function(fetchInfo, successCallback, failureCallback) {
-                fetch("<?php echo e(route('events.index')); ?>")
-                    .then(response => response.json())
-                    .then(events => {
-                        let formattedEvents = events.map(event => ({
-                            title: event.title,
-                            start: event.event_date,
-                            event_time: event.event_time,  // Add event time
-                            description: event.description // Add event description
-                        }));
-                        successCallback(formattedEvents);
-                    })
-                    .catch(error => failureCallback(error));
-            },
-            dateClick: function(info) {
-                let title = prompt("Enter event title:");
-                if (title) {
-                    fetch("<?php echo e(route('events.store')); ?>", {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded',
-                            'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>'
-                        },
-                        body: new URLSearchParams({
-                            title: title,
-                            description: "No description",
-                            event_date: info.dateStr,
-                            event_time: "00:00"
+                                let eventColor = "#28A745"; // Default Green (Future)
+                                if (eventDate < today) {
+                                    eventColor = "#FFA500"; // Past Orange
+                                } else if (eventDate.getTime() === today.getTime()) {
+                                    eventColor = "#007BFF"; // Today Blue
+                                }
+
+                                return {
+                                    id: event.id,
+                                    title: event.title,
+                                    start: event.event_date,
+                                    event_time: event.event_time,
+                                    description: event.description,
+                                    backgroundColor: eventColor,
+                                    borderColor: eventColor,
+                                };
+                            });
+
+                            successCallback(formattedEvents);
                         })
-                    })
-                    .then(response => {
-                        if (response.ok) {
-                            alert("Event added successfully!");
-                            location.reload();
-                        }
-                    })
-                    .catch(error => console.log(error));
+                        .catch(error => failureCallback(error));
+                },
+            });
+
+            calendar.render();
+
+            // ✅ Fix: Use event delegation to handle dynamically created delete buttons
+            document.addEventListener("click", function (event) {
+                if (event.target.classList.contains("delete-btn")) {
+                    let eventId = event.target.dataset.id;
+                    confirmDelete(eventId);
                 }
+            });
+
+            // ✅ Function to confirm and handle event deletion
+            function confirmDelete(eventId) {
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "This event will be permanently deleted!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#d33",
+                    cancelButtonColor: "#3085d6",
+                    confirmButtonText: "Yes, delete it!",
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        fetch(`/events/${eventId}`, {
+                            method: "DELETE",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content"),
+                            },
+                        })
+                            .then((response) => response.json())
+                            .then((data) => {
+                                if (data.success) {
+                                    Swal.fire("Deleted!", "Event has been removed.", "success");
+
+                                    // ✅ Remove event from UI (Reminder List)
+                                    let listItem = document.getElementById(`event-${eventId}`);
+                                    if (listItem) {
+                                        listItem.remove();
+                                    }
+
+                                    // ✅ Refresh the FullCalendar to remove the deleted event
+                                    calendar.refetchEvents();
+                                } else {
+                                    Swal.fire("Error!", data.error || "Could not delete event.", "error");
+                                }
+                            })
+                            .catch((error) => Swal.fire("Error!", "Something went wrong.", "error"));
+                    }
+                });
             }
         });
-
-        calendar.render();
-    });
     </script>
  <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>

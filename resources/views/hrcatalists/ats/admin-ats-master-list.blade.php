@@ -194,6 +194,7 @@
 
     <!-- Add Applicant Modal -->
     @include('components.partials.system.ats.ats-add-applicant-modal')
+    
     <!-- Candidate Profile Offcanvas -->
     @include('components.partials.system.ats.ats-candidate-profile-offcanvas')
 
