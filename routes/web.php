@@ -73,11 +73,15 @@ Route::middleware(['auth', PreventBackHistory::class])->group(function () {
     Route::post('/update-expired-jobs', [AdminController::class, 'updateExpiredJobs']);
 
     // Applicant Routes
+
+
     Route::get('/ats-applicants', [ApplicantController::class, 'index'])->name('ats-applicants');
     Route::get('/ats-screening', [ApplicantController::class, 'pending'])->name('ats-screening');
     Route::get('/ats-interview', [ApplicantController::class, 'interviewed'])->name('ats-interview');
     Route::get('/ats-archived', [ApplicantController::class, 'archived'])->name('ats-archived');
     Route::get('/applicants/{id}', [ApplicantController::class, 'show']);
+    Route::post('/events/schedule/{id}', [ApplicantController::class, 'scheduleInterview'])->name('events.schedule');
+
     Route::post('/applicants/{id}/update-status', [ApplicantController::class, 'updateStatus'])->name('applicants.updateStatus');
 
     // ** Job Post Routes (Nested under Job Openings) **
