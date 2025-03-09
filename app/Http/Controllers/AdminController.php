@@ -237,8 +237,8 @@ class AdminController extends Controller
             'activity' => "Created an event: {$event->title} on {$event->event_date} at {$event->event_time}",
         ]);
 
-        return response()->json(['success' => true, 'event' => $event]);
-    }
+        return response()->json(['success' => true, 'event' => $event], 201);
+    }   
     public function deleteEvent($id)
     {
         if (!Auth::check()) {

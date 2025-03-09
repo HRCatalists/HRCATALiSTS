@@ -33,7 +33,7 @@
                 <div class="container-calendar">
                     <h1>Add Event</h1>
                     <div class="calendar-event-wrapper">
-                        <div id="event-section" class="col-lg-6">
+                        <div id="event-section" class="">
                             <form id="eventForm">
                                 @csrf
                                 <input type="date" id="event_date" name="event_date" required>
@@ -55,7 +55,7 @@
                                 @endforeach
                             </ul>
                         </div> --}}
-                        <div id="reminder-section" class="col-lg-6">
+                        {{-- <div id="reminder-section" class="col-lg-6">
                             <h3>Reminders</h3>
                             <ul id="reminderList" class="list-group">
                                 @foreach($events as $event)
@@ -69,8 +69,41 @@
                                     </li>
                                 @endforeach
                             </ul>
-                        </div>                                                                                           
+                        </div>                                                                                            --}}
                     </div>
+                </div>
+
+                <!-- Event List (DataTable) -->
+                <div class="mt-5">
+                    <h3>Event List</h3>
+                    <table id="eventTable" class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Title</th>
+                                <th>Description</th>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($events as $event)
+                                <tr id="event-row-{{ $event->id }}">
+                                    <td>{{ $event->id }}</td>
+                                    <td>{{ $event->title }}</td>
+                                    <td>{{ $event->description }}</td>
+                                    <td>{{ $event->event_date }}</td>
+                                    <td>{{ $event->event_time }}</td>
+                                    <td>
+                                        <button class="btn btn-danger btn-sm delete-btn" data-id="{{ $event->id }}">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -79,10 +112,10 @@
     <!-- FullCalendar Script -->
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js'></script>
     
-    {{-- <script>
+    <script>
         document.addEventListener('DOMContentLoaded', function () {
             var calendarEl = document.getElementById('main-calendar');
-            var reminderListEl = document.getElementById('reminderList'); // Get reminder list
+            // var reminderListEl = document.getElementById('reminderList');
     
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth',
@@ -176,17 +209,21 @@
                                     event_time: result.value.eventTime
                                 })
                             })
-                            .then(response => response.json())
-                            .then(data => {
-                                if (data.success) {
+                            .then(response => response.json().then(data => ({ status: response.status, body: data }))) // Capture both status & body
+                            .then(({ status, body }) => {
+                                console.log("Server Response:", status, body); // Log to inspect response
+
+                                if (status === 201 || body.success) {
                                     Swal.fire('Success!', 'Event added successfully!', 'success');
-                                    calendar.refetchEvents(); // Refresh calendar events
-                                    addReminderToList(data.event); // ✅ Add event to reminders dynamically
+                                    calendar.refetchEvents();
                                 } else {
-                                    Swal.fire('Error!', data.message || 'Failed to add event.', 'error');
+                                    Swal.fire('Error!', body.message || 'Failed to add event.', 'error');
                                 }
                             })
-                            .catch(error => Swal.fire('Error!', 'Something went wrong.', 'error'));
+                            .catch(error => {
+                                console.error("Fetch Error:", error);
+                                Swal.fire('Error!', 'Something went wrong. Check console for details.', 'error');
+                            });
                         }
                     });
                 }
@@ -195,63 +232,51 @@
             calendar.render();
     
             // Form submission for adding events
-            var eventForm = document.getElementById('eventForm');
-            if (eventForm) {
-                eventForm.addEventListener('submit', function (event) {
-                    event.preventDefault();
-    
-                    let formData = {
-                        title: document.getElementById('title').value,
-                        description: document.getElementById('description').value,
-                        event_date: document.getElementById('event_date').value,
-                        event_time: document.getElementById('event_time').value
-                    };
-    
-                    fetch("{{ route('events.store') }}", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                            "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                        },
-                        body: JSON.stringify(formData)
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            Swal.fire('Success!', 'Event added successfully!', 'success');
-                            calendar.refetchEvents();
-                            addReminderToList(data.event); // ✅ Update reminders dynamically
-                            eventForm.reset();
-                        } else {
-                            Swal.fire('Error!', 'Failed to add event.', 'error');
-                        }
-                    })
-                    .catch(error => Swal.fire('Error!', 'Something went wrong.', 'error'));
+            eventForm.addEventListener('submit', function (event) {
+                event.preventDefault();
+
+                let formData = {
+                    title: document.getElementById('title').value,
+                    description: document.getElementById('description').value,
+                    event_date: document.getElementById('event_date').value,
+                    event_time: document.getElementById('event_time').value
+                };
+
+                fetch("{{ route('events.store') }}", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    },
+                    body: JSON.stringify(formData)
+                })
+                .then(response => response.json().then(data => ({ status: response.status, body: data }))) // Capture both status & body
+                .then(({ status, body }) => {
+                    console.log("Server Response:", status, body); // Log response
+
+                    if (status === 201 || body.success) {
+                        Swal.fire('Success!', 'Event added successfully!', 'success');
+                        calendar.refetchEvents(); // ✅ Refresh calendar events
+                        eventForm.reset(); // ✅ Clear form fields
+                    } else {
+                        Swal.fire('Error!', body.message || 'Failed to add event.', 'error');
+                    }
+                })
+                .catch(error => {
+                    console.error("Fetch Error:", error);
+                    Swal.fire('Error!', 'Something went wrong. Check console for details.', 'error');
                 });
-            }
+            });
     
-            // ✅ Function to add event to reminders dynamically
-            function addReminderToList(event) {
-                let reminderItem = document.createElement("li");
-                reminderItem.innerHTML = `
-                    <strong>${event.title}</strong> - ${event.description} on ${event.event_date}
-                    <form action="{{ route('events.destroy', '') }}/${event.id}" method="POST" class="delete-form" style="display:inline;">
-                        @csrf
-                        @method('DELETE')
-                        <button type="button" class="delete-btn" data-id="${event.id}">Delete</button>
-                    </form>
-                `;
-    
-                reminderListEl.appendChild(reminderItem); // Append new event to the list
-    
-                // Add event listener to the new delete button
-                reminderItem.querySelector(".delete-btn").addEventListener("click", function () {
-                    confirmDelete(event.id, reminderItem);
-                });
-            }
-    
-            // ✅ Function to confirm deletion
-            function confirmDelete(eventId, listItem) {
+            // Initialize DataTable
+            var eventTable = $('#eventTable').DataTable();
+
+            // Event delegation for delete buttons
+            $('#eventTable tbody').on('click', '.delete-btn', function () {
+                var button = $(this);
+                var eventId = button.data('id');
+                var row = button.closest('tr');
+
                 Swal.fire({
                     title: 'Are you sure?',
                     text: "This event will be permanently deleted!",
@@ -262,8 +287,10 @@
                     confirmButtonText: 'Yes, delete it!'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        fetch(`/events/${eventId}`, { // ✅ Correct URL structure
-                            method: 'DELETE', // ✅ Use DELETE method directly
+                        button.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i>'); // Show loading spinner
+
+                        fetch(`/events/${eventId}`, {
+                            method: 'DELETE',
                             headers: {
                                 "Content-Type": "application/json",
                                 "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute('content')
@@ -276,116 +303,25 @@
                                     title: 'Deleted!',
                                     text: 'Event has been removed.',
                                     icon: 'success',
-                                    timer: 2000, // Auto-close after 2 seconds
+                                    timer: 2000,
                                     showConfirmButton: false
                                 });
 
-                                listItem.remove(); // ✅ Remove item from the UI dynamically
-                                calendar.refetchEvents(); // ✅ Refresh FullCalendar events dynamically
+                                eventTable.row(row).remove().draw(); // Remove row from DataTable
+                                calendar.refetchEvents(); // Refresh calendar events
                             } else {
                                 Swal.fire('Error!', data.error || 'Could not delete event.', 'error');
+                                button.prop('disabled', false).html('<i class="fas fa-trash-alt"></i>'); // Restore delete button
                             }
                         })
-                        .catch(error => Swal.fire('Error!', 'Something went wrong.', 'error'));
+                        .catch(error => {
+                            Swal.fire('Error!', 'Something went wrong.', 'error');
+                            button.prop('disabled', false).html('<i class="fas fa-trash-alt"></i>');
+                        });
                     }
                 });
-            }
-        });
-    </script> --}}
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            var calendarEl = document.getElementById("main-calendar");
-            var reminderListEl = document.getElementById("reminderList");
-
-            var calendar = new FullCalendar.Calendar(calendarEl, {
-                initialView: "dayGridMonth",
-                selectable: true,
-                editable: false,
-                events: function (fetchInfo, successCallback, failureCallback) {
-                    fetch("{{ route('events.index') }}")
-                        .then(response => response.json())
-                        .then(events => {
-                            let today = new Date();
-                            today.setHours(0, 0, 0, 0);
-
-                            let formattedEvents = events.map(event => {
-                                let eventDate = new Date(event.event_date);
-                                eventDate.setHours(0, 0, 0, 0);
-
-                                let eventColor = "#28A745"; // Default Green (Future)
-                                if (eventDate < today) {
-                                    eventColor = "#FFA500"; // Past Orange
-                                } else if (eventDate.getTime() === today.getTime()) {
-                                    eventColor = "#007BFF"; // Today Blue
-                                }
-
-                                return {
-                                    id: event.id,
-                                    title: event.title,
-                                    start: event.event_date,
-                                    event_time: event.event_time,
-                                    description: event.description,
-                                    backgroundColor: eventColor,
-                                    borderColor: eventColor,
-                                };
-                            });
-
-                            successCallback(formattedEvents);
-                        })
-                        .catch(error => failureCallback(error));
-                },
             });
-
-            calendar.render();
-
-            // ✅ Fix: Use event delegation to handle dynamically created delete buttons
-            document.addEventListener("click", function (event) {
-                if (event.target.classList.contains("delete-btn")) {
-                    let eventId = event.target.dataset.id;
-                    confirmDelete(eventId);
-                }
-            });
-
-            // ✅ Function to confirm and handle event deletion
-            function confirmDelete(eventId) {
-                Swal.fire({
-                    title: "Are you sure?",
-                    text: "This event will be permanently deleted!",
-                    icon: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#d33",
-                    cancelButtonColor: "#3085d6",
-                    confirmButtonText: "Yes, delete it!",
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        fetch(`/events/${eventId}`, {
-                            method: "DELETE",
-                            headers: {
-                                "Content-Type": "application/json",
-                                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content"),
-                            },
-                        })
-                            .then((response) => response.json())
-                            .then((data) => {
-                                if (data.success) {
-                                    Swal.fire("Deleted!", "Event has been removed.", "success");
-
-                                    // ✅ Remove event from UI (Reminder List)
-                                    let listItem = document.getElementById(`event-${eventId}`);
-                                    if (listItem) {
-                                        listItem.remove();
-                                    }
-
-                                    // ✅ Refresh the FullCalendar to remove the deleted event
-                                    calendar.refetchEvents();
-                                } else {
-                                    Swal.fire("Error!", data.error || "Could not delete event.", "error");
-                                }
-                            })
-                            .catch((error) => Swal.fire("Error!", "Something went wrong.", "error"));
-                    }
-                });
-            }
         });
     </script>
+
 </x-admin-ats-layout>
