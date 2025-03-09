@@ -23,6 +23,8 @@ class ApplicantController extends Controller
 
         return view('hrcatalists.ats.admin-ats-master-list', compact('allApplicants', 'jobs'));
     }
+
+    //update sa overview
     public function updateStatus(Request $request, $id)
 {
     if (!Auth::check()) {
@@ -60,6 +62,43 @@ class ApplicantController extends Controller
     }
 }
 
+//for buttons only update status to
+public function chooseStatus(Request $request, $id)
+    {
+        if (!Auth::check()) {
+            return redirect()->route('login')->with('error', 'Please log in to update applicant status.');
+        }
+
+        $applicant = Applicant::find($id);
+        if (!$applicant) {
+            return redirect()->back()->with('error', 'Applicant not found.');
+        }
+
+        $validStatuses = ['pending', 'screening', 'scheduled', 'interviewed', 'hired', 'rejected', 'archived'];
+        $newStatus = $request->input('status');
+
+        if (!in_array($newStatus, $validStatuses)) {
+            return redirect()->back()->with('error', 'Invalid status provided.');
+        }
+
+        // Combine first & last name for logging
+        $applicantName = trim($applicant->first_name . ' ' . $applicant->last_name);
+        $oldStatus = $applicant->status;
+
+        // Update status
+        $applicant->status = $newStatus;
+        $applicant->save();
+
+        // Log the update
+        Log::create([
+            'user_id' => Auth::id(),
+            'activity' => "Updated status for applicant: {$applicantName} from " . ucfirst($oldStatus) . " to " . ucfirst($newStatus),
+            'created_at' => now(),
+            'updated_at' => $applicant->updated_at,
+        ]);
+
+        return redirect()->back()->with('success', "Applicant status updated to " . ucfirst($newStatus) . ".");
+    }
     
     public function scheduleInterview(Request $request, $id)
 {
@@ -97,6 +136,46 @@ class ApplicantController extends Controller
         return redirect()->back()->with('error', 'Failed to schedule the interview. Please try again.');
     }
 }
+
+public function pending()
+    {
+        if (!Auth::check()) {
+            return redirect()->route('login')->with('error', 'Please log in to view pending applicants.');
+        }
+
+        $allApplicants = Applicant::whereIn('status', ['pending', 'screening'])->get();
+        return view('hrcatalists.ats.admin-ats-screening', compact('allApplicants'));
+    }
+
+    public function archived()
+    {
+        if (!Auth::check()) {
+            return redirect()->route('login')->with('error', 'Please log in to view archived applicants.');
+        }
+
+        $allApplicants = Applicant::whereIn('status', ['archived', 'rejected'])->get();
+        return view('hrcatalists.ats.admin-ats-archived', compact('allApplicants'));
+    }
+
+    public function interviewed()
+    {
+        if (!Auth::check()) {
+            return redirect()->route('login')->with('error', 'Please log in to view interviewed applicants.');
+        }
+
+        $interviewedApplicants = Applicant::whereIn('status', ['scheduled', 'interviewed'])->get();
+        return view('hrcatalists.ats.admin-ats-interview', compact('interviewedApplicants'));
+    }
+
+    public function show($id)
+    {
+        if (!Auth::check()) {
+            return redirect()->route('login')->with('error', 'Please log in to view applicant details.');
+        }
+
+        $applicant = Applicant::findOrFail($id);
+        return view('hrcatalists.ats.show-applicant', compact('applicant'));
+    }
 
 
 
