@@ -26,10 +26,29 @@ class HomeController extends Controller
     }
 
     public function openings()
-    {
-        // Fetch only active jobs
-        $jobs = Job::where('status', 'active')->get();
-        
-        return view('hrcatalists.openings', compact('jobs'));
+{
+    $query = Job::where('status', 'active');
+
+    if (request()->has('keyword') && !empty(request('keyword'))) {
+        $query->where(function ($q) {
+            $q->where('job_title', 'LIKE', '%' . request('keyword') . '%')
+              ->orWhere('job_description', 'LIKE', '%' . request('keyword') . '%')
+              ->orWhere('requirements', 'LIKE', '%' . request('keyword') . '%');
+        });
     }
+
+    if (request()->has('position') && request('position') !== 'Positions') {
+        $query->where('job_title', request('position'));
+    }
+
+    $jobs = $query->get();
+
+    // If request is AJAX, return JSON
+    if (request()->ajax()) {
+        return response()->json(['jobs' => $jobs]);
+    }
+
+    return view('hrcatalists.openings', compact('jobs'));
+}
+
 }
