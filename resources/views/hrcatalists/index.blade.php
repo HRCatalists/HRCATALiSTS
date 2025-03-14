@@ -10,7 +10,7 @@
             <p>Human Asset Management & Development Office</p>
         </div>
         
-        <div class="search-bar">
+        {{-- <div class="search-bar">
             <input type="text" placeholder="Enter key word">
 
             <select>
@@ -24,7 +24,25 @@
             </select>
 
             <button>Search</button> 
-        </div>
+        </div> --}}
+        <div class="search-bar">
+            <div class="row">
+                <div class="col-md-4">
+                    <input type="text" placeholder="Enter job title or tags">
+                </div>
+                <div class="col-md-4">
+                    <select>
+                        <option value="">Select Department</option>
+                        @foreach ($departments as $department)
+                            <option value="{{ $department->code }}">{{ $department->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-md-4 d-flex justify-content-end align-items-center">
+                    <button class="float-end">Search</button> 
+                </div>
+            </div>
+        </div>        
     </div>
 
     <!-- About Us Section -->

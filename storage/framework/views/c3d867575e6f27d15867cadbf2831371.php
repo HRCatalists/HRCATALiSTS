@@ -19,21 +19,25 @@
             <p>Human Asset Management & Development Office</p>
         </div>
         
+        
         <div class="search-bar">
-            <input type="text" placeholder="Enter key word">
-
-            <select>
-                <option>Positions</option>
-                <option>Positions one</option>
-                <option>Positions two</option>
-                <option>Positions three</option>
-                <option>Positions four</option>
-                <option>Positions five</option>
-                <option>Positions wneiurjhewiurherh</option>
-            </select>
-
-            <button>Search</button> 
-        </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <input type="text" placeholder="Enter job title or tags">
+                </div>
+                <div class="col-md-4">
+                    <select>
+                        <option value="">Select Department</option>
+                        <?php $__currentLoopData = $departments; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $department): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <option value="<?php echo e($department->code); ?>"><?php echo e($department->name); ?></option>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    </select>
+                </div>
+                <div class="col-md-4 d-flex justify-content-end align-items-center">
+                    <button class="float-end">Search</button> 
+                </div>
+            </div>
+        </div>        
     </div>
 
     <!-- About Us Section -->

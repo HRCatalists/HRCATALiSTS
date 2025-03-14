@@ -5,11 +5,15 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\JobPostController;
 use App\Http\Controllers\ApplicantController;
+use App\Http\Controllers\DepartmentController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 
+
+// Route to show the departments list (for the search dropdown)
+Route::get('/departments', [DepartmentController::class, 'index'])->name('departments.index');
 
 Route::get('/api/check-auth', function () {
     return response()->json(['authenticated' => Auth::check()]);
