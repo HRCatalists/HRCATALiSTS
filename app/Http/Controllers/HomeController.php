@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
 use App\Models\Job;
+use App\Models\Department;
 
 class HomeController extends Controller
 {
@@ -11,8 +12,11 @@ class HomeController extends Controller
     {
         // Fetch only active jobs
         $jobs = Job::where('status', 'active')->get();
+        
+        // ✅ Fetch departments for the search dropdown
+        $departments = Department::all();
 
-        return view('hrcatalists.index', compact('jobs'));
+        return view('hrcatalists.index', compact('jobs', 'departments'));
     }
 
     public function show($id)
