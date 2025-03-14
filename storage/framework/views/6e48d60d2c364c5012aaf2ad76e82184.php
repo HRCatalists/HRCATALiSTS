@@ -15,17 +15,21 @@
     <!-- Link Swiper's CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 
-    <!-- Styles CCS -->
+    <!-- Styles CSS -->
     <link rel="stylesheet" href="<?php echo e(asset('css/styles.css')); ?>">
 
-    <!-- Navbar CCS -->
+    <!-- Navbar CSS -->
     <link rel="stylesheet" href="<?php echo e(asset('css/navbar.css')); ?>">
     
-    <!-- Online Recruitment CCS -->
+    <!-- Online Recruitment CSS -->
     <link rel="stylesheet" href="<?php echo e(asset('css/ol-recruitment.css')); ?>">
 
-    <!-- Animated buttons CCS -->
+    <!-- Animated buttons CSS -->
     <link rel="stylesheet" href="<?php echo e(asset('css/animated-btns.css')); ?>">
+
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
 </head>
 <body>
 
@@ -80,6 +84,10 @@
 
     
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="js/swiper.js"></script>
 
 </body>
 </html><?php /**PATH C:\Users\raide\OneDrive\Desktop\HRCATALiSTS-hr-catalists\resources\views/layouts/welcome-layout.blade.php ENDPATH**/ ?>
