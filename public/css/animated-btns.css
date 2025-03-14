@@ -47,7 +47,7 @@
 }
 
 .btn-1 {
-  border: 1px solid;
+  /* border: 1px solid; */
   box-sizing: border-box;
   display: block;
   font-weight: 800;
@@ -67,6 +67,21 @@
 }
 
 .btn-1:hover .original {
+  transform: translateY(100%);
+}
+
+.btn-1 .login {
+  background: #3377CC;
+  color: #fff ;
+  display: grid;
+  border: 0 !important;
+  inset: 0;
+  place-content: center;
+  position: absolute;
+  transition: transform 0.3s cubic-bezier(0.87, 0, 0.13, 1);
+}
+
+.btn-1:hover .login {
   transform: translateY(100%);
 }
 

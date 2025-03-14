@@ -24,46 +24,46 @@ class ApplicantController extends Controller
         return view('hrcatalists.ats.admin-ats-master-list', compact('allApplicants', 'jobs'));
     }
 
-    //update sa overview
+    //status update in overview
     public function updateStatus(Request $request, $id)
-{
-    if (!Auth::check()) {
-        return redirect()->route('login')->with('error', 'Please log in to update status.');
-    }
+    {
+        if (!Auth::check()) {
+            return redirect()->route('login')->with('error', 'Please log in to update status.');
+        }
 
-    $request->validate([
-        'action' => 'required|string|in:approve,reject,archive'
-    ]);
-
-    try {
-        $applicant = Applicant::findOrFail($id);
-
-        // Map actions to statuses
-        $statusMap = [
-            'approve' => 'interviewed',
-            'reject' => 'rejected',
-            'archive' => 'archived',
-        ];
-
-        $applicant->status = $statusMap[$request->action];
-        $applicant->save();
-
-        // Log action
-        Log::create([
-            'user_id' => Auth::id(),
-            'activity' => "Applicant {$applicant->first_name} {$applicant->last_name} marked as {$applicant->status}",
-            'created_at' => now(),
+        $request->validate([
+            'action' => 'required|string|in:approve,reject,archive'
         ]);
 
-        return redirect()->back()->with('success', 'Applicant status updated successfully.');
-    } catch (\Exception $e) {
-        \Log::error("Failed to update status: " . $e->getMessage());
-        return redirect()->back()->with('error', 'Failed to update status. Please try again.');
-    }
-}
+        try {
+            $applicant = Applicant::findOrFail($id);
 
-//for buttons only update status to
-public function chooseStatus(Request $request, $id)
+            // Map actions to statuses
+            $statusMap = [
+                'approve' => 'interviewed',
+                'reject' => 'rejected',
+                'archive' => 'archived',
+            ];
+
+            $applicant->status = $statusMap[$request->action];
+            $applicant->save();
+
+            // Log action
+            Log::create([
+                'user_id' => Auth::id(),
+                'activity' => "Applicant {$applicant->first_name} {$applicant->last_name} marked as {$applicant->status}",
+                'created_at' => now(),
+            ]);
+
+            return redirect()->back()->with('success', 'Applicant status updated successfully.');
+        } catch (\Exception $e) {
+            \Log::error("Failed to update status: " . $e->getMessage());
+            return redirect()->back()->with('error', 'Failed to update status. Please try again.');
+        }
+    }
+
+    //status update in dropdown
+    public function chooseStatus(Request $request, $id)
     {
         if (!Auth::check()) {
             return redirect()->route('login')->with('error', 'Please log in to update applicant status.');
@@ -101,43 +101,43 @@ public function chooseStatus(Request $request, $id)
     }
     
     public function scheduleInterview(Request $request, $id)
-{
-    if (!Auth::check()) {
-        return redirect()->route('login')->with('error', 'Please log in to schedule interviews.');
-    }
+    {
+        if (!Auth::check()) {
+            return redirect()->route('login')->with('error', 'Please log in to schedule interviews.');
+        }
 
-    $request->validate([
-        'title' => 'required|string|max:255',
-        'event_date' => 'required|date',
-        'event_time' => 'required',
-        'applicant_email' => 'required|email',
-        'applicant_name' => 'required|string|max:255'
-    ]);
-
-    try {
-        $applicant = Applicant::findOrFail($id);
-
-        // Create new event
-        Event::create([
-            'user_id' => Auth::id(),
-            'title' => $request->title,
-            'description' => "Interview scheduled for {$request->applicant_name} ({$request->applicant_email})",
-            'event_date' => $request->event_date,
-            'event_time' => $request->event_time,
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'event_date' => 'required|date',
+            'event_time' => 'required',
+            'applicant_email' => 'required|email',
+            'applicant_name' => 'required|string|max:255'
         ]);
 
-        // Update applicant status
-        $applicant->status = 'scheduled';
-        $applicant->save();
+        try {
+            $applicant = Applicant::findOrFail($id);
 
-        return redirect()->back()->with('success', 'Interview scheduled successfully.');
-    } catch (\Exception $e) {
-        \Log::error("Interview scheduling failed: " . $e->getMessage());
-        return redirect()->back()->with('error', 'Failed to schedule the interview. Please try again.');
+            // Create new event
+            Event::create([
+                'user_id' => Auth::id(),
+                'title' => $request->title,
+                'description' => "Interview scheduled for {$request->applicant_name} ({$request->applicant_email})",
+                'event_date' => $request->event_date,
+                'event_time' => $request->event_time,
+            ]);
+
+            // Update applicant status
+            $applicant->status = 'scheduled';
+            $applicant->save();
+
+            return redirect()->back()->with('success', 'Interview scheduled successfully.');
+        } catch (\Exception $e) {
+            \Log::error("Interview scheduling failed: " . $e->getMessage());
+            return redirect()->back()->with('error', 'Failed to schedule the interview. Please try again.');
+        }
     }
-}
 
-public function pending()
+    public function pending()
     {
         if (!Auth::check()) {
             return redirect()->route('login')->with('error', 'Please log in to view pending applicants.');
@@ -176,8 +176,6 @@ public function pending()
         $applicant = Applicant::findOrFail($id);
         return view('hrcatalists.ats.show-applicant', compact('applicant'));
     }
-
-
 
     // public function store(Request $request)
     // {
@@ -255,8 +253,6 @@ public function pending()
     //         return response()->json(['message' => 'Something went wrong!'], 500);
     //     }
     // }
-
-
 
 
     public function store(Request $request)
