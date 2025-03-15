@@ -3,16 +3,20 @@
     <div class="container d-flex justify-content-between">
         
         <!-- Left Side (Logo and College Name) -->
-        <a class=" d-flex align-items-center" href="{{ route('home') }}">
-            <img src="{{ asset('images/CC_logo.png') }}" alt="Logo" class="cclogo">
-            <span class="cc-nav-text navbar-text fw-bold ms-2">Columban College, Inc.</span>
-        </a>
+        <div class="d-flex justify-content-between">
+            <a class="d-flex align-items-center" href="{{ route('home') }}">
+                <img src="{{ asset('images/CC_logo.png') }}" alt="Logo" class="cclogo">
+                <span class="cc-nav-text navbar-text fw-bold ms-2">Columban College, Inc.</span>
+            </a>
+            <a class="d-flex align-items-center" href="{{ route('login') }}">
+                <img src="{{ asset('images/ccihr-logo.png') }}" alt="Logo" class="cclogo">
+            </a>
+        </div>
 
         {{-- Job Openings --}}
         <div class="d-flex align-items-center">
             {{-- Login --}}
-            <div class="d-flex align-items-center me-4">
-                {{-- <span class="text-white login me-2">Looking for a Job?</span> --}}
+            {{-- <div class="d-flex align-items-center me-4">
                 @if(Auth::check())
                 <button class="btn-1">
                     <a href="{{ route('main-menu') }}">
@@ -49,7 +53,7 @@
                     </a>
                 </button>
                 @endif
-            </div>
+            </div> --}}
             <span class="text-white login me-2">Looking for a Job?</span>
             <button class="btn-1">
                 <a href="{{ route('openings') }}">

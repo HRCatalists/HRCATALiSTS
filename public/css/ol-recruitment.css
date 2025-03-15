@@ -14,9 +14,12 @@
 
 /* Banner Section */
 .banner {
-  position: relative;
-  height: 420px;
+  background: linear-gradient(rgba(0, 94, 255, 0.6), rgba(0, 94, 255, 0.2)), url('/images/bg-cci.jpg');
   background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  position: relative;
+  height: 650px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -747,4 +750,29 @@ input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+
+/* Back to Top Button */
+.back-to-top {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #3377CC;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+}
+
+.back-to-top:hover {
+  background: #20497c;
 }

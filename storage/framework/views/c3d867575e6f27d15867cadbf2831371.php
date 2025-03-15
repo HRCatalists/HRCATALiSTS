@@ -14,13 +14,10 @@
      <?php $__env->endSlot(); ?>
 
     <!-- Banner Section with Search Bar -->
-    <div class="banner" style="background-image: url('<?php echo e(asset('images/cc-bg-pic.png')); ?>')">
+    <div class="banner">
         <div class="text-center">
-            <p>Human Asset Management & Development Office</p>
+            <p>Columban College Inc<br>Human Asset Management and Development Office</p>
         </div>
-        
-        
-        
     </div>
 
     <!-- About Us Section -->
@@ -151,6 +148,11 @@
 
     <!-- Latest Openings -->
     
+
+    <!-- Back to Top Button -->
+    <button id="backToTop" class="back-to-top">
+        <i class="fa-solid fa-arrow-up"></i>
+    </button>
 
  <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>

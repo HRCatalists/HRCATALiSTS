@@ -12,7 +12,7 @@
             </div>
 
             <!-- Contact Information -->
-            <div class="col-md-3 contact-section">
+            <div class="col-md-4 contact-section">
 
                 <div class="mb-3">
                     <h4 class="fw-bold mb-3">Contact Us</h4>
@@ -33,7 +33,7 @@
             </div>
 
             <!-- Legal -->
-            <div class="col-md-2 legal-section">
+            <div class="col-md-4 legal-section">
                 <h4 class="fw-bold mb-3">Legal</h4>
 
                 <ul>
@@ -47,7 +47,7 @@
             </div>
 
             <!-- Admin Log in -->
-            <div class="col-md-3 login-section">
+            {{-- <div class="col-md-3 login-section">
                 <h4 class="fw-bold mb-3">Log in as Admin</h4>
                 
                 <div class="d-flex flex-column">
@@ -62,7 +62,7 @@
                 
                     
                 </div>
-            </div>
+            </div> --}}
         </div>
     </div>
 
