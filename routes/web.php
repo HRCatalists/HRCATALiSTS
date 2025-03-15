@@ -5,7 +5,6 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\JobPostController;
 use App\Http\Controllers\ApplicantController;
-use App\Http\Controllers\DepartmentController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -13,7 +12,13 @@ use Illuminate\Http\Request;
 
 
 // Route to show the departments list (for the search dropdown)
-Route::get('/departments', [DepartmentController::class, 'index'])->name('departments.index');
+// Route::get('/departments', [DepartmentController::class, 'index'])->name('departments.index');
+
+// Search Jobs Route
+Route::get('/job-search', [HomeController::class, 'search'])->name('job.search');
+Route::get('/search-jobs', [HomeController::class, 'searchJobs'])->name('search.jobs');
+
+
 
 Route::get('/api/check-auth', function () {
     return response()->json(['authenticated' => Auth::check()]);
@@ -27,8 +32,8 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 
 
 // Route::get('/jobs/{id}', [HomeController::class, 'show'])->name('jobs.show');
-
 Route::get('/openings', [HomeController::class, 'openings'])->name('openings');
+
 
 // ✅ Allow only guests to access the login page
 Route::get('/login', function () {

@@ -6,13 +6,6 @@
         <a class=" d-flex align-items-center" href="{{ route('home') }}">
             <img src="{{ asset('images/CC_logo.png') }}" alt="Logo" class="cclogo">
             <span class="cc-nav-text navbar-text fw-bold ms-2">Columban College, Inc.</span>
-            {{-- @if(Auth::check())   
-            <!-- Redirects to dashboard if logged in -->
-            <a href="{{ route('main-menu') }}" class="login-wrapper"><i class="fa-solid fa-user icon-color"></i></a>
-            @else
-                <!-- Shows login page only if not logged in -->
-                <a href="{{ route('login') }}"><i class="fa-solid fa-user icon-color"></i></a>
-            @endif --}}
         </a>
 
         {{-- Job Openings --}}

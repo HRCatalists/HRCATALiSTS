@@ -78,7 +78,95 @@
   align-items: center;
 }
 
+/* Search Bar 2 Styling */
 .search-bar-2 {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 933px;
+  height: 110px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+}
+
+/* Input, Dropdown, and Button Styling */
+.search-bar-2 input,
+.search-bar-2 select,
+.search-bar-2 button {
+  height: 50px;
+  font-size: 18px;
+  padding: 0 10px;
+  outline: none;
+}
+
+/* Search Container Styling */
+.search-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+/* Search Bar Styling */
+.search-bar-2 {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  width: 100%;
+  max-width: 933px; /* Ensures consistent width */
+}
+
+/* Input & Dropdown Styling */
+.search-bar-2 input,
+.search-bar-2 select,
+.search-bar-2 button {
+  height: 50px;
+  font-size: 18px;
+  padding: 0 10px;
+  outline: none;
+  width: 100%; /* Ensures full width inside col-4 */
+}
+
+/* Ensure Input & Dropdown Consistency */
+.search-bar-2 input,
+.search-bar-2 select {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Fix Select2 Styling */
+.select2-container {
+  width: 100% !important;
+}
+
+.select2-selection--single {
+  height: 50px !important;
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Search Button */
+.search-bar-2 button {
+  background-color: #3377CC;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  border: none;
+  white-space: nowrap;
+  width: 100%;
+}
+
+.search-bar-2 button:hover {
+  background-color: #111D5B;
+}
+
+/* .search-bar-2 {
   display: flex;
   align-items: center;
   justify-content: space-around;
@@ -120,7 +208,7 @@
 
 .search-bar-2 button:hover {
   background-color: #111D5B;
-}
+} */
 
 /* About Us Section */
 .about-us {
@@ -191,12 +279,19 @@
 
 .mySwiper {
   max-width: 380px;
-  height: 400px;
+  height: 420px;
 }
 
+/* Ensure shadow is evenly applied on all sides */
 .swiper-slide {
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15), 
+              0px -6px 12px rgba(0, 0, 0, 0.10), 
+              6px 0px 12px rgba(0, 0, 0, 0.12), 
+              -6px 0px 12px rgba(0, 0, 0, 0.12);
+  overflow: hidden; /* Ensures content stays within the card */
 }
+
+
 
 /* Style and position Swiper navigation buttons */
 .swiper-button-prev,
@@ -229,8 +324,7 @@
 
 .job-card {
   max-width: 380px;
-  height: 100%;
-  /* box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); */
+  height: 420px;
   border-radius: 5px;
   margin: 20px;
   background-color: white;
@@ -238,6 +332,12 @@
   flex-direction: column;
   justify-content: space-between;
   border: none !important;
+}
+
+.see-more-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .job-card h5 {

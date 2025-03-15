@@ -6,7 +6,6 @@
         <a class=" d-flex align-items-center" href="<?php echo e(route('home')); ?>">
             <img src="<?php echo e(asset('images/CC_logo.png')); ?>" alt="Logo" class="cclogo">
             <span class="cc-nav-text navbar-text fw-bold ms-2">Columban College, Inc.</span>
-            
         </a>
 
         
