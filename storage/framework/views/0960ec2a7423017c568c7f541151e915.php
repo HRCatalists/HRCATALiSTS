@@ -81,11 +81,7 @@ unset($__errorArgs, $__bag); ?>
                                     <a href="<?php echo e(route('password.request')); ?>" class="small text-muted">Forgot Password?</a>
                                 </div>
                             </div>
-                            <a href="<?php echo e(route('google.login')); ?>" class="btn btn-danger">
-                            <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google Logo" style="width: 20px; margin-right: 8px;">
-                             Sign in with Google
-                                </a>
-
+    
                             <!-- Submit Button -->
                             <button type="submit" class="btn btn-primary w-100 mt-4">Log In</button>
                         </form>
@@ -128,4 +124,4 @@ unset($__errorArgs, $__bag); ?>
 <?php endif; ?>
 
 
-<?php /**PATH C:\Users\raide\OneDrive\Desktop\HRCATALiSTS-hr-catalists\resources\views/auth/login.blade.php ENDPATH**/ ?>
+<?php /**PATH C:\laragon\www\hr_catalists\resources\views/auth/login.blade.php ENDPATH**/ ?>

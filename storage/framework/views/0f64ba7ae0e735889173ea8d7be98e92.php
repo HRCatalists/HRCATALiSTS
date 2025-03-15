@@ -71,4 +71,4 @@
         </div>
     </div>
 </nav>
-<!-- End of Navbar --><?php /**PATH C:\Users\raide\OneDrive\Desktop\HRCATALiSTS-hr-catalists\resources\views/components/partials/welcome/navbar.blade.php ENDPATH**/ ?>
+<!-- End of Navbar --><?php /**PATH C:\laragon\www\hr_catalists\resources\views/components/partials/welcome/navbar.blade.php ENDPATH**/ ?>

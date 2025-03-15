@@ -45,6 +45,6 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return redirect(route('hrcatalists.main-menu-ats-ems', absolute: false));
+        return redirect(route('main-menu', absolute: false));
     }
 }

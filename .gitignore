@@ -22,3 +22,5 @@ yarn-error.log
 /.vscode
 /.zed
 storage/logs/*.log
+storage/app/google-drive.json
+

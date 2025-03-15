@@ -161,4 +161,4 @@
 <?php $component = $__componentOriginal22420923a32db135c994bb2339cfe9f5; ?>
 <?php unset($__componentOriginal22420923a32db135c994bb2339cfe9f5); ?>
 <?php endif; ?>
-<?php /**PATH C:\Users\raide\OneDrive\Desktop\HRCATALiSTS-hr-catalists\resources\views/hrcatalists/index.blade.php ENDPATH**/ ?>
+<?php /**PATH C:\laragon\www\hr_catalists\resources\views/hrcatalists/index.blade.php ENDPATH**/ ?>

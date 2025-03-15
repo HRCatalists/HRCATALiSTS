@@ -90,4 +90,4 @@
     <script src="js/swiper.js"></script>
 
 </body>
-</html><?php /**PATH C:\Users\raide\OneDrive\Desktop\HRCATALiSTS-hr-catalists\resources\views/layouts/welcome-layout.blade.php ENDPATH**/ ?>
+</html><?php /**PATH C:\laragon\www\hr_catalists\resources\views/layouts/welcome-layout.blade.php ENDPATH**/ ?>

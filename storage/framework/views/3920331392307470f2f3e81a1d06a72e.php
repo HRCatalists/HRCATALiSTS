@@ -1,8 +1,17 @@
-<x-welcome-layout>
+<?php if (isset($component)) { $__componentOriginal22420923a32db135c994bb2339cfe9f5 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal22420923a32db135c994bb2339cfe9f5 = $attributes; } ?>
+<?php $component = App\View\Components\WelcomeLayout::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('welcome-layout'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\App\View\Components\WelcomeLayout::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?>
 
-    <x-slot:title>
+     <?php $__env->slot('title', null, []); ?> 
         Columban College Inc. | Job Openings
-    </x-slot:title>
+     <?php $__env->endSlot(); ?>
 
     <!-- Job Openings start-->
     <div class="latest-opening table-container justify-content-center align-items-center mx-auto pb-5">
@@ -26,25 +35,25 @@
       <!-- Job Listings -->
 <div class="container mt-5 g-1">
     <div class="row" id="jobResults">
-        @foreach ($jobs as $job)
+        <?php $__currentLoopData = $jobs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $job): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <div class="col-md-4 job-card-container">
                 <div class="card job-card p-4">
-                    <h5>{{ $job->job_title }}</h5>
+                    <h5><?php echo e($job->job_title); ?></h5>
                     <div class="tags">
-                        @foreach (explode(',', $job->tags) as $tag)
-                            <span class="tag">{{ trim($tag) }}</span>
-                        @endforeach
+                        <?php $__currentLoopData = explode(',', $job->tags); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $tag): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <span class="tag"><?php echo e(trim($tag)); ?></span>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </div>                             
                     <p class="requirements">
                         <strong>Job Description:</strong><br>
-                        <span>{{ Str::limit($job->job_description, 50, '...') }}</span><br>
+                        <span><?php echo e(Str::limit($job->job_description, 50, '...')); ?></span><br>
                         <strong>Requirements:</strong><br>
-                        <span>{{ Str::limit($job->requirements, 50, '...') }}</span>
+                        <span><?php echo e(Str::limit($job->requirements, 50, '...')); ?></span>
                     </p>
-                    <a class="btn-3" href="{{ route('job-selected', $job->slug) }}">APPLY NOW</a>
+                    <a class="btn-3" href="<?php echo e(route('job-selected', $job->slug)); ?>">APPLY NOW</a>
                 </div>
             </div>
-        @endforeach
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
     </div>
 </div>
     </div>
@@ -58,7 +67,7 @@
             let position = $('#position').val();
 
             $.ajax({
-                url: "{{ route('openings') }}",
+                url: "<?php echo e(route('openings')); ?>",
                 method: "GET",
                 data: { keyword: keyword, position: position },
                 success: function(response) {
@@ -105,4 +114,13 @@
     });
 </script>
 
-</x-welcome-layout>
+ <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal22420923a32db135c994bb2339cfe9f5)): ?>
+<?php $attributes = $__attributesOriginal22420923a32db135c994bb2339cfe9f5; ?>
+<?php unset($__attributesOriginal22420923a32db135c994bb2339cfe9f5); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal22420923a32db135c994bb2339cfe9f5)): ?>
+<?php $component = $__componentOriginal22420923a32db135c994bb2339cfe9f5; ?>
+<?php unset($__componentOriginal22420923a32db135c994bb2339cfe9f5); ?>
+<?php endif; ?><?php /**PATH C:\Users\raide\OneDrive\Desktop\HRCATALiSTS-hr-catalists\resources\views/hrcatalists/openings.blade.php ENDPATH**/ ?>

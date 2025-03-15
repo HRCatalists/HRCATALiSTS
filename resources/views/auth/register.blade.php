@@ -47,6 +47,10 @@
             <x-primary-button class="ms-4">
                 {{ __('Register') }}
             </x-primary-button>
+            <a href="{{ route('google.login') }}" class="btn btn-primary">
+    <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google Logo" width="20" height="20">
+    Register with Google
+</a>
         </div>
     </form>
 </x-guest-layout>
