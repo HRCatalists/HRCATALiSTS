@@ -935,3 +935,7 @@ CISCO","tags":"CISCOO","date_issued":"2025-03-05","end_date":"2025-03-26","statu
 #60 C:\\Users\\raide\\OneDrive\\Desktop\\HRCATALiSTS-hr-catalists\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\resources\\server.php(23): require_once('C:\\\\Users\\\\raide\\\\...')
 #61 {main}
 "} 
+[2025-03-17 14:34:36] local.ERROR: Cannot declare class App\Services\GoogleDriveService, because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot declare class App\\Services\\GoogleDriveService, because the name is already in use at C:\\Users\\raide\\OneDrive\\Desktop\\HRCATALiSTS-hr-catalists\\app\\Http\\Controllers\\GoogleAuthController.php:17)
+[stacktrace]
+#0 {main}
+"} 

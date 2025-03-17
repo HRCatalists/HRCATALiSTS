@@ -3,49 +3,44 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
 use Laravel\Socialite\Facades\Socialite;
 use App\Models\User;
 
-namespace App\Services;
-
-use Google_Client;
-use Google_Service_Drive;
-use Google_Service_Drive_DriveFile;
-use Illuminate\Support\Facades\Storage;
-
-class GoogleDriveService
+class GoogleAuthController extends Controller
 {
-    protected $client;
-    protected $service;
-
-    public function __construct()
+    // Redirect user to Google login page
+    public function redirect()
     {
-        $this->client = new Google_Client();
-        $this->client->setAuthConfig(storage_path('app/google-drive.json'));
-        $this->client->addScope(Google_Service_Drive::DRIVE_FILE);
-
-        $this->service = new Google_Service_Drive($this->client);
+        return Socialite::driver('google')
+            ->redirectUrl(config('services.google.redirect')) // Ensure correct redirect URI
+            ->redirect();
     }
 
-    public function uploadFile($file)
+    // Handle Google OAuth callback
+    public function handleGoogleCallback()
     {
-        $folderId = env('GOOGLE_DRIVE_FOLDER_ID');
-        
-        $fileMetadata = new Google_Service_Drive_DriveFile([
-            'name' => $file->getClientOriginalName(),
-            'parents' => [$folderId],
-        ]);
+        try {
+            $googleUser = Socialite::driver('google')->user();
 
-        $content = file_get_contents($file->getPathname());
+            // Check if the user already exists in the database
+            $user = User::where('email', $googleUser->getEmail())->first();
 
-        $uploadedFile = $this->service->files->create($fileMetadata, [
-            'data' => $content,
-            'mimeType' => $file->getMimeType(),
-            'uploadType' => 'multipart',
-            'fields' => 'id',
-        ]);
+            if (!$user) {
+                // If the user is not found, prevent login and redirect to login page
+                return redirect()->route('login')->with('error', 'Access denied. Your account is not registered.');
+            }
 
-        return $uploadedFile->id;
+            // Update Google ID if missing
+            if (!$user->google_id) {
+                $user->update(['google_id' => $googleUser->getId()]);
+            }
+
+            // Log in the registered user
+            Auth::login($user);
+
+            return redirect()->route('dashboard'); // Redirect to dashboard
+        } catch (\Exception $e) {
+            return redirect()->route('login')->with('error', 'Google login failed.');
+        }
     }
 }
