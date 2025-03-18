@@ -53,13 +53,69 @@ class AdminController extends Controller
         return view('hrcatalists.main-menu-ats-ems'); // Main menu view
     }
 
+    
+    public function emsLogs()
+    {
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+    
+        // Fetch logs where:
+        // - user_id is NULL (guest submissions)
+        // - OR user role is 'admin'
+        $logs = Log::with(['user' => function ($query) {
+            $query->select('id', 'name', 'role'); // Fetch only necessary columns
+        }])
+        ->where(function ($query) {
+            $query->whereNull('user_id') // Include guest logs
+                  ->orWhereHas('user', function ($q) {
+                      $q->where('role', 'admin'); // Include only admin logs
+                  });
+        })
+        ->latest()
+        ->get();
+    
+        return view('hrcatalists.ems.admin-ems-logs', compact('logs'));
+    }
     public function emsDashboard()
     {
         if (!Auth::check()) {
             return redirect()->route('login');
         }
-        return view('hrcatalists.ems.admin-ems-db'); // EMS dashboard
-    }
+        
+        // ✅ Fetch logs with user data
+        $logs = Log::with('user')->latest()->limit(5)->get();
+
+        // ✅ Fetch applicants data
+        $totalApplicants = Applicant::count();
+        $applicantsByStatus = Applicant::selectRaw('LOWER(TRIM(status)) as status, COUNT(*) as count')
+            ->groupBy('status')
+            ->pluck('count', 'status')
+            ->toArray();
+
+        // ✅ Fetch jobs data
+        $allJobs = Job::all();
+        $totalJobs = $allJobs->count();
+        $activeJobCount = Job::where('end_date', '>=', Carbon::now())->count();
+        $inactiveJobCount = Job::where('end_date', '<', Carbon::now())->count();
+
+         // ✅ Fetch events for the calendar
+         $events = Event::select('event_date', 'event_time', 'title', 'description')->get();
+
+         // ✅ Return view with all data, including logs
+         return view('hrcatalists.ems.admin-ems-db', [
+             'logs' => $logs, // ✅ Add logs to the view
+             'totalApplicants' => $totalApplicants,
+             'applicantsByStatus' => $applicantsByStatus,
+             'activeJobCount' => $activeJobCount,
+             'inactiveJobCount' => $inactiveJobCount,
+             'totalJobs' => $totalJobs,
+             'allJobs' => $allJobs,
+             'events' => $events, // ✅ Send events to Blade
+         ]);
+     }
+      
+    
 
     public function employees()
     {
@@ -69,13 +125,16 @@ class AdminController extends Controller
         return view('hrcatalists.ems.admin-ems-emp'); // EMS Employee List
     }
 
-    public function calendar()
-    {
-        if (!Auth::check()) {
-            return redirect()->route('login');
-        }
-        return view('hrcatalists.ems.admin-ems-cl'); // EMS Calendar
-    }
+       // Load the ems Calendar View
+       public function emsCalendar()
+       {
+           if (!Auth::check()) {
+               return redirect()->route('login');
+           }
+   
+           $events = Event::where('user_id', Auth::id())->get(); // Fetch events for logged-in user
+           return view('hrcatalists.ems.admin-ems-cl', compact('events'));
+       }
 
     public function deptCOA()
     {

@@ -69,7 +69,7 @@ Route::middleware(['auth', PreventBackHistory::class])->group(function () {
     Route::get('/ems-emp-dept-coe', [AdminController::class, 'deptCOE'])->name('ems-dept-coe');
     Route::get('/ems-emp-dept-con', [AdminController::class, 'deptCON'])->name('ems-dept-con');
     Route::get('/ems-emp-dept-basicEd', [AdminController::class, 'deptBasicEd'])->name('ems-dept-basicEd');
-    Route::get('/ems-calendar', [AdminController::class, 'calendar'])->name('ems-calendar');
+    Route::get('/ems-calendar', [AdminController::class, 'emscalendar'])->name('ems-calendar');
     Route::get('/ems-ranking', [AdminController::class, 'ranking'])->name('ems-ranking');
     Route::get('/ems-policy', [AdminController::class, 'companyPolicy'])->name('ems-policy');
     Route::get('/ems-logs', [AdminController::class, 'logs'])->name('ems-logs');
