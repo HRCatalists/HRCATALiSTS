@@ -64,6 +64,10 @@
                                 <li>
                                     <a href="{{ route('ems-dept-basicEd') }}" class="nav-link px-0"> <span class="sidebar-effect">College of Basic Education</span> </a>
                                 </li>
+
+                                <li>
+                                    <a href="{{ route('ems-dept-basicEd') }}" class="nav-link px-0"> <span class="sidebar-effect">Non-Teaching</span> </a>
+                                </li>
                             </ul>
                         </li>
                     </ul>

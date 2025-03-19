@@ -132,6 +132,7 @@
                                     </td>
                                     <td><?php echo e(\Carbon\Carbon::parse($applicant->applied_at)->format('F d, Y')); ?></td>
                                     <td><?php echo e($applicant->job->job_title ?? 'N/A'); ?></td>
+                                    <!-- off canvas -->
                                     <td>
                                         <div class="d-flex justify-content-around">
                                             <button class="btn btn-ap-edit" 
@@ -150,10 +151,7 @@
                                     </td>
                                 </tr>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                        <?php else: ?>
-                            <tr>
-                                <td colspan="6" class="text-center">No applicants found.</td>
-                            </tr>
+         
                         <?php endif; ?>
                     </tbody>
                 </table>
