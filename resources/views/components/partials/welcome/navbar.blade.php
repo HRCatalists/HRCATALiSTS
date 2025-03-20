@@ -14,46 +14,7 @@
         </div>
 
         {{-- Job Openings --}}
-        <div class="d-flex align-items-center">
-            {{-- Login --}}
-            {{-- <div class="d-flex align-items-center me-4">
-                @if(Auth::check())
-                <button class="btn-1">
-                    <a href="{{ route('main-menu') }}">
-                        <div class="login">SIGN IN</div>
-                        <div class="letters">
-                            <span>M</span>
-                            <span>A</span>
-                            <span>I</span>
-                            <span>N</span>
-                            <span>&nbsp;</span>
-                            <span>M</span>
-                            <span>E</span>
-                            <span>N</span>
-                            <span>U</span>
-                        </div>
-                    </a>
-                </button>
-                @else
-                <button class="btn-1">
-                    <a href="{{ route('login') }}">
-                        <div class="login">SIGN IN</div>
-                        <div class="letters">
-                            <span>L</span>
-                            <span>O</span>
-                            <span>G</span>
-                            <span>I</span>
-                            <span>N</span>
-                            <span>&nbsp;</span>
-                            <span>H</span>
-                            <span>E</span>
-                            <span>R</span>
-                            <span>E</span>
-                        </div>
-                    </a>
-                </button>
-                @endif
-            </div> --}}
+        {{-- <div class="d-flex align-items-center">
             <span class="text-white login me-2">Looking for a Job?</span>
             <button class="btn-1">
                 <a href="{{ route('openings') }}">
@@ -71,6 +32,49 @@
                     </div>
                 </a>
             </button>
+        </div> --}}
+        {{-- Job Openings / Apply Now Button --}}
+        <div class="d-flex align-items-center">
+            
+
+            @if(Route::currentRouteName() == 'home') 
+            <span class="text-white login me-2">Looking for a Job?</span>
+                <!-- Show "Job Openings" button on Home Page -->
+                <button class="btn-1">
+                    <a href="{{ route('openings') }}">
+                        <div class="original">Job Openings</div>
+                        <div class="letters">
+                            <span>A</span>
+                            <span>P</span>
+                            <span>P</span>
+                            <span>L</span>
+                            <span>Y</span>
+                            <span>&nbsp;</span>
+                            <span>N</span>
+                            <span>O</span>
+                            <span>W</span>
+                        </div>
+                    </a>
+                </button>
+            @elseif(Route::currentRouteName() == 'openings') 
+                <!-- Show "Back to Home" button on Openings Page -->
+                <button class="btn-1">
+                    <a href="{{ route('home') }}">
+                        <div class="original">Go Back</div>
+                        <div class="letters">
+                            <span>H</span>
+                            <span>O</span>
+                            <span>M</span>
+                            <span>E</span>
+                            <span>&nbsp;</span>
+                            <span>P</span>
+                            <span>A</span>
+                            <span>G</span>
+                            <span>E</span>
+                        </div>
+                    </a>
+                </button>
+            @endif
         </div>
     </div>
 </nav>

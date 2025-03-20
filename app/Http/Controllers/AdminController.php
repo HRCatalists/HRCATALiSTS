@@ -15,6 +15,28 @@ use Carbon\Carbon;
 
 class AdminController extends Controller
 {
+    public function dashboard()
+    {
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+    
+        // Fetch logs, applicants, and jobs
+        $logs = Log::latest()->take(5)->get();
+        $totalApplicants = Applicant::count();
+        $applicantsByStatus = Applicant::selectRaw('LOWER(TRIM(status)) as status, COUNT(*) as count')
+            ->groupBy('status')
+            ->pluck('count', 'status')
+            ->toArray();
+        $totalJobs = Job::count();
+    
+        // ✅ Fetch all events (without category filtering)
+        $events = Event::select('event_date', 'event_time', 'title', 'description')->get();
+    
+        return view('hrcatalists.admin-dashboard', compact(
+            'logs', 'totalApplicants', 'applicantsByStatus', 'totalJobs', 'events'
+        ));
+    }    
     public function atsLogs()
     {
         if (!Auth::check()) {

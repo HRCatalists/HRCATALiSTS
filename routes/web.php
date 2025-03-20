@@ -55,6 +55,7 @@ Route::middleware(['auth', PreventBackHistory::class])->group(function () {
 
     // Main Menu
     Route::get('/main-menu', [AdminController::class, 'mainMenu'])->name('main-menu');
+    Route::get('/admin-dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 
     // EMS Routes
     Route::get('/ems-dashboard', [AdminController::class, 'emsDashboard'])->name('ems-dashboard');
