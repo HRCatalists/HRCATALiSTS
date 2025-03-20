@@ -1,9 +1,9 @@
         <!-- Dashboard Content -->
         <div id="" class="flex-grow-1">
-            <div class="container mt-5">
+            <div class="container">
                 
 
-                <div class="d-flex justify-content-between align-items-center mt-4">
+                <div class="d-flex justify-content-between align-items-center my-4">
                     <div>
                         <h2 class="db-h2">APPLICANTS</h2>
                         
@@ -13,7 +13,7 @@
                     
                 </div>
 
-                <div class="row mt-4 dashboard-row d-flex justify-content-between align-items-start mt-5">
+                <div class="row dashboard-row d-flex justify-content-between align-items-start">
                 
                     <!-- Cards and Chart Section -->
                     <div class="col-md-5">
@@ -126,7 +126,10 @@
                         <div class="card shadow">
 
                             <div class="card-body">
-                                <h5 class="card-title mb-4">Calendar</h5>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h5 class="card-title mb-4">Event Calendar and Important Dates</h5>
+                                    <a href="<?php echo e(route('ats-calendar')); ?>" class="go-to-calendar mb-4">See more...</a>
+                                </div>
                                 <div class="calendar-container">
                                     <div class="calendar-header d-flex justify-content-between align-items-center">
                                         <button id="prev-month">&lt;</button>

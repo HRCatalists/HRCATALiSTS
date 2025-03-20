@@ -133,6 +133,9 @@
 .calendar-header {
   font-size: 1.2rem;
   font-weight: bold;
+  background-color: #f1f1f1;
+  border-radius: 5px;
+  padding: 10px;
 }
 
 .calendar-header button {
@@ -141,6 +144,23 @@
   font-size: 16px;
   color: #007bff;
   cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.calendar-header button:hover {
+  font-weight: bold;
+}
+
+.go-to-calendar {
+  text-decoration: underline;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.go-to-calendar:hover {
+  color: #007bff;
+  padding-right: 10px;
+  text-decoration: none;
 }
 
 .calendar-grid {

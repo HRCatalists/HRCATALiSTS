@@ -1,9 +1,37 @@
-<x-admin-ems-layout>
+<?php if (isset($component)) { $__componentOriginal5aa067d06d1afdd090a728cb9bf57c48 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal5aa067d06d1afdd090a728cb9bf57c48 = $attributes; } ?>
+<?php $component = App\View\Components\AdminEmsLayout::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('admin-ems-layout'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\App\View\Components\AdminEmsLayout::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?>
 
         <div class="d-flex">
 
             <!-- Sidebar -->
-            <x-partials.system.ats.ats-sidebar />
+            <?php if (isset($component)) { $__componentOriginald5876c07269e58343b8102e8c5f829ec = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginald5876c07269e58343b8102e8c5f829ec = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.partials.system.ats.ats-sidebar','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('partials.system.ats.ats-sidebar'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginald5876c07269e58343b8102e8c5f829ec)): ?>
+<?php $attributes = $__attributesOriginald5876c07269e58343b8102e8c5f829ec; ?>
+<?php unset($__attributesOriginald5876c07269e58343b8102e8c5f829ec); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginald5876c07269e58343b8102e8c5f829ec)): ?>
+<?php $component = $__componentOriginald5876c07269e58343b8102e8c5f829ec; ?>
+<?php unset($__componentOriginald5876c07269e58343b8102e8c5f829ec); ?>
+<?php endif; ?>
 
             <!-- End of Sidebar -->
         
@@ -67,4 +95,14 @@
 
         </div>
 
-</x-admin-ems-layout>
+ <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal5aa067d06d1afdd090a728cb9bf57c48)): ?>
+<?php $attributes = $__attributesOriginal5aa067d06d1afdd090a728cb9bf57c48; ?>
+<?php unset($__attributesOriginal5aa067d06d1afdd090a728cb9bf57c48); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal5aa067d06d1afdd090a728cb9bf57c48)): ?>
+<?php $component = $__componentOriginal5aa067d06d1afdd090a728cb9bf57c48; ?>
+<?php unset($__componentOriginal5aa067d06d1afdd090a728cb9bf57c48); ?>
+<?php endif; ?>
+<?php /**PATH C:\laragon\www\hr_catalists\resources\views/hrcatalists/ems/admin-ems-policy.blade.php ENDPATH**/ ?>

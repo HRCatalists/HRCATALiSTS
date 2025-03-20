@@ -1,15 +1,15 @@
         <!-- Dashboard Content -->
         <div id="" class="flex-grow-1">
-            <div class="container mt-5">
+            <div class="container">
                 {{-- <div class="welcome-text-only">Welcome, {{ auth()->user()->name }}!</div> --}}
 
-                <div class="d-flex justify-content-between align-items-center mt-4">
+                <div class="d-flex justify-content-between align-items-center my-4">
                     <div>
                         <h2 class="db-h2">EMPLOYEES </h2>
                     </div>
                 </div>
 
-                <div class="row mt-4 dashboard-row d-flex justify-content-between align-items-start mt-5">
+                <div class="row dashboard-row d-flex justify-content-between align-items-start">
                 
                     <div class="col-md-7">
                         <!-- Dept. Count -->

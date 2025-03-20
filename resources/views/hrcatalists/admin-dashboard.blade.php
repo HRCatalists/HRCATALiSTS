@@ -50,7 +50,7 @@
             <div class="container mt-5">
                 <div class="welcome-text-only">Welcome, {{ auth()->user()->name }}!</div>
 
-                <div class="d-flex justify-content-between align-items-center mt-4">
+                <div class="d-flex justify-content-between align-items-center mt-4 border-bottom pb-5">
                     <div>
                         <h2 class="db-h2">DASHBOARD</h2>
                         <h4 class="db-h4 mt-4">Overview</h4>
@@ -63,13 +63,13 @@
                 </div>
 
                 <!-- ATS Dashboard Section -->
-                <div class="mt-5">
+                <div class="mb-5 pb-5">
                     {{-- <h3 class="section-title">ATS Dashboard</h3> --}}
                     @include('hrcatalists.partials.ats-dashboard-content', ['logs' => $logs, 'events' => $events])
                 </div>
 
                 <!-- EMS Dashboard Section -->
-                <div class="mt-5">
+                <div class="border-top">
                     {{-- <h3 class="section-title">EMS Dashboard</h3> --}}
                     @include('hrcatalists.partials.ems-dashboard-content', ['events' => $events])
                 </div>

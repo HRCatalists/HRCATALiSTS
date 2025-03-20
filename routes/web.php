@@ -11,14 +11,9 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 
 
-// Route to show the departments list (for the search dropdown)
-// Route::get('/departments', [DepartmentController::class, 'index'])->name('departments.index');
-
 // Search Jobs Route
 Route::get('/job-search', [HomeController::class, 'search'])->name('job.search');
 Route::get('/search-jobs', [HomeController::class, 'searchJobs'])->name('search.jobs');
-
-
 
 Route::get('/api/check-auth', function () {
     return response()->json(['authenticated' => Auth::check()]);
@@ -26,10 +21,6 @@ Route::get('/api/check-auth', function () {
 
 // Public Route for Welcome Page
 Route::get('/', [HomeController::class, 'index'])->name('home');
-// Route::get('/', function () {
-//     return Auth::check() ? redirect()->route('main-menu') : view('welcome');
-// })->name('home');
-
 
 // Route::get('/jobs/{id}', [HomeController::class, 'show'])->name('jobs.show');
 Route::get('/openings', [HomeController::class, 'openings'])->name('openings');
@@ -39,11 +30,6 @@ Route::get('/openings', [HomeController::class, 'openings'])->name('openings');
 Route::get('/login', function () {
     return view('auth.login');
 })->name('login')->middleware('guest');
-
-// ✅ Redirect logged-in users away from login page
-// Route::middleware(['auth', PreventBackHistory::class])->group(function () {
-//     Route::get('/main-menu', [AdminController::class, 'mainMenu'])->name('main-menu');
-// });
 
 Route::get('/job-selected/{slug}', [JobPostController::class, 'jobSelected'])->name('job-selected');
 

@@ -3,7 +3,8 @@
     <!-- Log List Section -->
     <div class="d-flex">
         <!-- Sidebar -->
-        <x-partials.system.ems.ems-sidebar />
+        <x-partials.system.ats.ats-sidebar />
+
         <!-- End of Sidebar -->
     
         <!-- Logs Content -->
