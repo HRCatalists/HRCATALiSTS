@@ -228,27 +228,16 @@ unset($__errorArgs, $__bag); ?>
                         </div>
 
                         <!-- Privacy Policy Checkbox -->
-                        <div class="form-group form-check mb-4">
-                            <input type="checkbox" class="form-check-input <?php $__errorArgs = ['privacy_policy_agreed'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>" 
-                                name="privacy_policy_agreed" id="privacy_policy_agreed" required>
-                            <label for="privacy_policy_agreed" class="form-check-label">I agree to the Privacy Policy.</label>
-                            <?php $__errorArgs = ['privacy_policy_agreed'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?> <div class="invalid-feedback"><?php echo e($message); ?></div> <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
+                        
+                        <div class="form-check my-4 d-flex align-items-center">
+                            <input class="form-check-input me-2" type="checkbox" id="privacyCheck" name="privacy_policy" disabled required>
+                            <label class="form-check-label me-1" for="privacyCheck">I agree to the</label>
+                            <a href="#" id="openPrivacyModal" data-bs-toggle="modal" data-bs-target="#privacyPolicyModal">Privacy Policy</a>.
                         </div>
+                        <small id="privacyHint" class="text-muted">Please read the Privacy Policy before agreeing.</small>                                                                      
 
+                        <?php echo $__env->make('hrcatalists.privacy-policy-modal', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+                        
                         <!-- Submit Button -->
                         <div class="d-grid">
                             <button type="submit" class="btn btn-primary">SUBMIT</button>
@@ -259,6 +248,23 @@ unset($__errorArgs, $__bag); ?>
             <!-- Right Column -->
         </div>
     </div>
+
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const checkbox = document.getElementById("privacyCheck");
+            const modal = document.getElementById("privacyPolicyModal");
+            const privacyHint = document.getElementById("privacyHint");
+    
+            // Enable checkbox when modal is fully hidden (user closes it)
+            modal.addEventListener("hidden.bs.modal", function () {
+                checkbox.disabled = false;
+                privacyHint.textContent = "You may now agree to the Privacy Policy.";
+                privacyHint.classList.remove("text-muted");
+                privacyHint.classList.add("text-success");
+            });
+        });
+    </script>    
 
     
     <script>
