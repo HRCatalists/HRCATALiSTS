@@ -230,7 +230,13 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="department" class="form-label">Department <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="department" name="department" placeholder="Enter Department" required>
+                                {{-- <input type="text" class="form-control" id="department" name="department" placeholder="Enter Department" required> --}}
+                                <select id="department" name="department" class="form-control" required>
+                                    <option value="">Select a Department</option>
+                                    @foreach ($departments as $department)
+                                        <option value="{{ $department->name }}">{{ $department->name }}</option>
+                                    @endforeach
+                                </select>                                
                             </div>
                         </div>
                         <div class="row mb-3">

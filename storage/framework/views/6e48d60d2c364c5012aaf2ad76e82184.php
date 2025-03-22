@@ -89,5 +89,7 @@
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="js/swiper.js"></script>
 
+    <script src="<?php echo e(asset('js/back-to-top.js')); ?>"></script>
+
 </body>
 </html><?php /**PATH C:\Users\raide\OneDrive\Desktop\HRCATALiSTS-hr-catalists\resources\views/layouts/welcome-layout.blade.php ENDPATH**/ ?>

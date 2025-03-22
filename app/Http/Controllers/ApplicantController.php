@@ -62,7 +62,6 @@ class ApplicantController extends Controller
         }
     }
 
-
     //status update in dropdown
     public function chooseStatus(Request $request, $id)
     {

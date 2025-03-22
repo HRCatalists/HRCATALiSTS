@@ -2,7 +2,8 @@
     <!-- Sidebar & Master List -->
     <div class="d-flex">
         <!-- Sidebar -->
-        <x-partials.system.ems.ems-sidebar />
+        <x-partials.system.ats.ats-sidebar />
+
         <!-- End of Sidebar -->
     
         <!-- Employee List -->

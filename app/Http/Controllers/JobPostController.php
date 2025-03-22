@@ -14,7 +14,9 @@ class JobPostController extends Controller
     public function index()
     {
         $jobs = Job::with('user')->get();
-        return view('hrcatalists.ats.admin-ats-jobs', compact('jobs'));
+        $departments = Job::select('department')->distinct()->get();
+
+        return view('hrcatalists.ats.admin-ats-jobs', compact('jobs', 'departments'));
     }
 
     /**

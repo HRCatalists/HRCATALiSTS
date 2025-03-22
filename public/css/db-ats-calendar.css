@@ -133,6 +133,9 @@
 .calendar-header {
   font-size: 1.2rem;
   font-weight: bold;
+  background-color: #f1f1f1;
+  border-radius: 5px;
+  padding: 10px;
 }
 
 .calendar-header button {
@@ -141,6 +144,23 @@
   font-size: 16px;
   color: #007bff;
   cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.calendar-header button:hover {
+  font-weight: bold;
+}
+
+.go-to-calendar {
+  text-decoration: underline;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.go-to-calendar:hover {
+  color: #007bff;
+  padding-right: 10px;
+  text-decoration: none;
 }
 
 .calendar-grid {
@@ -164,11 +184,12 @@
   border-radius: 5px;
   cursor: pointer;
   position: relative;
-  transition: background 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .calendar-day:hover {
-  background: #e0e0e0;
+  filter: brightness(90%);
+  transform: scale(1.05);
 }
 
 .calendar-day.event-day.today-highlight {
@@ -182,10 +203,10 @@
   cursor: pointer;
 }
 
-.event-day {
+/* .event-day {
   background-color: #007bff;
   font-weight: bold;
-}
+} */
 
 .event-dot {
   width: 6px;
@@ -224,21 +245,13 @@
 }
 
 .calendar-day.past-event {
-  background-color: #FFA500 !important; /* Orange for past events */
+  background-color: #b0b0b0 !important; /* Light Gray */
   color: white !important;
-}
-
-.calendar-day.past-event:hover {
-  background-color: #d18800 !important; /* Orange for past events */
 }
 
 .calendar-day.future-event {
   background-color: #28a745 !important; /* Green for future events */
   color: white !important;
-}
-
-.calendar-day.future-event:hover {
-  background-color: #1e7e34 !important; /* Green for future events */
 }
 
 .calendar-day.today-highlight {
@@ -247,7 +260,7 @@
   font-weight: bold;
 }
 
-.calendar-day.today-highlight:hover {
-  background-color: #0056b3 !important; /* Darker blue on hover */
-  cursor: pointer;
+.today-event {
+  background-color: #FFC107 !important;
+  color: white !important;
 }

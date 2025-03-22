@@ -261,7 +261,13 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="department" class="form-label">Department <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="department" name="department" placeholder="Enter Department" required>
+                                
+                                <select id="department" name="department" class="form-control" required>
+                                    <option value="">Select a Department</option>
+                                    <?php $__currentLoopData = $departments; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $department): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <option value="<?php echo e($department->name); ?>"><?php echo e($department->name); ?></option>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                </select>                                
                             </div>
                         </div>
                         <div class="row mb-3">

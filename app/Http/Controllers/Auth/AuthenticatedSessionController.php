@@ -28,7 +28,7 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->route('main-menu'); // Match the updated route name
+        return redirect()->route('admin.dashboard'); // Match the updated route name
     }
 
     /**

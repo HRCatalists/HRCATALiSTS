@@ -8,6 +8,10 @@
     <div class="d-flex">
         <!-- Sidebar -->
         <x-partials.system.ats.ats-sidebar />
+<<<<<<< HEAD
+=======
+
+>>>>>>> hr-catalists
         <!-- End of Sidebar -->
     
         <!-- Logs Content -->

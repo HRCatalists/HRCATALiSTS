@@ -90,9 +90,6 @@ unset($__errorArgs, $__bag); ?>
                             <button type="submit" class="btn btn-primary w-100 mt-4">Log In</button>
                         </form>
                     </div>
-    
-                    <!-- Back Side -->
-                    
                 </div>
             </div>
         </div>
@@ -125,7 +122,4 @@ unset($__errorArgs, $__bag); ?>
 <?php if (isset($__componentOriginal770f4324bd118d9c351861e57352354a)): ?>
 <?php $component = $__componentOriginal770f4324bd118d9c351861e57352354a; ?>
 <?php unset($__componentOriginal770f4324bd118d9c351861e57352354a); ?>
-<?php endif; ?>
-
-
-<?php /**PATH C:\Users\raide\OneDrive\Desktop\HRCATALiSTS-hr-catalists\resources\views/auth/login.blade.php ENDPATH**/ ?>
+<?php endif; ?><?php /**PATH C:\Users\raide\OneDrive\Desktop\HRCATALiSTS-hr-catalists\resources\views/auth/login.blade.php ENDPATH**/ ?>

@@ -89,5 +89,10 @@
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="js/swiper.js"></script>
 
+<<<<<<< HEAD
+=======
+    <script src="<?php echo e(asset('js/back-to-top.js')); ?>"></script>
+
+>>>>>>> hr-catalists
 </body>
 </html><?php /**PATH C:\laragon\www\hr_catalists\resources\views/layouts/welcome-layout.blade.php ENDPATH**/ ?>

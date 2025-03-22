@@ -1,13 +1,9 @@
 <x-admin-ems-layout>
-
     <x-slot:title>
         Columban College Inc. | EMS Dashboard
     </x-slot:title>
 
-    <!-- Dashboard Content -->
     <div class="d-flex">
-
-        <!-- Sidebar -->
         <x-partials.system.ems.ems-sidebar />
         <!-- End of Sidebar -->
     
@@ -436,4 +432,9 @@
             fetchEvents();
         });
     </script>
+</x-admin-ems-layout>
+
+        {{-- @include('hrcatalists.ems.partials.ems-dashboard-content') --}}
+    </div>
+
 </x-admin-ems-layout>
