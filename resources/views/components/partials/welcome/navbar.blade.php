@@ -3,62 +3,6 @@
     <div class="container d-flex justify-content-between">
         
         <!-- Left Side (Logo and College Name) -->
-<<<<<<< HEAD
-        <a class=" d-flex align-items-center" href="{{ route('home') }}">
-            <img src="{{ asset('images/CC_logo.png') }}" alt="Logo" class="cclogo">
-            <span class="cc-nav-text navbar-text fw-bold ms-2">Columban College, Inc.</span>
-            {{-- @if(Auth::check())   
-            <!-- Redirects to dashboard if logged in -->
-            <a href="{{ route('main-menu') }}" class="login-wrapper"><i class="fa-solid fa-user icon-color"></i></a>
-            @else
-                <!-- Shows login page only if not logged in -->
-                <a href="{{ route('login') }}"><i class="fa-solid fa-user icon-color"></i></a>
-            @endif --}}
-        </a>
-
-        {{-- Job Openings --}}
-        <div class="d-flex align-items-center">
-            {{-- Login --}}
-            <div class="d-flex align-items-center me-4">
-                {{-- <span class="text-white login me-2">Looking for a Job?</span> --}}
-                @if(Auth::check())
-                <button class="btn-1">
-                    <a href="{{ route('main-menu') }}">
-                        <div class="login">SIGN IN</div>
-                        <div class="letters">
-                            <span>M</span>
-                            <span>A</span>
-                            <span>I</span>
-                            <span>N</span>
-                            <span>&nbsp;</span>
-                            <span>M</span>
-                            <span>E</span>
-                            <span>N</span>
-                            <span>U</span>
-                        </div>
-                    </a>
-                </button>
-                @else
-                <button class="btn-1">
-                    <a href="{{ route('login') }}">
-                        <div class="login">SIGN IN</div>
-                        <div class="letters">
-                            <span>L</span>
-                            <span>O</span>
-                            <span>G</span>
-                            <span>I</span>
-                            <span>N</span>
-                            <span>&nbsp;</span>
-                            <span>H</span>
-                            <span>E</span>
-                            <span>R</span>
-                            <span>E</span>
-                        </div>
-                    </a>
-                </button>
-                @endif
-            </div>
-=======
         <div class="d-flex justify-content-between">
             <a class="d-flex align-items-center" href="{{ route('home') }}">
                 <img src="{{ asset('images/CC_logo.png') }}" alt="Logo" class="cclogo">
@@ -71,7 +15,6 @@
 
         {{-- Job Openings --}}
         {{-- <div class="d-flex align-items-center">
->>>>>>> hr-catalists
             <span class="text-white login me-2">Looking for a Job?</span>
             <button class="btn-1">
                 <a href="{{ route('openings') }}">
