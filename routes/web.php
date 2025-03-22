@@ -41,6 +41,10 @@ Route::get('/login', [GoogleAuthController::class, 'redirect'])
   
 
 
+// ✅ Allow only guests to access the login page
+Route::get('/login', function () {
+    return view('auth.login');
+})->name('login')->middleware('guest');
 
 Route::get('/job-selected/{slug}', [JobPostController::class, 'jobSelected'])->name('job-selected');
 

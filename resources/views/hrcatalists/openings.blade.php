@@ -71,60 +71,60 @@
     </div>
     <!-- Job Openings end-->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    $(document).ready(function() {
-        // Trigger AJAX search on input change
-        $('#keyword, #position').on('input change', function() {
-            let keyword = $('#keyword').val();
-            let position = $('#position').val();
+    {{-- <script>
+        $(document).ready(function() {
+            // Trigger AJAX search on input change
+            $('#keyword, #position').on('input change', function() {
+                let keyword = $('#keyword').val();
+                let position = $('#position').val();
 
-            $.ajax({
-                url: "{{ route('openings') }}",
-                method: "GET",
-                data: { keyword: keyword, position: position },
-                success: function(response) {
-                    // Clear job results
-                    $('#jobResults').html('');
+                $.ajax({
+                    url: "{{ route('openings') }}",
+                    method: "GET",
+                    data: { keyword: keyword, position: position },
+                    success: function(response) {
+                        // Clear job results
+                        $('#jobResults').html('');
 
-                    // If no jobs found
-                    if (response.jobs.length === 0) {
-                        $('#jobResults').html('<p>No job openings found.</p>');
-                        return;
+                        // If no jobs found
+                        if (response.jobs.length === 0) {
+                            $('#jobResults').html('<p>No job openings found.</p>');
+                            return;
+                        }
+
+                        // Append filtered jobs
+                        $.each(response.jobs, function(index, job) {
+                            let jobCard = `
+                                <div class="col-md-4 job-card-container">
+                                    <div class="card job-card p-4">
+                                        <h5>${job.job_title}</h5>
+                                        <div class="tags">${getTags(job.tags)}</div>                             
+                                        <p class="requirements">
+                                            <strong>Job Description:</strong><br>
+                                            <span>${truncateText(job.job_description, 50)}</span><br>
+                                            <strong>Requirements:</strong><br>
+                                            <span>${truncateText(job.requirements, 50)}</span>
+                                        </p>
+                                        <a class="btn-3" href="/job/${job.slug}">APPLY NOW</a>
+                                    </div>
+                                </div>`;
+                            $('#jobResults').append(jobCard);
+                        });
                     }
-
-                    // Append filtered jobs
-                    $.each(response.jobs, function(index, job) {
-                        let jobCard = `
-                            <div class="col-md-4 job-card-container">
-                                <div class="card job-card p-4">
-                                    <h5>${job.job_title}</h5>
-                                    <div class="tags">${getTags(job.tags)}</div>                             
-                                    <p class="requirements">
-                                        <strong>Job Description:</strong><br>
-                                        <span>${truncateText(job.job_description, 50)}</span><br>
-                                        <strong>Requirements:</strong><br>
-                                        <span>${truncateText(job.requirements, 50)}</span>
-                                    </p>
-                                    <a class="btn-3" href="/job/${job.slug}">APPLY NOW</a>
-                                </div>
-                            </div>`;
-                        $('#jobResults').append(jobCard);
-                    });
-                }
+                });
             });
+
+            // Helper function to truncate text
+            function truncateText(text, limit) {
+                return text.length > limit ? text.substring(0, limit) + '...' : text;
+            }
+
+            // Helper function to format tags
+            function getTags(tags) {
+                return tags.split(',').map(tag => `<span class="tag">${tag.trim()}</span>`).join(' ');
+            }
         });
-
-        // Helper function to truncate text
-        function truncateText(text, limit) {
-            return text.length > limit ? text.substring(0, limit) + '...' : text;
-        }
-
-        // Helper function to format tags
-        function getTags(tags) {
-            return tags.split(',').map(tag => `<span class="tag">${tag.trim()}</span>`).join(' ');
-        }
-    });
-</script>
+    </script> --}}
 
     {{-- <script>
         $(document).ready(function() {
