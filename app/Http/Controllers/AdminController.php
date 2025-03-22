@@ -10,6 +10,7 @@ use App\Models\Job;
 use App\Models\Log;
 use App\Models\Event;
 use Carbon\Carbon;
+use App\Models\Employee;
 
 
 
@@ -139,13 +140,26 @@ class AdminController extends Controller
       
     
 
-    public function employees()
-    {
-        if (!Auth::check()) {
-            return redirect()->route('login');
-        }
-        return view('hrcatalists.ems.admin-ems-emp'); // EMS Employee List
-    }
+
+     
+     public function employees()
+     {
+         if (!Auth::check()) {
+             return redirect()->route('login');
+         }
+     
+         // Fetch employees from the database
+         $employees = Employee::all();
+     
+         // Pass employees to the view
+         return view('hrcatalists.ems.admin-ems-emp', compact('employees'));
+     }
+     public function showEmployee($id)
+{
+    $employee = Employee::findOrFail($id); // Fetch employee or fail
+    return view('hrcatalists.ems.admin-ems-view-emp', compact('employee'));
+}
+
 
        // Load the ems Calendar View
        public function emsCalendar()
@@ -158,20 +172,26 @@ class AdminController extends Controller
            return view('hrcatalists.ems.admin-ems-cl', compact('events'));
        }
 
-    public function deptCOA()
-    {
-        if (!Auth::check()) {
-            return redirect()->route('login');
-        }
-        return view('hrcatalists.ems.admin-ems-dept-coa');
-    }
+       public function deptCOA()
+       {
+           if (!Auth::check()) {
+               return redirect()->route('login');
+           }
+       
+           // Fetch employees where department is "College of Architecture"
+           $employees = Employee::where('department', 'College of Architecture')->get();
+       
+           return view('hrcatalists.ems.admin-ems-dept-coa', compact('employees'));
+       }
+       
 
     public function deptCASED()
     {
         if (!Auth::check()) {
             return redirect()->route('login');
         }
-        return view('hrcatalists.ems.admin-ems-dept-cased'); // College of Arts & Science and Education
+        $employees = Employee::where('department', 'College of Arts & Sciences/Education')->get();
+        return view('hrcatalists.ems.admin-ems-dept-cased', compact('employees')); // College of Arts & Science and Education
     }
 
     public function deptCBA()
@@ -179,7 +199,8 @@ class AdminController extends Controller
         if (!Auth::check()) {
             return redirect()->route('login');
         }
-        return view('hrcatalists.ems.admin-ems-dept-cba'); // College of Business and Accountancy
+        $employees = Employee::where('department', 'College of Business & Accountancy')->get();
+        return view('hrcatalists.ems.admin-ems-dept-cba', compact('employees')); // College of Business and Accountancy
     }
 
     public function deptCCS()
@@ -187,7 +208,8 @@ class AdminController extends Controller
         if (!Auth::check()) {
             return redirect()->route('login');
         }
-        return view('hrcatalists.ems.admin-ems-dept-ccs'); // College of Computer Studies
+        $employees = Employee::where('department', 'College of Computer Studies')->get();
+        return view('hrcatalists.ems.admin-ems-dept-ccs', compact('employees')); // College of Computer Studies
     }
 
     public function deptCOE()
@@ -195,7 +217,8 @@ class AdminController extends Controller
         if (!Auth::check()) {
             return redirect()->route('login');
         }
-        return view('hrcatalists.ems.admin-ems-dept-coe'); // College of Engineering
+        $employees = Employee::where('department', 'College of Engineering')->get();
+        return view('hrcatalists.ems.admin-ems-dept-coe',compact('employees')); // College of Engineering
     }
 
     public function deptCON()
@@ -203,7 +226,8 @@ class AdminController extends Controller
         if (!Auth::check()) {
             return redirect()->route('login');
         }
-        return view('hrcatalists.ems.admin-ems-dept-con'); // College of Nursing
+        $employees = Employee::where('department', 'College of Nursing')->get();
+        return view('hrcatalists.ems.admin-ems-dept-con',compact('employees')); // College of Nursing
     }
 
     public function deptBasicEd()
@@ -211,7 +235,16 @@ class AdminController extends Controller
         if (!Auth::check()) {
             return redirect()->route('login');
         }
-        return view('hrcatalists.ems.admin-ems-dept-basicEd'); // College of Basic Education
+        $employees = Employee::where('department', 'Basic Education - Main & Baretto Campus')->get();
+        return view('hrcatalists.ems.admin-ems-dept-basicEd',compact('employees')); // College of Basic Education
+    }
+    public function deptNon()
+    {
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+        $employees = Employee::where('department', 'None-Teaching')->get();
+        return view('hrcatalists.ems.admin-ems-dept-non-teaching',compact('employees')); // College of Basic Education
     }
 
     public function ranking()

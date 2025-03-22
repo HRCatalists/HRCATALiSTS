@@ -12,7 +12,7 @@
             <div class="container mt-5">
                 
                 <div class="d-flex justify-content-between align-items-center mt-5 mb-5">
-                    <h2 class="db-h2">College of Arts & Sciences/Education</h2>
+                    <h2 class="db-h2">Non-Teaching</h2>
                     <div class="d-flex">
                     <a href="{{ route('ems-employees') }}" class="button btn add-btn">ADD EMPLOYEE</a>
                         <button class="btn shadow print-btn">

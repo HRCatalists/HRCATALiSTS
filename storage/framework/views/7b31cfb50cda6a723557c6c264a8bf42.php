@@ -40,7 +40,7 @@
             <div class="container mt-5">
                 
                 <div class="d-flex justify-content-between align-items-center mt-5 mb-5">
-                    <h2 class="db-h2">College of Architecture</h2>
+                    <h2 class="db-h2">College of Arts & Sciences/Education</h2>
                     <div class="d-flex">
                     <a href="<?php echo e(route('ems-employees')); ?>" class="button btn add-btn">ADD EMPLOYEE</a>
                         <button class="btn shadow print-btn">
@@ -117,4 +117,4 @@
 <?php if (isset($__componentOriginal5aa067d06d1afdd090a728cb9bf57c48)): ?>
 <?php $component = $__componentOriginal5aa067d06d1afdd090a728cb9bf57c48; ?>
 <?php unset($__componentOriginal5aa067d06d1afdd090a728cb9bf57c48); ?>
-<?php endif; ?><?php /**PATH C:\Users\raide\OneDrive\Desktop\HRCATALiSTS-hr-catalists\resources\views/hrcatalists/ems/admin-ems-dept-coa.blade.php ENDPATH**/ ?>
+<?php endif; ?><?php /**PATH C:\Users\raide\OneDrive\Desktop\HRCATALiSTS-hr-catalists\resources\views/hrcatalists/ems/admin-ems-dept-cased.blade.php ENDPATH**/ ?>
