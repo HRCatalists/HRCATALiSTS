@@ -16,10 +16,10 @@
         <!-- Sidebar & Master List -->
         <div class="d-flex">
             <!-- Sidebar -->
-            <?php if (isset($component)) { $__componentOriginalb6736efa91a27fe677a95c665ef9b617 = $component; } ?>
-<?php if (isset($attributes)) { $__attributesOriginalb6736efa91a27fe677a95c665ef9b617 = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.partials.system.ems.ems-sidebar','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
-<?php $component->withName('partials.system.ems.ems-sidebar'); ?>
+            <?php if (isset($component)) { $__componentOriginald5876c07269e58343b8102e8c5f829ec = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginald5876c07269e58343b8102e8c5f829ec = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.partials.system.ats.ats-sidebar','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('partials.system.ats.ats-sidebar'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
@@ -28,14 +28,15 @@
 <?php $component->withAttributes([]); ?>
 <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
-<?php if (isset($__attributesOriginalb6736efa91a27fe677a95c665ef9b617)): ?>
-<?php $attributes = $__attributesOriginalb6736efa91a27fe677a95c665ef9b617; ?>
-<?php unset($__attributesOriginalb6736efa91a27fe677a95c665ef9b617); ?>
+<?php if (isset($__attributesOriginald5876c07269e58343b8102e8c5f829ec)): ?>
+<?php $attributes = $__attributesOriginald5876c07269e58343b8102e8c5f829ec; ?>
+<?php unset($__attributesOriginald5876c07269e58343b8102e8c5f829ec); ?>
 <?php endif; ?>
-<?php if (isset($__componentOriginalb6736efa91a27fe677a95c665ef9b617)): ?>
-<?php $component = $__componentOriginalb6736efa91a27fe677a95c665ef9b617; ?>
-<?php unset($__componentOriginalb6736efa91a27fe677a95c665ef9b617); ?>
+<?php if (isset($__componentOriginald5876c07269e58343b8102e8c5f829ec)): ?>
+<?php $component = $__componentOriginald5876c07269e58343b8102e8c5f829ec; ?>
+<?php unset($__componentOriginald5876c07269e58343b8102e8c5f829ec); ?>
 <?php endif; ?>
+
             <!-- End of Sidebar -->
         
             <!-- Employee List -->
