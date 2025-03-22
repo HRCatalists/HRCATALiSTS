@@ -122,7 +122,7 @@
                                             </td>
                                             <td><?php echo e($applicant->first_name); ?> <?php echo e($applicant->last_name); ?></td>
                                             <td>
-                                                <form method="POST" action="<?php echo e(route('applicants.updateStatus', $applicant->id)); ?>" class="status-update-form">
+                                                <form method="POST" action="<?php echo e(route('applicants.chooseStatus', $applicant->id)); ?>" class="status-update-form">
                                                     <?php echo csrf_field(); ?>
                                                     <select name="status" class="form-select status-dropdown"
                                                         data-applicant-name="<?php echo e($applicant->first_name); ?> <?php echo e($applicant->last_name); ?>" 

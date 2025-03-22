@@ -159,6 +159,22 @@ class AdminController extends Controller
     $employee = Employee::findOrFail($id); // Fetch employee or fail
     return view('hrcatalists.ems.admin-ems-view-emp', compact('employee'));
 }
+public function deleteEmployee($id)
+{
+    $employee = Employee::find($id);
+
+    if (!$employee) {
+        return response()->json(['success' => false, 'message' => 'Employee not found.'], 404);
+    }
+
+    $employee->delete(); // Attempt to delete
+
+    return response()->json(['success' => true, 'message' => 'Employee deleted successfully.']);
+}
+
+
+
+
 
 
        // Load the ems Calendar View

@@ -14,7 +14,7 @@
                 <div class="d-flex justify-content-between align-items-center mt-5 mb-5">
                     <h2 class="db-h2">Employee List</h2>
                     <div class="d-flex">
-                    <a href="{{ route('ems-employees') }}" class="button btn add-btn">ADD EMPLOYEE</a>
+                        <a href="{{ route('ems-employees') }}" class="button btn add-btn">ADD EMPLOYEE</a>
                         <button class="btn shadow print-btn">
                             <i class="fa fa-print"></i> PRINT
                         </button>
@@ -37,7 +37,7 @@
                     </thead>
                     <tbody>
                         @foreach ($employees as $employee)
-                        <tr>
+                        <tr id="row-{{ $employee->id }}">
                             <td class="text-center"><input type="checkbox" class="rowCheckbox"></td>
                             <td>{{ $employee->id }}</td>
                             <td>{{ $employee->last_name }}, {{ $employee->first_name }}</td>
@@ -58,26 +58,46 @@
     </div>
 
     <!-- Delete Confirmation Popup -->
-    <div id="rejectPopup" class="custom-popup" style="display: none;">
+    <div id="rejectPopup" class="custom-popup" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3); z-index: 1000;">
         <div class="popup-content">
             <p>Are you sure you want to delete this employee?</p>
-            <form id="deleteForm" method="POST">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="btn btn-danger">Yes, delete the employee!</button>
-                <button type="button" class="btn btn-outline-secondary" onclick="closePopup()">Cancel</button>
-            </form>
+            <button type="button" class="btn btn-danger" id="confirmDelete">Yes, delete the employee!</button>
+            <button type="button" class="btn btn-outline-secondary" onclick="closePopup()">Cancel</button>
         </div>
     </div>
 
     <script>
+        let deleteEmployeeId = null;
+
         function showPopup(employeeId) {
-            document.getElementById("deleteForm").action = "/employees/" + employeeId;
+            deleteEmployeeId = employeeId;
             document.getElementById("rejectPopup").style.display = "block";
         }
 
         function closePopup() {
             document.getElementById("rejectPopup").style.display = "none";
         }
+
+        document.getElementById("confirmDelete").addEventListener("click", function() {
+            if (deleteEmployeeId) {
+                fetch(`/employees/${deleteEmployeeId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById(`row-${deleteEmployeeId}`).remove();
+                        closePopup();
+                    } else {
+                        alert('Failed to delete the employee.');
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            }
+        });
     </script>
 </x-admin-ems-layout>

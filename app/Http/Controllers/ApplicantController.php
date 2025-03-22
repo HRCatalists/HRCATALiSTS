@@ -6,6 +6,8 @@ use App\Models\{Applicant, Log, Job, Event};
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log as LaravelLog;
+use App\Models\Employee;
+
 
 class ApplicantController extends Controller
 {
@@ -62,43 +64,69 @@ class ApplicantController extends Controller
         }
     }
 
-    //status update in dropdown
     public function chooseStatus(Request $request, $id)
-    {
-        if (!Auth::check()) {
-            return redirect()->route('login')->with('error', 'Please log in to update applicant status.');
+{
+    if (!Auth::check()) {
+        return redirect()->route('login')->with('error', 'Please log in to update applicant status.');
+    }
+
+    $applicant = Applicant::find($id);
+    if (!$applicant) {
+        return redirect()->back()->with('error', 'Applicant not found.');
+    }
+
+    $validStatuses = ['pending', 'screening', 'scheduled', 'interviewed', 'hired', 'rejected', 'archived'];
+    $newStatus = $request->input('status');
+
+    if (!in_array($newStatus, $validStatuses)) {
+        return redirect()->back()->with('error', 'Invalid status provided.');
+    }
+
+    $applicantName = trim($applicant->first_name . ' ' . $applicant->last_name);
+    $oldStatus = $applicant->status;
+
+    // Update applicant status
+    $applicant->status = $newStatus;
+    $applicant->save();
+
+    // If status is "hired", move the applicant to the Employee table
+    if ($newStatus === 'hired') {
+        // Check if email already exists in the employees table
+        if (Employee::where('email', $applicant->email)->exists()) {
+            return redirect()->back()->with('error', 'This applicant is already hired. Duplicate email found.');
         }
 
-        $applicant = Applicant::find($id);
-        if (!$applicant) {
-            return redirect()->back()->with('error', 'Applicant not found.');
-        }
+        $job = Job::find($applicant->job_id);
 
-        $validStatuses = ['pending', 'screening', 'scheduled', 'interviewed', 'hired', 'rejected', 'archived'];
-        $newStatus = $request->input('status');
-
-        if (!in_array($newStatus, $validStatuses)) {
-            return redirect()->back()->with('error', 'Invalid status provided.');
-        }
-
-        // Combine first & last name for logging
-        $applicantName = trim($applicant->first_name . ' ' . $applicant->last_name);
-        $oldStatus = $applicant->status;
-
-        // Update status
-        $applicant->status = $newStatus;
-        $applicant->save();
-
-        // Log the update
-        Log::create([
-            'user_id' => Auth::id(),
-            'activity' => "Updated status for applicant: {$applicantName} from " . ucfirst($oldStatus) . " to " . ucfirst($newStatus),
-            'created_at' => now(),
-            'updated_at' => $applicant->updated_at,
+        Employee::create([
+            'first_name' => $applicant->first_name,
+            'last_name' => $applicant->last_name,
+            'email' => $applicant->email,
+            'phone' => $applicant->phone,
+            'address' => $applicant->address,
+            'cv' => $applicant->cv,
+            'privacy_policy_agreed' => $applicant->privacy_policy_agreed,
+            'status' => 'hired',
+            'applied_at' => $applicant->applied_at,
+            'department' => $job->department ?? 'Unknown',
+            'job_title' => $job->job_title ?? 'Unknown',
         ]);
 
-        return redirect()->back()->with('success', "Applicant status updated to " . ucfirst($newStatus) . ".");
+        // Optionally, delete the applicant after transferring
+        $applicant->delete();
     }
+
+    // Log the update
+    Log::create([
+        'user_id' => Auth::id(),
+        'activity' => "Updated status for applicant: {$applicantName} from " . ucfirst($oldStatus) . " to " . ucfirst($newStatus),
+        'created_at' => now(),
+    ]);
+
+    return redirect()->back()->with('success', "Applicant status updated to " . ucfirst($newStatus) . ".");
+}
+
+    
     
     public function scheduleInterview(Request $request, $id)
     {

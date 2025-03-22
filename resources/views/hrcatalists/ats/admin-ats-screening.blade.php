@@ -94,7 +94,7 @@
                                         </td>
                                         <td>{{ $applicant->first_name }} {{ $applicant->last_name }}</td>
                                         <td>
-                                            <form method="POST" action="{{ route('applicants.updateStatus', $applicant->id) }}" class="status-update-form">
+                                            <form method="POST" action="{{ route('applicants.chooseStatus', $applicant->id) }}" class="status-update-form">
                                                 @csrf
                                                 <select name="status" class="form-select status-dropdown"
                                                     data-applicant-name="{{ $applicant->first_name }} {{ $applicant->last_name }}" 

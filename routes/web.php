@@ -58,6 +58,8 @@ Route::middleware(['auth', PreventBackHistory::class])->group(function () {
     Route::get('/ems-dashboard', [AdminController::class, 'emsDashboard'])->name('ems-dashboard');
     Route::get('/ems-employees', [AdminController::class, 'employees'])->name('ems-employees');
     Route::get('/employees/{id}', [AdminController::class, 'showEmployee'])->name('employees.show');
+    Route::delete('/employees/{id}/delete', [AdminController::class, 'deleteEmployee'])->name('employees.delete');
+
     Route::get('/ems-emp-dept-coa', [AdminController::class, 'deptCOA'])->name('ems-dept-coa');
     Route::get('/ems-emp-dept-cased', [AdminController::class, 'deptCASED'])->name('ems-dept-cased');
     Route::get('/ems-emp-dept-cba', [AdminController::class, 'deptCBA'])->name('ems-dept-cba');
