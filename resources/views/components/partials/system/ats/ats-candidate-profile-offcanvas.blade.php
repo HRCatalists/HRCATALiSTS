@@ -103,21 +103,41 @@
         </div>
    
             <!-- End Overview Tab -->
-            
             <!-- Notes Tab -->
-            <div id="notes" class="tab-content" style="display: none;">
-                <div class="notes-section">
-                    <p><strong>Lorem ipsum dolor sit amet.</strong> consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...</p>
-                    <p><strong>Lorem ipsum dolor sit amet.</strong> consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...</p>
-                    <p><strong>Lorem ipsum dolor sit amet.</strong> consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...</p>
+<div id="notes" class="tab-content" style="display: none;">
+    <div class="notes-section">
+        <p id="note1"><strong>No Text Written.</strong> consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...</p>
+        <p id="note2"><strong>No Text Written.</strong> consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...</p>
+        <p id="note3"><strong>No Text Written.</strong> consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...</p>
 
-                    <div class="notes-btn">
-                        <button class="btn btn-primary mt-3">Add</button>
-                        <button class="btn btn-success mt-3">Edit</button>
-                    </div>
-                </div>
+        <div class="notes-btn">
+            <button class="btn btn-success mt-3" id="editNotesBtn">Edit</button>
+        </div>
+    </div>
+</div>
+<!-- End Notes Tab -->
+
+<!-- Edit Notes Modal -->
+<div class="modal fade" id="editNotesModal" tabindex="-1" aria-labelledby="editNotesModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editNotesModalLabel">Edit Notes</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <!-- End Notes Tab -->
+            <div class="modal-body">
+                <form id="notesForm">
+                    <div class="mb-3">
+                        <label for="noteContent" class="form-label">Edit Your Notes:</label>
+                        <textarea class="form-control" id="noteContent" rows="5"></textarea>
+                    </div>
+                    <button type="button" class="btn btn-primary" id="saveNotesBtn">Save</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Edit Notes Modal -->
 
     <!-- Interview Tab -->
     @if(isset($applicant))
@@ -177,3 +197,38 @@
         
     </div>
 </div>
+
+
+<!-- JavaScript -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const editNotesBtn = document.getElementById("editNotesBtn");
+    const noteContent = document.getElementById("noteContent");
+    const saveNotesBtn = document.getElementById("saveNotesBtn");
+    
+    let allNotes = document.querySelectorAll("#notes p"); // Select all note paragraphs
+
+    editNotesBtn.addEventListener("click", function () {
+        let combinedNotes = ""; // Store existing notes
+        allNotes.forEach(note => {
+            combinedNotes += note.innerText + "\n\n";
+        });
+
+        noteContent.value = combinedNotes.trim(); // Set textarea content
+        let modal = new bootstrap.Modal(document.getElementById("editNotesModal"));
+        modal.show();
+    });
+
+    saveNotesBtn.addEventListener("click", function () {
+        let updatedNotes = noteContent.value.split("\n\n"); // Split back into paragraphs
+
+        allNotes.forEach((note, index) => {
+            if (updatedNotes[index]) {
+                note.innerText = updatedNotes[index];
+            }
+        });
+
+        document.getElementById("editNotesModal").querySelector(".btn-close").click(); // Close modal
+    });
+});
+</script>
