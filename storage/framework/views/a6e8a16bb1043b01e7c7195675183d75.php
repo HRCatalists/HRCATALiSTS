@@ -14,30 +14,10 @@
      <?php $__env->endSlot(); ?>
 
     <!-- Banner Section with Search Bar -->
-    <div class="banner" style="background-image: url('<?php echo e(asset('images/cc-bg-pic.png')); ?>')">
+    <div class="banner">
         <div class="text-center">
-            <p>Human Asset Management & Development Office</p>
+            <p>Columban College Inc<br>Human Asset Management and Development Office</p>
         </div>
-        
-        
-        <div class="search-bar">
-            <div class="row">
-                <div class="col-md-4">
-                    <input type="text" placeholder="Enter job title or tags">
-                </div>
-                <div class="col-md-4">
-                    <select>
-                        <option value="">Select Department</option>
-                        <?php $__currentLoopData = $departments; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $department): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                            <option value="<?php echo e($department->code); ?>"><?php echo e($department->name); ?></option>
-                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                    </select>
-                </div>
-                <div class="col-md-4 d-flex justify-content-end align-items-center">
-                    <button class="float-end">Search</button> 
-                </div>
-            </div>
-        </div>        
     </div>
 
     <!-- About Us Section -->
@@ -133,6 +113,24 @@
                                         </div>
                                     </div>
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+
+                                <!-- See More Card -->
+                                <div class="swiper-slide">
+                                    <div class="card job-card see-more-card p-4 m-auto text-center">
+                                        
+                                        <a style="--clr: #000" class="btn-3" href="<?php echo e(route('openings')); ?>">
+                                            <span class="button__icon-wrapper">
+                                                <svg width="10" class="button__icon-svg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 15">
+                                                    <path fill="currentColor" d="M13.376 11.552l-.264-10.44-10.44-.24.024 2.28 6.96-.048L.2 12.56l1.488 1.488 9.432-9.432-.048 6.912 2.304.024z"></path>
+                                                </svg>
+                                                <svg class="button__icon-svg button__icon-svg--copy" xmlns="http://www.w3.org/2000/svg" width="10" fill="none" viewBox="0 0 14 15">
+                                                    <path fill="currentColor" d="M13.376 11.552l-.264-10.44-10.44-.24.024 2.28 6.96-.048L.2 12.56l1.488 1.488 9.432-9.432-.048 6.912 2.304.024z"></path>
+                                                </svg>
+                                            </span>
+                                            SEE MORE JOBS
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="swiper-button-next"></div>
@@ -150,6 +148,11 @@
 
     <!-- Latest Openings -->
     
+
+    <!-- Back to Top Button -->
+    <button id="backToTop" class="back-to-top">
+        <i class="fa-solid fa-arrow-up"></i>
+    </button>
 
  <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
