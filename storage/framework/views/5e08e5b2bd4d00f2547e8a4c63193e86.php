@@ -53,7 +53,7 @@
                     <div class="card checkbox-card me-3">
                         <div class="container d-flex">
 
-                            <!-- Select All heckbox -->
+                            <!-- Select All Checkbox -->
                             <div class="d-flex me-4 py-3">
                                 <input type="checkbox" id="selectAll" class="rowCheckbox">
                             </div>
@@ -420,7 +420,85 @@
         });
     </script>    
     
-        
+   
+         <script>
+document.addEventListener("DOMContentLoaded", function () {
+    const selectAllCheckbox = document.getElementById("selectAll");
+    const rowCheckboxes = document.querySelectorAll(".rowCheckbox");
+
+    // Select All Checkbox Functionality
+    selectAllCheckbox.addEventListener("change", function () {
+        rowCheckboxes.forEach((checkbox) => {
+            checkbox.checked = this.checked;
+        });
+    });
+
+    // Uncheck "Select All" if any individual checkbox is unchecked
+    rowCheckboxes.forEach((checkbox) => {
+        checkbox.addEventListener("change", function () {
+            if (!this.checked) {
+                selectAllCheckbox.checked = false;
+            } else {
+                // If all are checked, mark "Select All" as checked
+                selectAllCheckbox.checked = [...rowCheckboxes].every(cb => cb.checked);
+            }
+        });
+    });
+
+    // Archive Button Click Event
+    document.querySelector(".archive-btn").addEventListener("click", function () {
+        let selectedApplicants = getSelectedApplicants();
+        if (selectedApplicants.length > 0) {
+            confirmAction("archive", selectedApplicants);
+        } else {
+            alert("Please select at least one applicant to archive.");
+        }
+    });
+
+    // Reject Button Click Event
+    document.querySelector(".reject-btn").addEventListener("click", function () {
+        let selectedApplicants = getSelectedApplicants();
+        if (selectedApplicants.length > 0) {
+            confirmAction("reject", selectedApplicants);
+        } else {
+            alert("Please select at least one applicant to reject.");
+        }
+    });
+
+    // Function to Get Selected Applicants' IDs
+    function getSelectedApplicants() {
+        let selectedApplicants = [];
+        document.querySelectorAll(".rowCheckbox:checked").forEach((checkbox) => {
+            selectedApplicants.push(checkbox.value);
+        });
+        return selectedApplicants;
+    }
+
+    // Confirm Action Function (Archive/Reject)
+    function confirmAction(action, selectedApplicants) {
+        let message = `Are you sure you want to ${action} the selected applicants?`;
+        if (confirm(message)) {
+            // Send request to server (Modify according to your Laravel route)
+            fetch(`/applicants/${action}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content"),
+                },
+                body: JSON.stringify({ applicants: selectedApplicants }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+                location.reload(); // Reload page to reflect changes
+            })
+            .catch(error => console.error("Error:", error));
+        }
+    }
+});
+
+
+        </script>
  <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginal5fc7b6c708ff08bbce49411545a9c035)): ?>

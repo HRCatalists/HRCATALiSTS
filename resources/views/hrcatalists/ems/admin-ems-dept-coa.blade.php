@@ -53,8 +53,12 @@
 
                                 <div id="rejectPopup" class="custom-popup" style="display: none;">
                                     <p>Are you sure you want to delete this employee?</p>
-                                    <button type="button" class="btn btn-danger" id="confirmDelete">Yes, delete!</button>
-                                    <button type="button" class="btn btn-outline-secondary" onclick="closePopup()">Cancel</button>
+                                    <td class="px-4">
+                                    <div class="dropdown text-center">
+                                        <button class="btn btn-primary border-0" type="button" id="actionsDropdown{{ $employee->id }}" 
+                                            data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="fa-solid fa-list"></i> <!-- Bootstrap Icons -->
+                                        </button>
                                 </div>
 
 
