@@ -39,8 +39,8 @@
     <!-- Calendar CSS -->
     <link rel="stylesheet" href="{{ asset('css/ats-calendar.css') }}">
 
-    <!-- DB Calendar CSS -->
-    <link rel="stylesheet" href="{{ asset('css/db-ems-calendar.css') }}">
+    <!-- Dashboard Calendar CSS -->
+    <link rel="stylesheet" href="{{ asset('css/db-ats-calendar.css') }}">
 </head>
 
 <body>

@@ -94,7 +94,7 @@
                                         </td>
                                         <td>{{ $applicant->first_name }} {{ $applicant->last_name }}</td>
                                         <td>
-                                            <form method="POST" action="{{ route('applicants.updateStatus', $applicant->id) }}" class="status-update-form">
+                                            <form method="POST" action="{{ route('applicants.chooseStatus', $applicant->id) }}" class="status-update-form">
                                                 @csrf
                                                 <select name="status" class="form-select status-dropdown"
                                                     data-applicant-name="{{ $applicant->first_name }} {{ $applicant->last_name }}" 
@@ -135,14 +135,10 @@
                     
                             {{-- Show "No applicants found" if no results --}}
                             @if(!$hasResults)
-                                <tr>
-                                    <td colspan="6" class="text-center">No pending or screening applicants found.</td>
-                                </tr>
+                               
                             @endif
-                        @else
-                            <tr>
-                                <td colspan="6" class="text-center">No applicants available.</td>
-                            </tr>
+                
+                         
                         @endif
                     </tbody>
                 </table>
@@ -205,158 +201,251 @@
         </div>
     </div>
 
-    <!-- Offcanvas for Candidate Profile View -->
-    <div class="offcanvas offcanvas-end p-0" tabindex="-1" id="candidateProfile" aria-labelledby="candidateProfileLabel">
-
-        <div class="offcanvas-header">
-            <h3 class="offcanvas-title" id="candidateProfileLabel">Candidate Profile View</h3>
-            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
-
-        <div class="offcanvas-body-wrapper px-4">
-            <div class="content-section">
-                <div class="d-flex align-items-center justify-content-between my-4">
-                    <h5 class="mt-2">RHINELL MENES</h5>
-
-                    <span class="stage border px-3 py-1">
-                        STAGE: INTERVIEW
-                    </span>
+ 
+    @include('components.partials.system.ats.ats-candidate-profile-offcanvas')
                 </div>
-                
-                <!-- Tabs -->
-                <ul class="nav nav-tabs">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#" onclick="showTab('overview')">Overview</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" onclick="showTab('notes')">Notes</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" onclick="showTab('interview')">Schedule an Interview</a>
-                    </li>
-                </ul>
-
-                <!-- Tab Content -->
-                <!-- Overview Tab -->
-                <div id="overview" class="tab-content">
-                    
-                    <!-- Applicant Section -->
-                    <div class="applicant-section">
-                        
-                        <div class="applicant-data">
-                            <h5>Applicant Data</h5>
-
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <p> <strong>Position:</strong> Medical Staff</p>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <p> <strong>Full Name:</strong> Rhinell menes</p>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <i class="fa-solid fa-envelope me-2"></i> menesj@gmail.com
-                                </div>
-                                <div class="col-md-6">
-                                    <i class="fa-solid fa-phone me-2"></i> 09313 4567 89
-                                </div>
-                            </div>
-
-                            <div class="row mt-3">
-                                <div class="col-md-12">
-                                    <i class="fa-solid fa-location-dot me-2"></i> 37-B 7th St., West Tapinac, Olongapo City
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Attachment -->
-                        <div class="file-attachment my-4">
-                            <img src="images/pdf-img.png" alt="PDF icon">
-                            <span>Severus_Snape_CVfinalfinal.pdf</span>
-                            <span class="ms-auto">200 KB</span>
-                        </div>
-
-                        <div class="d-grid mt-5">
-                            <!-- <button class="btn btn-primary">EDIT APPLICANT DATA</button> -->
-                        </div>
-                        <div class="d-grid button-container mt-5">
-                            <button class="btn btn-success" onclick="showPopup('approvePopup')">APPROVE</button>
-                        </div>
-
-                    </div>
-                </div>
-                <!-- End Overview Tab -->
-                
-                <!-- Notes Tab -->
-                <div id="notes" class="tab-content" style="display: none;">
-                    <div class="notes-section">
-                        <p><strong>Lorem ipsum dolor sit amet.</strong> consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...</p>
-                        <p><strong>Lorem ipsum dolor sit amet.</strong> consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...</p>
-                        <p><strong>Lorem ipsum dolor sit amet.</strong> consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...</p>
-
-                        <div class="notes-btn">
-                            <button class="btn btn-primary mt-3">Add</button>
-                            <button class="btn btn-success mt-3">Edit</button>
-                        </div>
-                    </div>
-                </div>
-                <!-- End Notes Tab -->
-
-                <!-- Interview Tab -->
-                <div id="interview" class="tab-content" style="display: none;">
-                    <div class="interview-section">
-                        <form>
-                            <!-- Schedule Name -->
-                            <div class="mb-3">
-                                <label for="scheduleName" class="form-label">Schedule Name <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="scheduleName" required>
-                            </div>
-                            <!-- Name of Applicant -->
-                            <div class="mb-3">
-                                <label for="applicantName" class="form-label">Name of Applicant <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="applicantName" required>
-                            </div>
-                            <!-- Applicant Email -->
-                            <div class="mb-3">
-                                <label for="applicantEmail" class="form-label">Applicant Email <span class="text-danger">*</span></label>
-                                <input type="email" class="form-control" id="applicantEmail" required>
-                            </div>
-                            <!-- Schedule Date and Time -->
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label for="scheduleDate" class="form-label">Schedule Date <span class="text-danger">*</span></label>
-                                    <input type="date" class="form-control" id="scheduleDate" placeholder="Select date" required>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label for="scheduleTime" class="form-label">Time <span class="text-danger">*</span></label>
-                                    <input type="time" class="form-control" id="scheduleTime" required>
-                                </div>
-                            </div>
-                            <!-- Submit Button -->
-                            <div class="d-grid">
-                                <button type="submit" class="btn btn-primary mt-3">SCHEDULE INTERVIEW</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                <!-- End Interview Tab -->
-            </div>
-
-            <!-- Approve Popup -->
-            <div id="approvePopup" class="custom-popup">
-                <div class="popup-content">
-                    <p>Are you sure you want to approve this applicant and proceed to the next stage?</p>
-                    <button class="btn btn-success" onclick="approveAction()">Yes</button>
-                    <button class="btn btn-outline-secondary" onclick="closePopup('approvePopup')">Cancel</button>
-                </div>
-            </div>
             
-        </div>
-    </div>
+
+                
+        {{-- <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const offcanvas = document.getElementById('candidateProfile');
+    
+            offcanvas.addEventListener('show.bs.offcanvas', function (event) {
+                const button = event.relatedTarget;
+    
+                // Get applicant data from data attributes
+                const applicantName = button.getAttribute('data-applicant-name');
+                const applicantStatus = button.getAttribute('data-applicant-status');
+                const applicantEmail = button.getAttribute('data-applicant-email');
+                const applicantPhone = button.getAttribute('data-applicant-phone');
+                const applicantPosition = button.getAttribute('data-applicant-position');
+                const applicantAddress = button.getAttribute('data-applicant-address');
+    
+                // Status color mapping
+                const statusColors = {
+                    'pending': '#555555',      // Gray
+                    'screening': '#ffe135',    // Yellow
+                    'scheduled': '#ff8c00',    // Orange
+                    'interviewed': '#ff8c00',  // Orange
+                    'hired': '#4CAF50',        // Green
+                    'rejected': '#8b0000',     // Red
+                    'archived': '#4b0082'      // Indigo
+                };
+    
+                const statusColor = statusColors[applicantStatus] || '#000000'; // Default black
+    
+                // Populate the Offcanvas fields
+                document.getElementById('applicantName').innerText = applicantName;
+                document.getElementById('applicantStatus').innerText = 'STAGE: ' + applicantStatus.toUpperCase();
+                document.getElementById('applicantStatus').style.backgroundColor = statusColor;
+    
+                document.getElementById('applicantEmail').innerText = applicantEmail;
+                document.getElementById('applicantPhone').innerText = applicantPhone;
+                document.getElementById('applicantPosition').innerText = applicantPosition;
+                document.getElementById('applicantAddress').innerText = applicantAddress;
+            });
+        });
+    </script>       --}}
+
+    {{-- Applying button color changes based on the status --}}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const offcanvas = document.getElementById('candidateProfile');
+    
+            offcanvas.addEventListener('show.bs.offcanvas', function (event) {
+                const button = event.relatedTarget;
+    
+                // Get applicant data from data attributes
+                const applicantName = button.getAttribute('data-applicant-name');
+                const applicantStatus = button.getAttribute('data-applicant-status');
+                const applicantEmail = button.getAttribute('data-applicant-email');
+                const applicantPhone = button.getAttribute('data-applicant-phone');
+                const applicantPosition = button.getAttribute('data-applicant-position');
+                const applicantAddress = button.getAttribute('data-applicant-address');
+                const applicantResume = button.getAttribute('data-applicant-resume') || 'N/A';
+    
+                // Status color mapping
+                const statusColors = {
+                    'pending': '#6c757d',       // Gray
+                    'screening': '#17a2b8',     // Teal
+                    'scheduled': '#ffc107',     // Yellow
+                    'interviewed': '#007bff',   // Blue
+                    'hired': '#28a745',         // Green
+                    'rejected': '#dc3545',      // Red
+                    'archived': '#4b0082'      // Indigo
+                };
+    
+                const statusColor = statusColors[applicantStatus] || '#000000'; // Default black
+    
+                // Populate the Offcanvas fields
+                document.getElementById('applicantName').innerText = applicantName;
+                document.getElementById('applicantStatus').innerText = 'STAGE: ' + applicantStatus.toUpperCase();
+                document.getElementById('applicantEmail').innerText = applicantEmail;
+                document.getElementById('applicantPhone').innerText = applicantPhone;
+                document.getElementById('applicantPosition').innerText = applicantPosition;
+                document.getElementById('applicantAddress').innerText = applicantAddress;
+                document.getElementById('applicantResume').innerText = applicantResume;
+    
+                // Apply color and border to status
+                const statusElement = document.getElementById('applicantStatus');
+                statusElement.setAttribute('style', `
+                    color: ${statusColor} !important;
+                    border: 2px solid ${statusColor} !important;
+                    background-color: transparent !important;
+                `);
+            });
+        });
+    </script>
+    {{-- Applying button color changes based on the status --}}
+
+    {{-- File upload and validation --}}
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const fileInput = document.getElementById("cv");
+            const fileLabel = document.querySelector(".file-label");
+    
+            fileInput.addEventListener("change", function () {
+                if (this.files.length > 0) {
+                    const file = this.files[0];
+    
+                    // File Validation - Max Size 2MB
+                    if (file.size > 2 * 1024 * 1024) { // 2MB limit
+                        Swal.fire({
+                            icon: "error",
+                            title: "File Too Large!",
+                            text: "The selected file exceeds the 2MB size limit. Please upload a smaller file.",
+                            confirmButtonColor: "#d33",
+                            confirmButtonText: "Okay"
+                        });
+                        this.value = ""; // Reset file input
+                        fileLabel.textContent = "No file selected"; // Reset label
+                        return;
+                    }
+    
+                    fileLabel.textContent = file.name; // ✅ Update Label with Selected File Name
+                } else {
+                    fileLabel.textContent = "No file selected"; // Reset if no file
+                }
+            });
+        });
+    </script>
+    
+    {{-- File upload and validation --}}
+
+    {{-- Job Selection Dropdown --}}
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const jobDropdown = document.getElementById("job_id");
+            const form = document.getElementById("addApplicantForm");
+
+            jobDropdown.addEventListener("change", function () {
+                const selectedOption = jobDropdown.options[jobDropdown.selectedIndex];
+                const slug = selectedOption.getAttribute("data-slug");
+
+                if (slug) {
+                    form.action = `/job-selected/${slug}/apply`;
+                    document.getElementById("jobSlug").value = slug;
+                }
+            });
+        });
+    </script>
+    {{-- Job Selection Dropdown --}}
+
+    {{-- Handle Form Submission & Display Success/Error Alerts --}}
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const form = document.getElementById("addApplicantForm");
+            const modal = new bootstrap.Modal(document.getElementById("addApplicantModal"));
+    
+            form.addEventListener("submit", async function (event) {
+                event.preventDefault(); // Prevent default form submission
+    
+                const formData = new FormData(form);
+    
+                // Clear previous error messages
+                document.querySelectorAll(".error-message").forEach(el => el.innerText = "");
+                document.querySelectorAll(".is-invalid").forEach(el => el.classList.remove("is-invalid"));
+    
+                try {
+                    const response = await fetch(form.action, {
+                        method: "POST",
+                        body: formData,
+                        headers: {
+                            "Accept": "application/json", // Ensures Laravel returns JSON
+                            "X-CSRF-TOKEN": document.querySelector('input[name="_token"]').value,
+                        },
+                    });
+    
+                    let result;
+                    try {
+                        result = await response.json(); // Attempt to parse JSON response
+                    } catch (jsonError) {
+                        result = { message: "Invalid server response. Please check backend logs." };
+                    }
+    
+                    if (response.ok) {
+                        // ✅ SUCCESS: Show SweetAlert and reset form
+                        Swal.fire({
+                            icon: "success",
+                            title: "Application Submitted!",
+                            text: "Your application has been successfully submitted.",
+                            confirmButtonColor: "#28a745",
+                        }).then(() => {
+                            form.reset(); // Clear form fields
+                            modal.hide(); // Close modal
+                        });
+    
+                    } else if (response.status === 422) {
+                        // ❌ VALIDATION ERROR: Display errors below fields
+                        for (const field in result.errors) {
+                            const inputField = document.querySelector(`[name="${field}"]`);
+                            if (inputField) {
+                                inputField.classList.add("is-invalid");
+    
+                                const errorDiv = document.createElement("div");
+                                errorDiv.className = "text-danger error-message mt-1";
+                                errorDiv.innerText = result.errors[field][0];
+    
+                                if (inputField.closest('.input-group')) {
+                                    inputField.closest('.input-group').after(errorDiv);
+                                } else {
+                                    inputField.after(errorDiv);
+                                }
+                            }
+                        }
+    
+                        // ✅ Show SweetAlert when submission fails (e.g., Email already taken)
+                        Swal.fire({
+                            icon: "error",
+                            title: "Submission Failed",
+                            text: result.errors.email ? "The email has already been taken. Please use another email." : "There was an issue submitting your application.",
+                            confirmButtonColor: "#d33",
+                        });
+    
+                    } else {
+                        // ❌ OTHER ERRORS: Show SweetAlert
+                        Swal.fire({
+                            icon: "error",
+                            title: "Submission Failed",
+                            text: result.message || "An error occurred. Please try again.",
+                            confirmButtonColor: "#d33",
+                        });
+                    }
+                } catch (error) {
+                    // ❌ NETWORK ERROR: Show SweetAlert
+                    Swal.fire({
+                        icon: "error",
+                        title: "Network Error",
+                        text: "Something went wrong. Please check your internet connection and try again.",
+                        confirmButtonColor: "#d33",
+                    });
+                }
+            });
+        });
+    </script>    
+    {{-- Handle Form Submission & Display Success/Error Alerts --}}
+        
+
 
 </x-admin-ats-layout>

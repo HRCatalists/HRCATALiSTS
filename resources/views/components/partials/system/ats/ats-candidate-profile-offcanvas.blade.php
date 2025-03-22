@@ -8,13 +8,15 @@
     <div class="offcanvas-body-wrapper px-4">
         <div class="content-section">
             <div class="d-flex align-items-center justify-content-between my-4">
-                <h5 id="applicantName" class="mt-2">Applicant Name</h5>
+                <h5 id="applicantName" class="mt-2">
+                    {{ $applicant->first_name ?? 'Applicant Name' }} {{ $applicant->last_name ?? '' }}
+                </h5>
 
                 <span id="applicantStatus" class="stage border px-3 py-1" style="border-radius: 4px;">
-                    STAGE: N/A
+                    STAGE: {{ $applicant->status ?? 'N/A' }}
                 </span>
             </div>
-            
+
             <!-- Tabs -->
             <ul class="nav nav-tabs">
                 <li class="nav-item">
@@ -28,7 +30,6 @@
                 </li>
             </ul>
 
-            <!-- Tab Content -->
             <!-- Overview Tab -->
             <div id="overview" class="tab-content">
                 <div class="applicant-section">
@@ -37,94 +38,110 @@
 
                         <div class="row">
                             <div class="col-md-12">
-                                <p><strong>Position:</strong> <span id="applicantPosition">N/A</span></p>
+                                <p><strong>Position:</strong> {{ $applicant->job->job_title ?? 'N/A' }}</p>
                             </div>
                         </div>
 
-                        {{-- <div class="row">
-                            <div class="col-md-6">
-                                <p><strong>Name:</strong> <span id="applicantNameOverview">N/A</span></p>
-                            </div>
-                        </div> --}}
-
                         <div class="row">
                             <div class="col-md-6">
-                                <i class="fa-solid fa-envelope me-2"></i> <span id="applicantEmail">N/A</span>
+                                <i class="fa-solid fa-envelope me-2"></i> {{ $applicant->email ?? 'N/A' }}
                             </div>
                             <div class="col-md-6">
-                                <i class="fa-solid fa-phone me-2"></i> <span id="applicantPhone">N/A</span>
+                                <i class="fa-solid fa-phone me-2"></i> {{ $applicant->phone ?? 'N/A' }}
                             </div>
                         </div>
 
                         <div class="row mt-3">
                             <div class="col-md-12">
-                                <i class="fa-solid fa-location-dot me-2"></i> <span id="applicantAddress">N/A</span>
+                                <i class="fa-solid fa-location-dot me-2"></i> {{ $applicant->address ?? 'N/A' }}
                             </div>
                         </div>
                     </div>
 
                     <!-- Attachment -->
-                    <div class="file-attachment my-4">
-                        <img src="images/pdf-img.png" alt="PDF icon">
-                        <span id="applicantResume">Resume.pdf</span>
-                        <span class="ms-auto">200 KB</span>
-                    </div>
-                    
-                    <div class="d-grid mt-5">
-                        <!-- APPROVE -->
-                        <form method="POST" action="{{ route('applicants.updateStatus', $applicant->id) }}">
-                            @csrf
-                            <input type="hidden" name="action" value="approve">
-                            <input type="hidden" name="email" value="{{ $applicant->email }}">
-                            <input type="hidden" name="name" value="{{ $applicant->first_name }} {{ $applicant->last_name }}">
-                            <button type="submit" class="btn btn-success">APPROVE</button>
-                        </form>
-                    
-                        <!-- REJECT -->
-                        <form method="POST" action="{{ route('applicants.updateStatus', $applicant->id) }}">
-                            @csrf
-                            <input type="hidden" name="action" value="reject">
-                            <input type="hidden" name="email" value="{{ $applicant->email }}">
-                            <input type="hidden" name="name" value="{{ $applicant->first_name }} {{ $applicant->last_name }}">
-                            <button type="submit" class="btn btn-danger">REJECT</button>
-                        </form>
-                    
-                        <!-- ARCHIVE -->
-                        <form method="POST" action="{{ route('applicants.updateStatus', $applicant->id) }}">
-                            @csrf
-                            <input type="hidden" name="action" value="archive">
-                            <input type="hidden" name="email" value="{{ $applicant->email }}">
-                            <input type="hidden" name="name" value="{{ $applicant->first_name }} {{ $applicant->last_name }}">
-                            <button type="submit" class="btn btn-outline-danger">ARCHIVE</button>
-                        </form>
-                    </div>
-                                                                
-                    {{-- <div class="d-grid mt-5">
-                        <button class="btn btn-success mb-2" onclick="updateStatus('approve')">APPROVE</button>
-                        <button class="btn btn-danger mb-2" onclick="updateStatus('reject')">REJECT</button>
-                        <button class="btn btn-outline-danger mb-2" onclick="updateStatus('archive')">ARCHIVE</button>
-                        <input type="hidden" id="applicantId" value="{{ $applicant->id }}">
-                    </div>                         --}}
-                </div>
-            </div>
-            <!-- End Overview Tab -->
-            
-            <!-- Notes Tab -->
-            <div id="notes" class="tab-content" style="display: none;">
-                <div class="notes-section">
-                    <p><strong>Lorem ipsum dolor sit amet.</strong> consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...</p>
-                    <p><strong>Lorem ipsum dolor sit amet.</strong> consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...</p>
-                    <p><strong>Lorem ipsum dolor sit amet.</strong> consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...</p>
+                    @if(!empty($applicant->cv))
+                        <div class="file-attachment my-4">
+                            <a href="https://drive.google.com/uc?export=download&id={{ $applicant->cv }}" target="_blank" download>
+                                <img src="{{ asset('images/pdf-img.png') }}" alt="PDF icon">
+                                <span id="applicantCV">CV.pdf</span>
+                                <span class="ms-auto">Click to Download</span>
+                            </a>
+                        </div>
+                    @else
+                        <p>No CV available.</p>
+                    @endif
 
-                    <div class="notes-btn">
-                        <button class="btn btn-primary mt-3">Add</button>
-                        <button class="btn btn-success mt-3">Edit</button>
+                    <!-- Action Buttons -->
+                    <div class="d-grid mt-5">
+                        @if(isset($applicant))
+                            <!-- APPROVE -->
+                            <form method="POST" action="{{ route('applicants.updateStatus', $applicant->id) }}">
+                                @csrf
+                                <input type="hidden" name="action" value="approve">
+                                <button type="submit" class="btn btn-success">APPROVE</button>
+                            </form>
+
+                            <!-- REJECT (Redirects to 'ats-applicant') -->
+                            <form method="POST" action="{{ route('applicants.updateStatus', $applicant->id) }}">
+                                @csrf
+                                <input type="hidden" name="action" value="reject">
+                                <button type="submit" class="btn btn-danger">REJECT</button>
+                            </form>
+
+                            <!-- ARCHIVE -->
+                            <form method="POST" action="{{ route('applicants.updateStatus', $applicant->id) }}">
+                                @csrf
+                                <input type="hidden" name="action" value="archive">
+                                <button type="submit" class="btn btn-outline-danger">ARCHIVE</button>
+                            </form>
+                        @else
+                            <p class="text-danger">Applicant data not found.</p>
+                        @endif
                     </div>
-                </div>
+                    </div>
             </div>
-            <!-- End Notes Tab -->
+        </div>
+   
+            <!-- End Overview Tab -->
+            <!-- Notes Tab -->
+<div id="notes" class="tab-content" style="display: none;">
+    <div class="notes-section">
+        <p id="note1"><strong>No Text Written.</strong> consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...</p>
+        <p id="note2"><strong>No Text Written.</strong> consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...</p>
+        <p id="note3"><strong>No Text Written.</strong> consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...</p>
+
+        <div class="notes-btn">
+            <button class="btn btn-success mt-3" id="editNotesBtn">Edit</button>
+        </div>
+    </div>
+</div>
+<!-- End Notes Tab -->
+
+<!-- Edit Notes Modal -->
+<div class="modal fade" id="editNotesModal" tabindex="-1" aria-labelledby="editNotesModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editNotesModalLabel">Edit Notes</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="notesForm">
+                    <div class="mb-3">
+                        <label for="noteContent" class="form-label">Edit Your Notes:</label>
+                        <textarea class="form-control" id="noteContent" rows="5"></textarea>
+                    </div>
+                    <button type="button" class="btn btn-primary" id="saveNotesBtn">Save</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Edit Notes Modal -->
 
     <!-- Interview Tab -->
+    @if(isset($applicant))
+
 <div id="interview" class="tab-content" style="display: none;">
     <div class="interview-section">
         <form id="scheduleInterviewForm" method="POST" action="{{ route('events.schedule', ['id' => $applicant->id]) }}">
@@ -163,7 +180,9 @@
     </div>
 </div>
 <!-- End Interview Tab -->
-
+@else
+    <p>No applicant found.</p>
+@endif
 
         </div>
 
@@ -178,3 +197,38 @@
         
     </div>
 </div>
+
+
+<!-- JavaScript -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const editNotesBtn = document.getElementById("editNotesBtn");
+    const noteContent = document.getElementById("noteContent");
+    const saveNotesBtn = document.getElementById("saveNotesBtn");
+    
+    let allNotes = document.querySelectorAll("#notes p"); // Select all note paragraphs
+
+    editNotesBtn.addEventListener("click", function () {
+        let combinedNotes = ""; // Store existing notes
+        allNotes.forEach(note => {
+            combinedNotes += note.innerText + "\n\n";
+        });
+
+        noteContent.value = combinedNotes.trim(); // Set textarea content
+        let modal = new bootstrap.Modal(document.getElementById("editNotesModal"));
+        modal.show();
+    });
+
+    saveNotesBtn.addEventListener("click", function () {
+        let updatedNotes = noteContent.value.split("\n\n"); // Split back into paragraphs
+
+        allNotes.forEach((note, index) => {
+            if (updatedNotes[index]) {
+                note.innerText = updatedNotes[index];
+            }
+        });
+
+        document.getElementById("editNotesModal").querySelector(".btn-close").click(); // Close modal
+    });
+});
+</script>

@@ -327,6 +327,8 @@
 
 .job-card {
   max-width: 380px;
+
+  /* box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); */
   height: 420px;
   border-radius: 5px;
   margin: 20px;

@@ -5,12 +5,16 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\JobPostController;
 use App\Http\Controllers\ApplicantController;
+use App\Http\Controllers\DepartmentController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
+use App\Http\Controllers\GoogleAuthController;
 
 
+// Route to show the departments list (for the search dropdown)
+Route::get('/departments', [DepartmentController::class, 'index'])->name('departments.index');
 // Search Jobs Route
 Route::get('/job-search', [HomeController::class, 'search'])->name('job.search');
 Route::get('/search-jobs', [HomeController::class, 'searchJobs'])->name('search.jobs');
@@ -24,6 +28,17 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 
 // Route::get('/jobs/{id}', [HomeController::class, 'show'])->name('jobs.show');
 Route::get('/openings', [HomeController::class, 'openings'])->name('openings');
+Route::get('/auth/google', [GoogleAuthController::class, 'redirect'])->name ('google.login');
+Route::get('/auth/google/callback', [GoogleAuthController::class, 'handleGoogleCallback']);
+
+// ✅ Google SSO Routes
+
+// ✅ Allow only guests to access the login page
+Route::get('/login', [GoogleAuthController::class, 'redirect'])
+    ->name('login')
+    ->middleware('guest');
+
+  
 
 
 // ✅ Allow only guests to access the login page
@@ -40,20 +55,24 @@ Route::post('/job-selected/{slug}/apply', [ApplicantController::class, 'store'])
 Route::middleware(['auth', PreventBackHistory::class])->group(function () {
 
     // Main Menu
-    Route::get('/main-menu', [AdminController::class, 'mainMenu'])->name('main-menu');
+    // Route::get('/main-menu', [AdminController::class, 'mainMenu'])->name('main-menu');
     Route::get('/admin-dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 
     // EMS Routes
     Route::get('/ems-dashboard', [AdminController::class, 'emsDashboard'])->name('ems-dashboard');
     Route::get('/ems-employees', [AdminController::class, 'employees'])->name('ems-employees');
+    Route::get('/employees/{id}', [AdminController::class, 'showEmployee'])->name('employees.show');
+    Route::delete('/employees/{id}/delete', [AdminController::class, 'deleteEmployee'])->name('employees.delete');
+
     Route::get('/ems-emp-dept-coa', [AdminController::class, 'deptCOA'])->name('ems-dept-coa');
     Route::get('/ems-emp-dept-cased', [AdminController::class, 'deptCASED'])->name('ems-dept-cased');
     Route::get('/ems-emp-dept-cba', [AdminController::class, 'deptCBA'])->name('ems-dept-cba');
     Route::get('/ems-emp-dept-ccs', [AdminController::class, 'deptCCS'])->name('ems-dept-ccs');
     Route::get('/ems-emp-dept-coe', [AdminController::class, 'deptCOE'])->name('ems-dept-coe');
     Route::get('/ems-emp-dept-con', [AdminController::class, 'deptCON'])->name('ems-dept-con');
+    Route::get('/ems-emp-dept-non-teaching', [AdminController::class, 'deptNon'])->name('ems-dept-non-teaching');
     Route::get('/ems-emp-dept-basicEd', [AdminController::class, 'deptBasicEd'])->name('ems-dept-basicEd');
-    Route::get('/ems-calendar', [AdminController::class, 'calendar'])->name('ems-calendar');
+    Route::get('/ems-calendar', [AdminController::class, 'emscalendar'])->name('ems-calendar');
     Route::get('/ems-ranking', [AdminController::class, 'ranking'])->name('ems-ranking');
     Route::get('/ems-policy', [AdminController::class, 'companyPolicy'])->name('ems-policy');
     Route::get('/ems-logs', [AdminController::class, 'logs'])->name('ems-logs');
@@ -113,7 +132,6 @@ Route::post('/logout', function () {
     Session::flush(); // Clear all session data
     return redirect('/login');
 })->name('logout');
-
 
 require __DIR__.'/auth.php';
 
