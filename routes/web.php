@@ -96,6 +96,7 @@ Route::middleware(['auth', PreventBackHistory::class])->group(function () {
     Route::get('/ats-evaluation', [ApplicantController::class, 'evaluation'])->name('ats-evaluation');
     Route::get('/ats-archived', [ApplicantController::class, 'archived'])->name('ats-archived');
     Route::get('/applicants/{id}', [ApplicantController::class, 'show']);
+    Route::put('/applicants/{id}/notes', [ApplicantController::class, 'updateNotes'])->name('applicants.updateNotes');
     Route::post('/events/schedule/{id}', [ApplicantController::class, 'scheduleInterview'])->name('events.schedule');
 
     //overview buttons

@@ -11,8 +11,9 @@ class Applicant extends Model
 
     protected $fillable = [
         'job_id', 'first_name', 'last_name', 'email', 'phone', 'address', 'cv',
-        'privacy_policy_agreed', 'status', 'applied_at', 'ip_address', 'user_agent'
+        'privacy_policy_agreed', 'status', 'applied_at', 'notes' // ✅ Add this
     ];
+    
     
     // Define relationship if needed
     public function job()

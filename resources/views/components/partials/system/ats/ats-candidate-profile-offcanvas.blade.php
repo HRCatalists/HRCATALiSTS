@@ -1,3 +1,27 @@
+
+<!-- Edit Notes Modal -->
+<div class="modal fade" id="editNotesModal" tabindex="-1" aria-labelledby="editNotesModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editNotesModalLabel">Edit Notes</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('applicants.updateNotes', $applicant->id) }}" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <div class="mb-3">
+                        <label for="noteContent" class="form-label">Edit Your Notes:</label>
+                        <textarea class="form-control" id="noteContent" name="notes" rows="5">{{ $applicant->notes }}</textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Edit Notes Modal -->
 <div class="offcanvas offcanvas-end p-0" tabindex="-1" id="candidateProfile" aria-labelledby="candidateProfileLabel">
 
     <div class="offcanvas-header">
@@ -141,41 +165,23 @@
         </div>
    
             <!-- End Overview Tab -->
-            <!-- Notes Tab -->
+       <!-- Notes Tab -->
 <div id="notes" class="tab-content" style="display: none;">
     <div class="notes-section">
-        <p id="note1"><strong>No Text Written.</strong> consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...</p>
-        <p id="note2"><strong>No Text Written.</strong> consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...</p>
-        <p id="note3"><strong>No Text Written.</strong> consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...</p>
+        @if($applicant->notes)
+            <p><strong>Notes:</strong> {!! nl2br(e($applicant->notes)) !!}</p>
+        @else
+            <p><strong>No Notes Available.</strong></p>
+        @endif
 
         <div class="notes-btn">
-            <button class="btn btn-success mt-3" id="editNotesBtn">Edit</button>
+            <button class="btn btn-success mt-3" data-bs-toggle="modal" data-bs-target="#editNotesModal">Edit</button>
         </div>
     </div>
 </div>
 <!-- End Notes Tab -->
 
-<!-- Edit Notes Modal -->
-<div class="modal fade" id="editNotesModal" tabindex="-1" aria-labelledby="editNotesModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editNotesModalLabel">Edit Notes</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="notesForm">
-                    <div class="mb-3">
-                        <label for="noteContent" class="form-label">Edit Your Notes:</label>
-                        <textarea class="form-control" id="noteContent" rows="5"></textarea>
-                    </div>
-                    <button type="button" class="btn btn-primary" id="saveNotesBtn">Save</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- End Edit Notes Modal -->
+
 
     <!-- Interview Tab -->
     @if(isset($applicant))

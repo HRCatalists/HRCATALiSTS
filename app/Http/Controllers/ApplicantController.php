@@ -250,6 +250,21 @@ class ApplicantController extends Controller
 
         return view('hrcatalists.ats.show-applicant', compact('applicant'));
     }
+
+    public function updateNotes(Request $request, $id)
+    {
+        $request->validate([
+            'notes' => 'required|string',
+        ]);
+    
+        $applicant = Applicant::findOrFail($id);
+        $applicant->notes = $request->notes;
+        $applicant->save();
+    
+        return back()->with('success', 'Notes updated successfully.');
+    }
+    
+    
     protected $googleDriveService;
 
     public function __construct(GoogleDriveService $googleDriveService)
