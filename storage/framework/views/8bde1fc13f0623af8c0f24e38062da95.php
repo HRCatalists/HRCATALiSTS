@@ -1,17 +1,11 @@
-{{-- sweetalert2 --}}
+
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <!-- Bootstrap JavaScript Libraries -->
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
 
-{{-- <!-- jQuery and DataTables JS -->
-<script src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/2.2.3/js/dataTables.buttons.min.js"></script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/pdfmake@0.1.53/build/pdfmake.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/pdfmake@0.1.53/build/vfs_fonts.js"></script> --}}
 
 <!-- ✅ jQuery (REQUIRED for DataTables) -->
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
@@ -33,28 +27,28 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <!-- Chart JS -->
-<script src="{{ asset('js/ats-db-chart.js') }}"></script>
+<script src="<?php echo e(asset('js/ats-db-chart.js')); ?>"></script>
 
 <!-- Sidebar JS -->
-<script src="{{ asset('js/sidebar.js') }}"></script>
+<script src="<?php echo e(asset('js/sidebar.js')); ?>"></script>
 
 <!-- Calendar JS -->
-{{-- <script src="{{ asset('js/db-calendar.js') }}"></script> --}}
-
-{{-- Job status JS --}}
-<script src="{{ asset('js/job-status.js') }}"></script>
-
-{{-- Job status JS --}}
-{{-- <script src="{{ asset('js/ats-status-update.js') }}"></script> --}}
 
 
-{{-- * --}}
-{{-- ** --}}
-{{-- *** --}}
-{{-- DataTables Initialization for Applicant Tables --}}
-{{-- *** --}}
-{{-- ** --}}
-{{-- * --}}
+
+<script src="<?php echo e(asset('js/job-status.js')); ?>"></script>
+
+
+
+
+
+
+
+
+
+
+
+
 <script>
     $(document).ready(function () {
         // Loop through each table with class 'applicantTable' and initialize DataTables
@@ -84,21 +78,21 @@
         });
     });
 </script>
-{{-- * --}}
-{{-- ** --}}
-{{-- *** --}}
-{{-- DataTables Initialization for Applicant Tables --}}
-{{-- *** --}}
-{{-- ** --}}
-{{-- * --}}
 
-{{-- * --}}
-{{-- ** --}}
-{{-- *** --}}
-{{-- Change status dropdown start --}}
-{{-- *** --}}
-{{-- ** --}}
-{{-- * --}}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         // Mapping of statuses to colors
@@ -154,40 +148,40 @@
         }
 
         // Display success or error messages if available
-        @if(session('success'))
+        <?php if(session('success')): ?>
             Swal.fire({
                 icon: 'success',
                 title: 'Success!',
-                text: "{{ session('success') }}",
+                text: "<?php echo e(session('success')); ?>",
                 confirmButtonColor: '#28a745'
             });
-        @endif
+        <?php endif; ?>
 
-        @if(session('error'))
+        <?php if(session('error')): ?>
             Swal.fire({
                 icon: 'error',
                 title: 'Error!',
-                text: "{{ session('error') }}",
+                text: "<?php echo e(session('error')); ?>",
                 confirmButtonColor: '#dc3545'
             });
-        @endif
+        <?php endif; ?>
     });
 </script> 
-{{-- * --}}
-{{-- ** --}}
-{{-- *** --}}
-{{-- Change status dropdown end --}}
-{{-- *** --}}
-{{-- ** --}}
-{{-- * --}}  
 
-{{-- * --}}
-{{-- ** --}}
-{{-- *** --}}
+
+
+
+
+
+  
+
+
+
+
 <!-- Overview Tab JS -->
-{{-- *** --}}
-{{-- ** --}}
-{{-- * --}}  
+
+
+  
 <script>
     function showTab(tabId) {
         // Hide all tab contents
@@ -207,197 +201,37 @@
         document.querySelector(`[onclick="showTab('${tabId}')"]`).classList.add('active');
     }
 </script>
-{{-- * --}}
-{{-- ** --}}
-{{-- *** --}}
+
+
+
 <!-- Overview Tab JS -->
-{{-- *** --}}
-{{-- ** --}}
-{{-- * --}}  
 
-{{-- * --}}
-{{-- ** --}}
-{{-- *** --}}
+
+  
+
+
+
+
 <!-- Data Tables Applicant sorting to Latest -->
-{{-- *** --}}
-{{-- ** --}}
-{{-- * --}} 
-{{-- <script>
-    // Function to show the popup
-    function showPopup(popupId) {
-        const popup = document.getElementById(popupId);
-        popup.style.visibility = 'visible';
-        popup.style.opacity = '1';
-    }
 
-    // Function to close the popup
-    function closePopup(popupId) {
-        const popup = document.getElementById(popupId);
-        popup.style.opacity = '0';
-        popup.style.visibility = 'hidden';
-    }
 
-    // Action functions for Approve, Archive, and Reject
-    function approveAction() {
-        alert("Candidate approved!");
-        closePopup('approvePopup');
-    }
-    
-    // Function to handle saving changes
-    function saveChanges() {
-        const selectedStage = document.getElementById("stages").value;
-        alert("Stage saved as: " + selectedStage);
-        closeEditStages();
-    }
+ 
 
-    $(document).ready(function () {
-        const table = $('#applicantTable').DataTable({
-            paging: true,
-            searching: true,
-            ordering: true,
-            pageLength: 10,
-            language: {
-                paginate: {
-                    previous: 'Previous',
-                    next: 'Next',
-                },
-                search: '',
-                searchPlaceholder: 'Search',
-            },
-            columnDefs: [
-                { targets: 0, orderable: false, className: 'text-center' }, // Disable sorting for the "Select All" checkbox column
-            ],
-            order: [[1, 'asc']], // Set initial order to a different column (e.g., the "NAME" column)
-            initComplete: function () {
-                // Wrap the search input and prepend the icon
-                $('.dataTables_filter input')
-                    .wrap('<div class="search-box position-relative"></div>')
-                    .attr('placeholder', 'Search');
-                $('.search-box').prepend('<i class="bi bi-search position-absolute" style="left: 10px; top: 50%; transform: translateY(-50%); color: #888;"></i>');
-            },
-        });
-    });
 
-    $(document).ready(function () {
-        // Initially hide buttons and collapse the checkbox card
-        $('.archive-btn, .reject-btn').hide();
-        $('.checkbox-card').removeClass('expanded');
 
-        function toggleButtons() {
-            let selectedCount = $('.rowCheckbox:checked').length;
-            let totalCount = $('.rowCheckbox').length;
 
-            if (selectedCount > 0) {
-                $('.archive-btn, .reject-btn').fadeIn();
-                $('.checkbox-card').addClass('expanded'); // Expand card
-            } else {
-                $('.archive-btn, .reject-btn').fadeOut();
-                $('.checkbox-card').removeClass('expanded'); // Collapse card
-            }
-
-            // Update "Select All" checkbox
-            $('#selectAll').prop('checked', selectedCount === totalCount);
-        }
-
-        // Function to show popup dynamically
-        function showPopup(popupId, message, actionFunction) {
-            $('#' + popupId + ' p').html(message);
-            $('#' + popupId).css({ visibility: 'visible', opacity: '1' });
-
-            // Attach event listener only once
-            $('#' + popupId + ' .confirm-btn').off('click').on('click', function () {
-                closePopup(popupId);
-                actionFunction();
-            });
-        }
-
-        // Function to close popup
-        function closePopup(popupId) {
-            $('#' + popupId).css({ opacity: '0', visibility: 'hidden' });
-        }
-
-        // Handle individual checkbox selection
-        $(document).on('change', '.rowCheckbox', function () {
-            toggleButtons();
-        });
-
-        // Handle "Select All" checkbox
-        $('#selectAll').on('change', function () {
-            $('.rowCheckbox').prop('checked', this.checked);
-            toggleButtons();
-        });
-
-        // Archive button click event
-        $('.archive-btn').on('click', function () {
-            let selectedCount = $('.rowCheckbox:checked').length;
-            let totalCount = $('.rowCheckbox').length;
-
-            if (selectedCount === totalCount) {
-                showPopup('selectAllArchivePopup', "Are you sure you want to archive ALL applicants?", archiveAll);
-            } else if (selectedCount >= 2) {
-                showPopup('multiArchivePopup', "Are you sure you want to archive the selected applicants?", archiveSelected);
-            } else {
-                showPopup('archivePopup', "Are you sure you want to archive this applicant?", archiveAction);
-            }
-        });
-
-        // Reject button click event
-        $('.reject-btn').on('click', function () {
-            let selectedCount = $('.rowCheckbox:checked').length;
-            let totalCount = $('.rowCheckbox').length;
-
-            if (selectedCount === totalCount) {
-                showPopup('selectAllRejectPopup', "Are you sure you want to reject ALL applicants?", rejectAll);
-            } else if (selectedCount >= 2) {
-                showPopup('multiRejectPopup', "Are you sure you want to reject the selected applicants?", rejectSelected);
-            } else {
-                showPopup('rejectPopup', "Are you sure you want to reject this applicant?", rejectAction);
-            }
-        });
-
-        // Archive actions
-        function archiveAction() {
-            alert("Applicant archived!");
-        }
-        function archiveSelected() {
-            alert("Selected applicants archived!");
-        }
-        function archiveAll() {
-            alert("All applicants archived!");
-        }
-
-        // Reject actions
-        function rejectAction() {
-            alert("Applicant rejected!");
-        }
-        function rejectSelected() {
-            alert("Selected applicants rejected!");
-        }
-        function rejectAll() {
-            alert("All applicants rejected!");
-        }
-
-        // Close popup when cancel button is clicked
-        $('.btn-outline-secondary').on('click', function () {
-            closePopup($(this).closest('.custom-popup').attr('id'));
-        });
-    });
-</script> --}}
-{{-- * --}}
-{{-- ** --}}
-{{-- *** --}}
 <!-- Data Tables Applicant sorting to Latest -->
-{{-- *** --}}
-{{-- ** --}}
-{{-- * --}} 
 
-{{-- * --}}
-{{-- ** --}}
-{{-- *** --}}
+
+ 
+
+
+
+
 <!-- Logs Datatables JS -->
-{{-- *** --}}
-{{-- ** --}}
-{{-- * --}}
+
+
+
 <script>   
     $(document).ready(function() {
         $('#logsTable').DataTable({
@@ -424,46 +258,22 @@
         });
     });  
 </script>
-{{-- * --}}
-{{-- ** --}}
-{{-- *** --}}
-<!-- Logs Datatables JS -->
-{{-- *** --}}
-{{-- ** --}}
-{{-- * --}}
 
-{{-- * --}}
-{{-- ** --}}
-{{-- *** --}}
-{{-- Redirect to login page if user clicks back button --}}
-{{-- *** --}}
-{{-- ** --}}
-{{-- * --}}
-{{-- <script>
-    window.addEventListener('pageshow', function (event) {
-        if (event.persisted || (window.performance && window.performance.getEntriesByType("navigation")[0].type === "back_forward")) {
-            // Perform AJAX call to check if the user is still authenticated
-            fetch('/api/check-auth', {
-                method: 'GET',
-                credentials: 'same-origin',
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest',
-                    'Accept': 'application/json'
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (!data.authenticated) {
-                    // Redirect to login if user is logged out
-                    window.location.replace("/login");
-                }
-            })
-            .catch(error => {
-                console.error('Error checking authentication:', error);
-            });
-        }
-    });
-</script> --}}
+
+
+<!-- Logs Datatables JS -->
+
+
+
+
+
+
+
+
+
+
+
+
 <script>
     fetch('/api/check-auth', {
         method: 'GET',
@@ -481,21 +291,21 @@
     })
     .catch(error => console.error('Auth check error:', error));
 </script>
-{{-- * --}}
-{{-- ** --}}
-{{-- *** --}}
-{{-- Redirect to login page if user clicks back button --}}
-{{-- *** --}}
-{{-- ** --}}
-{{-- * --}}
 
-{{-- * --}}
-{{-- ** --}}
-{{-- *** --}}
-{{-- Checkbox for multiple actions in job listings --}}
-{{-- *** --}}
-{{-- ** --}}
-{{-- * --}}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <script>
     $(document).ready(function () {
         let table = $('#jobListingsTable').DataTable({
@@ -671,10 +481,10 @@
         }
     });
 </script>
-{{-- * --}}
-{{-- ** --}}
-{{-- *** --}}
-{{-- Checkbox for multiple actions in job listings --}}
-{{-- *** --}}
-{{-- ** --}}
-{{-- * --}}
+
+
+
+
+
+
+<?php /**PATH C:\laragon\www\hr_catalists\resources\views/components/partials/system/system-scripts.blade.php ENDPATH**/ ?>

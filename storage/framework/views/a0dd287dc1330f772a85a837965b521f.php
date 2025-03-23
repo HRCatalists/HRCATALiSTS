@@ -1,11 +1,21 @@
-<x-welcome-layout>
+<?php if (isset($component)) { $__componentOriginal22420923a32db135c994bb2339cfe9f5 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal22420923a32db135c994bb2339cfe9f5 = $attributes; } ?>
+<?php $component = App\View\Components\WelcomeLayout::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('welcome-layout'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\App\View\Components\WelcomeLayout::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?>
 
-    <x-slot:title>
-        Columban College Inc. | {{ $job->job_title }}
-    </x-slot:title>
+     <?php $__env->slot('title', null, []); ?> 
+        Columban College Inc. | <?php echo e($job->job_title); ?>
+
+     <?php $__env->endSlot(); ?>
 
     <div class="container mt-5">
-        <a href="{{ url('/') }}" class="back-icon">
+        <a href="<?php echo e(url('/')); ?>" class="back-icon">
             <i class="fas fa-arrow-left"></i>
         </a>
     </div>
@@ -17,28 +27,28 @@
             <!-- Left Column -->
             <div class="col-md-6">
                 <div class="mb-5">
-                    <h2 class="mb-0 text-dark fw-normal">{{ $job->job_title }}</h2>
+                    <h2 class="mb-0 text-dark fw-normal"><?php echo e($job->job_title); ?></h2>
 
                     <div class="d-flex my-3">
-                        @foreach(explode(',', $job->tags) as $tag)
-                            <button class="btn btn-outline-primary me-2">{{ trim($tag) }}</button>
-                        @endforeach
+                        <?php $__currentLoopData = explode(',', $job->tags); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $tag): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <button class="btn btn-outline-primary me-2"><?php echo e(trim($tag)); ?></button>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </div>
 
                     <div class="closing-date text-muted mb-4">
                         <p class="mb-0 fw-bold">Closing Date:</p>
-                        <p>{{ \Carbon\Carbon::parse($job->end_date)->format('F d, Y') }}</p>
+                        <p><?php echo e(\Carbon\Carbon::parse($job->end_date)->format('F d, Y')); ?></p>
                     </div>
                 </div>
 
                 <div class="mb-5">
                     <h4>Requirements:</h4>
-                    <p>{!! nl2br(e($job->requirements)) !!}</p>
+                    <p><?php echo nl2br(e($job->requirements)); ?></p>
                 </div>
 
                 <div class="mb-5">
                     <h4>Job Description:</h4>
-                    <p>{!! nl2br(e($job->job_description)) !!}</p>
+                    <p><?php echo nl2br(e($job->job_description)); ?></p>
                 </div>
 
                 <div>
@@ -61,33 +71,61 @@
                     <h3 class="text-primary">Application Form</h3>
 
                     <!-- Show Validation Errors -->
-                    @if ($errors->any())
+                    <?php if($errors->any()): ?>
                         <div class="alert alert-danger">
                             <ul>
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
+                                <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <li><?php echo e($error); ?></li>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </ul>
                         </div>
-                    @endif
+                    <?php endif; ?>
 
-                    <form action="{{ route('applicants.store', ['slug' => $job->slug]) }}" method="POST" enctype="multipart/form-data" id="applicationForm">
-                        @csrf
-                        <input type="hidden" name="job_id" value="{{ $job->id }}">
+                    <form action="<?php echo e(route('applicants.store', ['slug' => $job->slug])); ?>" method="POST" enctype="multipart/form-data" id="applicationForm">
+                        <?php echo csrf_field(); ?>
+                        <input type="hidden" name="job_id" value="<?php echo e($job->id); ?>">
 
                         <!-- Name Fields -->
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label for="first_name" class="form-label">First Name <span class="text-danger">*</span></label>
-                                <input type="text" name="first_name" id="first_name" class="form-control @error('first_name') is-invalid @enderror" 
-                                    placeholder="Enter First Name" value="{{ old('first_name') }}" required>
-                                @error('first_name') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                                <input type="text" name="first_name" id="first_name" class="form-control <?php $__errorArgs = ['first_name'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" 
+                                    placeholder="Enter First Name" value="<?php echo e(old('first_name')); ?>" required>
+                                <?php $__errorArgs = ['first_name'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> <div class="invalid-feedback"><?php echo e($message); ?></div> <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                             </div>
                             <div class="col-md-6">
                                 <label for="last_name" class="form-label">Last Name <span class="text-danger">*</span></label>
-                                <input type="text" name="last_name" id="last_name" class="form-control @error('last_name') is-invalid @enderror" 
-                                    placeholder="Enter Last Name" value="{{ old('last_name') }}" required>
-                                @error('last_name') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                                <input type="text" name="last_name" id="last_name" class="form-control <?php $__errorArgs = ['last_name'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" 
+                                    placeholder="Enter Last Name" value="<?php echo e(old('last_name')); ?>" required>
+                                <?php $__errorArgs = ['last_name'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> <div class="invalid-feedback"><?php echo e($message); ?></div> <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                             </div>
                         </div>
 
@@ -95,24 +133,66 @@
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label for="email" class="form-label">E-mail Address <span class="text-danger">*</span></label>
-                                <input type="email" name="email" id="email" class="form-control @error('email') is-invalid @enderror" 
-                                    placeholder="Enter E-mail Address" value="{{ old('email') }}" required>
-                                @error('email') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                                <input type="email" name="email" id="email" class="form-control <?php $__errorArgs = ['email'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" 
+                                    placeholder="Enter E-mail Address" value="<?php echo e(old('email')); ?>" required>
+                                <?php $__errorArgs = ['email'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> <div class="invalid-feedback"><?php echo e($message); ?></div> <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                             </div>
                             <div class="col-md-6">
                                 <label for="phone" class="form-label">Phone Number <span class="text-danger">*</span></label>
-                                <input type="text" name="phone" id="phone" class="form-control @error('phone') is-invalid @enderror" 
-                                    placeholder="Enter Phone Number" value="{{ old('phone') }}" required>
-                                @error('phone') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                                <input type="text" name="phone" id="phone" class="form-control <?php $__errorArgs = ['phone'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" 
+                                    placeholder="Enter Phone Number" value="<?php echo e(old('phone')); ?>" required>
+                                <?php $__errorArgs = ['phone'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> <div class="invalid-feedback"><?php echo e($message); ?></div> <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                             </div>
                         </div>
 
                         <!-- Address -->
                         <div class="mb-3">
                             <label for="address" class="form-label">Full Address <span class="text-danger">*</span></label>
-                            <input type="text" name="address" id="address" class="form-control @error('address') is-invalid @enderror" 
-                                placeholder="Enter Address" value="{{ old('address') }}" required>
-                            @error('address') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                            <input type="text" name="address" id="address" class="form-control <?php $__errorArgs = ['address'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" 
+                                placeholder="Enter Address" value="<?php echo e(old('address')); ?>" required>
+                            <?php $__errorArgs = ['address'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> <div class="invalid-feedback"><?php echo e($message); ?></div> <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                         </div>
 
                         <!-- CV Upload -->
@@ -120,7 +200,14 @@
                             <label for="cv" class="form-label fw-bold">Attach CV <span class="text-danger">*</span></label>
                         
                             <div class="input-group">
-                                <input type="file" name="cv" id="cv" class="form-control d-none @error('cv') is-invalid @enderror" 
+                                <input type="file" name="cv" id="cv" class="form-control d-none <?php $__errorArgs = ['cv'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" 
                                     accept=".pdf" required>
                                 <label for="cv" class="btn btn-primary">Choose File</label>
                                 <span class="input-group-text" id="file-label">No file selected</span>
@@ -128,18 +215,20 @@
                         
                             <small class="form-text text-muted">Submit your file in .pdf format (Max: 2 MB)</small>
                         
-                            @error('cv') 
-                                <div class="invalid-feedback d-block">{{ $message }}</div> 
-                            @enderror
+                            <?php $__errorArgs = ['cv'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> 
+                                <div class="invalid-feedback d-block"><?php echo e($message); ?></div> 
+                            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                         </div>
 
                         <!-- Privacy Policy Checkbox -->
-                        {{-- <div class="form-group form-check mb-4">
-                            <input type="checkbox" class="form-check-input @error('privacy_policy_agreed') is-invalid @enderror" 
-                                name="privacy_policy_agreed" id="privacy_policy_agreed" required>
-                            <label for="privacy_policy_agreed" class="form-check-label">I agree to the Privacy Policy.</label>
-                            @error('privacy_policy_agreed') <div class="invalid-feedback">{{ $message }}</div> @enderror
-                        </div> --}}
+                        
                         <div class="form-check my-4 d-flex align-items-center">
                             <input class="form-check-input me-2" type="checkbox" id="privacyCheck" name="privacy_policy_agreed" disabled required>
                             <label class="form-check-label me-1" for="privacyCheck">I agree to the</label>
@@ -147,7 +236,7 @@
                         </div>
                         <small id="privacyHint" class="text-muted">Please read the Privacy Policy before agreeing.</small>                                                                      
 
-                        @include('hrcatalists.privacy-policy-modal')
+                        <?php echo $__env->make('hrcatalists.privacy-policy-modal', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
                         
                         <!-- Submit Button -->
                         <div class="d-grid">
@@ -160,7 +249,7 @@
         </div>
     </div>
 
-    {{-- Privacy Policy read function --}}
+    
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const checkbox = document.getElementById("privacyCheck");
@@ -177,7 +266,7 @@
         });
     </script>    
 
-    {{-- File upload & Validation --}}
+    
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const fileInput = document.getElementById("cv");
@@ -225,9 +314,9 @@
             });
         });
     </script>
-    {{-- File upload & Validation --}}
+    
 
-    {{-- Form Submission & Success/Error Handling --}}
+    
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const form = document.getElementById("applicationForm");
@@ -308,6 +397,16 @@
             });
         });
     </script>
-    {{-- Form Submission & Success/Error Handling --}}
+    
 
-</x-welcome-layout>
+ <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal22420923a32db135c994bb2339cfe9f5)): ?>
+<?php $attributes = $__attributesOriginal22420923a32db135c994bb2339cfe9f5; ?>
+<?php unset($__attributesOriginal22420923a32db135c994bb2339cfe9f5); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal22420923a32db135c994bb2339cfe9f5)): ?>
+<?php $component = $__componentOriginal22420923a32db135c994bb2339cfe9f5; ?>
+<?php unset($__componentOriginal22420923a32db135c994bb2339cfe9f5); ?>
+<?php endif; ?>
+<?php /**PATH C:\laragon\www\hr_catalists\resources\views/hrcatalists/job-selected.blade.php ENDPATH**/ ?>

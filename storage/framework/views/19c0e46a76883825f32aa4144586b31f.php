@@ -1,13 +1,41 @@
-<x-admin-ats-layout>
+<?php if (isset($component)) { $__componentOriginal5fc7b6c708ff08bbce49411545a9c035 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal5fc7b6c708ff08bbce49411545a9c035 = $attributes; } ?>
+<?php $component = App\View\Components\AdminAtsLayout::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('admin-ats-layout'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\App\View\Components\AdminAtsLayout::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?>
 
-    <x-slot:title>
+     <?php $__env->slot('title', null, []); ?> 
         Columban College Inc. | ATS Applicants
-    </x-slot:title>
+     <?php $__env->endSlot(); ?>
 
     <!-- Sidebar & Master List -->
     <div class="d-flex">
         <!-- Sidebar -->
-        <x-partials.system.ats.ats-sidebar />
+        <?php if (isset($component)) { $__componentOriginald5876c07269e58343b8102e8c5f829ec = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginald5876c07269e58343b8102e8c5f829ec = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.partials.system.ats.ats-sidebar','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('partials.system.ats.ats-sidebar'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginald5876c07269e58343b8102e8c5f829ec)): ?>
+<?php $attributes = $__attributesOriginald5876c07269e58343b8102e8c5f829ec; ?>
+<?php unset($__attributesOriginald5876c07269e58343b8102e8c5f829ec); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginald5876c07269e58343b8102e8c5f829ec)): ?>
+<?php $component = $__componentOriginald5876c07269e58343b8102e8c5f829ec; ?>
+<?php unset($__componentOriginald5876c07269e58343b8102e8c5f829ec); ?>
+<?php endif; ?>
         <!-- End of Sidebar -->
     
         <!-- Master List -->
@@ -51,35 +79,36 @@
                 </div>
                 
                 <!-- Status Tabs -->
-                @php
+                <?php
                     $statuses = ['all', 'pending', 'screening', 'scheduled', 'evaluation', 'hired', 'rejected', 'archived'];
-                @endphp
+                ?>
 
                 <ul class="nav nav-tabs mt-4" id="statusTabs" role="tablist">
-                    @foreach ($statuses as $key => $stat)
+                    <?php $__currentLoopData = $statuses; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $stat): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <li class="nav-item" role="presentation">
                             <button 
-                                class="nav-link {{ $key === 0 ? 'active' : '' }}" 
-                                id="{{ $stat }}-tab" 
+                                class="nav-link <?php echo e($key === 0 ? 'active' : ''); ?>" 
+                                id="<?php echo e($stat); ?>-tab" 
                                 data-bs-toggle="tab" 
-                                data-bs-target="#tab-{{ $stat }}" 
+                                data-bs-target="#tab-<?php echo e($stat); ?>" 
                                 type="button" 
                                 role="tab" 
-                                aria-controls="tab-{{ $stat }}" 
-                                aria-selected="{{ $key === 0 ? 'true' : 'false' }}">
-                                {{ ucfirst($stat) }}
+                                aria-controls="tab-<?php echo e($stat); ?>" 
+                                aria-selected="<?php echo e($key === 0 ? 'true' : 'false'); ?>">
+                                <?php echo e(ucfirst($stat)); ?>
+
                             </button>
                         </li>
-                    @endforeach
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </ul>
 
                 <div class="tab-content" id="statusTabsContent">
-                    @foreach ($statuses as $key => $stat)
+                    <?php $__currentLoopData = $statuses; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $stat): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <div 
-                            class="tab-pane fade {{ $key === 0 ? 'show active' : '' }}" 
-                            id="tab-{{ $stat }}" 
+                            class="tab-pane fade <?php echo e($key === 0 ? 'show active' : ''); ?>" 
+                            id="tab-<?php echo e($stat); ?>" 
                             role="tabpanel" 
-                            aria-labelledby="{{ $stat }}-tab"
+                            aria-labelledby="<?php echo e($stat); ?>-tab"
                         >
                             <table class="table table-bordered display applicantTable">
                                 <thead>
@@ -93,7 +122,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @php
+                                    <?php
                                         $statusColors = [
                                             'pending' => '#555555',
                                             'screening' => '#ffe135',
@@ -107,137 +136,62 @@
                                         $filteredApplicants = $stat === 'all'
                                             ? $allApplicants
                                             : $allApplicants->where('status', $stat);
-                                    @endphp
+                                    ?>
 
-                                    @foreach($filteredApplicants as $applicant)
+                                    <?php $__currentLoopData = $filteredApplicants; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $applicant): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                         <tr>
                                             <td class="text-center">
-                                                <input type="checkbox" class="rowCheckbox" value="{{ $applicant->id }}">
+                                                <input type="checkbox" class="rowCheckbox" value="<?php echo e($applicant->id); ?>">
                                             </td>
-                                            <td>{{ $applicant->first_name }} {{ $applicant->last_name }}</td>
+                                            <td><?php echo e($applicant->first_name); ?> <?php echo e($applicant->last_name); ?></td>
                                             <td>
-                                                <form method="POST" action="{{ route('applicants.chooseStatus', $applicant->id) }}" class="status-update-form">
-                                                    @csrf
+                                                <form method="POST" action="<?php echo e(route('applicants.chooseStatus', $applicant->id)); ?>" class="status-update-form">
+                                                    <?php echo csrf_field(); ?>
                                                     <select name="status" class="form-select status-dropdown"
-                                                        data-applicant-name="{{ $applicant->first_name }} {{ $applicant->last_name }}" 
-                                                        data-current-status="{{ $applicant->status }}"
-                                                        style="color: #fff; border-radius: 4px; padding: 4px; text-align: center; background-color: {{ $statusColors[$applicant->status] ?? '#000' }};"
+                                                        data-applicant-name="<?php echo e($applicant->first_name); ?> <?php echo e($applicant->last_name); ?>" 
+                                                        data-current-status="<?php echo e($applicant->status); ?>"
+                                                        style="color: #fff; border-radius: 4px; padding: 4px; text-align: center; background-color: <?php echo e($statusColors[$applicant->status] ?? '#000'); ?>;"
                                                     >
-                                                        @foreach ($statuses as $s)
-                                                            <option value="{{ $s }}" {{ $applicant->status == $s ? 'selected' : '' }}>
-                                                                {{ ucfirst($s) }}
+                                                        <?php $__currentLoopData = $statuses; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $s): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                            <option value="<?php echo e($s); ?>" <?php echo e($applicant->status == $s ? 'selected' : ''); ?>>
+                                                                <?php echo e(ucfirst($s)); ?>
+
                                                             </option>
-                                                        @endforeach
+                                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                     </select>
                                                 </form>
                                             </td>
-                                            <td data-order="{{ \Carbon\Carbon::parse($applicant->applied_at)->timestamp }}">
-                                                {{ \Carbon\Carbon::parse($applicant->applied_at)->format('F d, Y') }}
+                                            <td data-order="<?php echo e(\Carbon\Carbon::parse($applicant->applied_at)->timestamp); ?>">
+                                                <?php echo e(\Carbon\Carbon::parse($applicant->applied_at)->format('F d, Y')); ?>
+
                                             </td>                                    
-                                            <td>{{ $applicant->job->job_title ?? 'N/A' }}</td>
+                                            <td><?php echo e($applicant->job->job_title ?? 'N/A'); ?></td>
                                             <td>
                                                 <div class="d-flex justify-content-around">
                                                     <button class="btn btn-ap-edit" 
                                                         data-bs-toggle="offcanvas" 
                                                         data-bs-target="#candidateProfile" 
-                                                        data-applicant-id="{{ $applicant->id }}"
-                                                        data-applicant-name="{{ $applicant->first_name }} {{ $applicant->last_name }}"
-                                                        data-applicant-status="{{ $applicant->status }}"
-                                                        data-applicant-email="{{ $applicant->email }}"
-                                                        data-applicant-phone="{{ $applicant->phone_number }}"
-                                                        data-applicant-position="{{ $applicant->job->job_title ?? 'N/A' }}"
-                                                        data-applicant-address="{{ $applicant->address }}">
+                                                        data-applicant-id="<?php echo e($applicant->id); ?>"
+                                                        data-applicant-name="<?php echo e($applicant->first_name); ?> <?php echo e($applicant->last_name); ?>"
+                                                        data-applicant-status="<?php echo e($applicant->status); ?>"
+                                                        data-applicant-email="<?php echo e($applicant->email); ?>"
+                                                        data-applicant-phone="<?php echo e($applicant->phone_number); ?>"
+                                                        data-applicant-position="<?php echo e($applicant->job->job_title ?? 'N/A'); ?>"
+                                                        data-applicant-address="<?php echo e($applicant->address); ?>">
                                                         VIEW
                                                     </button>
                                                 </div>
                                             </td>
                                         </tr>
-                                    @endforeach
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                 </tbody>
                             </table>
                         </div>
-                    @endforeach
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </div>
                 
                 <!-- Applicant Table -->
-                {{-- <table id="applicantTable" class="table table-bordered display">
-                    <thead>
-                        <tr>
-                            <th></th>
-                            <th>NAME</th>
-                            <th>STATUS</th>
-                            <th>APPLIED DATE</th>
-                            <th>POSITION APPLIED TO</th>
-                            <th>ACTION</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if(count($allApplicants) > 0)
-                            @foreach($allApplicants as $applicant)
-                                @php
-                                    // Define status colors inside the loop
-                                    $statusColors = [
-                                        'pending' => '#555555',      // Gray
-                                        'screening' => '#ffe135',    // Yellow
-                                        'scheduled' => '#ff8c00',    // Orange
-                                        'interviewed' => '#ff8c00',  // Orange
-                                        'hired' => '#4CAF50',        // Green
-                                        'rejected' => '#8b0000',     // Red
-                                        'archived' => '#4b0082'      // Indigo
-                                    ];
                 
-                                    $statusColor = $statusColors[$applicant->status] ?? '#000000'; // Default Black
-                                @endphp
-                                <tr>
-                                    <td class="text-center">
-                                        <input type="checkbox" class="rowCheckbox" value="{{ $applicant->id }}">
-                                    </td>
-                                    <td>{{ $applicant->first_name }} {{ $applicant->last_name }}</td>
-                                    <td>
-                                        <form method="POST" action="{{ route('applicants.chooseStatus', $applicant->id) }}" class="status-update-form">
-                                            @csrf
-                                            <select name="status" class="form-select status-dropdown"
-                                                data-applicant-name="{{ $applicant->first_name }} {{ $applicant->last_name }}" 
-                                                data-current-status="{{ $applicant->status }}"
-                                                style="color: #fff; border-radius: 4px; padding: 4px; text-align: center;"
-                                            >
-                                                <option value="pending" {{ $applicant->status == 'pending' ? 'selected' : '' }}>Pending</option>
-                                                <option value="screening" {{ $applicant->status == 'screening' ? 'selected' : '' }}>Screening</option>
-                                                <option value="scheduled" {{ $applicant->status == 'scheduled' ? 'selected' : '' }}>Scheduled</option>
-                                                <option value="evaluation" {{ $applicant->status == 'evaluation' ? 'selected' : '' }}>Evaluation</option>
-                                                <option value="hired" {{ $applicant->status == 'hired' ? 'selected' : '' }}>Hired</option>
-                                                <option value="rejected" {{ $applicant->status == 'rejected' ? 'selected' : '' }}>Rejected</option>
-                                                <option value="archived" {{ $applicant->status == 'archived' ? 'selected' : '' }}>Archived</option>
-                                            </select>
-                                        </form>
-                                    </td>
-                                    <td data-order="{{ \Carbon\Carbon::parse($applicant->applied_at)->timestamp }}">
-                                        {{ \Carbon\Carbon::parse($applicant->applied_at)->format('F d, Y') }}
-                                    </td>                                    
-                                    <td>{{ $applicant->job->job_title ?? 'N/A' }}</td>
-                                    <!-- off canvas -->
-                                    <td>
-                                        <div class="d-flex justify-content-around">
-                                            <button class="btn btn-ap-edit" 
-                                                data-bs-toggle="offcanvas" 
-                                                data-bs-target="#candidateProfile" 
-                                                data-applicant-id="{{ $applicant->id }}"
-                                                data-applicant-name="{{ $applicant->first_name }} {{ $applicant->last_name }}"
-                                                data-applicant-status="{{ $applicant->status }}"
-                                                data-applicant-email="{{ $applicant->email }}"
-                                                data-applicant-phone="{{ $applicant->phone_number }}"
-                                                data-applicant-position="{{ $applicant->job->job_title ?? 'N/A' }}"
-                                                data-applicant-address="{{ $applicant->address }}">
-                                                VIEW
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endforeach
-         
-                        @endif
-                    </tbody>
-                </table> --}}
 
                 <!-- Archive Popup -->
                 <div id="archivePopup" class="custom-popup">
@@ -299,14 +253,14 @@
     <!-- End of Sidebar & Master List -->
 
     <!-- Add Applicant Modal -->
-    {{-- @include('components.partials.system.ats.ats-add-applicant-modal') --}}
-    @include('components.partials.system.ats.ats-add-applicant-modal', ['jobs' => $jobs])
+    
+    <?php echo $__env->make('components.partials.system.ats.ats-add-applicant-modal', ['jobs' => $jobs], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 
     
     <!-- Candidate Profile Offcanvas -->
-    @include('components.partials.system.ats.ats-candidate-profile-offcanvas')
+    <?php echo $__env->make('components.partials.system.ats.ats-candidate-profile-offcanvas', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 
-    {{-- Applying button color changes based on the status --}}
+    
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const offcanvas = document.getElementById('candidateProfile');
@@ -355,9 +309,9 @@
             });
         });
     </script>
-    {{-- Applying button color changes based on the status --}}
+    
 
-    {{-- File upload and validation --}}
+    
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const fileInput = document.getElementById("cv");
@@ -389,9 +343,9 @@
         });
     </script>
     
-    {{-- File upload and validation --}}
+    
 
-    {{-- Job Selection Dropdown --}}
+    
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const jobDropdown = document.getElementById("job_id");
@@ -408,9 +362,9 @@
             });
         });
     </script>
-    {{-- Job Selection Dropdown --}}
+    
 
-    {{-- Handle Form Submission & Display Success/Error Alerts --}}
+    
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const form = document.getElementById("addApplicantForm");
@@ -503,37 +457,18 @@
             });
         });
     </script>    
-    {{-- Handle Form Submission & Display Success/Error Alerts --}}
-
-    {{-- DataTables Initialization for Applicant Tables --}}
-    {{-- <script>
-        $(document).ready(function () {
-            // Loop through each table with class 'applicantTable' and initialize DataTables
-            $('.applicantTable').each(function () {
-                $(this).DataTable({
-                    responsive: true, // Makes the table adapt on different screen sizes
-                    paging: true, // Enables pagination (Next, Previous, etc.)
-                    searching: true, // Enables the search input box
-                    info: true, // Shows table info like "Showing 1 to 10 of 50 entries"
-                    lengthChange: true, // Allows user to select number of entries to show
-                    order: [[3, 'desc']], // Default sort by 4th column (Applied Date) in descending order
-                    dom: '<"datatable-toolbar d-flex justify-content-between align-items-center my-3"lf>tip'
-                    // Custom DOM layout:
-                    // "l" = entries length dropdown
-                    // "f" = search box
-                    // "t" = table
-                    // "i" = info text
-                    // "p" = pagination controls
-                    // All wrapped in a flexbox toolbar for styling
-                });
-            });
     
-            // When a new tab is shown (via Bootstrap tab click),
-            // force the DataTable to redraw its columns (important for hidden tab tables)
-            $('a[data-bs-toggle="tab"]').on('shown.bs.tab', function () {
-                $('.applicantTable').DataTable().columns.adjust().draw();
-            });
-        });
-    </script> --}}
+
+    
+    
         
-</x-admin-ats-layout>
+ <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal5fc7b6c708ff08bbce49411545a9c035)): ?>
+<?php $attributes = $__attributesOriginal5fc7b6c708ff08bbce49411545a9c035; ?>
+<?php unset($__attributesOriginal5fc7b6c708ff08bbce49411545a9c035); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal5fc7b6c708ff08bbce49411545a9c035)): ?>
+<?php $component = $__componentOriginal5fc7b6c708ff08bbce49411545a9c035; ?>
+<?php unset($__componentOriginal5fc7b6c708ff08bbce49411545a9c035); ?>
+<?php endif; ?><?php /**PATH C:\laragon\www\hr_catalists\resources\views/hrcatalists/ats/admin-ats-master-list.blade.php ENDPATH**/ ?>

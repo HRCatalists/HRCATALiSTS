@@ -13,8 +13,10 @@ class GoogleDriveService
 
     public function __construct()
     {
+        $path = storage_path('app/' . env('GOOGLE_DRIVE_CREDENTIALS'));
+
         $this->client = new Google_Client();
-        $this->client->setAuthConfig(storage_path('app/google-drive.json'));
+        $this->client->setAuthConfig($path);
         $this->client->addScope(Google_Service_Drive::DRIVE_FILE);
 
         $this->service = new Google_Service_Drive($this->client);

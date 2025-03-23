@@ -16,10 +16,7 @@
                 
                 <div class="d-flex justify-content-between align-items-center my-5">
                     <div>
-                        <h2 class="dt-h2 text-capitalize">{{ ucfirst($status ?? 'All') }} Applicants</h2>
-                        <a href="{{ route('applicants.byStatus', 'pending') }}" class="btn {{ $status == 'pending' ? 'btn-primary' : 'btn-outline-secondary' }}">Pending</a>
-                        <a href="{{ route('applicants.byStatus', 'hired') }}" class="btn {{ $status == 'hired' ? 'btn-primary' : 'btn-outline-secondary' }}">Hired</a>
-
+                        <h2 class="dt-h2">For Screening</h2>
                     </div>     
                 </div>
 
@@ -81,9 +78,11 @@
                             ];
                         @endphp
                     
-                        @if($allApplicants->count())
+                        @if(is_countable($allApplicants) && count($allApplicants) > 0)
                             @php $hasResults = false; @endphp
+                    
                             @foreach($allApplicants as $applicant)
+                                @if(in_array($applicant->status, ['scheduled']))
                                     @php $hasResults = true; @endphp
                                     @php
                                         $statusColor = $statusColors[$applicant->status] ?? '#000000'; // Default Black

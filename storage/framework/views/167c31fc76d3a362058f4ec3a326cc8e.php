@@ -9,11 +9,13 @@
         <div class="content-section">
             <div class="d-flex align-items-center justify-content-between my-4">
                 <h5 id="applicantName" class="mt-2">
-                    {{ $applicant->first_name ?? 'Applicant Name' }} {{ $applicant->last_name ?? '' }}
+                    <?php echo e($applicant->first_name ?? 'Applicant Name'); ?> <?php echo e($applicant->last_name ?? ''); ?>
+
                 </h5>
 
                 <span id="applicantStatus" class="stage border px-3 py-1" style="border-radius: 4px;">
-                    STAGE: {{ $applicant->status ?? 'N/A' }}
+                    STAGE: <?php echo e($applicant->status ?? 'N/A'); ?>
+
                 </span>
             </div>
 
@@ -38,77 +40,55 @@
 
                         <div class="row">
                             <div class="col-md-12">
-                                <p><strong>Position:</strong> {{ $applicant->job->job_title ?? 'N/A' }}</p>
+                                <p><strong>Position:</strong> <?php echo e($applicant->job->job_title ?? 'N/A'); ?></p>
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="col-md-6">
-                                <i class="fa-solid fa-envelope me-2"></i> {{ $applicant->email ?? 'N/A' }}
+                                <i class="fa-solid fa-envelope me-2"></i> <?php echo e($applicant->email ?? 'N/A'); ?>
+
                             </div>
                             <div class="col-md-6">
-                                <i class="fa-solid fa-phone me-2"></i> {{ $applicant->phone ?? 'N/A' }}
+                                <i class="fa-solid fa-phone me-2"></i> <?php echo e($applicant->phone ?? 'N/A'); ?>
+
                             </div>
                         </div>
 
                         <div class="row mt-3">
                             <div class="col-md-12">
-                                <i class="fa-solid fa-location-dot me-2"></i> {{ $applicant->address ?? 'N/A' }}
+                                <i class="fa-solid fa-location-dot me-2"></i> <?php echo e($applicant->address ?? 'N/A'); ?>
+
                             </div>
                         </div>
                     </div>
 
                     <!-- Attachment -->
-                    @if(!empty($applicant->cv))
+                    <?php if(!empty($applicant->cv)): ?>
                         <div class="file-attachment my-4">
-                            <a href="https://drive.google.com/uc?export=download&id={{ $applicant->cv }}" target="_blank" download>
-                                <img src="{{ asset('images/pdf-img.png') }}" alt="PDF icon">
+                            <a href="https://drive.google.com/uc?export=download&id=<?php echo e($applicant->cv); ?>" target="_blank" download>
+                                <img src="<?php echo e(asset('images/pdf-img.png')); ?>" alt="PDF icon">
                                 <span id="applicantCV">CV.pdf</span>
                                 <span class="ms-auto">Click to Download</span>
                             </a>
                         </div>
-                    @else
+                    <?php else: ?>
                         <p>No CV available.</p>
-                    @endif
+                    <?php endif; ?>
 
                     <!-- Action Buttons -->
-                    {{-- <div class="d-grid mt-5">
-                        @if(isset($applicant))
-                            <!-- APPROVE -->
-                            <form method="POST" action="{{ route('applicants.updateStatus', $applicant->id) }}">
-                                @csrf
-                                <input type="hidden" name="action" value="approve">
-                                <button type="submit" class="btn btn-success">APPROVE</button>
-                            </form>
-
-                            <!-- REJECT (Redirects to 'ats-applicant') -->
-                            <form method="POST" action="{{ route('applicants.updateStatus', $applicant->id) }}">
-                                @csrf
-                                <input type="hidden" name="action" value="reject">
-                                <button type="submit" class="btn btn-danger">REJECT</button>
-                            </form>
-
-                            <!-- ARCHIVE -->
-                            <form method="POST" action="{{ route('applicants.updateStatus', $applicant->id) }}">
-                                @csrf
-                                <input type="hidden" name="action" value="archive">
-                                <button type="submit" class="btn btn-outline-danger">ARCHIVE</button>
-                            </form>
-                        @else
-                            <p class="text-danger">Applicant data not found.</p>
-                        @endif
-                    </div> --}}
+                    
                     <div class="d-grid mt-5">
-                        @if(isset($applicant))
+                        <?php if(isset($applicant)): ?>
                             <!-- PASS/FAIL for Evaluation -->
                             <div id="demoButtons" class="d-none">
-                                <form method="POST" action="{{ route('applicants.updateStatus', $applicant->id) }}">
-                                    @csrf
+                                <form method="POST" action="<?php echo e(route('applicants.updateStatus', $applicant->id)); ?>">
+                                    <?php echo csrf_field(); ?>
                                     <input type="hidden" name="action" value="pass_evaluation">
                                     <button type="submit" class="btn btn-success mb-2">PASS DEMO TEACHING</button>
                                 </form>
-                                <form method="POST" action="{{ route('applicants.updateStatus', $applicant->id) }}">
-                                    @csrf
+                                <form method="POST" action="<?php echo e(route('applicants.updateStatus', $applicant->id)); ?>">
+                                    <?php echo csrf_field(); ?>
                                     <input type="hidden" name="action" value="fail_evaluation">
                                     <button type="submit" class="btn btn-danger mb-2">FAIL DEMO TEACHING</button>
                                 </form>
@@ -116,25 +96,25 @@
                     
                             <!-- Approve/Reject/Archive -->
                             <div id="defaultButtons" class="d-none">
-                                <form method="POST" action="{{ route('applicants.updateStatus', $applicant->id) }}">
-                                    @csrf
+                                <form method="POST" action="<?php echo e(route('applicants.updateStatus', $applicant->id)); ?>">
+                                    <?php echo csrf_field(); ?>
                                     <input type="hidden" name="action" value="approve">
                                     <button type="submit" class="btn btn-primary mb-2">APPROVE</button>
                                 </form>
-                                <form method="POST" action="{{ route('applicants.updateStatus', $applicant->id) }}">
-                                    @csrf
+                                <form method="POST" action="<?php echo e(route('applicants.updateStatus', $applicant->id)); ?>">
+                                    <?php echo csrf_field(); ?>
                                     <input type="hidden" name="action" value="reject">
                                     <button type="submit" class="btn btn-outline-danger mb-2">REJECT</button>
                                 </form>
-                                <form method="POST" action="{{ route('applicants.updateStatus', $applicant->id) }}">
-                                    @csrf
+                                <form method="POST" action="<?php echo e(route('applicants.updateStatus', $applicant->id)); ?>">
+                                    <?php echo csrf_field(); ?>
                                     <input type="hidden" name="action" value="archive">
                                     <button type="submit" class="btn btn-secondary">ARCHIVE</button>
                                 </form>
                             </div>
-                        @else
+                        <?php else: ?>
                             <p class="text-danger">Applicant data not found.</p>
-                        @endif
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -178,12 +158,12 @@
 <!-- End Edit Notes Modal -->
 
     <!-- Interview Tab -->
-    @if(isset($applicant))
+    <?php if(isset($applicant)): ?>
 
 <div id="interview" class="tab-content" style="display: none;">
     <div class="interview-section">
-        <form id="scheduleInterviewForm" method="POST" action="{{ route('events.schedule', ['id' => $applicant->id]) }}">
-            @csrf
+        <form id="scheduleInterviewForm" method="POST" action="<?php echo e(route('events.schedule', ['id' => $applicant->id])); ?>">
+            <?php echo csrf_field(); ?>
             <!-- Schedule Name -->
             <div class="mb-3">
                 <label for="scheduleName" class="form-label">Schedule Name <span class="text-danger">*</span></label>
@@ -192,12 +172,12 @@
             <!-- Name of Applicant -->
             <div class="mb-3">
                 <label for="applicantName" class="form-label">Name of Applicant <span class="text-danger">*</span></label>
-                <input type="text" class="form-control" name="applicant_name" id="applicantName" value="{{ $applicant->first_name }} {{ $applicant->last_name }}" readonly>
+                <input type="text" class="form-control" name="applicant_name" id="applicantName" value="<?php echo e($applicant->first_name); ?> <?php echo e($applicant->last_name); ?>" readonly>
             </div>
             <!-- Applicant Email -->
             <div class="mb-3">
                 <label for="applicantEmail" class="form-label">Applicant Email <span class="text-danger">*</span></label>
-                <input type="email" class="form-control" name="applicant_email" id="applicantEmail" value="{{ $applicant->email }}" readonly>
+                <input type="email" class="form-control" name="applicant_email" id="applicantEmail" value="<?php echo e($applicant->email); ?>" readonly>
             </div>
             <!-- Schedule Date and Time -->
             <div class="row">
@@ -218,9 +198,9 @@
     </div>
 </div>
 <!-- End Interview Tab -->
-@else
+<?php else: ?>
     <p>No applicant found.</p>
-@endif
+<?php endif; ?>
 
         </div>
 
@@ -354,23 +334,23 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         // Display success or error messages if available
-        @if(session('success'))
+        <?php if(session('success')): ?>
             Swal.fire({
                 icon: 'success',
                 title: 'Success!',
-                text: "{{ session('success') }}",
+                text: "<?php echo e(session('success')); ?>",
                 confirmButtonColor: '#28a745'
             });
-        @endif
+        <?php endif; ?>
 
-        @if(session('error'))
+        <?php if(session('error')): ?>
             Swal.fire({
                 icon: 'error',
                 title: 'Error!',
-                text: "{{ session('error') }}",
+                text: "<?php echo e(session('error')); ?>",
                 confirmButtonColor: '#dc3545'
             });
-        @endif
+        <?php endif; ?>
     });
 </script>
 
@@ -378,3 +358,4 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
+<?php /**PATH C:\laragon\www\hr_catalists\resources\views/components/partials/system/ats/ats-candidate-profile-offcanvas.blade.php ENDPATH**/ ?>

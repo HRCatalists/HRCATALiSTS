@@ -1,208 +1,216 @@
 <x-admin-ats-layout>
 
     <x-slot:title>
-        Columban College Inc. | ATS Screening
+        Columban College Inc. | ATS Interview
     </x-slot:title>
 
-    <!-- Sidebar & Master List -->
-    <div class="d-flex">
-        <!-- Sidebar -->
-        <x-partials.system.ats.ats-sidebar />
-        <!-- End of Sidebar -->
-    
-        <!-- Master List -->
-        <div id="content" class="flex-grow-1">
-            <div class="container mt-5">
-                
-                <div class="d-flex justify-content-between align-items-center my-5">
-                    <div>
-                        <h2 class="dt-h2 text-capitalize">{{ ucfirst($status ?? 'All') }} Applicants</h2>
-                        <a href="{{ route('applicants.byStatus', 'pending') }}" class="btn {{ $status == 'pending' ? 'btn-primary' : 'btn-outline-secondary' }}">Pending</a>
-                        <a href="{{ route('applicants.byStatus', 'hired') }}" class="btn {{ $status == 'hired' ? 'btn-primary' : 'btn-outline-secondary' }}">Hired</a>
+        <!-- Sidebar & Master List -->
+        <div class="d-flex">
+            <!-- Sidebar -->
+            <x-partials.system.ats.ats-sidebar />
+            <!-- End of Sidebar -->
+        
+            <!-- Master List -->
+            <div id="content" class="flex-grow-1">
+                <div class="container mt-5">
+                    
+                    <div class="d-flex justify-content-between align-items-center my-5">
+                        <div>
+                            <h2 class="dt-h2">For Interview</h2>
+                        </div>     
+                    </div>
 
-                    </div>     
-                </div>
+                    <div class="d-flex">
+                        <div class="card checkbox-card ">
+                            <div class="container d-flex">
 
-                <div class="d-flex">
-                    <div class="card checkbox-card ">
-                        <div class="container d-flex">
-
-                            <!-- Select All heckbox -->
-                            <div class="d-flex me-4 py-3">
-                                <input type="checkbox" id="selectAll" class="rowCheckbox">
-                            </div>
-                            
-                            <!-- Archive and Reject Buttons -->
-                            <div class="d-flex py-1">
-                                <button class="btn archive-btn btn-sm me-2">ARCHIVE</button>
-                                <button class="btn reject-btn btn-sm">REJECT</button>
+                                <!-- Select All heckbox -->
+                                <div class="d-flex me-4 py-3">
+                                    <input type="checkbox" id="selectAll" class="rowCheckbox">
+                                </div>
+                                
+                                <!-- Archive and Reject Buttons -->
+                                <div class="d-flex py-1">
+                                    <button class="btn archive-btn btn-sm me-2">ARCHIVE</button>
+                                    <button class="btn reject-btn btn-sm">REJECT</button>
+                                </div>
+                                
                             </div>
                             
                         </div>
+
+                        <div class="d-flex justify-content-around ms-3">
+                            <!-- Add Position Button -->
+                            <button type="button" class="btn add-btn me-2">
+                                <a href="ats-admin-form.html">ADD APPLICANT</a>
+                            </button>
+
+                            <button class="btn shadow print-btn">
+                                <i class="fa fa-print"></i> PRINT
+                                <a href=""></a>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Applicant Table -->
+                    <table id="applicantTable" class="table table-bordered display">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>NAME</th>
+                                <th>STATUS</th>
+                                <th>APPLIED DATE</th>
+                                <th>POSITION APPLIED TO</th>
+                                <th>ACTION</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @php
+                                // Define status colors outside the loop for reusability
+                                $statusColors = [
+                                    'pending' => '#555555',      // Gray
+                                    'screening' => '#ffe135',    // Yellow
+                                    'scheduled' => '#ff8c00',    // Orange
+                                    'interviewed' => '#ff8c00',  // Orange
+                                    'hired' => '#4CAF50',        // Green
+                                    'rejected' => '#8b0000',     // Red
+                                    'archived' => '#4b0082'      // Indigo
+                                ];
+                            @endphp
                         
-                    </div>
-
-                    <div class="d-flex justify-content-around ms-3">
-                        <!-- Add Position Button -->
-                        <button type="button" class="btn add-btn me-2">
-                            <a href="ats-admin-form.html">ADD APPLICANT</a>
-                        </button>
-
-                        <button class="btn shadow print-btn">
-                            <i class="fa fa-print"></i> PRINT
-                            <a href=""></a>
-                        </button>
-                    </div>
-                </div>
-                
-                <!-- Applicant Table -->
-                <table id="applicantTable" class="table table-bordered display">
-                    <thead>
-                        <tr>
-                            <th></th>
-                            <th>NAME</th>
-                            <th>STATUS</th>
-                            <th>APPLIED DATE</th>
-                            <th>POSITION APPLIED TO</th>
-                            <th>ACTION</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @php
-                            // Define status colors outside the loop for reusability
-                            $statusColors = [
-                                'pending' => '#555555',      // Gray
-                                'screening' => '#ffe135',    // Yellow
-                                'scheduled' => '#ff8c00',    // Orange
-                                'interviewed' => '#ff8c00',  // Orange
-                                'hired' => '#4CAF50',        // Green
-                                'rejected' => '#8b0000',     // Red
-                                'archived' => '#4b0082'      // Indigo
-                            ];
-                        @endphp
-                    
-                        @if($allApplicants->count())
-                            @php $hasResults = false; @endphp
-                            @foreach($allApplicants as $applicant)
-                                    @php $hasResults = true; @endphp
-                                    @php
-                                        $statusColor = $statusColors[$applicant->status] ?? '#000000'; // Default Black
-                                    @endphp
-                    
-                                    <tr>
-                                        <td class="text-center">
-                                            <input type="checkbox" class="rowCheckbox" value="{{ $applicant->id }}">
-                                        </td>
-                                        <td>{{ $applicant->first_name }} {{ $applicant->last_name }}</td>
-                                        <td>
-                                            <form method="POST" action="{{ route('applicants.chooseStatus', $applicant->id) }}" class="status-update-form">
-                                                @csrf
-                                                <select name="status" class="form-select status-dropdown"
-                                                    data-applicant-name="{{ $applicant->first_name }} {{ $applicant->last_name }}" 
-                                                    data-current-status="{{ $applicant->status }}"
-                                                    style="color: #fff; border-radius: 4px; padding: 4px; text-align: center;"
-                                                >
-                                                    <option value="pending" {{ $applicant->status == 'pending' ? 'selected' : '' }}>Pending</option>
-                                                    <option value="screening" {{ $applicant->status == 'screening' ? 'selected' : '' }}>Screening</option>
-                                                    <option value="scheduled" {{ $applicant->status == 'scheduled' ? 'selected' : '' }}>Scheduled</option>
-                                                    <option value="interviewed" {{ $applicant->status == 'interviewed' ? 'selected' : '' }}>Interviewed</option>
-                                                    <option value="hired" {{ $applicant->status == 'hired' ? 'selected' : '' }}>Hired</option>
-                                                    <option value="rejected" {{ $applicant->status == 'rejected' ? 'selected' : '' }}>Rejected</option>
-                                                    <option value="archived" {{ $applicant->status == 'archived' ? 'selected' : '' }}>Archived</option>
-                                                </select>
-                                            </form>
-                                        </td>
-                                        <td>{{ \Carbon\Carbon::parse($applicant->applied_at)->format('F d, Y') }}</td>
-                                        <td>{{ $applicant->job->job_title ?? 'N/A' }}</td>
-                                        <td>
-                                            <div class="d-flex justify-content-around">
-                                                <button class="btn btn-ap-edit" 
-                                                    data-bs-toggle="offcanvas" 
-                                                    data-bs-target="#candidateProfile" 
-                                                    data-applicant-id="{{ $applicant->id }}"
-                                                    data-applicant-name="{{ $applicant->first_name }} {{ $applicant->last_name }}"
-                                                    data-applicant-status="{{ $applicant->status }}"
-                                                    data-applicant-email="{{ $applicant->email }}"
-                                                    data-applicant-phone="{{ $applicant->phone_number }}"
-                                                    data-applicant-position="{{ $applicant->job->job_title ?? 'N/A' }}"
-                                                    data-applicant-address="{{ $applicant->address }}">
-                                                    VIEW
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
+                            @if(is_countable($interviewedApplicants) && count($interviewedApplicants) > 0)
+                                @php $hasResults = false; @endphp
+                        
+                                @foreach($interviewedApplicants as $applicant)
+                                    @if(in_array($applicant->status, ['evaluation']))
+                                        @php $hasResults = true; @endphp
+                                        @php
+                                            $statusColor = $statusColors[$applicant->status] ?? '#000000'; // Default Black
+                                        @endphp
+                        
+                                        <tr>
+                                            <td class="text-center">
+                                                <input type="checkbox" class="rowCheckbox" value="{{ $applicant->id }}">
+                                            </td>
+                                            <td>{{ $applicant->first_name }} {{ $applicant->last_name }}</td>
+                                            <td>
+                                                <form method="POST" action="{{ route('applicants.chooseStatus', $applicant->id) }}" class="status-update-form">
+                                                    @csrf
+                                                    <select name="status" class="form-select status-dropdown"
+                                                        data-applicant-name="{{ $applicant->first_name }} {{ $applicant->last_name }}" 
+                                                        data-current-status="{{ $applicant->status }}"
+                                                        style="color: #fff; border-radius: 4px; padding: 4px; text-align: center;"
+                                                    >
+                                                        <option value="pending" {{ $applicant->status == 'pending' ? 'selected' : '' }}>Pending</option>
+                                                        <option value="screening" {{ $applicant->status == 'screening' ? 'selected' : '' }}>Screening</option>
+                                                        <option value="scheduled" {{ $applicant->status == 'scheduled' ? 'selected' : '' }}>Scheduled</option>
+                                                        <option value="evaluation" {{ $applicant->status == 'evaluation' ? 'selected' : '' }}>Evaluation</option>
+                                                        <option value="hired" {{ $applicant->status == 'hired' ? 'selected' : '' }}>Hired</option>
+                                                        <option value="rejected" {{ $applicant->status == 'rejected' ? 'selected' : '' }}>Rejected</option>
+                                                        <option value="archived" {{ $applicant->status == 'archived' ? 'selected' : '' }}>Archived</option>
+                                                    </select>
+                                                </form>
+                                            </td>
+                                            <td>{{ \Carbon\Carbon::parse($applicant->applied_at)->format('F d, Y') }}</td>
+                                            <td>{{ $applicant->job->job_title ?? 'N/A' }}</td>
+                                            <td>
+                                                <div class="d-flex justify-content-around">
+                                                    <button class="btn btn-ap-edit" 
+                                                        data-bs-toggle="offcanvas" 
+                                                        data-bs-target="#candidateProfile" 
+                                                        data-applicant-id="{{ $applicant->id }}"
+                                                        data-applicant-name="{{ $applicant->first_name }} {{ $applicant->last_name }}"
+                                                        data-applicant-status="{{ $applicant->status }}"
+                                                        data-applicant-email="{{ $applicant->email }}"
+                                                        data-applicant-phone="{{ $applicant->phone_number }}"
+                                                        data-applicant-position="{{ $applicant->job->job_title ?? 'N/A' }}"
+                                                        data-applicant-address="{{ $applicant->address }}">
+                                                        VIEW
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                @endforeach
+                        
+                                {{-- Show "No applicants found" if no results --}}
+                                @if(!$hasResults)
+                                
                                 @endif
-                            @endforeach
-                    
-                            {{-- Show "No applicants found" if no results --}}
-                            @if(!$hasResults)
-                               
+                            @else
+                                
                             @endif
-                
-                         
-                        @endif
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
 
-                <!-- Archive Popup -->
-                <div id="archivePopup" class="custom-popup">
-                    <div class="popup-content">
-                        <p>Are you sure you want to archive this applicant?</p>
-                        <button class="btn archive-btn">Yes, archive the applicant</button>
-                        <button class="btn btn-outline-secondary" onclick="closePopup('archivePopup')">Cancel</button>
+                    <!-- Archive Popup -->
+                    <div id="archivePopup" class="custom-popup">
+                        <div class="popup-content">
+                            <p>Are you sure you want to archive this applicant?</p>
+                            <button class="btn archive-btn">Yes, archive the applicant</button>
+                            <button class="btn btn-outline-secondary" onclick="closePopup('archivePopup')">Cancel</button>
+                        </div>
                     </div>
-                </div>
 
-                <!-- Multi Archive Popup -->
-                <div id="multiArchivePopup" class="custom-popup">
-                    <div class="popup-content">
-                        <p>Are you sure you want to archive the <br> selected applicants?</p>
-                        <button class="btn archive-btn">Yes, archive the applicants</button>
-                        <button class="btn btn-outline-secondary" onclick="closePopup('multiArchivePopup')">Cancel</button>
+                    <!-- Multi Archive Popup -->
+                    <div id="multiArchivePopup" class="custom-popup">
+                        <div class="popup-content">
+                            <p>Are you sure you want to archive the <br> selected applicants?</p>
+                            <button class="btn archive-btn">Yes, archive the applicants</button>
+                            <button class="btn btn-outline-secondary" onclick="closePopup('multiArchivePopup')">Cancel</button>
+                        </div>
                     </div>
-                </div>
 
-                <!-- Select All Archive Popup -->
-                <div id="selectAllArchivePopup" class="custom-popup">
-                    <div class="popup-content">
-                        <p>Are you sure you want to archive ALL applicants?</p>
-                        <button class="btn archive-btn">Yes, archive all applicants</button>
-                        <button class="btn btn-outline-secondary" onclick="closePopup('selectAllArchivePopup')">Cancel</button>
+                    <!-- Select All Archive Popup -->
+                    <div id="selectAllArchivePopup" class="custom-popup">
+                        <div class="popup-content">
+                            <p>Are you sure you want to archive ALL applicants?</p>
+                            <button class="btn archive-btn">Yes, archive all applicants</button>
+                            <button class="btn btn-outline-secondary" onclick="closePopup('selectAllArchivePopup')">Cancel</button>
+                        </div>
                     </div>
-                </div>
 
-                <!-- Reject Popup -->
-                <div id="rejectPopup" class="custom-popup">
-                    <div class="popup-content">
-                        <p>Are you sure you want to reject this applicant?</p>
-                        <button class="btn btn-danger confirm-btn">Yes, reject the applicant</button>
-                        <button class="btn btn-outline-secondary" onclick="closePopup('rejectPopup')">Cancel</button>
+                    <!-- Reject Popup -->
+                    <div id="rejectPopup" class="custom-popup">
+                        <div class="popup-content">
+                            <p>Are you sure you want to reject this applicant?</p>
+                            <button class="btn btn-danger confirm-btn">Yes, reject the applicant</button>
+                            <button class="btn btn-outline-secondary" onclick="closePopup('rejectPopup')">Cancel</button>
+                        </div>
                     </div>
-                </div>
 
-                <!-- Multi Reject Popup -->
-                <div id="multiRejectPopup" class="custom-popup">
-                    <div class="popup-content">
-                        <p>Are you sure you want to reject the selected applicants?</p>
-                        <button class="btn btn-danger confirm-btn">Yes, reject the applicants</button>
-                        <button class="btn btn-outline-secondary" onclick="closePopup('multiRejectPopup')">Cancel</button>
+                    <!-- Multi Reject Popup -->
+                    <div id="multiRejectPopup" class="custom-popup">
+                        <div class="popup-content">
+                            <p>Are you sure you want to reject the selected applicants?</p>
+                            <button class="btn btn-danger confirm-btn">Yes, reject the applicants</button>
+                            <button class="btn btn-outline-secondary" onclick="closePopup('multiRejectPopup')">Cancel</button>
+                        </div>
                     </div>
-                </div>
 
-                <!-- Select All Reject Popup -->
-                <div id="selectAllRejectPopup" class="custom-popup">
-                    <div class="popup-content">
-                        <p>Are you sure you want to reject ALL applicants?</p>
-                        <button class="btn btn-danger confirm-btn">Yes, reject all applicants</button>
-                        <button class="btn btn-outline-secondary" onclick="closePopup('selectAllRejectPopup')">Cancel</button>
+                    <!-- Select All Reject Popup -->
+                    <div id="selectAllRejectPopup" class="custom-popup">
+                        <div class="popup-content">
+                            <p>Are you sure you want to reject ALL applicants?</p>
+                            <button class="btn btn-danger confirm-btn">Yes, reject all applicants</button>
+                            <button class="btn btn-outline-secondary" onclick="closePopup('selectAllRejectPopup')">Cancel</button>
+                        </div>
                     </div>
-                </div>
 
+                </div>
             </div>
         </div>
-    </div>
 
- 
+        
+
+                    <!-- Tab Content -->
+                   <!-- End of Sidebar & Master List -->
+
+    <!-- Add Applicant Modal -->
+
+    
+    <!-- Candidate Profile Offcanvas -->
+
     @include('components.partials.system.ats.ats-candidate-profile-offcanvas')
                 </div>
             

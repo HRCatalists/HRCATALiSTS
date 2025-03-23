@@ -242,12 +242,12 @@
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label for="requirements" class="form-label">Job Description <span class="text-danger">*</span></label>
-                                <textarea name="job_description" id="description" class="form-control" rows="5" placeholder="Enter each bullet on a new line..." required></textarea>
+                                <textarea name="job_description" id="description" class="form-control" rows="10" placeholder="Enter each bullet on a new line..." required></textarea>
                                 <small class="text-muted">Enter each bullet on a new line. The system will format it as a list.</small>
                             </div>
                             <div class="col-md-6">
                                 <label for="duties" class="form-label">Requirements <span class="text-danger">*</span></label>
-                                <textarea name="requirements" id="requirements" class="form-control" rows="5" placeholder="Enter each bullet on a new line..." required></textarea>
+                                <textarea name="requirements" id="requirements" class="form-control" rows="10" placeholder="Enter each bullet on a new line..." required></textarea>
                                 <small class="text-muted">Enter each bullet on a new line. The system will format it as a list.</small>
                             </div>
                         </div>
