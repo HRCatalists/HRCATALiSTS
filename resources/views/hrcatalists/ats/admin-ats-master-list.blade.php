@@ -21,7 +21,7 @@
                     </div>     
                 </div>
 
-                <div class="d-flex">
+                {{-- <div class="d-flex">
                     <div class="card checkbox-card me-3">
                         <div class="container d-flex">
 
@@ -48,11 +48,32 @@
                         <i class="fa fa-print"></i> PRINT
                         <a href=""></a>
                     </button>
+                </div> --}}
+
+                <div class="d-flex align-items-center flex-wrap my-3">
+                    <div>
+                        <button type="button" class="btn archive-btn add-btn bulk-archive-btn bulk-action-btn me-2" style="display: none;">
+                            ARCHIVE
+                        </button>
+                        <button type="button" class="btn reject-btn add-btn bulk-reject-btn bulk-action-btn me-2" style="display: none;">
+                            REJECT
+                        </button>
+                    </div>
+                
+                    <button type="button" class="btn btn-primary add-btn action-btn me-2" data-bs-toggle="modal" data-bs-target="#addApplicantModal">
+                        ADD APPLICANT
+                    </button>
+                
+                    <button class="btn shadow print-btn ms-auto">
+                        <i class="fa fa-print"></i> PRINT
+                    </button>
                 </div>
                 
                 <!-- Status Tabs -->
                 @php
-                    $statuses = ['all', 'pending', 'screening', 'scheduled', 'evaluation', 'hired', 'rejected', 'archived'];
+                    $statuses = ['all', 'pending', 'screening', 'scheduled', 'evaluation', 'hired', 'archived'];
+                    // $statuses = ['all', 'pending', 'screening', 'scheduled', 'evaluation', 'hired', 'rejected', 'archived'];
+
                 @endphp
 
                 <ul class="nav nav-tabs mt-4" id="statusTabs" role="tablist">
@@ -74,6 +95,17 @@
                 </ul>
 
                 <div class="tab-content" id="statusTabsContent">
+                    <div class="d-flex flex-wrap gap-3 mb-3">
+                        <span>Select: </span>
+                        <a href="#" class="select-link text-decoration-underline" id="selectAllLink">All</a>
+                        <a href="#" class="select-link text-decoration-underline" data-status="pending">Pending</a>
+                        <a href="#" class="select-link text-decoration-underline" data-status="screening">Screening</a>
+                        <a href="#" class="select-link text-decoration-underline" data-status="scheduled">Scheduled</a>
+                        <a href="#" class="select-link text-decoration-underline" data-status="evaluation">Evaluation</a>
+                        {{-- <a href="#" class="select-link text-decoration-underline" data-status="hired">Hired</a> --}}
+                        {{-- <a href="#" class="select-link text-decoration-underline" data-status="rejected">Rejected</a> --}}
+                        <a href="#" class="select-link text-decoration-underline" data-status="archived">Archived</a>
+                    </div>                    
                     @foreach ($statuses as $key => $stat)
                         <div 
                             class="tab-pane fade {{ $key === 0 ? 'show active' : '' }}" 
@@ -158,150 +190,14 @@
                         </div>
                     @endforeach
                 </div>
-                
-                <!-- Applicant Table -->
-                {{-- <table id="applicantTable" class="table table-bordered display">
-                    <thead>
-                        <tr>
-                            <th></th>
-                            <th>NAME</th>
-                            <th>STATUS</th>
-                            <th>APPLIED DATE</th>
-                            <th>POSITION APPLIED TO</th>
-                            <th>ACTION</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if(count($allApplicants) > 0)
-                            @foreach($allApplicants as $applicant)
-                                @php
-                                    // Define status colors inside the loop
-                                    $statusColors = [
-                                        'pending' => '#555555',      // Gray
-                                        'screening' => '#ffe135',    // Yellow
-                                        'scheduled' => '#ff8c00',    // Orange
-                                        'interviewed' => '#ff8c00',  // Orange
-                                        'hired' => '#4CAF50',        // Green
-                                        'rejected' => '#8b0000',     // Red
-                                        'archived' => '#4b0082'      // Indigo
-                                    ];
-                
-                                    $statusColor = $statusColors[$applicant->status] ?? '#000000'; // Default Black
-                                @endphp
-                                <tr>
-                                    <td class="text-center">
-                                        <input type="checkbox" class="rowCheckbox" value="{{ $applicant->id }}">
-                                    </td>
-                                    <td>{{ $applicant->first_name }} {{ $applicant->last_name }}</td>
-                                    <td>
-                                        <form method="POST" action="{{ route('applicants.chooseStatus', $applicant->id) }}" class="status-update-form">
-                                            @csrf
-                                            <select name="status" class="form-select status-dropdown"
-                                                data-applicant-name="{{ $applicant->first_name }} {{ $applicant->last_name }}" 
-                                                data-current-status="{{ $applicant->status }}"
-                                                style="color: #fff; border-radius: 4px; padding: 4px; text-align: center;"
-                                            >
-                                                <option value="pending" {{ $applicant->status == 'pending' ? 'selected' : '' }}>Pending</option>
-                                                <option value="screening" {{ $applicant->status == 'screening' ? 'selected' : '' }}>Screening</option>
-                                                <option value="scheduled" {{ $applicant->status == 'scheduled' ? 'selected' : '' }}>Scheduled</option>
-                                                <option value="evaluation" {{ $applicant->status == 'evaluation' ? 'selected' : '' }}>Evaluation</option>
-                                                <option value="hired" {{ $applicant->status == 'hired' ? 'selected' : '' }}>Hired</option>
-                                                <option value="rejected" {{ $applicant->status == 'rejected' ? 'selected' : '' }}>Rejected</option>
-                                                <option value="archived" {{ $applicant->status == 'archived' ? 'selected' : '' }}>Archived</option>
-                                            </select>
-                                        </form>
-                                    </td>
-                                    <td data-order="{{ \Carbon\Carbon::parse($applicant->applied_at)->timestamp }}">
-                                        {{ \Carbon\Carbon::parse($applicant->applied_at)->format('F d, Y') }}
-                                    </td>                                    
-                                    <td>{{ $applicant->job->job_title ?? 'N/A' }}</td>
-                                    <!-- off canvas -->
-                                    <td>
-                                        <div class="d-flex justify-content-around">
-                                            <button class="btn btn-ap-edit" 
-                                                data-bs-toggle="offcanvas" 
-                                                data-bs-target="#candidateProfile" 
-                                                data-applicant-id="{{ $applicant->id }}"
-                                                data-applicant-name="{{ $applicant->first_name }} {{ $applicant->last_name }}"
-                                                data-applicant-status="{{ $applicant->status }}"
-                                                data-applicant-email="{{ $applicant->email }}"
-                                                data-applicant-phone="{{ $applicant->phone_number }}"
-                                                data-applicant-position="{{ $applicant->job->job_title ?? 'N/A' }}"
-                                                data-applicant-address="{{ $applicant->address }}">
-                                                VIEW
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endforeach
-         
-                        @endif
-                    </tbody>
-                </table> --}}
-
-                <!-- Archive Popup -->
-                <div id="archivePopup" class="custom-popup">
-                    <div class="popup-content">
-                        <p>Are you sure you want to archive this applicant?</p>
-                        <button class="btn archive-btn">Yes, archive the applicant</button>
-                        <button class="btn btn-outline-secondary" onclick="closePopup('archivePopup')">Cancel</button>
-                    </div>
-                </div>
-
-                <!-- Multi Archive Popup -->
-                <div id="multiArchivePopup" class="custom-popup">
-                    <div class="popup-content">
-                        <p>Are you sure you want to archive the <br> selected applicants?</p>
-                        <button class="btn archive-btn">Yes, archive the applicants</button>
-                        <button class="btn btn-outline-secondary" onclick="closePopup('multiArchivePopup')">Cancel</button>
-                    </div>
-                </div>
-
-                <!-- Select All Archive Popup -->
-                <div id="selectAllArchivePopup" class="custom-popup">
-                    <div class="popup-content">
-                        <p>Are you sure you want to archive ALL applicants?</p>
-                        <button class="btn archive-btn">Yes, archive all applicants</button>
-                        <button class="btn btn-outline-secondary" onclick="closePopup('selectAllArchivePopup')">Cancel</button>
-                    </div>
-                </div>
-
-                <!-- Reject Popup -->
-                <div id="rejectPopup" class="custom-popup">
-                    <div class="popup-content">
-                        <p>Are you sure you want to reject this applicant?</p>
-                        <button class="btn btn-danger confirm-btn">Yes, reject the applicant</button>
-                        <button class="btn btn-outline-secondary" onclick="closePopup('rejectPopup')">Cancel</button>
-                    </div>
-                </div>
-
-                <!-- Multi Reject Popup -->
-                <div id="multiRejectPopup" class="custom-popup">
-                    <div class="popup-content">
-                        <p>Are you sure you want to reject the selected applicants?</p>
-                        <button class="btn btn-danger confirm-btn">Yes, reject the applicants</button>
-                        <button class="btn btn-outline-secondary" onclick="closePopup('multiRejectPopup')">Cancel</button>
-                    </div>
-                </div>
-
-                <!-- Select All Reject Popup -->
-                <div id="selectAllRejectPopup" class="custom-popup">
-                    <div class="popup-content">
-                        <p>Are you sure you want to reject ALL applicants?</p>
-                        <button class="btn btn-danger confirm-btn">Yes, reject all applicants</button>
-                        <button class="btn btn-outline-secondary" onclick="closePopup('selectAllRejectPopup')">Cancel</button>
-                    </div>
-                </div>
-
             </div>
         </div>
     </div>
     <!-- End of Sidebar & Master List -->
 
-    <!-- Add Applicant Modal -->
-    {{-- @include('components.partials.system.ats.ats-add-applicant-modal') --}}
-    @include('components.partials.system.ats.ats-add-applicant-modal', ['jobs' => $jobs])
 
+    <!-- Add Applicant Modal -->
+    @include('components.partials.system.ats.ats-add-applicant-modal', ['jobs' => $jobs])
     
     <!-- Candidate Profile Offcanvas -->
     @include('components.partials.system.ats.ats-candidate-profile-offcanvas')
@@ -505,35 +401,183 @@
     </script>    
     {{-- Handle Form Submission & Display Success/Error Alerts --}}
 
-    {{-- DataTables Initialization for Applicant Tables --}}
-    {{-- <script>
-        $(document).ready(function () {
-            // Loop through each table with class 'applicantTable' and initialize DataTables
-            $('.applicantTable').each(function () {
-                $(this).DataTable({
-                    responsive: true, // Makes the table adapt on different screen sizes
-                    paging: true, // Enables pagination (Next, Previous, etc.)
-                    searching: true, // Enables the search input box
-                    info: true, // Shows table info like "Showing 1 to 10 of 50 entries"
-                    lengthChange: true, // Allows user to select number of entries to show
-                    order: [[3, 'desc']], // Default sort by 4th column (Applied Date) in descending order
-                    dom: '<"datatable-toolbar d-flex justify-content-between align-items-center my-3"lf>tip'
-                    // Custom DOM layout:
-                    // "l" = entries length dropdown
-                    // "f" = search box
-                    // "t" = table
-                    // "i" = info text
-                    // "p" = pagination controls
-                    // All wrapped in a flexbox toolbar for styling
+    {{-- bulk selection of archived and rejected --}}
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const checkboxes = document.querySelectorAll(".rowCheckbox");
+            const archiveBtn = document.querySelector(".bulk-archive-btn");
+            const rejectBtn = document.querySelector(".bulk-reject-btn");
+            let lastClickedStatus = null; // ⬅️ Track last clicked status
+    
+            // === Update Bulk Buttons ===
+            function updateBulkButtons() {
+                const anyChecked = [...checkboxes].some(cb => cb.checked);
+                archiveBtn.style.display = anyChecked ? 'inline-block' : 'none';
+                rejectBtn.style.display = anyChecked ? 'inline-block' : 'none';
+            }
+    
+            // === Highlight Rows ===
+            function updateRowHighlights() {
+                document.querySelectorAll("tbody tr").forEach(row => {
+                    const checkbox = row.querySelector(".rowCheckbox");
+                    row.classList.toggle("selected-row", checkbox && checkbox.checked);
+                });
+                updateBulkButtons();
+            }
+    
+            // === Get Checked IDs ===
+            function getSelectedApplicantIds() {
+                return [...document.querySelectorAll('.rowCheckbox:checked')].map(cb => cb.value);
+            }
+    
+            // === Bulk Action Handler ===
+            function handleBulkAction(actionUrl, confirmTitle, confirmText, successText) {
+                const selectedIds = getSelectedApplicantIds();
+                if (selectedIds.length === 0) return;
+    
+                Swal.fire({
+                    title: confirmTitle,
+                    text: confirmText,
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: "Yes, proceed",
+                    cancelButtonText: "Cancel",
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        fetch(actionUrl, {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
+                            },
+                            body: JSON.stringify({ ids: selectedIds })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                Swal.fire("Success", successText, "success").then(() => {
+                                    location.reload();
+                                });
+                            } else {
+                                Swal.fire("Error", data.message || "Something went wrong.", "error");
+                            }
+                        })
+                        .catch(() => {
+                            Swal.fire("Error", "Network error occurred.", "error");
+                        });
+                    }
+                });
+            }
+    
+            // === Archive Button Click ===
+            archiveBtn.addEventListener("click", function () {
+                handleBulkAction(
+                    "{{ route('applicants.bulkArchive') }}",
+                    "Archive Selected Applicants",
+                    "Are you sure you want to archive the selected applicants?",
+                    "Applicants archived successfully!"
+                );
+            });
+    
+            // === Reject Button Click ===
+            rejectBtn.addEventListener("click", function () {
+                Swal.fire({
+                    title: "Delete Selected Applicants",
+                    text: "Are you sure you want to permanently delete the selected applicants? This action cannot be undone.",
+                    icon: "error", // 🔥 Use 'error' for more serious red alert
+                    showCancelButton: true,
+                    confirmButtonText: "Yes, delete them",
+                    cancelButtonText: "Cancel",
+                    confirmButtonColor: "#d33", // 🔴 Red confirm button
+                    cancelButtonColor: "#6c757d"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        const selectedIds = [...document.querySelectorAll('.rowCheckbox:checked')].map(cb => cb.value);
+
+                        fetch("{{ route('applicants.bulkReject') }}", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
+                            },
+                            body: JSON.stringify({ ids: selectedIds })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                Swal.fire("Deleted!", "Applicants deleted successfully!", "success")
+                                    .then(() => location.reload());
+                            } else {
+                                Swal.fire("Error", data.message || "Something went wrong.", "error");
+                            }
+                        })
+                        .catch(() => {
+                            Swal.fire("Error", "Network error occurred.", "error");
+                        });
+                    }
                 });
             });
     
-            // When a new tab is shown (via Bootstrap tab click),
-            // force the DataTable to redraw its columns (important for hidden tab tables)
-            $('a[data-bs-toggle="tab"]').on('shown.bs.tab', function () {
-                $('.applicantTable').DataTable().columns.adjust().draw();
+            // === Select All (toggle) ===
+            document.getElementById("selectAllLink").addEventListener("click", function (e) {
+                e.preventDefault();
+    
+                const allChecked = [...checkboxes].every(cb => cb.checked);
+                checkboxes.forEach(cb => cb.checked = !allChecked);
+                lastClickedStatus = allChecked ? null : 'all'; // Reset or set tracker
+                updateRowHighlights();
             });
+    
+            // === Select by Status (toggle if clicked again) ===
+            document.querySelectorAll('[data-status]').forEach(link => {
+                link.addEventListener("click", function (e) {
+                    e.preventDefault();
+    
+                    const targetStatus = this.getAttribute("data-status");
+                    const matchingCheckboxes = [];
+                    const allRows = document.querySelectorAll("tbody tr");
+    
+                    allRows.forEach(row => {
+                        const dropdown = row.querySelector("select.status-dropdown");
+                        const checkbox = row.querySelector(".rowCheckbox");
+    
+                        if (dropdown && checkbox) {
+                            if (dropdown.value === targetStatus) {
+                                matchingCheckboxes.push(checkbox);
+                            } else {
+                                checkbox.checked = false;
+                            }
+                        }
+                    });
+    
+                    // If clicked again on the same status and all are selected → unselect
+                    const allSelected = matchingCheckboxes.length > 0 && matchingCheckboxes.every(cb => cb.checked);
+    
+                    if (lastClickedStatus === targetStatus && allSelected) {
+                        matchingCheckboxes.forEach(cb => cb.checked = false);
+                        lastClickedStatus = null;
+                    } else {
+                        matchingCheckboxes.forEach(cb => cb.checked = true);
+                        lastClickedStatus = targetStatus;
+                    }
+    
+                    updateRowHighlights();
+                });
+            });
+    
+            // === Individual Checkbox Changes ===
+            checkboxes.forEach(cb => {
+                cb.addEventListener("change", function () {
+                    updateRowHighlights();
+                    lastClickedStatus = null; // Reset tracker if manual selection
+                });
+            });
+    
+            updateBulkButtons(); // Initialize on load
         });
-    </script> --}}
+    </script>
+    {{-- bulk selection of archived and rejected --}}
         
 </x-admin-ats-layout>

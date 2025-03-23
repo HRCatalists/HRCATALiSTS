@@ -42,7 +42,7 @@
                 </div>
 
                 <div class="mb-5">
-                    <h4>Requirements:</h4>
+                    <h4>Qualifications:</h4>
                     <p><?php echo nl2br(e($job->requirements)); ?></p>
                 </div>
 
@@ -232,7 +232,7 @@ unset($__errorArgs, $__bag); ?>
                         <div class="form-check my-4 d-flex align-items-center">
                             <input class="form-check-input me-2" type="checkbox" id="privacyCheck" name="privacy_policy_agreed" disabled required>
                             <label class="form-check-label me-1" for="privacyCheck">I agree to the</label>
-                            <a href="#" id="openPrivacyModal" data-bs-toggle="modal" data-bs-target="#privacyPolicyModal">Privacy Policy</a>.
+                            <a href="#" id="openPrivacyModal" data-bs-toggle="modal" data-bs-target="#privacyPolicyModal">Privacy Policy</a>
                         </div>
                         <small id="privacyHint" class="text-muted">Please read the Privacy Policy before agreeing.</small>                                                                      
 

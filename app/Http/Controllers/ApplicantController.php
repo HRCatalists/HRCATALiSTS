@@ -26,6 +26,9 @@ class ApplicantController extends Controller
         return view('hrcatalists.ats.admin-ats-master-list', compact('allApplicants', 'jobs'));
     }
 
+    // *
+    // **
+    // ***
     //status update in overview
     public function updateStatus(Request $request, $id)
     {
@@ -65,7 +68,12 @@ class ApplicantController extends Controller
             \Log::error("Failed to update status: " . $e->getMessage());
             return redirect()->back()->with('error', 'Failed to update status. Please try again.');
         }
-    }    
+    }
+
+    // *
+    // **
+    // ***
+    // Update status of the applicant in datatables
     public function chooseStatus(Request $request, $id)
     {
         if (!Auth::check()) {
@@ -163,6 +171,11 @@ class ApplicantController extends Controller
             return redirect()->back()->with('error', 'Failed to schedule the interview. Please try again.');
         }
     }
+
+    // *
+    // **
+    // ***
+    // Show datatables on all tabs per status
     public function byStatus($status = null)
     {
         if (!Auth::check()) {
@@ -318,5 +331,33 @@ class ApplicantController extends Controller
             ], 500);
         }
     }
+
+    // *
+    // **
+    // ***
+    // bulk action - change status to archived
+    public function bulkArchive(Request $request)
+    {
+        Applicant::whereIn('id', $request->ids)->update(['status' => 'archived']);
+        return response()->json(['success' => true]);
+    }
+
+    // *
+    // **
+    // ***
+    // bulk action - change status to rejected
+    public function bulkReject(Request $request)
+    {
+        try {
+            // Delete applicants by their IDs
+            Applicant::whereIn('id', $request->ids)->delete();
+    
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            \Log::error('Bulk reject (delete) failed: ' . $e->getMessage());
+            return response()->json(['success' => false, 'message' => 'Failed to delete applicants.']);
+        }
+    }    
+
 }
     

@@ -212,22 +212,6 @@
 
 
 
-<!-- Data Tables Applicant sorting to Latest -->
-
-
- 
-
-
-
-
-<!-- Data Tables Applicant sorting to Latest -->
-
-
- 
-
-
-
-
 <!-- Logs Datatables JS -->
 
 

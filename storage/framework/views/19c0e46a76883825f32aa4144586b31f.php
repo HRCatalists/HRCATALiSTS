@@ -49,38 +49,30 @@
                     </div>     
                 </div>
 
-                <div class="d-flex">
-                    <div class="card checkbox-card me-3">
-                        <div class="container d-flex">
+                
 
-                            <!-- Select All heckbox -->
-                            <div class="d-flex me-4 py-3">
-                                <input type="checkbox" id="selectAll" class="rowCheckbox">
-                            </div>
-                            
-                            <!-- Archive and Reject Buttons -->
-                            <div class="d-flex py-1">
-                                <button class="btn archive-btn btn-sm me-2">ARCHIVE</button>
-                                <button class="btn reject-btn btn-sm">REJECT</button>
-                            </div>
-                            
-                        </div>
+                <div class="d-flex align-items-center flex-wrap my-3">
+                    <div>
+                        <button type="button" class="btn archive-btn add-btn bulk-archive-btn bulk-action-btn me-2" style="display: none;">
+                            ARCHIVE
+                        </button>
+                        <button type="button" class="btn reject-btn add-btn bulk-reject-btn bulk-action-btn me-2" style="display: none;">
+                            REJECT
+                        </button>
                     </div>
-
-                    <!-- Add Position Button -->
-                    <button type="button" class="btn add-btn me-2" data-bs-toggle="modal" data-bs-target="#addApplicantModal">
+                
+                    <button type="button" class="btn btn-primary add-btn action-btn me-2" data-bs-toggle="modal" data-bs-target="#addApplicantModal">
                         ADD APPLICANT
-                    </button>                 
-
+                    </button>
+                
                     <button class="btn shadow print-btn ms-auto">
                         <i class="fa fa-print"></i> PRINT
-                        <a href=""></a>
                     </button>
                 </div>
                 
                 <!-- Status Tabs -->
                 <?php
-                    $statuses = ['all', 'pending', 'screening', 'scheduled', 'evaluation', 'hired', 'rejected', 'archived'];
+                    $statuses = ['all', 'pending', 'screening', 'scheduled', 'evaluation', 'hired', 'archived'];
                 ?>
 
                 <ul class="nav nav-tabs mt-4" id="statusTabs" role="tablist">
@@ -103,6 +95,17 @@
                 </ul>
 
                 <div class="tab-content" id="statusTabsContent">
+                    <div class="d-flex flex-wrap gap-3 mb-3">
+                        <span>Select: </span>
+                        <a href="#" class="select-link text-decoration-underline" id="selectAllLink">All</a>
+                        <a href="#" class="select-link text-decoration-underline" data-status="pending">Pending</a>
+                        <a href="#" class="select-link text-decoration-underline" data-status="screening">Screening</a>
+                        <a href="#" class="select-link text-decoration-underline" data-status="scheduled">Scheduled</a>
+                        <a href="#" class="select-link text-decoration-underline" data-status="evaluation">Evaluation</a>
+                        
+                        
+                        <a href="#" class="select-link text-decoration-underline" data-status="archived">Archived</a>
+                    </div>                    
                     <?php $__currentLoopData = $statuses; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $stat): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <div 
                             class="tab-pane fade <?php echo e($key === 0 ? 'show active' : ''); ?>" 
@@ -189,73 +192,14 @@
                         </div>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </div>
-                
-                <!-- Applicant Table -->
-                
-
-                <!-- Archive Popup -->
-                <div id="archivePopup" class="custom-popup">
-                    <div class="popup-content">
-                        <p>Are you sure you want to archive this applicant?</p>
-                        <button class="btn archive-btn">Yes, archive the applicant</button>
-                        <button class="btn btn-outline-secondary" onclick="closePopup('archivePopup')">Cancel</button>
-                    </div>
-                </div>
-
-                <!-- Multi Archive Popup -->
-                <div id="multiArchivePopup" class="custom-popup">
-                    <div class="popup-content">
-                        <p>Are you sure you want to archive the <br> selected applicants?</p>
-                        <button class="btn archive-btn">Yes, archive the applicants</button>
-                        <button class="btn btn-outline-secondary" onclick="closePopup('multiArchivePopup')">Cancel</button>
-                    </div>
-                </div>
-
-                <!-- Select All Archive Popup -->
-                <div id="selectAllArchivePopup" class="custom-popup">
-                    <div class="popup-content">
-                        <p>Are you sure you want to archive ALL applicants?</p>
-                        <button class="btn archive-btn">Yes, archive all applicants</button>
-                        <button class="btn btn-outline-secondary" onclick="closePopup('selectAllArchivePopup')">Cancel</button>
-                    </div>
-                </div>
-
-                <!-- Reject Popup -->
-                <div id="rejectPopup" class="custom-popup">
-                    <div class="popup-content">
-                        <p>Are you sure you want to reject this applicant?</p>
-                        <button class="btn btn-danger confirm-btn">Yes, reject the applicant</button>
-                        <button class="btn btn-outline-secondary" onclick="closePopup('rejectPopup')">Cancel</button>
-                    </div>
-                </div>
-
-                <!-- Multi Reject Popup -->
-                <div id="multiRejectPopup" class="custom-popup">
-                    <div class="popup-content">
-                        <p>Are you sure you want to reject the selected applicants?</p>
-                        <button class="btn btn-danger confirm-btn">Yes, reject the applicants</button>
-                        <button class="btn btn-outline-secondary" onclick="closePopup('multiRejectPopup')">Cancel</button>
-                    </div>
-                </div>
-
-                <!-- Select All Reject Popup -->
-                <div id="selectAllRejectPopup" class="custom-popup">
-                    <div class="popup-content">
-                        <p>Are you sure you want to reject ALL applicants?</p>
-                        <button class="btn btn-danger confirm-btn">Yes, reject all applicants</button>
-                        <button class="btn btn-outline-secondary" onclick="closePopup('selectAllRejectPopup')">Cancel</button>
-                    </div>
-                </div>
-
             </div>
         </div>
     </div>
     <!-- End of Sidebar & Master List -->
 
-    <!-- Add Applicant Modal -->
-    
-    <?php echo $__env->make('components.partials.system.ats.ats-add-applicant-modal', ['jobs' => $jobs], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 
+    <!-- Add Applicant Modal -->
+    <?php echo $__env->make('components.partials.system.ats.ats-add-applicant-modal', ['jobs' => $jobs], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
     
     <!-- Candidate Profile Offcanvas -->
     <?php echo $__env->make('components.partials.system.ats.ats-candidate-profile-offcanvas', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
@@ -460,6 +404,182 @@
     
 
     
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const checkboxes = document.querySelectorAll(".rowCheckbox");
+            const archiveBtn = document.querySelector(".bulk-archive-btn");
+            const rejectBtn = document.querySelector(".bulk-reject-btn");
+            let lastClickedStatus = null; // ⬅️ Track last clicked status
+    
+            // === Update Bulk Buttons ===
+            function updateBulkButtons() {
+                const anyChecked = [...checkboxes].some(cb => cb.checked);
+                archiveBtn.style.display = anyChecked ? 'inline-block' : 'none';
+                rejectBtn.style.display = anyChecked ? 'inline-block' : 'none';
+            }
+    
+            // === Highlight Rows ===
+            function updateRowHighlights() {
+                document.querySelectorAll("tbody tr").forEach(row => {
+                    const checkbox = row.querySelector(".rowCheckbox");
+                    row.classList.toggle("selected-row", checkbox && checkbox.checked);
+                });
+                updateBulkButtons();
+            }
+    
+            // === Get Checked IDs ===
+            function getSelectedApplicantIds() {
+                return [...document.querySelectorAll('.rowCheckbox:checked')].map(cb => cb.value);
+            }
+    
+            // === Bulk Action Handler ===
+            function handleBulkAction(actionUrl, confirmTitle, confirmText, successText) {
+                const selectedIds = getSelectedApplicantIds();
+                if (selectedIds.length === 0) return;
+    
+                Swal.fire({
+                    title: confirmTitle,
+                    text: confirmText,
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: "Yes, proceed",
+                    cancelButtonText: "Cancel",
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        fetch(actionUrl, {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
+                            },
+                            body: JSON.stringify({ ids: selectedIds })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                Swal.fire("Success", successText, "success").then(() => {
+                                    location.reload();
+                                });
+                            } else {
+                                Swal.fire("Error", data.message || "Something went wrong.", "error");
+                            }
+                        })
+                        .catch(() => {
+                            Swal.fire("Error", "Network error occurred.", "error");
+                        });
+                    }
+                });
+            }
+    
+            // === Archive Button Click ===
+            archiveBtn.addEventListener("click", function () {
+                handleBulkAction(
+                    "<?php echo e(route('applicants.bulkArchive')); ?>",
+                    "Archive Selected Applicants",
+                    "Are you sure you want to archive the selected applicants?",
+                    "Applicants archived successfully!"
+                );
+            });
+    
+            // === Reject Button Click ===
+            rejectBtn.addEventListener("click", function () {
+                Swal.fire({
+                    title: "Delete Selected Applicants",
+                    text: "Are you sure you want to permanently delete the selected applicants? This action cannot be undone.",
+                    icon: "error", // 🔥 Use 'error' for more serious red alert
+                    showCancelButton: true,
+                    confirmButtonText: "Yes, delete them",
+                    cancelButtonText: "Cancel",
+                    confirmButtonColor: "#d33", // 🔴 Red confirm button
+                    cancelButtonColor: "#6c757d"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        const selectedIds = [...document.querySelectorAll('.rowCheckbox:checked')].map(cb => cb.value);
+
+                        fetch("<?php echo e(route('applicants.bulkReject')); ?>", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
+                            },
+                            body: JSON.stringify({ ids: selectedIds })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                Swal.fire("Deleted!", "Applicants deleted successfully!", "success")
+                                    .then(() => location.reload());
+                            } else {
+                                Swal.fire("Error", data.message || "Something went wrong.", "error");
+                            }
+                        })
+                        .catch(() => {
+                            Swal.fire("Error", "Network error occurred.", "error");
+                        });
+                    }
+                });
+            });
+    
+            // === Select All (toggle) ===
+            document.getElementById("selectAllLink").addEventListener("click", function (e) {
+                e.preventDefault();
+    
+                const allChecked = [...checkboxes].every(cb => cb.checked);
+                checkboxes.forEach(cb => cb.checked = !allChecked);
+                lastClickedStatus = allChecked ? null : 'all'; // Reset or set tracker
+                updateRowHighlights();
+            });
+    
+            // === Select by Status (toggle if clicked again) ===
+            document.querySelectorAll('[data-status]').forEach(link => {
+                link.addEventListener("click", function (e) {
+                    e.preventDefault();
+    
+                    const targetStatus = this.getAttribute("data-status");
+                    const matchingCheckboxes = [];
+                    const allRows = document.querySelectorAll("tbody tr");
+    
+                    allRows.forEach(row => {
+                        const dropdown = row.querySelector("select.status-dropdown");
+                        const checkbox = row.querySelector(".rowCheckbox");
+    
+                        if (dropdown && checkbox) {
+                            if (dropdown.value === targetStatus) {
+                                matchingCheckboxes.push(checkbox);
+                            } else {
+                                checkbox.checked = false;
+                            }
+                        }
+                    });
+    
+                    // If clicked again on the same status and all are selected → unselect
+                    const allSelected = matchingCheckboxes.length > 0 && matchingCheckboxes.every(cb => cb.checked);
+    
+                    if (lastClickedStatus === targetStatus && allSelected) {
+                        matchingCheckboxes.forEach(cb => cb.checked = false);
+                        lastClickedStatus = null;
+                    } else {
+                        matchingCheckboxes.forEach(cb => cb.checked = true);
+                        lastClickedStatus = targetStatus;
+                    }
+    
+                    updateRowHighlights();
+                });
+            });
+    
+            // === Individual Checkbox Changes ===
+            checkboxes.forEach(cb => {
+                cb.addEventListener("change", function () {
+                    updateRowHighlights();
+                    lastClickedStatus = null; // Reset tracker if manual selection
+                });
+            });
+    
+            updateBulkButtons(); // Initialize on load
+        });
+    </script>
     
         
  <?php echo $__env->renderComponent(); ?>

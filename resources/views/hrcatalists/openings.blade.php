@@ -49,16 +49,16 @@
                                 @endforeach
                             </div>                             
                             <p class="requirements">
+                                <strong>Qualifications:</strong><br>
+                                <span title="{{ $job->requirements }}">
+                                    @foreach (explode("\n", $job->requirements) as $requirement)
+                                        {!! nl2br(e(Str::limit(trim($requirement), 55, '...'))) !!}<br>
+                                    @endforeach
+                                </span><br>
                                 <strong>Job Description:</strong><br>
                                 <span title="{{ $job->job_description }}">
                                     @foreach (explode("\n", $job->job_description) as $description)
                                         {!! nl2br(e(Str::limit(trim($description), 55, '...'))) !!}<br>
-                                    @endforeach
-                                </span><br>
-                                <strong>Requirements:</strong><br>
-                                <span title="{{ $job->requirements }}">
-                                    @foreach (explode("\n", $job->requirements) as $requirement)
-                                        {!! nl2br(e(Str::limit(trim($requirement), 55, '...'))) !!}<br>
                                     @endforeach
                                 </span>
                             </p>
@@ -79,6 +79,12 @@
         let keyword = document.getElementById('keyword').value;
         let department = document.getElementById('position').value;
 
+        function escapeHtml(text) {
+            const div = document.createElement("div");
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
         fetch(`/search-jobs?keyword=${keyword}&position=${department}`)
             .then(response => response.json())
             .then(data => {
@@ -90,13 +96,19 @@
                         jobResults.innerHTML += `
                             <div class="col-md-4 job-card-container">
                                 <div class="card job-card p-4">
-                                    <h5>${job.job_title}</h5>
-                                    <div class="tags">${job.tags.split(',').map(tag => `<span class="tag">${tag.trim()}</span>`).join('')}</div>
+                                    <h5>${escapeHtml(job.job_title)}</h5>
+                                    <div class="tags">
+                                        ${job.tags.split(',').map(tag => `<span class="tag">${escapeHtml(tag.trim())}</span>`).join('')}
+                                    </div>
                                     <p class="requirements">
+                                        <strong>Qualifications:</strong><br>
+                                        <span title="${(job.requirements || '').replace(/"/g, '&quot;')}">
+                                            ${(job.requirements || '').split('\n').map(r => `${escapeHtml(r.trim().length > 55 ? r.trim().substring(0, 55) + '...' : r.trim())}<br>`).join('')}
+                                        </span><br>
                                         <strong>Job Description:</strong><br>
-                                        <span>${job.job_description.length > 55 ? job.job_description.substring(0, 55) + '...' : job.job_description}</span><br>
-                                        <strong>Requirements:</strong><br>
-                                        <span>${job.requirements.length > 55 ? job.requirements.substring(0, 55) + '...' : job.requirements}</span>
+                                        <span title="${(job.job_description || '').replace(/"/g, '&quot;')}">
+                                            ${(job.job_description || '').split('\n').map(d => `${escapeHtml(d.trim().length > 55 ? d.trim().substring(0, 55) + '...' : d.trim())}<br>`).join('')}
+                                        </span>
                                     </p>
                                     <a class="btn-3" href="/job-selected/${job.slug}">APPLY NOW</a>
                                 </div>

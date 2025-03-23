@@ -38,31 +38,14 @@
 
                 <ul>
                     <li class="mb-3">
-                        <a href="#" class="text-white">Terms of Use</a>
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#privacyPolicyModal">Privacy Policy</a>
                     </li>
                     <li class="mb-3">
-                        <a href="#" class="text-white">Privacy Policy</a>
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">Terms of Use</a>
                     </li>
-                </ul>  
+                </ul>
+                @include('hrcatalists.legal-modals')
             </div>
-
-            <!-- Admin Log in -->
-            {{-- <div class="col-md-3 login-section">
-                <h4 class="fw-bold mb-3">Log in as Admin</h4>
-                
-                <div class="d-flex flex-column">
-                    
-                @if(Auth::check())   
-                    <!-- Redirects to dashboard if logged in -->
-                    <a href="{{ route('main-menu') }}">Go to menu</a>
-                @else
-                    <!-- Shows login page only if not logged in -->
-                    <a href="{{ route('login') }}">Login Here</a>
-                @endif
-                
-                    
-                </div>
-            </div> --}}
         </div>
     </div>
 

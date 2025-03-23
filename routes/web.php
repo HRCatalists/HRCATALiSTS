@@ -97,6 +97,8 @@ Route::middleware(['auth', PreventBackHistory::class])->group(function () {
     Route::get('/ats-archived', [ApplicantController::class, 'archived'])->name('ats-archived');
     Route::get('/applicants/{id}', [ApplicantController::class, 'show']);
     Route::post('/events/schedule/{id}', [ApplicantController::class, 'scheduleInterview'])->name('events.schedule');
+    Route::post('/applicants/bulk-archive', [ApplicantController::class, 'bulkArchive'])->name('applicants.bulkArchive');
+    Route::post('/applicants/bulk-reject', [ApplicantController::class, 'bulkReject'])->name('applicants.bulkReject');
 
     //overview buttons
     Route::post('/applicants/{id}/update-status', [ApplicantController::class, 'updateStatus'])->name('applicants.updateStatus');
@@ -123,7 +125,7 @@ Route::middleware(['auth', PreventBackHistory::class])->group(function () {
     
         // Delete a job post
         Route::delete('/job-posts/{id}', [JobPostController::class, 'destroy'])->name('job-posts.destroy');
-        
+
         // Add this inside the Route::prefix group:
         Route::post('/job-posts/{id}/delete', [JobPostController::class, 'destroy'])->name('job-posts.delete');
 

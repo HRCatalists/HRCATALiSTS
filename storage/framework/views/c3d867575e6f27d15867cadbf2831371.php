@@ -84,16 +84,16 @@
                                             </div>
             
                                             <p class="requirements">
+                                                <strong>Qualifications:</strong><br>
+                                                <span title="<?php echo e($job->requirements); ?>">
+                                                    <?php $__currentLoopData = explode("\n", $job->requirements); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $requirement): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                        <?php echo nl2br(e(Str::limit(trim($requirement), 55, '...'))); ?><br>
+                                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                                </span><br>
                                                 <strong>Job Description:</strong><br>
                                                 <span title="<?php echo e($job->job_description); ?>">
                                                     <?php $__currentLoopData = explode("\n", $job->job_description); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $description): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                         <?php echo nl2br(e(Str::limit(trim($description), 55, '...'))); ?><br>
-                                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                                </span><br>
-                                                <strong>Requirements:</strong><br>
-                                                <span title="<?php echo e($job->requirements); ?>">
-                                                    <?php $__currentLoopData = explode("\n", $job->requirements); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $requirement): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                                        <?php echo nl2br(e(Str::limit(trim($requirement), 55, '...'))); ?><br>
                                                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                 </span>
                                             </p>

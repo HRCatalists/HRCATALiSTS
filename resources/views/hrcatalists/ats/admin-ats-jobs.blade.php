@@ -60,38 +60,6 @@
                         <h2 class="dt-h2">Opening List</h2>
                     </div>
                 </div>
-                
-                {{-- <div class="d-flex">
-                    <div class="card checkbox-card me-3" data-table="jobListingsTable">
-                        <div class="container d-flex">
-            
-                            <!-- Select All Checkbox -->
-                            <div class="d-flex me-4 py-3">
-                                <input type="checkbox" class="selectAllTable" data-table="jobListingsTable">
-                            </div>
-                            
-                            <!-- Delete Button -->
-                            <div class="d-flex py-1">
-                                <button type="button" class="btn btn-success btn-sm bulk-activate-btn me-1">ACTIVATE</button>
-                                <button class="btn reject-btn btn-sm" style="display: none;">DELETE</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Add Position Button -->
-                    <button type="button" class="btn add-btn me-2" data-bs-toggle="modal" data-bs-target="#addPositionModal">
-                        ADD POSITION
-                    </button>
-
-                    <button id="refreshBtn" class="btn shadow bg-danger-subtle refresh-btn me-3">
-                        <i class="fa fa-refresh"></i>
-                    </button>                    
-
-                    <button class="btn shadow print-btn ms-auto">
-                        <i class="fa fa-print"></i> PRINT
-                        <a href=""></a>
-                    </button>
-                </div> --}}
 
                 <div class="d-flex align-items-center flex-wrap my-3">
                     <div>
@@ -100,7 +68,7 @@
                         <button type="button" class="btn btn-danger add-btn bulk-delete-btn bulk-action-btn me-2" style="display: none;">DELETE</button>
                     </div>
                 
-                    <button type="button" class="btn btn-primary add-btn action-btn me-2    " data-bs-toggle="modal" data-bs-target="#addPositionModal">
+                    <button type="button" class="btn btn-primary add-btn action-btn me-2" data-bs-toggle="modal" data-bs-target="#addPositionModal">
                         ADD POSITION
                     </button>
                     <button id="refreshBtn" class="btn bg-danger-subtle shadow refresh-btn"><i class="fa fa-refresh"></i></button>
@@ -108,10 +76,11 @@
                 </div>
                 
                 <div class="d-flex flex-wrap gap-3 mb-3">
-                    <a href="#" class="select-link text-decoration-underline text-primary" id="selectAllLink">Select All</a>
-                    <a href="#" class="select-link text-decoration-underline text-success" id="selectActiveLink">Select Active</a>
-                    <a href="#" class="select-link text-decoration-underline text-danger" id="selectInactiveLink">Select Inactive</a>
-                </div>                
+                    <span>Select: </span>
+                    <a href="#" class="select-link text-decoration-underline" id="selectAllLink">All</a>
+                    <a href="#" class="select-link text-decoration-underline" id="selectActiveLink">Active</a>
+                    <a href="#" class="select-link text-decoration-underline" id="selectInactiveLink">Inactive</a>
+                </div>
 
                 <table id="jobListingsTable" class="table table-bordered display mt-3">
                     <thead>
@@ -577,350 +546,382 @@
         });
     </script>
 
-
-<script>
-    $(document).ready(function () {
-        $('#jobListingsTable').DataTable({
-            paging: true,
-            searching: true,
-            ordering: true,
-            dom: '<"datatable-toolbar d-flex justify-content-between align-items-center my-3"lf>tip',
-            pageLength: 10,
-            language: {
-                paginate: {
-                    previous: 'Previous',
-                    next: 'Next',
+    {{-- Bulk activate/deactivate/delete and multiple selection --}}
+    <script>
+        $(document).ready(function () {
+            $('#jobListingsTable').DataTable({
+                paging: true,
+                searching: true,
+                ordering: true,
+                dom: '<"datatable-toolbar d-flex justify-content-between align-items-center my-3"lf>tip',
+                pageLength: 10,
+                language: {
+                    paginate: {
+                        previous: 'Previous',
+                        next: 'Next',
+                    },
+                    search: '',
+                    searchPlaceholder: 'Search',
                 },
-                search: '',
-                searchPlaceholder: 'Search',
-            },
-            columnDefs: [
-                { targets: 0, orderable: false, className: 'text-center' },
-                { targets: 4, orderable: true, className: 'text-center' },
-                { targets: 5, orderable: false, className: 'text-center' }
-            ],
-            order: [[2, 'desc']],
-        });
-    
-        // Handle "Select All"
-        $(".selectAllTable").on("change", function () {
-            $(".rowCheckbox").prop("checked", this.checked).trigger("change");
-        });
-    
-        // When individual checkboxes change
-        $(document).on("change", ".rowCheckbox", function () {
-            updateActionButtons();
-        });
-    
-        function updateActionButtons() {
-            const selectedRows = $(".rowCheckbox:checked").closest("tr");
-            const activateBtn = $(".bulk-activate-btn");
-            const deactivateBtn = $(".bulk-deactivate-btn");
-            const deleteBtn = $(".bulk-delete-btn");
-    
-            if (selectedRows.length === 0) {
-                activateBtn.hide();
-                deactivateBtn.hide();
-                deleteBtn.hide();
-                return;
-            }
-    
-            // Count how many selected rows are Active or Inactive
-            let activeCount = 0;
-            let inactiveCount = 0;
-    
-            selectedRows.each(function () {
-                if ($(this).find(".status-column .bg-success").length) {
-                    activeCount++;
-                } else if ($(this).find(".status-column .bg-danger").length) {
-                    inactiveCount++;
-                }
+                columnDefs: [
+                    { targets: 0, orderable: false, className: 'text-center' },
+                    { targets: 4, orderable: true, className: 'text-center' },
+                    { targets: 5, orderable: false, className: 'text-center' }
+                ],
+                order: [[2, 'desc']],
             });
-    
-            // Mixed status = invalid
-            if (activeCount > 0 && inactiveCount > 0) {
-                activateBtn.hide();
-                deactivateBtn.hide();
-                deleteBtn.hide();
+        
+            // Handle "Select All"
+            $(".selectAllTable").on("change", function () {
+                $(".rowCheckbox").prop("checked", this.checked).trigger("change");
+            });
+        
+            // When individual checkboxes change
+            $(document).on("change", ".rowCheckbox", function () {
+                updateActionButtons();
+            });
+        
+            function updateActionButtons() {
+                const selectedRows = $(".rowCheckbox:checked").closest("tr");
+                const activateBtn = $(".bulk-activate-btn");
+                const deactivateBtn = $(".bulk-deactivate-btn");
+                const deleteBtn = $(".bulk-delete-btn");
+        
+                if (selectedRows.length === 0) {
+                    activateBtn.hide();
+                    deactivateBtn.hide();
+                    deleteBtn.hide();
+                    return;
+                }
+        
+                // Count how many selected rows are Active or Inactive
+                let activeCount = 0;
+                let inactiveCount = 0;
+        
+                selectedRows.each(function () {
+                    if ($(this).find(".status-column .bg-success").length) {
+                        activeCount++;
+                    } else if ($(this).find(".status-column .bg-danger").length) {
+                        inactiveCount++;
+                    }
+                });
+        
+                // Mixed status = invalid
+                if (activeCount > 0 && inactiveCount > 0) {
+                    activateBtn.hide();
+                    deactivateBtn.hide();
+                    deleteBtn.hide();
+
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Mixed Status Selected',
+                        text: 'You cannot select both active and inactive jobs at the same time.',
+                        confirmButtonText: 'OK'
+                    }).then(() => {
+                        $(".rowCheckbox").prop("checked", false);
+                        $(".selectAllTable").prop("checked", false);
+                    });
+
+                    return;
+                }
+        
+                // All active
+                if (activeCount > 0 && inactiveCount === 0) {
+                    deactivateBtn.show();
+                    activateBtn.hide();
+                    deleteBtn.show();
+                }
+        
+                // All inactive
+                else if (inactiveCount > 0 && activeCount === 0) {
+                    activateBtn.show();
+                    deactivateBtn.hide();
+                    deleteBtn.show();
+                }
+            }
+        
+            // Handle ACTIVATE
+            $(".bulk-activate-btn").on("click", function () {
+                const selectedRows = $(".rowCheckbox:checked").closest("tr");
+
+                if (selectedRows.length === 0) return;
 
                 Swal.fire({
-                    icon: 'warning',
-                    title: 'Mixed Status Selected',
-                    text: 'You cannot select both active and inactive jobs at the same time.',
-                    confirmButtonText: 'OK'
-                }).then(() => {
-                    $(".rowCheckbox").prop("checked", false);
-                    $(".selectAllTable").prop("checked", false);
-                });
+                    title: 'Activate Jobs?',
+                    text: `You are about to activate ${selectedRows.length} job(s). Continue?`,
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, activate',
+                    cancelButtonText: 'Cancel',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        const today = new Date();
+                        let failedJobs = [];
 
-                return;
-            }
-    
-            // All active
-            if (activeCount > 0 && inactiveCount === 0) {
-                deactivateBtn.show();
-                activateBtn.hide();
-                deleteBtn.show();
-            }
-    
-            // All inactive
-            else if (inactiveCount > 0 && activeCount === 0) {
-                activateBtn.show();
-                deactivateBtn.hide();
-                deleteBtn.show();
-            }
-        }
-    
-        // Handle ACTIVATE
-        $(".bulk-activate-btn").on("click", function () {
-            const selectedRows = $(".rowCheckbox:checked").closest("tr");
+                        const requests = selectedRows.map(function () {
+                            const row = $(this);
+                            const jobId = row.data("id");
+                            const jobTitle = row.find("td").eq(1).text().trim();
 
-            if (selectedRows.length === 0) return;
+                            const endDateText = row.find("td").eq(5).text().trim();
+                            const endDate = new Date(endDateText);
 
-            Swal.fire({
-                title: 'Activate Jobs?',
-                text: `You are about to activate ${selectedRows.length} job(s). Continue?`,
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonText: 'Yes, activate',
-                cancelButtonText: 'Cancel',
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    const today = new Date().toISOString().split("T")[0]; // yyyy-mm-dd
-
-                    let failed = false;
-
-                    selectedRows.each(function () {
-                        const row = $(this);
-                        const jobId = row.data("id");
-                        const jobTitle = row.find("td").eq(1).text().trim();
-
-                        // 🔍 Grab end_date from the row's column (5th column: index 5)
-                        const endDateText = row.find("td").eq(5).text().trim();
-                        const endDate = new Date(endDateText);
-                        const formattedEndDate = endDate.toISOString().split("T")[0];
-
-                        if (formattedEndDate < today) {
-                            failed = true;
-
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Cannot Activate Expired Job',
-                                text: `The Job |${jobTitle}| has already expired (${formattedEndDate}). Please update the end date first.`
-                            });
-
-                            // Uncheck it
-                            row.find(".rowCheckbox").prop("checked", false);
-                            return; // Skip this job
-                        }
-
-                        // ✅ Proceed with AJAX if valid
-                        $.ajax({
-                            url: `/jobs/${jobId}/toggle-status`,
-                            type: 'POST',
-                            data: {
-                                _token: $('meta[name="csrf-token"]').attr("content")
-                            },
-                            success: function () {
-                                row.find(".status-column").html('<span class="badge bg-success">Active</span>');
+                            // Mark row visually if expired
+                            if (endDate < today) {
+                                row.addClass("table-danger expired-row");
                                 row.find(".rowCheckbox").prop("checked", false);
-                            },
-                            error: function (xhr) {
+                                failedJobs.push(`${jobTitle} (expired on ${endDate.toISOString().split("T")[0]})`);
+                                return null;
+                            }
+
+                            // Proceed with activation
+                            return $.ajax({
+                                url: `/jobs/${jobId}/toggle-status`,
+                                type: 'POST',
+                                data: {
+                                    _token: $('meta[name="csrf-token"]').attr("content")
+                                },
+                                success: function () {
+                                    row.find(".status-column").html('<span class="badge bg-success">Active</span>');
+                                    row.find(".rowCheckbox").prop("checked", false);
+                                },
+                                error: function () {
+                                    failedJobs.push(jobTitle);
+                                }
+                            });
+                        }).get().filter(Boolean); // Remove nulls
+
+                        Promise.all(requests).then(() => {
+                            $(".selectAllTable").prop("checked", false);
+                            $(".bulk-activate-btn, .bulk-delete-btn").hide();
+
+                            if (failedJobs.length > 0) {
                                 Swal.fire({
-                                    icon: 'error',
-                                    title: 'Activation Failed',
-                                    text: xhr.responseJSON?.message || "One of the jobs could not be activated."
+                                    icon: 'warning',
+                                    title: 'Some Jobs Not Activated',
+                                    html: `
+                                        <p>The following job(s) could not be activated:</p>
+                                        <ul style="text-align: left;">
+                                            ${failedJobs.map(job => `<li>${job}</li>`).join('')}
+                                        </ul>
+                                        <p>Reason: These jobs have expired. Please update their end dates.</p>
+                                    `
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Activated',
+                                    text: 'Selected job(s) were activated successfully.',
+                                    timer: 2000,
+                                    showConfirmButton: false
                                 });
                             }
                         });
-                    });
+                    }
+                });
+            });
 
-                    $(".selectAllTable").prop("checked", false);
-                    $(".bulk-activate-btn, .bulk-delete-btn").hide();
+            // Highlight and disable expired jobs on load
+            $(".rowCheckbox").each(function () {
+                const row = $(this).closest("tr");
+                const endDateText = row.find("td").eq(5).text().trim(); // Adjust if needed
+                const endDate = new Date(endDateText);
+                const today = new Date();
 
-                    if (!failed) {
+                if (endDate < today) {
+                    row.addClass("table-danger expired-row");
+                    $(this).attr("data-expired", "true");
+                    $(this).attr("title", "This job has expired. You can delete but not activate.");
+                }
+            });
+
+            // Handle DEACTIVATE
+            $(".bulk-deactivate-btn").on("click", function () {
+                const selectedRows = $(".rowCheckbox:checked").closest("tr");
+
+                if (selectedRows.length === 0) return;
+
+                Swal.fire({
+                    title: 'Deactivate Jobs?',
+                    text: `You are about to deactivate ${selectedRows.length} job(s). Continue?`,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, deactivate',
+                    cancelButtonText: 'Cancel',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        selectedRows.each(function () {
+                            const row = $(this);
+                            const jobId = row.data("id");
+
+                            $.ajax({
+                                url: `/jobs/${jobId}/toggle-status`,
+                                type: 'POST',
+                                data: {
+                                    _token: $('meta[name="csrf-token"]').attr("content")
+                                },
+                                success: function () {
+                                    row.find(".status-column").html('<span class="badge bg-danger">Inactive</span>');
+                                    row.find(".rowCheckbox").prop("checked", false);
+                                },
+                                error: function (xhr) {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Deactivation Failed',
+                                        text: xhr.responseJSON?.message || "One of the jobs could not be deactivated."
+                                    });
+                                }
+                            });
+                        });
+
+                        $(".selectAllTable").prop("checked", false);
+                        $(".bulk-deactivate-btn, .bulk-delete-btn").hide();
+
                         Swal.fire({
                             icon: 'success',
-                            title: 'Activated',
-                            text: 'Selected job(s) were activated successfully.',
+                            title: 'Deactivated',
+                            text: 'Selected job(s) were deactivated successfully.',
                             timer: 2000,
                             showConfirmButton: false
                         });
                     }
-                }
+                });
             });
-        });
 
-        // Handle DEACTIVATE
-        $(".bulk-deactivate-btn").on("click", function () {
-            const selectedRows = $(".rowCheckbox:checked").closest("tr");
+            // Handle DELETE
+            $(".bulk-delete-btn").on("click", function () {
+                const selectedRows = $(".rowCheckbox:checked").closest("tr");
 
-            if (selectedRows.length === 0) return;
+                if (selectedRows.length === 0) return;
 
-            Swal.fire({
-                title: 'Deactivate Jobs?',
-                text: `You are about to deactivate ${selectedRows.length} job(s). Continue?`,
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Yes, deactivate',
-                cancelButtonText: 'Cancel',
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    selectedRows.each(function () {
-                        const row = $(this);
-                        const jobId = row.data("id");
+                Swal.fire({
+                    title: 'Delete Jobs?',
+                    text: `You are about to delete ${selectedRows.length} job(s). This action cannot be undone.`,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, delete',
+                    cancelButtonText: 'Cancel',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        let successCount = 0;
+                        let failedJobs = [];
 
-                        $.ajax({
-                            url: `/jobs/${jobId}/toggle-status`,
-                            type: 'POST',
-                            data: {
-                                _token: $('meta[name="csrf-token"]').attr("content")
-                            },
-                            success: function () {
-                                row.find(".status-column").html('<span class="badge bg-danger">Inactive</span>');
-                                row.find(".rowCheckbox").prop("checked", false);
-                            },
-                            error: function (xhr) {
+                        const deleteRequests = selectedRows.map(function () {
+                            const row = $(this);
+                            const jobId = row.data("id");
+                            const jobTitle = row.find("td").eq(1).text().trim();
+
+                            return $.ajax({
+                                url: `/ats-job-openings/job-posts/${jobId}`,
+                                type: 'POST',
+                                data: {
+                                    _method: 'DELETE',
+                                    _token: $('meta[name="csrf-token"]').attr("content"),
+                                },
+                                success: function (response) {
+                                    // Laravel redirects, so the "response" is HTML, not JSON
+                                    // Look for keywords to detect if Laravel rejected deletion
+                                    if (typeof response === 'string' && response.includes("You cannot delete an active job")) {
+                                        failedJobs.push(jobTitle);
+                                    } else {
+                                        row.remove();
+                                        successCount++;
+                                    }
+                                },
+                                error: function () {
+                                    failedJobs.push(jobTitle);
+                                }
+                            });
+                        }).get();
+
+                        Promise.all(deleteRequests).then(() => {
+                            $(".selectAllTable").prop("checked", false);
+                            $(".bulk-deactivate-btn, .bulk-activate-btn, .bulk-delete-btn").hide();
+
+                            if (successCount === 0 && failedJobs.length > 0) {
                                 Swal.fire({
                                     icon: 'error',
-                                    title: 'Deactivation Failed',
-                                    text: xhr.responseJSON?.message || "One of the jobs could not be deactivated."
+                                    title: 'Delete Failed',
+                                    html: `
+                                        <p>The following job(s) could not be deleted:</p>
+                                        <ul style="text-align:left;">
+                                            ${failedJobs.map(title => `<li>${title}</li>`).join('')}
+                                        </ul>
+                                        <p>Active job postings must be <strong>deactivated</strong> before they can be deleted.</p>
+                                    `
+                                }).then(() => {
+                                    location.reload(); // 🔄 Refresh the page after acknowledgment
+                                });
+                            } else if (failedJobs.length > 0) {
+                                Swal.fire({
+                                    icon: 'warning',
+                                    title: 'Partial Delete Completed',
+                                    html: `
+                                        <p>${successCount} job(s) deleted successfully.</p>
+                                        <p>The following could not be deleted:</p>
+                                        <ul style="text-align:left;">
+                                            ${failedJobs.map(title => `<li>${title}</li>`).join('')}
+                                        </ul>
+                                    `
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Delete Completed',
+                                    text: `${successCount} job(s) deleted successfully.`,
+                                    timer: 2000,
+                                    showConfirmButton: false
                                 });
                             }
                         });
-                    });
+                    }
+                });
+            });
 
-                    $(".selectAllTable").prop("checked", false);
-                    $(".bulk-deactivate-btn, .bulk-delete-btn").hide();
+            // Track current selection mode: 'all', 'active', 'inactive', or null
+            let currentSelection = null;
 
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Deactivated',
-                        text: 'Selected job(s) were deactivated successfully.',
-                        timer: 2000,
-                        showConfirmButton: false
-                    });
-                }
+            // ✅ Toggle "Select All"
+            $("#selectAllLink").on("click", function (e) {
+                e.preventDefault();
+
+                const isSame = currentSelection === 'all';
+                currentSelection = isSame ? null : 'all';
+
+                $(".rowCheckbox").each(function () {
+                    $(this).prop("checked", !isSame); // Toggle based on whether we're deselecting
+                }).trigger("change");
+            });
+
+            // ✅ Toggle "Select Active"
+            $("#selectActiveLink").on("click", function (e) {
+                e.preventDefault();
+
+                const isSame = currentSelection === 'active';
+                currentSelection = isSame ? null : 'active';
+
+                $(".rowCheckbox").each(function () {
+                    const row = $(this).closest("tr");
+                    const isActive = row.find(".status-column .bg-success").length > 0;
+                    $(this).prop("checked", isActive && !isSame);
+                }).trigger("change");
+            });
+
+            // ✅ Toggle "Select Inactive"
+            $("#selectInactiveLink").on("click", function (e) {
+                e.preventDefault();
+
+                const isSame = currentSelection === 'inactive';
+                currentSelection = isSame ? null : 'inactive';
+
+                $(".rowCheckbox").each(function () {
+                    const row = $(this).closest("tr");
+                    const isInactive = row.find(".status-column .bg-danger").length > 0;
+                    $(this).prop("checked", isInactive && !isSame);
+                }).trigger("change");
             });
         });
-
-        // Handle DELETE
-        $(".bulk-delete-btn").on("click", function () {
-            const selectedRows = $(".rowCheckbox:checked").closest("tr");
-
-            if (selectedRows.length === 0) return;
-
-            Swal.fire({
-                title: 'Delete Jobs?',
-                text: `You are about to delete ${selectedRows.length} job(s). This action cannot be undone.`,
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Yes, delete',
-                cancelButtonText: 'Cancel',
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    let successCount = 0;
-                    let failedJobs = [];
-
-                    const deleteRequests = selectedRows.map(function () {
-                        const row = $(this);
-                        const jobId = row.data("id");
-                        const jobTitle = row.find("td").eq(1).text().trim();
-
-                        return $.ajax({
-                            url: `/ats-job-openings/job-posts/${jobId}`,
-                            type: 'POST',
-                            data: {
-                                _method: 'DELETE',
-                                _token: $('meta[name="csrf-token"]').attr("content"),
-                            },
-                            success: function (response) {
-                                // Laravel redirects, so the "response" is HTML, not JSON
-                                // Look for keywords to detect if Laravel rejected deletion
-                                if (typeof response === 'string' && response.includes("You cannot delete an active job")) {
-                                    failedJobs.push(jobTitle);
-                                } else {
-                                    row.remove();
-                                    successCount++;
-                                }
-                            },
-                            error: function () {
-                                failedJobs.push(jobTitle);
-                            }
-                        });
-                    }).get();
-
-                    Promise.all(deleteRequests).then(() => {
-                        $(".selectAllTable").prop("checked", false);
-                        $(".bulk-deactivate-btn, .bulk-activate-btn, .bulk-delete-btn").hide();
-
-                        if (successCount === 0 && failedJobs.length > 0) {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Delete Failed',
-                                html: `
-                                    <p>The following job(s) could not be deleted:</p>
-                                    <ul style="text-align:left;">
-                                        ${failedJobs.map(title => `<li>${title}</li>`).join('')}
-                                    </ul>
-                                    <p>Active job postings must be <strong>deactivated</strong> before they can be deleted.</p>
-                                `
-                            }).then(() => {
-                                location.reload(); // 🔄 Refresh the page after acknowledgment
-                            });
-                        } else if (failedJobs.length > 0) {
-                            Swal.fire({
-                                icon: 'warning',
-                                title: 'Partial Delete Completed',
-                                html: `
-                                    <p>${successCount} job(s) deleted successfully.</p>
-                                    <p>The following could not be deleted:</p>
-                                    <ul style="text-align:left;">
-                                        ${failedJobs.map(title => `<li>${title}</li>`).join('')}
-                                    </ul>
-                                `
-                            });
-                        } else {
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Delete Completed',
-                                text: `${successCount} job(s) deleted successfully.`,
-                                timer: 2000,
-                                showConfirmButton: false
-                            });
-                        }
-                    });
-                }
-            });
-        });
-
-        // Handle link-style selection
-        $("#selectAllLink").on("click", function (e) {
-            e.preventDefault();
-            $(".rowCheckbox").prop("checked", true).trigger("change");
-        });
-
-        $("#selectActiveLink").on("click", function (e) {
-            e.preventDefault();
-            $(".rowCheckbox").each(function () {
-                const row = $(this).closest("tr");
-                const isActive = row.find(".status-column .bg-success").length > 0;
-                $(this).prop("checked", isActive);
-            }).trigger("change");
-        });
-
-        $("#selectInactiveLink").on("click", function (e) {
-            e.preventDefault();
-            $(".rowCheckbox").each(function () {
-                const row = $(this).closest("tr");
-                const isInactive = row.find(".status-column .bg-danger").length > 0;
-                $(this).prop("checked", isInactive);
-            }).trigger("change");
-        });
-
-    });
-</script>
-    
-    
+    </script>
+    {{-- Bulk activate/deactivate/delete and multiple selection --}}
 
 </x-admin-ats-layout>

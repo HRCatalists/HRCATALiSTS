@@ -17,3 +17,7 @@ html, body {
 .d-non {
     display: none;
 }
+
+tr.selected-row {
+    background-color: #e9f7ef !important; /* Light green, change if needed */
+}

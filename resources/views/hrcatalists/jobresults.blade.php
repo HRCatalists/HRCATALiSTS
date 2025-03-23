@@ -38,18 +38,19 @@
                         @endforeach
                     </div>                             
                     <p class="requirements">
+                        <strong>Qualifications:</strong><br>
+                        <span title="{{ $job->requirements }}">
+                            @foreach (explode("\n", $job->requirements) as $requirement)
+                                {!! nl2br(e(Str::limit(trim($requirement), 55, '...'))) !!}<br>
+                            @endforeach
+                        </span><br>
                         <strong>Job Description:</strong><br>
                         <span title="{{ $job->job_description }}">
                             @foreach (explode("\n", $job->job_description) as $description)
                                 {!! nl2br(e(Str::limit(trim($description), 55, '...'))) !!}<br>
                             @endforeach
-                        </span><br>
-                        <strong>Requirements:</strong><br>
-                        <span title="{{ $job->requirements }}">
-                            @foreach (explode("\n", $job->requirements) as $requirement)
-                                {!! nl2br(e(Str::limit(trim($requirement), 55, '...'))) !!}<br>
-                            @endforeach
                         </span>
+
                     </p>
                     <a class="btn-3" href="{{ route('job-selected', $job->slug) }}">APPLY NOW</a>
                 </div>
@@ -89,10 +90,10 @@
                                     <h5>${job.job_title}</h5>
                                     <div class="tags">${getTags(job.tags)}</div>                             
                                     <p class="requirements">
+                                        <strong>Qualifications:</strong><br>
+                                        <span>${truncateText(job.requirements, 50)}</span><br>
                                         <strong>Job Description:</strong><br>
                                         <span>${truncateText(job.job_description, 50)}</span><br>
-                                        <strong>Requirements:</strong><br>
-                                        <span>${truncateText(job.requirements, 50)}</span>
                                     </p>
                                     <a class="btn-3" href="/job/${job.slug}">APPLY NOW</a>
                                 </div>

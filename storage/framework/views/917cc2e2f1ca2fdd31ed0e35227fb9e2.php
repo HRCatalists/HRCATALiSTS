@@ -38,16 +38,14 @@
 
                 <ul>
                     <li class="mb-3">
-                        <a href="#" class="text-white">Terms of Use</a>
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#privacyPolicyModal">Privacy Policy</a>
                     </li>
                     <li class="mb-3">
-                        <a href="#" class="text-white">Privacy Policy</a>
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">Terms of Use</a>
                     </li>
-                </ul>  
+                </ul>
+                <?php echo $__env->make('hrcatalists.legal-modals', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
             </div>
-
-            <!-- Admin Log in -->
-            
         </div>
     </div>
 

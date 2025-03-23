@@ -75,16 +75,16 @@
                                             </div>
             
                                             <p class="requirements">
+                                                <strong>Qualifications:</strong><br>
+                                                <span title="{{ $job->requirements }}">
+                                                    @foreach (explode("\n", $job->requirements) as $requirement)
+                                                        {!! nl2br(e(Str::limit(trim($requirement), 55, '...'))) !!}<br>
+                                                    @endforeach
+                                                </span><br>
                                                 <strong>Job Description:</strong><br>
                                                 <span title="{{ $job->job_description }}">
                                                     @foreach (explode("\n", $job->job_description) as $description)
                                                         {!! nl2br(e(Str::limit(trim($description), 55, '...'))) !!}<br>
-                                                    @endforeach
-                                                </span><br>
-                                                <strong>Requirements:</strong><br>
-                                                <span title="{{ $job->requirements }}">
-                                                    @foreach (explode("\n", $job->requirements) as $requirement)
-                                                        {!! nl2br(e(Str::limit(trim($requirement), 55, '...'))) !!}<br>
                                                     @endforeach
                                                 </span>
                                             </p>
