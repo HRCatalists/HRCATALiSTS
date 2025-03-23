@@ -105,22 +105,26 @@ class JobPostController extends Controller
             return response()->json(['success' => false, 'message' => 'Job not found'], 404);
         }
     
+        $departments = Department::pluck('name'); // Get list of department names only
+    
+        $isCustomDepartment = !$departments->contains($job->department); // Check if department is not in list
+    
         return response()->json([
             'success' => true,
             'job' => [
                 'id' => $job->id,
                 'job_title' => $job->job_title,
                 'department' => $job->department,
+                'is_custom_department' => $isCustomDepartment, // ✅ Flag for frontend
                 'job_description' => $job->job_description,
                 'requirements' => $job->requirements,
                 'tags' => $job->tags,
                 'date_issued' => $job->date_issued ? $job->date_issued->format('Y-m-d') : null,
                 'end_date' => $job->end_date ? $job->end_date->format('Y-m-d') : null,
-            ]
+            ],
+            'departments' => $departments, // ✅ Send full department list
         ]);
     }
-      
-
     /**
      * Update an existing job position.
      */
@@ -136,13 +140,40 @@ class JobPostController extends Controller
             'end_date' => 'required|date|after_or_equal:date_issued',
         ]);
     
-        // Find job by ID and update
+        // ✅ Find job first so we can check the status
         $job = Job::findOrFail($id);
+    
+        // ❌ Prevent update if job is active
+        if ($job->status === 'active') {
+            return redirect()->back()->with('error', 'Cannot update an active job. Please deactivate it first.');
+        }
+    
+        // ✅ Handle "Other" department
+        if ($request->department === 'other') {
+            $request->validate([
+                'other_department_name' => 'required|string|max:255',
+                'other_department_code' => 'required|string|max:10',
+            ]);
+    
+            $customName = trim($request->input('other_department_name'));
+            $customCode = trim($request->input('other_department_code'));
+    
+            if ($customName) {
+                Department::firstOrCreate(
+                    ['name' => $customName],
+                    ['code' => $customCode]
+                );
+    
+                $validatedData['department'] = $customName;
+            }
+        }
+    
+        // ✅ Proceed to update if not active
         $job->update($validatedData);
     
         return redirect()->back()->with('success', 'Job updated successfully!');
-    }     
-
+    }
+        
     /**
      * Toggle the status of a job position.
      */

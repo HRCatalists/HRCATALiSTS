@@ -31,6 +31,29 @@
                         </div>
                     @endif
                 </div>
+                @if(session('success'))
+                    <script>
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success!',
+                            text: '{{ session('success') }}',
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                    </script>
+                @endif
+
+                @if(session('error'))
+                    <script>
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: '{{ session('error') }}',
+                            timer: 2500,
+                            showConfirmButton: false
+                        });
+                    </script>
+                @endif
 
                 <div class="d-flex justify-content-between align-items-center mt-5 mb-3">
                     <div>
@@ -105,14 +128,25 @@
                                         </button>
                                         <ul class="dropdown-menu" aria-labelledby="actionsDropdown{{ $job->id }}">
                                             <!-- Activate / Deactivate -->
-                                            <li>
+                                            {{-- <li>
                                                 <form action="{{ route('jobs.toggle-status', $job->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to {{ $job->status === 'active' ? 'deactivate' : 'activate' }} this job?');">
                                                     @csrf
                                                     <button type="submit" class="dropdown-item">
                                                         {{ $job->status === 'active' ? 'Deactivate' : 'Activate' }}
                                                     </button>
                                                 </form>
-                                            </li>
+                                            </li> --}}
+                                            <!-- Deactivate / Activate -->
+                                            <li>
+                                                <button 
+                                                    class="dropdown-item text-warning toggle-status-btn" 
+                                                    data-id="{{ $job->id }}" 
+                                                    data-title="{{ $job->job_title }}"
+                                                    data-status="{{ $job->status }}"
+                                                >
+                                                    {{ $job->status === 'active' ? 'Deactivate' : 'Activate' }}
+                                                </button>
+                                            </li>                                            
 
                                             <!-- Edit Job (Opens Modal) -->
                                             <li>
@@ -125,18 +159,27 @@
                                             <li><a class="dropdown-item" href="#">View</a></li>
                                 
                                             <!-- Delete Job -->
-                                            <li>
+                                            {{-- <li>
                                                 <form action="{{ route('job-posts.destroy', $job->id) }}" method="POST" 
                                                       onsubmit="return confirm('Are you sure you want to delete this job?');" style="display:inline;">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="dropdown-item text-danger">Delete</button>
                                                 </form>
-                                            </li>
+                                            </li> --}}
+                                            <li>
+                                                <button 
+                                                    class="dropdown-item text-danger delete-job-btn" 
+                                                    data-id="{{ $job->id }}" 
+                                                    data-title="{{ $job->job_title }}"
+                                                >
+                                                    Delete
+                                                </button>
+                                            </li>                                                                                       
                                         </ul>
                                     </div>
                                 
-                                    <!-- Edit Position Modal (Moved Outside for Cleaner Code) -->
+                                    <!-- Edit Position Modal -->
                                     <div class="modal fade" id="editPositionModal-{{ $job->id }}" tabindex="-1"
                                         aria-labelledby="editPositionModalLabel" aria-hidden="true">
                                         <div class="modal-dialog modal-lg">
@@ -156,15 +199,42 @@
                                                         <div class="row mb-3">
                                                             <div class="col-md-6">
                                                                 <label class="form-label">Job Title <span class="text-danger">*</span></label>
-                                                                <input type="text" class="form-control" name="job_title"
-                                                                    value="{{ $job->job_title }}" required>
+                                                                <input type="text" class="form-control" name="job_title" value="{{ $job->job_title }}" required>
                                                             </div>
+                                                        
                                                             <div class="col-md-6">
                                                                 <label class="form-label">Department <span class="text-danger">*</span></label>
-                                                                <input type="text" class="form-control" name="department"
-                                                                    value="{{ $job->department }}" required>
+                                                                <select name="department" class="form-control department-select" required>
+                                                                    <option value="">Select a Department</option>
+                                                                    @foreach ($departments as $department)
+                                                                        <option value="{{ $department->name }}" {{ $job->department === $department->name ? 'selected' : '' }}>
+                                                                            {{ $department->name }}
+                                                                        </option>
+                                                                    @endforeach
+                                                                    <option value="other" {{ !in_array($job->department, $departments->pluck('name')->toArray()) ? 'selected' : '' }}>
+                                                                        Other
+                                                                    </option>
+                                                                </select>
                                                             </div>
                                                         </div>
+                                                        
+                                                        <!-- Show this when "Other" is selected -->
+                                                        <div class="custom-department-fields card p-3 mb-3 border bg-light shadow-sm {{ !in_array($job->department, $departments->pluck('name')->toArray()) ? '' : 'd-none' }}">
+                                                            <h6 class="text-primary fw-bold mb-3">Add New Department</h6>
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <label class="form-label">New Department Name</label>
+                                                                    <input type="text" class="form-control custom-dept-name" name="other_department_name"
+                                                                           value="{{ !in_array($job->department, $departments->pluck('name')->toArray()) ? $job->department : '' }}"
+                                                                           placeholder="Enter Department Name">
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <label class="form-label">Department Code</label>
+                                                                    <input type="text" class="form-control custom-dept-code" name="other_department_code"
+                                                                           placeholder="Enter Department Code">
+                                                                </div>
+                                                            </div>
+                                                        </div>                                                        
                                 
                                                         <div class="row mb-3">
                                                             <div class="col-md-6">
@@ -203,6 +273,7 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <!-- Edit Position Modal -->
                                 </td>                                                               
                             </tr>
                         @endforeach
@@ -222,60 +293,6 @@
                         <h5 class="modal-title" id="addPositionModalLabel">Add New Position</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    {{-- <div class="modal-body">
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label for="jobTitle" class="form-label">Job Title <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="jobTitle" name="job_title" placeholder="Enter Job Title" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="jobform_department" class="form-label">Department <span class="text-danger">*</span></label>
-                                <!-- Department Dropdown -->
-                                <select id="jobform_department" name="department" class="form-control" required>
-                                    <option value="">Select a Department</option>
-                                    @foreach ($departments as $department)
-                                        <option value="{{ $department->name }}">{{ $department->name }}</option>
-                                    @endforeach
-                                    <option value="other">Other</option>
-                                </select>
-                                
-                                <!-- Hidden fields -->
-                                <div id="jobform_customDepartmentFields" class="mt-2 d-none">
-                                    <label for="jobform_other_department_name" class="form-label mt-2">New Department Name</label>
-                                    <input type="text" class="form-control mb-2" id="jobform_other_department_name" name="other_department_name" placeholder="Enter Department Name">
-                                
-                                    <label for="jobform_other_department_code" class="form-label">Department Code</label>
-                                    <input type="text" class="form-control" id="jobform_other_department_code" name="other_department_code" placeholder="Enter Department Code">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label for="requirements" class="form-label">Job Description <span class="text-danger">*</span></label>
-                                <textarea name="job_description" id="description" class="form-control" rows="10" placeholder="Enter each bullet on a new line..." required></textarea>
-                                <small class="text-muted">Enter each bullet on a new line. The system will format it as a list.</small>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="duties" class="form-label">Requirements <span class="text-danger">*</span></label>
-                                <textarea name="requirements" id="requirements" class="form-control" rows="10" placeholder="Enter each bullet on a new line..." required></textarea>
-                                <small class="text-muted">Enter each bullet on a new line. The system will format it as a list.</small>
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label for="tags" class="form-label">Tags <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="tags" name="tags" placeholder="Enter tags">
-                            </div>
-                            <div class="col-md-3">
-                                <label for="dateIssued" class="form-label">Date Issued <span class="text-danger">*</span></label>
-                                <input type="date" class="form-control" id="dateIssued" name="date_issued" required>
-                            </div>
-                            <div class="col-md-3">
-                                <label for="endDate" class="form-label">End Date <span class="text-danger">*</span></label>
-                                <input type="date" class="form-control" id="endDate" name="end_date" required>
-                            </div>
-                        </div>
-                    </div> --}}
                     <div class="modal-body">
                         <div class="row g-3">
                             <!-- Job Title -->
@@ -413,36 +430,7 @@
     {{-- Update Expired Jobs Status --}}
 
 
-    {{-- Toggle input when user wants to add specific department --}}
-    {{-- <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const departmentSelect = document.getElementById("department");
-            const customFields = document.getElementById("customDepartmentFields");
-            const nameInput = document.getElementById("other_department_name");
-            const codeInput = document.getElementById("other_department_code");
-        
-            // Safety check
-            if (!departmentSelect || !customFields) {
-                console.warn("Department dropdown or custom fields not found.");
-                return;
-            }
-        
-            // Core function
-            function toggleDepartmentFields() {
-                const isOther = departmentSelect.value === "other";
-                customFields.classList.toggle("d-none", !isOther);
-                nameInput.required = isOther;
-                codeInput.required = isOther;
-            }
-        
-            // Initialize on load
-            toggleDepartmentFields();
-        
-            // Trigger on every change
-            departmentSelect.addEventListener("change", toggleDepartmentFields);
-        });
-    </script> --}}
-    {{-- Toggle input when user wants to add specific department --}}
+    {{-- Adding new job - Toggle input when user wants to add specific department --}}
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const select = document.getElementById("jobform_department");
@@ -464,5 +452,109 @@
             select.addEventListener("change", toggleCustomFields);
         });
     </script>
+    {{-- Adding new job - Toggle input when user wants to add specific department --}}
+
+
+    {{-- Editing job - Toggle input when user wants to add specific department --}}
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const allEditModals = document.querySelectorAll('.modal');
+    
+            allEditModals.forEach(modal => {
+                const select = modal.querySelector('.department-select');
+                const customFields = modal.querySelector('.custom-department-fields');
+                const nameInput = modal.querySelector('.custom-dept-name');
+                const codeInput = modal.querySelector('.custom-dept-code');
+    
+                if (!select || !customFields) return;
+    
+                function toggleEditDeptFields() {
+                    const isOther = select.value === 'other';
+                    customFields.classList.toggle('d-none', !isOther);
+                    if (nameInput) nameInput.required = isOther;
+                    if (codeInput) codeInput.required = isOther;
+                }
+    
+                select.addEventListener('change', toggleEditDeptFields);
+                toggleEditDeptFields(); // initialize on load
+            });
+        });
+    </script>
+    {{-- Editing job - Toggle input when user wants to add specific department --}}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // 🛑 Deactivate/Activate Job
+            document.querySelectorAll('.toggle-status-btn').forEach(button => {
+                button.addEventListener('click', function () {
+                    const jobId = this.dataset.id;
+                    const jobTitle = this.dataset.title;
+                    const isActive = this.dataset.status === 'active';
+    
+                    Swal.fire({
+                        title: isActive ? 'Deactivate Job?' : 'Activate Job?',
+                        text: `Are you sure you want to ${isActive ? 'deactivate' : 'activate'} "${jobTitle}"?`,
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: isActive ? 'Yes, deactivate it!' : 'Yes, activate it!',
+                        cancelButtonText: 'Cancel',
+                    }).then(result => {
+                        if (result.isConfirmed) {
+                            const form = document.createElement('form');
+                            form.method = 'POST';
+                            form.action = `/jobs/${jobId}/toggle-status`;
+    
+                            const csrfInput = document.createElement('input');
+                            csrfInput.type = 'hidden';
+                            csrfInput.name = '_token';
+                            csrfInput.value = '{{ csrf_token() }}';
+                            form.appendChild(csrfInput);
+    
+                            document.body.appendChild(form);
+                            form.submit();
+                        }
+                    });
+                });
+            });
+    
+            // 🗑️ Delete Job
+            document.querySelectorAll('.delete-job-btn').forEach(button => {
+                button.addEventListener('click', function () {
+                    const jobId = this.dataset.id;
+                    const jobTitle = this.dataset.title;
+    
+                    Swal.fire({
+                        title: 'Delete Job?',
+                        text: `This will permanently delete "${jobTitle}".`,
+                        icon: 'error',
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes, delete it!',
+                        cancelButtonText: 'Cancel',
+                    }).then(result => {
+                        if (result.isConfirmed) {
+                            const form = document.createElement('form');
+                            form.method = 'POST';
+                            form.action = `/ats-job-openings/job-posts/${jobId}`;
+    
+                            const csrf = document.createElement('input');
+                            csrf.type = 'hidden';
+                            csrf.name = '_token';
+                            csrf.value = '{{ csrf_token() }}';
+                            form.appendChild(csrf);
+    
+                            const method = document.createElement('input');
+                            method.type = 'hidden';
+                            method.name = '_method';
+                            method.value = 'DELETE';
+                            form.appendChild(method);
+    
+                            document.body.appendChild(form);
+                            form.submit();
+                        }
+                    });
+                });
+            });
+        });
+    </script>    
 
 </x-admin-ats-layout>

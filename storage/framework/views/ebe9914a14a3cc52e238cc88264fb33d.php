@@ -61,6 +61,29 @@
                         </div>
                     <?php endif; ?>
                 </div>
+                <?php if(session('success')): ?>
+                    <script>
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success!',
+                            text: '<?php echo e(session('success')); ?>',
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                    </script>
+                <?php endif; ?>
+
+                <?php if(session('error')): ?>
+                    <script>
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: '<?php echo e(session('error')); ?>',
+                            timer: 2500,
+                            showConfirmButton: false
+                        });
+                    </script>
+                <?php endif; ?>
 
                 <div class="d-flex justify-content-between align-items-center mt-5 mb-3">
                     <div>
@@ -135,15 +158,19 @@
                                         </button>
                                         <ul class="dropdown-menu" aria-labelledby="actionsDropdown<?php echo e($job->id); ?>">
                                             <!-- Activate / Deactivate -->
+                                            
+                                            <!-- Deactivate / Activate -->
                                             <li>
-                                                <form action="<?php echo e(route('jobs.toggle-status', $job->id)); ?>" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to <?php echo e($job->status === 'active' ? 'deactivate' : 'activate'); ?> this job?');">
-                                                    <?php echo csrf_field(); ?>
-                                                    <button type="submit" class="dropdown-item">
-                                                        <?php echo e($job->status === 'active' ? 'Deactivate' : 'Activate'); ?>
+                                                <button 
+                                                    class="dropdown-item text-warning toggle-status-btn" 
+                                                    data-id="<?php echo e($job->id); ?>" 
+                                                    data-title="<?php echo e($job->job_title); ?>"
+                                                    data-status="<?php echo e($job->status); ?>"
+                                                >
+                                                    <?php echo e($job->status === 'active' ? 'Deactivate' : 'Activate'); ?>
 
-                                                    </button>
-                                                </form>
-                                            </li>
+                                                </button>
+                                            </li>                                            
 
                                             <!-- Edit Job (Opens Modal) -->
                                             <li>
@@ -156,18 +183,20 @@
                                             <li><a class="dropdown-item" href="#">View</a></li>
                                 
                                             <!-- Delete Job -->
+                                            
                                             <li>
-                                                <form action="<?php echo e(route('job-posts.destroy', $job->id)); ?>" method="POST" 
-                                                      onsubmit="return confirm('Are you sure you want to delete this job?');" style="display:inline;">
-                                                    <?php echo csrf_field(); ?>
-                                                    <?php echo method_field('DELETE'); ?>
-                                                    <button type="submit" class="dropdown-item text-danger">Delete</button>
-                                                </form>
-                                            </li>
+                                                <button 
+                                                    class="dropdown-item text-danger delete-job-btn" 
+                                                    data-id="<?php echo e($job->id); ?>" 
+                                                    data-title="<?php echo e($job->job_title); ?>"
+                                                >
+                                                    Delete
+                                                </button>
+                                            </li>                                                                                       
                                         </ul>
                                     </div>
                                 
-                                    <!-- Edit Position Modal (Moved Outside for Cleaner Code) -->
+                                    <!-- Edit Position Modal -->
                                     <div class="modal fade" id="editPositionModal-<?php echo e($job->id); ?>" tabindex="-1"
                                         aria-labelledby="editPositionModalLabel" aria-hidden="true">
                                         <div class="modal-dialog modal-lg">
@@ -187,15 +216,43 @@
                                                         <div class="row mb-3">
                                                             <div class="col-md-6">
                                                                 <label class="form-label">Job Title <span class="text-danger">*</span></label>
-                                                                <input type="text" class="form-control" name="job_title"
-                                                                    value="<?php echo e($job->job_title); ?>" required>
+                                                                <input type="text" class="form-control" name="job_title" value="<?php echo e($job->job_title); ?>" required>
                                                             </div>
+                                                        
                                                             <div class="col-md-6">
                                                                 <label class="form-label">Department <span class="text-danger">*</span></label>
-                                                                <input type="text" class="form-control" name="department"
-                                                                    value="<?php echo e($job->department); ?>" required>
+                                                                <select name="department" class="form-control department-select" required>
+                                                                    <option value="">Select a Department</option>
+                                                                    <?php $__currentLoopData = $departments; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $department): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                                        <option value="<?php echo e($department->name); ?>" <?php echo e($job->department === $department->name ? 'selected' : ''); ?>>
+                                                                            <?php echo e($department->name); ?>
+
+                                                                        </option>
+                                                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                                                    <option value="other" <?php echo e(!in_array($job->department, $departments->pluck('name')->toArray()) ? 'selected' : ''); ?>>
+                                                                        Other
+                                                                    </option>
+                                                                </select>
                                                             </div>
                                                         </div>
+                                                        
+                                                        <!-- Show this when "Other" is selected -->
+                                                        <div class="custom-department-fields card p-3 mb-3 border bg-light shadow-sm <?php echo e(!in_array($job->department, $departments->pluck('name')->toArray()) ? '' : 'd-none'); ?>">
+                                                            <h6 class="text-primary fw-bold mb-3">Add New Department</h6>
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <label class="form-label">New Department Name</label>
+                                                                    <input type="text" class="form-control custom-dept-name" name="other_department_name"
+                                                                           value="<?php echo e(!in_array($job->department, $departments->pluck('name')->toArray()) ? $job->department : ''); ?>"
+                                                                           placeholder="Enter Department Name">
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <label class="form-label">Department Code</label>
+                                                                    <input type="text" class="form-control custom-dept-code" name="other_department_code"
+                                                                           placeholder="Enter Department Code">
+                                                                </div>
+                                                            </div>
+                                                        </div>                                                        
                                 
                                                         <div class="row mb-3">
                                                             <div class="col-md-6">
@@ -234,6 +291,7 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <!-- Edit Position Modal -->
                                 </td>                                                               
                             </tr>
                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -253,7 +311,6 @@
                         <h5 class="modal-title" id="addPositionModalLabel">Add New Position</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    
                     <div class="modal-body">
                         <div class="row g-3">
                             <!-- Job Title -->
@@ -392,8 +449,6 @@
 
 
     
-    
-    
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const select = document.getElementById("jobform_department");
@@ -415,6 +470,110 @@
             select.addEventListener("change", toggleCustomFields);
         });
     </script>
+    
+
+
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const allEditModals = document.querySelectorAll('.modal');
+    
+            allEditModals.forEach(modal => {
+                const select = modal.querySelector('.department-select');
+                const customFields = modal.querySelector('.custom-department-fields');
+                const nameInput = modal.querySelector('.custom-dept-name');
+                const codeInput = modal.querySelector('.custom-dept-code');
+    
+                if (!select || !customFields) return;
+    
+                function toggleEditDeptFields() {
+                    const isOther = select.value === 'other';
+                    customFields.classList.toggle('d-none', !isOther);
+                    if (nameInput) nameInput.required = isOther;
+                    if (codeInput) codeInput.required = isOther;
+                }
+    
+                select.addEventListener('change', toggleEditDeptFields);
+                toggleEditDeptFields(); // initialize on load
+            });
+        });
+    </script>
+    
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // 🛑 Deactivate/Activate Job
+            document.querySelectorAll('.toggle-status-btn').forEach(button => {
+                button.addEventListener('click', function () {
+                    const jobId = this.dataset.id;
+                    const jobTitle = this.dataset.title;
+                    const isActive = this.dataset.status === 'active';
+    
+                    Swal.fire({
+                        title: isActive ? 'Deactivate Job?' : 'Activate Job?',
+                        text: `Are you sure you want to ${isActive ? 'deactivate' : 'activate'} "${jobTitle}"?`,
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: isActive ? 'Yes, deactivate it!' : 'Yes, activate it!',
+                        cancelButtonText: 'Cancel',
+                    }).then(result => {
+                        if (result.isConfirmed) {
+                            const form = document.createElement('form');
+                            form.method = 'POST';
+                            form.action = `/jobs/${jobId}/toggle-status`;
+    
+                            const csrfInput = document.createElement('input');
+                            csrfInput.type = 'hidden';
+                            csrfInput.name = '_token';
+                            csrfInput.value = '<?php echo e(csrf_token()); ?>';
+                            form.appendChild(csrfInput);
+    
+                            document.body.appendChild(form);
+                            form.submit();
+                        }
+                    });
+                });
+            });
+    
+            // 🗑️ Delete Job
+            document.querySelectorAll('.delete-job-btn').forEach(button => {
+                button.addEventListener('click', function () {
+                    const jobId = this.dataset.id;
+                    const jobTitle = this.dataset.title;
+    
+                    Swal.fire({
+                        title: 'Delete Job?',
+                        text: `This will permanently delete "${jobTitle}".`,
+                        icon: 'error',
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes, delete it!',
+                        cancelButtonText: 'Cancel',
+                    }).then(result => {
+                        if (result.isConfirmed) {
+                            const form = document.createElement('form');
+                            form.method = 'POST';
+                            form.action = `/ats-job-openings/job-posts/${jobId}`;
+    
+                            const csrf = document.createElement('input');
+                            csrf.type = 'hidden';
+                            csrf.name = '_token';
+                            csrf.value = '<?php echo e(csrf_token()); ?>';
+                            form.appendChild(csrf);
+    
+                            const method = document.createElement('input');
+                            method.type = 'hidden';
+                            method.name = '_method';
+                            method.value = 'DELETE';
+                            form.appendChild(method);
+    
+                            document.body.appendChild(form);
+                            form.submit();
+                        }
+                    });
+                });
+            });
+        });
+    </script>    
 
  <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
