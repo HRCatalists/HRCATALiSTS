@@ -1,10 +1,10 @@
 <?php
+
 namespace App\Services;
 
 use Google_Client;
 use Google_Service_Drive;
 use Google_Service_Drive_DriveFile;
-use Illuminate\Support\Facades\Storage;
 
 class GoogleDriveService
 {
@@ -13,7 +13,7 @@ class GoogleDriveService
 
     public function __construct()
     {
-        $path = storage_path('app/' . env('GOOGLE_DRIVE_CREDENTIALS'));
+        $path = config('services.google.credentials');
 
         $this->client = new Google_Client();
         $this->client->setAuthConfig($path);
@@ -24,7 +24,7 @@ class GoogleDriveService
 
     public function uploadFile($file)
     {
-        $folderId = env('GOOGLE_DRIVE_FOLDER_ID');
+        $folderId = config('services.google.folder_id');
         
         $fileMetadata = new Google_Service_Drive_DriveFile([
             'name' => $file->getClientOriginalName(),
