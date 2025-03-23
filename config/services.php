@@ -39,6 +39,8 @@ return [
     'client_id' => env('GOOGLE_CLIENT_ID'),
     'client_secret' => env('GOOGLE_CLIENT_SECRET'),
     'redirect' => env('GOOGLE_REDIRECT_URI'),
+    'credentials' => storage_path(env('GOOGLE_DRIVE_CREDENTIALS', 'app/google-drive.json')),
+    'folder_id' => env('GOOGLE_DRIVE_FOLDER_ID'),
 ],
 
 

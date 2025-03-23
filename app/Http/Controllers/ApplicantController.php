@@ -32,102 +32,101 @@ class ApplicantController extends Controller
         if (!Auth::check()) {
             return redirect()->route('login')->with('error', 'Please log in to update status.');
         }
-
+    
         $request->validate([
-            'action' => 'required|string|in:approve,reject,archive'
-        ]);
-
+            'action' => 'required|string|in:approve,reject,archive,pass_evaluation,fail_evaluation'
+        ]);        
+    
         try {
             $applicant = Applicant::findOrFail($id);
-
+    
             // Map actions to statuses
             $statusMap = [
-                'approve' => 'interviewed',
+                'approve' => 'evaluation',          // Moved to Evaluation stage
                 'reject' => 'rejected',
                 'archive' => 'archived',
+                'pass_evaluation' => 'hired',       // Passed the Evaluation
+                'fail_evaluation' => 'rejected',    // Failed the Evaluation
             ];
-
-            $applicant->status = $statusMap[$request->action];
+    
+            $newStatus = $statusMap[$request->action];
+            $applicant->status = $newStatus;
             $applicant->save();
-
-            // Log action
+    
+            // Log the action
             Log::create([
                 'user_id' => Auth::id(),
-                'activity' => "Applicant {$applicant->first_name} {$applicant->last_name} marked as {$applicant->status}",
+                'activity' => "Applicant {$applicant->first_name} {$applicant->last_name} marked as {$newStatus}",
                 'created_at' => now(),
             ]);
-
+    
             return redirect()->back()->with('success', 'Applicant status updated successfully.');
         } catch (\Exception $e) {
             \Log::error("Failed to update status: " . $e->getMessage());
             return redirect()->back()->with('error', 'Failed to update status. Please try again.');
         }
-    }
-
+    }    
     public function chooseStatus(Request $request, $id)
-{
-    if (!Auth::check()) {
-        return redirect()->route('login')->with('error', 'Please log in to update applicant status.');
-    }
-
-    $applicant = Applicant::find($id);
-    if (!$applicant) {
-        return redirect()->back()->with('error', 'Applicant not found.');
-    }
-
-    $validStatuses = ['pending', 'screening', 'scheduled', 'interviewed', 'hired', 'rejected', 'archived'];
-    $newStatus = $request->input('status');
-
-    if (!in_array($newStatus, $validStatuses)) {
-        return redirect()->back()->with('error', 'Invalid status provided.');
-    }
-
-    $applicantName = trim($applicant->first_name . ' ' . $applicant->last_name);
-    $oldStatus = $applicant->status;
-
-    // Update applicant status
-    $applicant->status = $newStatus;
-    $applicant->save();
-
-    // If status is "hired", move the applicant to the Employee table
-    if ($newStatus === 'hired') {
-        // Check if email already exists in the employees table
-        if (Employee::where('email', $applicant->email)->exists()) {
-            return redirect()->back()->with('error', 'This applicant is already hired. Duplicate email found.');
+    {
+        if (!Auth::check()) {
+            return redirect()->route('login')->with('error', 'Please log in to update applicant status.');
         }
 
-        $job = Job::find($applicant->job_id);
+        $applicant = Applicant::find($id);
+        if (!$applicant) {
+            return redirect()->back()->with('error', 'Applicant not found.');
+        }
 
-        Employee::create([
-            'first_name' => $applicant->first_name,
-            'last_name' => $applicant->last_name,
-            'email' => $applicant->email,
-            'phone' => $applicant->phone,
-            'address' => $applicant->address,
-            'cv' => $applicant->cv,
-            'privacy_policy_agreed' => $applicant->privacy_policy_agreed,
-            'status' => 'hired',
-            'applied_at' => $applicant->applied_at,
-            'department' => $job->department ?? 'Unknown',
-            'job_title' => $job->job_title ?? 'Unknown',
+        $validStatuses = ['pending', 'screening', 'scheduled', 'evaluation', 'hired', 'rejected', 'archived'];
+        $newStatus = $request->input('status');
+
+        if (!in_array($newStatus, $validStatuses)) {
+            return redirect()->back()->with('error', 'Invalid status provided.');
+        }
+
+        $applicantName = trim($applicant->first_name . ' ' . $applicant->last_name);
+        $oldStatus = $applicant->status;
+
+        // Update applicant status
+        $applicant->status = $newStatus;
+        $applicant->save();
+
+        // If status is "hired", move the applicant to the Employee table
+        if ($newStatus === 'hired') {
+            // Check if email already exists in the employees table
+            if (Employee::where('email', $applicant->email)->exists()) {
+                return redirect()->back()->with('error', 'This applicant is already hired. Duplicate email found.');
+            }
+
+            $job = Job::find($applicant->job_id);
+
+            Employee::create([
+                'first_name' => $applicant->first_name,
+                'last_name' => $applicant->last_name,
+                'email' => $applicant->email,
+                'phone' => $applicant->phone,
+                'address' => $applicant->address,
+                'cv' => $applicant->cv,
+                'privacy_policy_agreed' => $applicant->privacy_policy_agreed,
+                'status' => 'hired',
+                'applied_at' => $applicant->applied_at,
+                'department' => $job->department ?? 'Unknown',
+                'job_title' => $job->job_title ?? 'Unknown',
+            ]);
+
+            // Optionally, delete the applicant after transferring
+            $applicant->delete();
+        }
+
+        // Log the update
+        Log::create([
+            'user_id' => Auth::id(),
+            'activity' => "Updated status for applicant: {$applicantName} from " . ucfirst($oldStatus) . " to " . ucfirst($newStatus),
+            'created_at' => now(),
         ]);
 
-        // Optionally, delete the applicant after transferring
-        $applicant->delete();
+        return redirect()->back()->with('success', "Applicant status updated to " . ucfirst($newStatus) . ".");
     }
-
-    // Log the update
-    Log::create([
-        'user_id' => Auth::id(),
-        'activity' => "Updated status for applicant: {$applicantName} from " . ucfirst($oldStatus) . " to " . ucfirst($newStatus),
-        'created_at' => now(),
-    ]);
-
-    return redirect()->back()->with('success', "Applicant status updated to " . ucfirst($newStatus) . ".");
-}
-
-    
-    
     public function scheduleInterview(Request $request, $id)
     {
         if (!Auth::check()) {
@@ -164,6 +163,29 @@ class ApplicantController extends Controller
             return redirect()->back()->with('error', 'Failed to schedule the interview. Please try again.');
         }
     }
+    public function byStatus($status = null)
+    {
+        if (!Auth::check()) {
+            return redirect()->route('login')->with('error', 'Please log in.');
+        }
+    
+        $validStatuses = ['pending', 'screening', 'scheduled', 'evaluation', 'hired', 'rejected', 'archived'];
+    
+        $query = Applicant::with('job');
+    
+        if ($status && $status !== 'all') {
+            if (!in_array($status, $validStatuses)) {
+                abort(404);
+            }
+    
+            $query->where('status', $status);
+        }
+    
+        $allApplicants = $query->get();
+        $jobs = Job::all(); // 👈 Include this
+    
+        return view('hrcatalists.ats.admin-ats-master-list', compact('allApplicants', 'status', 'jobs')); // 👈 Now passing jobs
+    }       
 
     public function pending()
     {
@@ -171,10 +193,28 @@ class ApplicantController extends Controller
             return redirect()->route('login')->with('error', 'Please log in to view pending applicants.');
         }
 
-        $allApplicants = Applicant::whereIn('status', ['pending', 'screening'])->get();
+        $allApplicants = Applicant::whereIn('status', ['pending'])->get();
         return view('hrcatalists.ats.admin-ats-screening', compact('allApplicants'));
     }
 
+    public function screening()
+    {
+        if (!Auth::check()) {
+            return redirect()->route('login')->with('error', 'Please log in to view screening applicants.');
+        }
+
+        $allApplicants = Applicant::whereIn('status', ['screening'])->get();
+        return view('hrcatalists.ats.admin-ats-screening', compact('allApplicants'));
+    }
+    public function scheduled()
+    {
+        if (!Auth::check()) {
+            return redirect()->route('login')->with('error', 'Please log in to view screening applicants.');
+        }
+
+        $allApplicants = Applicant::whereIn('status', ['screening'])->get();
+        return view('hrcatalists.ats.admin-ats-scheduled', compact('allApplicants'));
+    }
     public function archived()
     {
         if (!Auth::check()) {
@@ -185,178 +225,98 @@ class ApplicantController extends Controller
         return view('hrcatalists.ats.admin-ats-archived', compact('allApplicants'));
     }
 
-    public function interviewed()
+    public function evaluation()
     {
         if (!Auth::check()) {
-            return redirect()->route('login')->with('error', 'Please log in to view interviewed applicants.');
+            return redirect()->route('login')->with('error', 'Please log in to view applicants in Evaluation.');
         }
 
-        $interviewedApplicants = Applicant::whereIn('status', ['scheduled', 'interviewed'])->get();
-        return view('hrcatalists.ats.admin-ats-interview', compact('interviewedApplicants'));
+        $interviewedApplicants = Applicant::whereIn('status', ['evaluation'])->get();
+        return view('hrcatalists.ats.admin-ats-evaluation', compact('interviewedApplicants'));
     }
 
-public function show($id)
-{
-    if (!Auth::check()) {
-        return redirect()->route('login')->with('error', 'Please log in to view applicant details.');
-    }
-
-    // Fetch applicant with the job relationship
-    $applicant = Applicant::with('job')->find($id); 
-
-    if (!$applicant) {
-        return redirect()->route('applicants.index')->with('error', 'Applicant not found.');
-    }
-
-    return view('hrcatalists.ats.show-applicant', compact('applicant'));
-}
-
-    // public function store(Request $request)
-    // {
-    //     // Validate input
-    //     $validated = $request->validate([
-    //         'job_id' => 'required|integer|exists:job_posts,id', // ✅ Fixed table name
-    //         'first_name' => 'required|string|max:255',
-    //         'last_name' => 'required|string|max:255',
-    //         'email' => 'required|email|max:255|unique:applicants,email',
-    //         'phone' => 'required|string|max:20', // ✅ Ensure phone is validated
-    //         'address' => 'required|string|max:255',
-    //         'cv' => 'required|mimes:pdf|max:2048',
-    //         'privacy_policy_agreed' => 'required',
-    //     ]);
-    
-    //     // Store CV
-    //     if ($request->hasFile('cv')) {
-    //         $cvPath = $request->file('cv')->store('cvs', 'public');
-    //     }
-    
-    //     // Save to the database (only necessary fields)
-    //     $applicant = new Applicant();
-    //     $applicant->job_id = $validated['job_id'];
-    //     $applicant->first_name = $validated['first_name'];
-    //     $applicant->last_name = $validated['last_name'];
-    //     $applicant->email = $validated['email'];
-    //     $applicant->phone = $validated['phone'];
-    //     $applicant->address = $validated['address'];
-    //     $applicant->cv = $cvPath ?? null; // Save CV path
-    //     $applicant->privacy_policy_agreed = 1;
-    //     $applicant->status = 'pending';
-    //     $applicant->applied_at = now(); // Automatically set application timestamp
-    //     $applicant->save();
-
-    
-    //     return back()->with('success', 'Your application has been submitted successfully!');
-    // // }
-
-    // public function store(Request $request)
-    // {
-    //     try {
-    //         $validated = $request->validate([
-    //             'job_id' => 'required|integer|exists:job_posts,id',
-    //             'first_name' => 'required|string|max:255',
-    //             'last_name' => 'required|string|max:255',
-    //             'email' => 'required|email|max:255|unique:applicants,email',
-    //             'phone' => 'required|string|max:20',
-    //             'address' => 'required|string|max:255',
-    //             'cv' => 'required|mimes:pdf|max:2048',
-    //             'privacy_policy_agreed' => 'required',
-    //         ]);
-    
-    //         if ($request->hasFile('cv')) {
-    //             $cvPath = $request->file('cv')->store('cvs', 'public');
-    //         }
-    
-    //         $applicant = new Applicant();
-    //         $applicant->job_id = $validated['job_id'];
-    //         $applicant->first_name = $validated['first_name'];
-    //         $applicant->last_name = $validated['last_name'];
-    //         $applicant->email = $validated['email'];
-    //         $applicant->phone = $validated['phone'];
-    //         $applicant->address = $validated['address'];
-    //         $applicant->cv = $cvPath ?? null;
-    //         $applicant->privacy_policy_agreed = 1;
-    //         $applicant->status = 'pending';
-    //         $applicant->applied_at = now();
-    //         $applicant->save();
-    
-    //         return response()->json(['message' => 'Application submitted successfully!'], 200);
-    
-    //     } catch (\Illuminate\Validation\ValidationException $e) {
-    //         return response()->json(['message' => 'Validation failed!', 'errors' => $e->errors()], 422);
-    //     } catch (\Exception $e) {
-    //         return response()->json(['message' => 'Something went wrong!'], 500);
-    //     }
-    // }
-
-
-    
-        protected $googleDriveService;
-    
-        public function __construct(GoogleDriveService $googleDriveService)
-        {
-            $this->googleDriveService = $googleDriveService;
+    public function show($id)
+    {
+        if (!Auth::check()) {
+            return redirect()->route('login')->with('error', 'Please log in to view applicant details.');
         }
-    
-        public function store(Request $request)
-        {
-            try {
-                // ✅ Validate input
-                $validated = $request->validate([
-                    'job_id' => 'required|integer|exists:job_posts,id',
-                    'first_name' => 'required|string|max:255',
-                    'last_name' => 'required|string|max:255',
-                    'email' => 'required|email|max:255|unique:applicants,email',
-                    'phone' => 'required|string|max:20',
-                    'address' => 'required|string|max:255',
-                    'cv' => 'required|mimes:pdf|max:2048',
-                    'privacy_policy_agreed' => 'required',
-                ]);
-    
-                // ✅ Fetch job details
-                $job = Job::find($validated['job_id']);
-    
-                if (!$job) {
-                    return response()->json(['message' => 'Job not found!'], 404);
-                }
-    
-                // ✅ Upload CV to Google Drive
-                if ($request->hasFile('cv')) {
-                    $cvFile = $request->file('cv');
-                    $cvFileId = $this->googleDriveService->uploadFile($cvFile);
-                } else {
-                    $cvFileId = null;
-                }
-    
-                // ✅ Save to the database
-                $applicant = new Applicant();
-                $applicant->job_id = $validated['job_id'];
-                $applicant->first_name = $validated['first_name'];
-                $applicant->last_name = $validated['last_name'];
-                $applicant->email = $validated['email'];
-                $applicant->phone = $validated['phone'];
-                $applicant->address = $validated['address'];
-                $applicant->cv = $cvFileId; // Save Google Drive File ID
-                $applicant->privacy_policy_agreed = 1;
-                $applicant->status = 'pending';
-                $applicant->applied_at = now();
-                $applicant->save();
-    
-                return response()->json([
-                    'message' => 'Application submitted successfully!',
-                    'applicant' => $applicant->toArray() + ['job_title' => $job->job_title]
-                ], 200);
-            } 
-            catch (\Illuminate\Validation\ValidationException $e) {
-                return response()->json([
-                    'message' => 'Validation failed!',
-                    'errors' => $e->errors()
-                ], 422);
-            } 
-            catch (\Exception $e) {
-                return response()->json([
-                    'message' => 'Something went wrong!',
-                ], 500);
+
+        // Fetch applicant with the job relationship
+        $applicant = Applicant::with('job')->find($id); 
+
+        if (!$applicant) {
+            return redirect()->route('applicants.index')->with('error', 'Applicant not found.');
+        }
+
+        return view('hrcatalists.ats.show-applicant', compact('applicant'));
+    }
+    protected $googleDriveService;
+
+    public function __construct(GoogleDriveService $googleDriveService)
+    {
+        $this->googleDriveService = $googleDriveService;
+    }
+
+    public function store(Request $request)
+    {
+        try {
+            // ✅ Validate input
+            $validated = $request->validate([
+                'job_id' => 'required|integer|exists:job_posts,id',
+                'first_name' => 'required|string|max:255',
+                'last_name' => 'required|string|max:255',
+                'email' => 'required|email|max:255|unique:applicants,email',
+                'phone' => 'required|string|max:20',
+                'address' => 'required|string|max:255',
+                'cv' => 'required|mimes:pdf|max:2048',
+                'privacy_policy_agreed' => 'required',
+            ]);
+
+            // ✅ Fetch job details
+            $job = Job::find($validated['job_id']);
+
+            if (!$job) {
+                return response()->json(['message' => 'Job not found!'], 404);
             }
+
+            // ✅ Upload CV to Google Drive
+            if ($request->hasFile('cv')) {
+                $cvFile = $request->file('cv');
+                $cvFileId = $this->googleDriveService->uploadFile($cvFile);
+            } else {
+                $cvFileId = null;
+            }
+
+            // ✅ Save to the database
+            $applicant = new Applicant();
+            $applicant->job_id = $validated['job_id'];
+            $applicant->first_name = $validated['first_name'];
+            $applicant->last_name = $validated['last_name'];
+            $applicant->email = $validated['email'];
+            $applicant->phone = $validated['phone'];
+            $applicant->address = $validated['address'];
+            $applicant->cv = $cvFileId; // Save Google Drive File ID
+            $applicant->privacy_policy_agreed = 1;
+            $applicant->status = 'pending';
+            $applicant->applied_at = now();
+            $applicant->save();
+
+            return response()->json([
+                'message' => 'Application submitted successfully!',
+                'applicant' => $applicant->toArray() + ['job_title' => $job->job_title]
+            ], 200);
+        } 
+        catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'message' => 'Validation failed!',
+                'errors' => $e->errors()
+            ], 422);
+        } 
+        catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Something went wrong!',
+            ], 500);
         }
     }
+}
     

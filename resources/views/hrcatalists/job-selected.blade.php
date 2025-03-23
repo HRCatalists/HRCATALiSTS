@@ -134,31 +134,13 @@
                         </div>
 
                         <div class="form-check my-4 d-flex align-items-center">
-                            <input class="form-check-input me-2" type="checkbox" id="privacyCheck" name="privacy_policy_agreed" required>
+                            <input class="form-check-input me-2" type="checkbox" id="privacyCheck" name="privacy_policy_agreed" disabled required>
                             <label class="form-check-label me-1" for="privacyCheck">I agree to the</label>
                             <a href="#" id="openPrivacyModal" data-bs-toggle="modal" data-bs-target="#privacyPolicyModal">Privacy Policy</a>.
                         </div>
                         <small id="privacyHint" class="text-muted">Please read the Privacy Policy before agreeing.</small>
 
-                        <!-- @include('hrcatalists.privacy-policy-modal') -->
-
-                        <script>
-                            document.addEventListener("DOMContentLoaded", function() {
-                                const privacyCheck = document.getElementById("privacyCheck");
-                                const privacyModal = document.getElementById("privacyPolicyModal");
-
-                                if (privacyCheck) {
-                                    privacyCheck.disabled = true;
-                                }
-
-                                privacyModal.addEventListener("hidden.bs.modal", function() {
-                                    if (privacyCheck) {
-                                        privacyCheck.disabled = false;
-                                    }
-                                });
-                            });
-                        </script>
-
+                        @include('hrcatalists.privacy-policy-modal')
                         
                         <!-- Submit Button -->
                         <div class="d-grid">

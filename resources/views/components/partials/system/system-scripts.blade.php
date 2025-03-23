@@ -5,13 +5,29 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
 
-<!-- jQuery and DataTables JS -->
+{{-- <!-- jQuery and DataTables JS -->
 <script src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.2.3/js/dataTables.buttons.min.js"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/pdfmake@0.1.53/build/pdfmake.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/pdfmake@0.1.53/build/vfs_fonts.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pdfmake@0.1.53/build/vfs_fonts.js"></script> --}}
+
+<!-- ✅ jQuery (REQUIRED for DataTables) -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<!-- ✅ DataTables Core -->
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+<!-- ✅ DataTables Buttons Extension -->
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
+
+<!-- ✅ Export Dependencies -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
 
 <!-- Chart.js Library -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -29,8 +45,52 @@
 <script src="{{ asset('js/job-status.js') }}"></script>
 
 {{-- Job status JS --}}
-<script src="{{ asset('js/ats-status-update.js') }}"></script>
+{{-- <script src="{{ asset('js/ats-status-update.js') }}"></script> --}}
 
+
+{{-- * --}}
+{{-- ** --}}
+{{-- *** --}}
+{{-- DataTables Initialization for Applicant Tables --}}
+{{-- *** --}}
+{{-- ** --}}
+{{-- * --}}
+<script>
+    $(document).ready(function () {
+        // Loop through each table with class 'applicantTable' and initialize DataTables
+        $('.applicantTable').each(function () {
+            $(this).DataTable({
+                responsive: true, // Makes the table adapt on different screen sizes
+                paging: true, // Enables pagination (Next, Previous, etc.)
+                searching: true, // Enables the search input box
+                info: true, // Shows table info like "Showing 1 to 10 of 50 entries"
+                lengthChange: true, // Allows user to select number of entries to show
+                order: [[3, 'desc']], // Default sort by 4th column (Applied Date) in descending order
+                dom: '<"datatable-toolbar d-flex justify-content-between align-items-center my-3"lf>tip'
+                // Custom DOM layout:
+                // "l" = entries length dropdown
+                // "f" = search box
+                // "t" = table
+                // "i" = info text
+                // "p" = pagination controls
+                // All wrapped in a flexbox toolbar for styling
+            });
+        });
+
+        // When a new tab is shown (via Bootstrap tab click),
+        // force the DataTable to redraw its columns (important for hidden tab tables)
+        $('a[data-bs-toggle="tab"]').on('shown.bs.tab', function () {
+            $('.applicantTable').DataTable().columns.adjust().draw();
+        });
+    });
+</script>
+{{-- * --}}
+{{-- ** --}}
+{{-- *** --}}
+{{-- DataTables Initialization for Applicant Tables --}}
+{{-- *** --}}
+{{-- ** --}}
+{{-- * --}}
 
 {{-- * --}}
 {{-- ** --}}
@@ -46,7 +106,7 @@
             'pending': '#6c757d',       // Gray
             'screening': '#17a2b8',     // Teal
             'scheduled': '#ffc107',     // Yellow
-            'interviewed': '#007bff',   // Blue
+            'evaluation': '#007bff',   // Blue
             'hired': '#28a745',         // Green
             'rejected': '#dc3545',      // Red
             'archived': '#343a40'       // Dark Gray
@@ -147,15 +207,22 @@
         document.querySelector(`[onclick="showTab('${tabId}')"]`).classList.add('active');
     }
 </script>
+{{-- * --}}
+{{-- ** --}}
+{{-- *** --}}
+<!-- Overview Tab JS -->
+{{-- *** --}}
+{{-- ** --}}
+{{-- * --}}  
 
 {{-- * --}}
 {{-- ** --}}
 {{-- *** --}}
-<!-- Data Tables for applicant status change-->
+<!-- Data Tables Applicant sorting to Latest -->
 {{-- *** --}}
 {{-- ** --}}
 {{-- * --}} 
-<script>
+{{-- <script>
     // Function to show the popup
     function showPopup(popupId) {
         const popup = document.getElementById(popupId);
@@ -315,11 +382,11 @@
             closePopup($(this).closest('.custom-popup').attr('id'));
         });
     });
-</script>
+</script> --}}
 {{-- * --}}
 {{-- ** --}}
 {{-- *** --}}
-<!-- Data Tables for applicant status change-->
+<!-- Data Tables Applicant sorting to Latest -->
 {{-- *** --}}
 {{-- ** --}}
 {{-- * --}} 
@@ -435,6 +502,7 @@
             paging: true,
             searching: true,
             ordering: true,
+            dom: '<"datatable-toolbar d-flex justify-content-between align-items-center my-3"lf>tip',
             pageLength: 10,
             language: {
                 paginate: {

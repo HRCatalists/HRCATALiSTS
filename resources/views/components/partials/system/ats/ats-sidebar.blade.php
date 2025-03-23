@@ -32,17 +32,29 @@
                 </li>
 
                 <li>
-                    <a href="{{ route('ats-screening') }}" class="nav-link px-0"> <span class="sidebar-effect">Screening</span> </a>
+                    <a href="{{ route('ats-pending') }}" class="nav-link px-0"> <span class="sidebar-effect">Pending</span> </a>
                 </li>
 
                 <li>
-                    <a href="{{ route('ats-interview') }}" class="nav-link px-0"> <span class="sidebar-effect">Interview</span> </a>
+                    <a href="{{ route('applicants.byStatus', 'screening') }}" class="nav-link px-0">
+                        <span class="sidebar-effect">Screening</span>
+                    </a>
                 </li>
 
+                <li>
+                    <a href="{{ route('ats-scheduled') }}" class="nav-link px-0"> <span class="sidebar-effect">Scheduled</span> </a>
+                </li>
+
+                <li>
+                    <a href="{{ route('ats-evaluation') }}" class="nav-link px-0"> <span class="sidebar-effect">Evaulation</span> </a>
+                </li>
+
+                {{-- <li>
+                    <a href="{{ route('ats-hired') }}" class="nav-link px-0"> <span class="sidebar-effect">Hired</span> </a>
+                </li> --}}
+
                 <li class="d-flex align-items-center pe-5">   
-                    <a href="{{ route('ats-archived') }}" class="nav-link px-0 align-middle">
-                        <span class="sidebar-effect">Archived</span> 
-                    </a>
+                    <a href="{{ route('ats-archived') }}" class="nav-link px-0 align-middle"><span class="sidebar-effect">Archived</span></a>
                 </li>
             </ul>
         </li>

@@ -72,7 +72,7 @@
                     @endif
 
                     <!-- Action Buttons -->
-                    <div class="d-grid mt-5">
+                    {{-- <div class="d-grid mt-5">
                         @if(isset($applicant))
                             <!-- APPROVE -->
                             <form method="POST" action="{{ route('applicants.updateStatus', $applicant->id) }}">
@@ -97,8 +97,46 @@
                         @else
                             <p class="text-danger">Applicant data not found.</p>
                         @endif
+                    </div> --}}
+                    <div class="d-grid mt-5">
+                        @if(isset($applicant))
+                            <!-- PASS/FAIL for Evaluation -->
+                            <div id="demoButtons" class="d-none">
+                                <form method="POST" action="{{ route('applicants.updateStatus', $applicant->id) }}">
+                                    @csrf
+                                    <input type="hidden" name="action" value="pass_evaluation">
+                                    <button type="submit" class="btn btn-success mb-2">PASS DEMO TEACHING</button>
+                                </form>
+                                <form method="POST" action="{{ route('applicants.updateStatus', $applicant->id) }}">
+                                    @csrf
+                                    <input type="hidden" name="action" value="fail_evaluation">
+                                    <button type="submit" class="btn btn-danger mb-2">FAIL DEMO TEACHING</button>
+                                </form>
+                            </div>
+                    
+                            <!-- Approve/Reject/Archive -->
+                            <div id="defaultButtons" class="d-none">
+                                <form method="POST" action="{{ route('applicants.updateStatus', $applicant->id) }}">
+                                    @csrf
+                                    <input type="hidden" name="action" value="approve">
+                                    <button type="submit" class="btn btn-primary mb-2">APPROVE</button>
+                                </form>
+                                <form method="POST" action="{{ route('applicants.updateStatus', $applicant->id) }}">
+                                    @csrf
+                                    <input type="hidden" name="action" value="reject">
+                                    <button type="submit" class="btn btn-outline-danger mb-2">REJECT</button>
+                                </form>
+                                <form method="POST" action="{{ route('applicants.updateStatus', $applicant->id) }}">
+                                    @csrf
+                                    <input type="hidden" name="action" value="archive">
+                                    <button type="submit" class="btn btn-secondary">ARCHIVE</button>
+                                </form>
+                            </div>
+                        @else
+                            <p class="text-danger">Applicant data not found.</p>
+                        @endif
                     </div>
-                    </div>
+                </div>
             </div>
         </div>
    
@@ -199,7 +237,7 @@
 </div>
 
 
-<!-- JavaScript -->
+<!-- For adding notes -->
 <script>
 document.addEventListener("DOMContentLoaded", function () {
     const editNotesBtn = document.getElementById("editNotesBtn");
@@ -232,3 +270,111 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 </script>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const offcanvas = document.getElementById('candidateProfile');
+
+        if (!offcanvas) return;
+
+        const statusColors = {
+            'pending': '#6c757d',
+            'screening': '#17a2b8',
+            'scheduled': '#ffc107',
+            'evaluation': '#007bff',
+            'hired': '#28a745',
+            'rejected': '#dc3545',
+            'archived': '#343a40'
+        };
+
+        offcanvas.addEventListener('show.bs.offcanvas', function (event) {
+            const button = event.relatedTarget;
+            if (!button) return;
+
+            // Get applicant data from button
+            const data = {
+                name: button.getAttribute('data-applicant-name') || 'N/A',
+                status: button.getAttribute('data-applicant-status') || 'N/A',
+                email: button.getAttribute('data-applicant-email') || 'N/A',
+                phone: button.getAttribute('data-applicant-phone') || 'N/A',
+                position: button.getAttribute('data-applicant-position') || 'N/A',
+                address: button.getAttribute('data-applicant-address') || 'N/A',
+                resume: button.getAttribute('data-applicant-resume') || 'N/A'
+            };
+
+            const statusKey = data.status.toLowerCase();
+            const statusColor = statusColors[statusKey] || '#000000';
+
+            // ✅ SweetAlert visual feedback on open
+            Swal.fire({
+                icon: 'info',
+                title: data.name,
+                text: `Currently in stage: ${data.status.toUpperCase()}`,
+                confirmButtonColor: statusColor,
+                confirmButtonText: 'View Profile'
+            });
+
+            // ✅ Safely update fields
+            const elMap = {
+                'applicantName': data.name,
+                'applicantEmail': data.email,
+                'applicantPhone': data.phone,
+                'applicantPosition': data.position,
+                'applicantAddress': data.address,
+                'applicantResume': data.resume
+            };
+
+            for (const id in elMap) {
+                const el = document.getElementById(id);
+                if (el) el.innerText = elMap[id];
+            }
+
+            // ✅ Update status with color
+            const statusEl = document.getElementById('applicantStatus');
+            if (statusEl) {
+                statusEl.innerText = 'STAGE: ' + data.status.toUpperCase();
+                statusEl.style.color = statusColor;
+                statusEl.style.border = `2px solid ${statusColor}`;
+                statusEl.style.backgroundColor = 'transparent';
+                statusEl.style.fontWeight = '600';
+            }
+
+            // ✅ Toggle button visibility
+            const demoButtons = document.getElementById('demoButtons');
+            const defaultButtons = document.getElementById('defaultButtons');
+
+            if (statusKey === 'evaluation') {
+                demoButtons?.classList.remove('d-none');
+                defaultButtons?.classList.add('d-none');
+            } else {
+                demoButtons?.classList.add('d-none');
+                defaultButtons?.classList.remove('d-none');
+            }
+        });
+
+        // Display success or error messages if available
+        @if(session('success'))
+            Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: "{{ session('success') }}",
+                confirmButtonColor: '#28a745'
+            });
+        @endif
+
+        @if(session('error'))
+            Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: "{{ session('error') }}",
+                confirmButtonColor: '#dc3545'
+            });
+        @endif
+    });
+</script>
+
+
+
+
+

@@ -50,8 +50,117 @@
                     </button>
                 </div>
                 
+                <!-- Status Tabs -->
+                @php
+                    $statuses = ['all', 'pending', 'screening', 'scheduled', 'evaluation', 'hired', 'rejected', 'archived'];
+                @endphp
+
+                <ul class="nav nav-tabs mt-4" id="statusTabs" role="tablist">
+                    @foreach ($statuses as $key => $stat)
+                        <li class="nav-item" role="presentation">
+                            <button 
+                                class="nav-link {{ $key === 0 ? 'active' : '' }}" 
+                                id="{{ $stat }}-tab" 
+                                data-bs-toggle="tab" 
+                                data-bs-target="#tab-{{ $stat }}" 
+                                type="button" 
+                                role="tab" 
+                                aria-controls="tab-{{ $stat }}" 
+                                aria-selected="{{ $key === 0 ? 'true' : 'false' }}">
+                                {{ ucfirst($stat) }}
+                            </button>
+                        </li>
+                    @endforeach
+                </ul>
+
+                <div class="tab-content" id="statusTabsContent">
+                    @foreach ($statuses as $key => $stat)
+                        <div 
+                            class="tab-pane fade {{ $key === 0 ? 'show active' : '' }}" 
+                            id="tab-{{ $stat }}" 
+                            role="tabpanel" 
+                            aria-labelledby="{{ $stat }}-tab"
+                        >
+                            <table class="table table-bordered display applicantTable">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>NAME</th>
+                                        <th>STATUS</th>
+                                        <th>APPLIED DATE</th>
+                                        <th>POSITION APPLIED TO</th>
+                                        <th>ACTION</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @php
+                                        $statusColors = [
+                                            'pending' => '#555555',
+                                            'screening' => '#ffe135',
+                                            'scheduled' => '#ff8c00',
+                                            'interviewed' => '#ff8c00',
+                                            'evaluation' => '#007bff',
+                                            'hired' => '#4CAF50',
+                                            'rejected' => '#8b0000',
+                                            'archived' => '#4b0082'
+                                        ];
+                                        $filteredApplicants = $stat === 'all'
+                                            ? $allApplicants
+                                            : $allApplicants->where('status', $stat);
+                                    @endphp
+
+                                    @foreach($filteredApplicants as $applicant)
+                                        <tr>
+                                            <td class="text-center">
+                                                <input type="checkbox" class="rowCheckbox" value="{{ $applicant->id }}">
+                                            </td>
+                                            <td>{{ $applicant->first_name }} {{ $applicant->last_name }}</td>
+                                            <td>
+                                                <form method="POST" action="{{ route('applicants.chooseStatus', $applicant->id) }}" class="status-update-form">
+                                                    @csrf
+                                                    <select name="status" class="form-select status-dropdown"
+                                                        data-applicant-name="{{ $applicant->first_name }} {{ $applicant->last_name }}" 
+                                                        data-current-status="{{ $applicant->status }}"
+                                                        style="color: #fff; border-radius: 4px; padding: 4px; text-align: center; background-color: {{ $statusColors[$applicant->status] ?? '#000' }};"
+                                                    >
+                                                        @foreach ($statuses as $s)
+                                                            <option value="{{ $s }}" {{ $applicant->status == $s ? 'selected' : '' }}>
+                                                                {{ ucfirst($s) }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </form>
+                                            </td>
+                                            <td data-order="{{ \Carbon\Carbon::parse($applicant->applied_at)->timestamp }}">
+                                                {{ \Carbon\Carbon::parse($applicant->applied_at)->format('F d, Y') }}
+                                            </td>                                    
+                                            <td>{{ $applicant->job->job_title ?? 'N/A' }}</td>
+                                            <td>
+                                                <div class="d-flex justify-content-around">
+                                                    <button class="btn btn-ap-edit" 
+                                                        data-bs-toggle="offcanvas" 
+                                                        data-bs-target="#candidateProfile" 
+                                                        data-applicant-id="{{ $applicant->id }}"
+                                                        data-applicant-name="{{ $applicant->first_name }} {{ $applicant->last_name }}"
+                                                        data-applicant-status="{{ $applicant->status }}"
+                                                        data-applicant-email="{{ $applicant->email }}"
+                                                        data-applicant-phone="{{ $applicant->phone_number }}"
+                                                        data-applicant-position="{{ $applicant->job->job_title ?? 'N/A' }}"
+                                                        data-applicant-address="{{ $applicant->address }}">
+                                                        VIEW
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    @endforeach
+                </div>
+                
                 <!-- Applicant Table -->
-                <table id="applicantTable" class="table table-bordered display">
+                {{-- <table id="applicantTable" class="table table-bordered display">
                     <thead>
                         <tr>
                             <th></th>
@@ -95,14 +204,16 @@
                                                 <option value="pending" {{ $applicant->status == 'pending' ? 'selected' : '' }}>Pending</option>
                                                 <option value="screening" {{ $applicant->status == 'screening' ? 'selected' : '' }}>Screening</option>
                                                 <option value="scheduled" {{ $applicant->status == 'scheduled' ? 'selected' : '' }}>Scheduled</option>
-                                                <option value="interviewed" {{ $applicant->status == 'interviewed' ? 'selected' : '' }}>Interviewed</option>
+                                                <option value="evaluation" {{ $applicant->status == 'evaluation' ? 'selected' : '' }}>Evaluation</option>
                                                 <option value="hired" {{ $applicant->status == 'hired' ? 'selected' : '' }}>Hired</option>
                                                 <option value="rejected" {{ $applicant->status == 'rejected' ? 'selected' : '' }}>Rejected</option>
                                                 <option value="archived" {{ $applicant->status == 'archived' ? 'selected' : '' }}>Archived</option>
                                             </select>
                                         </form>
                                     </td>
-                                    <td>{{ \Carbon\Carbon::parse($applicant->applied_at)->format('F d, Y') }}</td>
+                                    <td data-order="{{ \Carbon\Carbon::parse($applicant->applied_at)->timestamp }}">
+                                        {{ \Carbon\Carbon::parse($applicant->applied_at)->format('F d, Y') }}
+                                    </td>                                    
                                     <td>{{ $applicant->job->job_title ?? 'N/A' }}</td>
                                     <!-- off canvas -->
                                     <td>
@@ -126,7 +237,7 @@
          
                         @endif
                     </tbody>
-                </table>
+                </table> --}}
 
                 <!-- Archive Popup -->
                 <div id="archivePopup" class="custom-popup">
@@ -188,51 +299,12 @@
     <!-- End of Sidebar & Master List -->
 
     <!-- Add Applicant Modal -->
-    @include('components.partials.system.ats.ats-add-applicant-modal')
+    {{-- @include('components.partials.system.ats.ats-add-applicant-modal') --}}
+    @include('components.partials.system.ats.ats-add-applicant-modal', ['jobs' => $jobs])
+
     
     <!-- Candidate Profile Offcanvas -->
     @include('components.partials.system.ats.ats-candidate-profile-offcanvas')
-
-    {{-- <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const offcanvas = document.getElementById('candidateProfile');
-    
-            offcanvas.addEventListener('show.bs.offcanvas', function (event) {
-                const button = event.relatedTarget;
-    
-                // Get applicant data from data attributes
-                const applicantName = button.getAttribute('data-applicant-name');
-                const applicantStatus = button.getAttribute('data-applicant-status');
-                const applicantEmail = button.getAttribute('data-applicant-email');
-                const applicantPhone = button.getAttribute('data-applicant-phone');
-                const applicantPosition = button.getAttribute('data-applicant-position');
-                const applicantAddress = button.getAttribute('data-applicant-address');
-    
-                // Status color mapping
-                const statusColors = {
-                    'pending': '#555555',      // Gray
-                    'screening': '#ffe135',    // Yellow
-                    'scheduled': '#ff8c00',    // Orange
-                    'interviewed': '#ff8c00',  // Orange
-                    'hired': '#4CAF50',        // Green
-                    'rejected': '#8b0000',     // Red
-                    'archived': '#4b0082'      // Indigo
-                };
-    
-                const statusColor = statusColors[applicantStatus] || '#000000'; // Default black
-    
-                // Populate the Offcanvas fields
-                document.getElementById('applicantName').innerText = applicantName;
-                document.getElementById('applicantStatus').innerText = 'STAGE: ' + applicantStatus.toUpperCase();
-                document.getElementById('applicantStatus').style.backgroundColor = statusColor;
-    
-                document.getElementById('applicantEmail').innerText = applicantEmail;
-                document.getElementById('applicantPhone').innerText = applicantPhone;
-                document.getElementById('applicantPosition').innerText = applicantPosition;
-                document.getElementById('applicantAddress').innerText = applicantAddress;
-            });
-        });
-    </script>       --}}
 
     {{-- Applying button color changes based on the status --}}
     <script>
@@ -256,7 +328,7 @@
                     'pending': '#6c757d',       // Gray
                     'screening': '#17a2b8',     // Teal
                     'scheduled': '#ffc107',     // Yellow
-                    'interviewed': '#007bff',   // Blue
+                    'evaluation': '#007bff',   // Blue
                     'hired': '#28a745',         // Green
                     'rejected': '#dc3545',      // Red
                     'archived': '#4b0082'      // Indigo
@@ -380,6 +452,7 @@
                         }).then(() => {
                             form.reset(); // Clear form fields
                             modal.hide(); // Close modal
+                            location.reload(); // Refresh the page after clicking "Okay"
                         });
     
                     } else if (response.status === 422) {
@@ -431,83 +504,36 @@
         });
     </script>    
     {{-- Handle Form Submission & Display Success/Error Alerts --}}
-   
-         <script>
-document.addEventListener("DOMContentLoaded", function () {
-    const selectAllCheckbox = document.getElementById("selectAll");
-    const rowCheckboxes = document.querySelectorAll(".rowCheckbox");
 
-    // Select All Checkbox Functionality
-    selectAllCheckbox.addEventListener("change", function () {
-        rowCheckboxes.forEach((checkbox) => {
-            checkbox.checked = this.checked;
+    {{-- DataTables Initialization for Applicant Tables --}}
+    {{-- <script>
+        $(document).ready(function () {
+            // Loop through each table with class 'applicantTable' and initialize DataTables
+            $('.applicantTable').each(function () {
+                $(this).DataTable({
+                    responsive: true, // Makes the table adapt on different screen sizes
+                    paging: true, // Enables pagination (Next, Previous, etc.)
+                    searching: true, // Enables the search input box
+                    info: true, // Shows table info like "Showing 1 to 10 of 50 entries"
+                    lengthChange: true, // Allows user to select number of entries to show
+                    order: [[3, 'desc']], // Default sort by 4th column (Applied Date) in descending order
+                    dom: '<"datatable-toolbar d-flex justify-content-between align-items-center my-3"lf>tip'
+                    // Custom DOM layout:
+                    // "l" = entries length dropdown
+                    // "f" = search box
+                    // "t" = table
+                    // "i" = info text
+                    // "p" = pagination controls
+                    // All wrapped in a flexbox toolbar for styling
+                });
+            });
+    
+            // When a new tab is shown (via Bootstrap tab click),
+            // force the DataTable to redraw its columns (important for hidden tab tables)
+            $('a[data-bs-toggle="tab"]').on('shown.bs.tab', function () {
+                $('.applicantTable').DataTable().columns.adjust().draw();
+            });
         });
-    });
-
-    // Uncheck "Select All" if any individual checkbox is unchecked
-    rowCheckboxes.forEach((checkbox) => {
-        checkbox.addEventListener("change", function () {
-            if (!this.checked) {
-                selectAllCheckbox.checked = false;
-            } else {
-                // If all are checked, mark "Select All" as checked
-                selectAllCheckbox.checked = [...rowCheckboxes].every(cb => cb.checked);
-            }
-        });
-    });
-
-    // Archive Button Click Event
-    document.querySelector(".archive-btn").addEventListener("click", function () {
-        let selectedApplicants = getSelectedApplicants();
-        if (selectedApplicants.length > 0) {
-            confirmAction("archive", selectedApplicants);
-        } else {
-            alert("Please select at least one applicant to archive.");
-        }
-    });
-
-    // Reject Button Click Event
-    document.querySelector(".reject-btn").addEventListener("click", function () {
-        let selectedApplicants = getSelectedApplicants();
-        if (selectedApplicants.length > 0) {
-            confirmAction("reject", selectedApplicants);
-        } else {
-            alert("Please select at least one applicant to reject.");
-        }
-    });
-
-    // Function to Get Selected Applicants' IDs
-    function getSelectedApplicants() {
-        let selectedApplicants = [];
-        document.querySelectorAll(".rowCheckbox:checked").forEach((checkbox) => {
-            selectedApplicants.push(checkbox.value);
-        });
-        return selectedApplicants;
-    }
-
-    // Confirm Action Function (Archive/Reject)
-    function confirmAction(action, selectedApplicants) {
-        let message = `Are you sure you want to ${action} the selected applicants?`;
-        if (confirm(message)) {
-            // Send request to server (Modify according to your Laravel route)
-            fetch(`/applicants/${action}`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content"),
-                },
-                body: JSON.stringify({ applicants: selectedApplicants }),
-            })
-            .then(response => response.json())
-            .then(data => {
-                alert(data.message);
-                location.reload(); // Reload page to reflect changes
-            })
-            .catch(error => console.error("Error:", error));
-        }
-    }
-});
-
-
-        </script>
+    </script> --}}
+        
 </x-admin-ats-layout>
