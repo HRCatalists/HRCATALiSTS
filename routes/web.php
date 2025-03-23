@@ -123,6 +123,10 @@ Route::middleware(['auth', PreventBackHistory::class])->group(function () {
     
         // Delete a job post
         Route::delete('/job-posts/{id}', [JobPostController::class, 'destroy'])->name('job-posts.destroy');
+        
+        // Add this inside the Route::prefix group:
+        Route::post('/job-posts/{id}/delete', [JobPostController::class, 'destroy'])->name('job-posts.delete');
+
     });
     
     Route::get('/ats-logs', [AdminController::class, 'atsLogs'])->name('ats-logs');

@@ -45,11 +45,11 @@
                     <h4>Contacts:</h4>
                     <p>
                         <i class="fas fa-envelope text-primary"></i>
-                        <a href="mailto:admin@gmail.com" class="text-primary">admin@gmail.com</a>
+                        <a href="mailto:admin@gmail.com" class="text-primary">hamdo@columban.edu.ph</a>
                     </p>
                     <p>
                         <i class="fas fa-phone text-primary"></i>
-                        <span class="text-primary">0912345678</span>
+                        <span class="text-primary text-small"> (047) 222-3329 loc. 120</span>
                     </p>
                 </div>
             </div>

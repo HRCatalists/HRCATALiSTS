@@ -203,7 +203,10 @@ class JobPostController extends Controller
      */
     public function destroy($id)
     {
+        \Log::info("Attempting to delete job ID: $id");
+        
         $job = Job::findOrFail($id);
+        
     
         // Prevent deletion if job is active
         if ($job->status === 'active') {

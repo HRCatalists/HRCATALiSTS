@@ -80,9 +80,7 @@
     </div>
     <!-- Job Openings end-->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    
 
-    
     <script>
         document.getElementById('jobSearchForm').addEventListener('submit', function(event) {
         event.preventDefault();
@@ -109,7 +107,7 @@
                                         <strong>Requirements:</strong><br>
                                         <span>${job.requirements.length > 55 ? job.requirements.substring(0, 55) + '...' : job.requirements}</span>
                                     </p>
-                                    <a class="btn-3" href="/job/${job.slug}">APPLY NOW</a>
+                                    <a class="btn-3" href="/job-selected/${job.slug}">APPLY NOW</a>
                                 </div>
                             </div>`;
                     });
