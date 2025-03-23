@@ -38,7 +38,7 @@ class GoogleAuthController extends Controller
             // Log in the registered user
             Auth::login($user);
 
-            return redirect()->route('main-menu'); // Redirect to dashboard
+            return redirect()->route('admin-dashboard'); // Redirect to dashboard
         } catch (\Exception $e) {
             return redirect()->route('login')->with('error', 'Google login failed.');
         }
