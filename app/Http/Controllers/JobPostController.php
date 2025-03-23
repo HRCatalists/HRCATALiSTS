@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Models\Department;
 use Illuminate\Http\Request;
 use App\Models\Job;
 use Illuminate\Support\Str;
@@ -37,6 +38,26 @@ class JobPostController extends Controller
         ]);
     
         try {
+
+            if ($request->department === 'other') {
+                $request->validate([
+                    'other_department_name' => 'required|string|max:255',
+                    'other_department_code' => 'required|string|max:10',
+                ]);
+                $customName = trim($request->input('other_department_name'));
+                $customCode = trim($request->input('other_department_code'));
+
+                if ($customName) {
+                    // Save to departments table if it doesn't already exist
+                    Department::firstOrCreate(
+                        ['name' => $customName],
+                        ['code' => $customCode]
+                    );
+
+                    // Override the department value to save the real name
+                    $validatedData['department'] = $customName;
+                }
+            }
             // ✅ Generate a slug from job_title
             $slug = Str::slug($validatedData['job_title'], '-');
     

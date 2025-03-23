@@ -222,21 +222,31 @@
                         <h5 class="modal-title" id="addPositionModalLabel">Add New Position</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body">
+                    {{-- <div class="modal-body">
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label for="jobTitle" class="form-label">Job Title <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" id="jobTitle" name="job_title" placeholder="Enter Job Title" required>
                             </div>
                             <div class="col-md-6">
-                                <label for="department" class="form-label">Department <span class="text-danger">*</span></label>
-                                {{-- <input type="text" class="form-control" id="department" name="department" placeholder="Enter Department" required> --}}
-                                <select id="department" name="department" class="form-control" required>
+                                <label for="jobform_department" class="form-label">Department <span class="text-danger">*</span></label>
+                                <!-- Department Dropdown -->
+                                <select id="jobform_department" name="department" class="form-control" required>
                                     <option value="">Select a Department</option>
                                     @foreach ($departments as $department)
                                         <option value="{{ $department->name }}">{{ $department->name }}</option>
                                     @endforeach
-                                </select>                                
+                                    <option value="other">Other</option>
+                                </select>
+                                
+                                <!-- Hidden fields -->
+                                <div id="jobform_customDepartmentFields" class="mt-2 d-none">
+                                    <label for="jobform_other_department_name" class="form-label mt-2">New Department Name</label>
+                                    <input type="text" class="form-control mb-2" id="jobform_other_department_name" name="other_department_name" placeholder="Enter Department Name">
+                                
+                                    <label for="jobform_other_department_code" class="form-label">Department Code</label>
+                                    <input type="text" class="form-control" id="jobform_other_department_code" name="other_department_code" placeholder="Enter Department Code">
+                                </div>
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -265,278 +275,84 @@
                                 <input type="date" class="form-control" id="endDate" name="end_date" required>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
+                    <div class="modal-body">
+                        <div class="row g-3">
+                            <!-- Job Title -->
+                            <div class="col-md-6">
+                                <label for="jobTitle" class="form-label">Job Title <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control bg-light" id="jobTitle" name="job_title" placeholder="Enter Job Title" required>
+                            </div>
+                    
+                            <!-- Department -->
+                            <div class="col-md-6">
+                                <label for="jobform_department" class="form-label">Department <span class="text-danger">*</span></label>
+                                <select id="jobform_department" name="department" class="form-control bg-light" required>
+                                    <option value="">Select a Department</option>
+                                    @foreach ($departments as $department)
+                                        <option value="{{ $department->name }}">{{ $department->name }}</option>
+                                    @endforeach
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                    
+                            <!-- Custom Department Fields -->
+                            <div id="jobform_customDepartmentFields" class="col-md-12 border rounded p-3 d-none bg-light">
+                                <h6 class="text-primary">Add New Department</h6>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label for="jobform_other_department_name" class="form-label">New Department Name</label>
+                                        <input type="text" class="form-control" id="jobform_other_department_name" name="other_department_name" placeholder="Enter Department Name">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="jobform_other_department_code" class="form-label">Department Code</label>
+                                        <input type="text" class="form-control" id="jobform_other_department_code" name="other_department_code" placeholder="Enter Department Code">
+                                    </div>
+                                </div>
+                            </div>
+                    
+                            <!-- Job Description -->
+                            <div class="col-md-6">
+                                <label for="description" class="form-label">Job Description <span class="text-danger">*</span></label>
+                                <textarea name="job_description" id="description" class="form-control" rows="8" placeholder="Each bullet on a new line..." required></textarea>
+                                <small class="text-muted">Each bullet on a new line. Will format as list.</small>
+                            </div>
+                    
+                            <!-- Requirements -->
+                            <div class="col-md-6">
+                                <label for="requirements" class="form-label">Requirements <span class="text-danger">*</span></label>
+                                <textarea name="requirements" id="requirements" class="form-control" rows="8" placeholder="Each bullet on a new line..." required></textarea>
+                                <small class="text-muted">Each bullet on a new line. Will format as list.</small>
+                            </div>
+                    
+                            <!-- Tags -->
+                            <div class="col-md-6">
+                                <label for="tags" class="form-label">Tags <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="tags" name="tags" placeholder="Enter tags">
+                            </div>
+                    
+                            <!-- Date Issued -->
+                            <div class="col-md-3">
+                                <label for="dateIssued" class="form-label">Date Issued <span class="text-danger">*</span></label>
+                                <input type="date" class="form-control" id="dateIssued" name="date_issued" required>
+                            </div>
+                    
+                            <!-- End Date -->
+                            <div class="col-md-3">
+                                <label for="endDate" class="form-label">End Date <span class="text-danger">*</span></label>
+                                <input type="date" class="form-control" id="endDate" name="end_date" required>
+                            </div>
+                        </div>
+                    </div>                    
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-primary">Save</button>
                         <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">CANCEL</button>
                     </div>
                 </form>
             </div>
-        </div>
+        </div>           
     </div>
-    <!-- End of Add -->
-
-    <!-- Edit Position Modal -->
-    {{-- <div class="modal fade" id="editPositionModal-{{ $job->id }}" tabindex="-1"
-        aria-labelledby="editPositionModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <form method="POST" action="{{ route('job-posts.update', $job->id) }}">
-                    @csrf
-                    @method('PUT')
-
-                    <div class="modal-header">
-                        <h5 class="modal-title">EDIT POSITION</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-
-                    <div class="modal-body">
-                        <input type="hidden" name="job_id" value="{{ $job->id }}">
-
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label class="form-label">Job Title <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" name="job_title"
-                                    value="{{ $job->job_title }}" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Department <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" name="department"
-                                    value="{{ $job->department }}" required>
-                            </div>
-                        </div>
-
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label class="form-label">Job Description <span class="text-danger">*</span></label>
-                                <textarea name="job_description" class="form-control" rows="5" required>{{ $job->job_description }}</textarea>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Requirements <span class="text-danger">*</span></label>
-                                <textarea name="requirements" class="form-control" rows="5" required>{{ $job->requirements }}</textarea>
-                            </div>
-                        </div>
-
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label class="form-label">Tags</label>
-                                <input type="text" class="form-control" name="tags" value="{{ $job->tags }}">
-                            </div>
-                            <div class="col-md-3">
-                                <label class="form-label">Date Issued <span class="text-danger">*</span></label>
-                                <input type="date" class="form-control" name="date_issued"
-                                    value="{{ $job->date_issued }}" required>
-                            </div>
-                            <div class="col-md-3">
-                                <label class="form-label">End Date <span class="text-danger">*</span></label>
-                                <input type="date" class="form-control" name="end_date"
-                                    value="{{ $job->end_date }}" required>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">UPDATE</button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">CANCEL</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div> --}}
-    <!-- End of Edit -->
-
-    {{-- <div class="modal fade" id="editPositionModal" tabindex="-1" aria-labelledby="editPositionModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editPositionModalLabel">Edit Position</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="editPositionForm" action="{{ route('job-posts.update', ['id' => $job->id]) }}" method="PUT">
-                        @csrf
-                        <div class="mb-3">
-                            <label for="editJobTitle" class="form-label">Job Title</label>
-                            <input type="text" class="form-control" name="job_title" id="editJobTitle" value="{{ $job->job_title }}" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="editDepartment" class="form-label">Department</label>
-                            <input type="text" class="form-control" name="department" id="editDepartment" value="{{ $job->department }}" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="editDescription" class="form-label">Job Description</label>
-                            <textarea class="form-control" name="job_description" id="editDescription" required>{{ $job->job_description }}</textarea>
-                        </div>
-                        <div class="mb-3">
-                            <label for="editRequirements" class="form-label">Requirements</label>
-                            <textarea class="form-control" name="requirements" id="editRequirements" required>{{ $job->requirements }}</textarea>
-                        </div>
-                        <div class="mb-3">
-                            <label for="editTags" class="form-label">Tags</label>
-                            <input type="text" class="form-control" name="tags" id="editTags" value="{{ $job->tags }}">
-                        </div>
-                        <div class="mb-3">
-                            <label for="editDateIssued" class="form-label">Date Issued</label>
-                            <input type="date" class="form-control" name="date_issued" id="editDateIssued" value="{{ $job->date_issued }}" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="editEndDate" class="form-label">End Date</label>
-                            <input type="date" class="form-control" name="end_date" id="editEndDate" value="{{ $job->end_date }}" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Update Job</button>
-                    </form>          
-                </div>
-            </div>
-        </div>
-    </div> --}}
-
-    {{-- Fetches job details --}}
-    {{-- <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            document.querySelectorAll(".edit-job").forEach(button => {
-                button.addEventListener("click", function () {
-                    let jobId = this.getAttribute("data-id");
-
-                    console.log("Job ID Clicked:", jobId); // ✅ Debugging
-
-                    fetch(`/job-posts/${jobId}/edit`)
-                        .then(response => {
-                            if (!response.ok) {
-                                throw new Error(`HTTP Error! Status: ${response.status}`);
-                            }
-                            return response.json();
-                        })
-                        .then(data => {
-                            console.log("Received Data:", data); // ✅ Debugging
-
-                            if (data.success) {
-                                let job = data.job;
-
-                                document.getElementById("editJobId").value = job.id;
-                                document.getElementById("editJobTitle").value = job.job_title;
-                                document.getElementById("editDepartment").value = job.department;
-                                document.getElementById("description").value = job.job_description;
-                                document.getElementById("requirements").value = job.requirements;
-                                document.getElementById("editTags").value = job.tags;
-                                document.getElementById("editDateIssued").value = job.date_issued;
-                                document.getElementById("editEndDate").value = job.end_date;
-                            } else {
-                                console.error("Error: Invalid job data");
-                            }
-                        })
-                        .catch(error => {
-                            console.error("Fetch Error:", error);
-                        });
-                });
-            });
-        });
-    </script> --}}
-           
-
-    {{-- <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            // Handle adding a job
-            document.querySelector("#addPositionModal .btn-post").addEventListener("click", function () {
-                const jobTitle = document.getElementById("jobTitle").value;
-                const department = document.getElementById("department").value;
-                const jobDescription = document.getElementById("description").value;
-                const requirements = document.getElementById("requirements").value;
-                const tags = document.getElementById("tags").value;
-                const dateIssued = document.getElementById("dateIssued").value;
-                const endDate = document.getElementById("endDate").value;
-
-                if (!jobTitle || !department || !jobDescription || !requirements || !dateIssued || !endDate) {
-                    alert("Please fill in all required fields.");
-                    return;
-                }
-
-                fetch("/jobs", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content")
-                    },
-                    body: JSON.stringify({
-                        job_title: jobTitle,
-                        department: department,
-                        job_description: jobDescription,
-                        requirements: requirements,
-                        tags: tags,
-                        date_issued: dateIssued,
-                        end_date: endDate
-                    })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    alert("Job added successfully!");
-                    location.reload();
-                })
-                .catch(error => console.error("Error:", error));
-            });
-
-            // Handle editing a job
-            document.querySelectorAll(".edit-job").forEach(button => {
-                button.addEventListener("click", function () {
-                    const jobId = this.getAttribute("data-id");
-                    const jobTitle = this.getAttribute("data-job_title");
-                    const department = this.getAttribute("data-department");
-                    const jobDescription = this.getAttribute("data-job_description");
-                    const requirements = this.getAttribute("data-requirements");
-                    const tags = this.getAttribute("data-tags");
-                    const dateIssued = this.getAttribute("data-date_issued");
-                    const endDate = this.getAttribute("data-end_date");
-
-                    document.getElementById("editJobTitle").value = jobTitle;
-                    document.getElementById("editDepartment").value = department;
-                    document.getElementById("editDescription").value = jobDescription;
-                    document.getElementById("editRequirements").value = requirements;
-                    document.getElementById("editTags").value = tags;
-                    document.getElementById("editDateIssued").value = dateIssued;
-                    document.getElementById("editEndDate").value = endDate;
-                    document.querySelector("#editPositionModal .btn-post").setAttribute("data-id", jobId);
-                });
-            });
-
-            document.querySelector("#editPositionModal .btn-post").addEventListener("click", function () {
-                const jobId = this.getAttribute("data-id");
-                const jobTitle = document.getElementById("editJobTitle").value;
-                const department = document.getElementById("editDepartment").value;
-                const jobDescription = document.getElementById("editDescription").value;
-                const requirements = document.getElementById("editRequirements").value;
-                const tags = document.getElementById("editTags").value;
-                const dateIssued = document.getElementById("editDateIssued").value;
-                const endDate = document.getElementById("editEndDate").value;
-
-                if (!jobTitle || !department || !jobDescription || !requirements || !dateIssued || !endDate) {
-                    alert("Please fill in all required fields.");
-                    return;
-                }
-
-                fetch(`/jobs/${jobId}`, {
-                    method: "PUT",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content")
-                    },
-                    body: JSON.stringify({
-                        job_title: jobTitle,
-                        department: department,
-                        job_description: jobDescription,
-                        requirements: requirements,
-                        tags: tags,
-                        date_issued: dateIssued,
-                        end_date: endDate
-                    })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    alert("Job updated successfully!");
-                    location.reload();
-                })
-                .catch(error => console.error("Error:", error));
-            });
-        });
-    </script> --}}
+    <!-- Add Position Modal -->
 
     
     {{-- Update Expired Jobs Status --}}
@@ -595,5 +411,58 @@
         });
     </script>
     {{-- Update Expired Jobs Status --}}
+
+
+    {{-- Toggle input when user wants to add specific department --}}
+    {{-- <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const departmentSelect = document.getElementById("department");
+            const customFields = document.getElementById("customDepartmentFields");
+            const nameInput = document.getElementById("other_department_name");
+            const codeInput = document.getElementById("other_department_code");
+        
+            // Safety check
+            if (!departmentSelect || !customFields) {
+                console.warn("Department dropdown or custom fields not found.");
+                return;
+            }
+        
+            // Core function
+            function toggleDepartmentFields() {
+                const isOther = departmentSelect.value === "other";
+                customFields.classList.toggle("d-none", !isOther);
+                nameInput.required = isOther;
+                codeInput.required = isOther;
+            }
+        
+            // Initialize on load
+            toggleDepartmentFields();
+        
+            // Trigger on every change
+            departmentSelect.addEventListener("change", toggleDepartmentFields);
+        });
+    </script> --}}
+    {{-- Toggle input when user wants to add specific department --}}
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const select = document.getElementById("jobform_department");
+            const customFields = document.getElementById("jobform_customDepartmentFields");
+            const nameInput = document.getElementById("jobform_other_department_name");
+            const codeInput = document.getElementById("jobform_other_department_code");
+        
+            if (!select || !customFields) return;
+        
+            function toggleCustomFields() {
+                const show = select.value === "other";
+                customFields.classList.toggle("d-none", !show);
+                nameInput.required = show;
+                codeInput.required = show;
+                console.log("Job Form Dept Changed:", select.value);
+            }
+        
+            toggleCustomFields(); // Run on load
+            select.addEventListener("change", toggleCustomFields);
+        });
+    </script>
 
 </x-admin-ats-layout>

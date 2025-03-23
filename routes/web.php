@@ -12,9 +12,12 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 use App\Http\Controllers\GoogleAuthController;
 
-
+Route::get('/test-department-toggle', function () {
+    return view('hrcatalists.ats.ats-dept-modal-other');
+});
 // Route to show the departments list (for the search dropdown)
 Route::get('/departments', [DepartmentController::class, 'index'])->name('departments.index');
+Route::post('/add-department', [DepartmentController::class, 'store'])->middleware(['auth']);
 // Search Jobs Route
 Route::get('/job-search', [HomeController::class, 'search'])->name('job.search');
 Route::get('/search-jobs', [HomeController::class, 'searchJobs'])->name('search.jobs');
@@ -37,9 +40,6 @@ Route::get('/auth/google/callback', [GoogleAuthController::class, 'handleGoogleC
 Route::get('/login', [GoogleAuthController::class, 'redirect'])
     ->name('login')
     ->middleware('guest');
-
-  
-
 
 // ✅ Allow only guests to access the login page
 Route::get('/login', function () {

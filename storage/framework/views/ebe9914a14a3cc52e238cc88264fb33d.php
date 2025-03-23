@@ -253,71 +253,84 @@
                         <h5 class="modal-title" id="addPositionModalLabel">Add New Position</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
+                    
                     <div class="modal-body">
-                        <div class="row mb-3">
+                        <div class="row g-3">
+                            <!-- Job Title -->
                             <div class="col-md-6">
                                 <label for="jobTitle" class="form-label">Job Title <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="jobTitle" name="job_title" placeholder="Enter Job Title" required>
+                                <input type="text" class="form-control bg-light" id="jobTitle" name="job_title" placeholder="Enter Job Title" required>
                             </div>
+                    
+                            <!-- Department -->
                             <div class="col-md-6">
-                                <label for="department" class="form-label">Department <span class="text-danger">*</span></label>
-                                
-                                <select id="department" name="department" class="form-control" required>
+                                <label for="jobform_department" class="form-label">Department <span class="text-danger">*</span></label>
+                                <select id="jobform_department" name="department" class="form-control bg-light" required>
                                     <option value="">Select a Department</option>
                                     <?php $__currentLoopData = $departments; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $department): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                         <option value="<?php echo e($department->name); ?>"><?php echo e($department->name); ?></option>
                                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                </select>                                
+                                    <option value="other">Other</option>
+                                </select>
                             </div>
-                        </div>
-                        <div class="row mb-3">
+                    
+                            <!-- Custom Department Fields -->
+                            <div id="jobform_customDepartmentFields" class="col-md-12 border rounded p-3 d-none bg-light">
+                                <h6 class="text-primary">Add New Department</h6>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label for="jobform_other_department_name" class="form-label">New Department Name</label>
+                                        <input type="text" class="form-control" id="jobform_other_department_name" name="other_department_name" placeholder="Enter Department Name">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="jobform_other_department_code" class="form-label">Department Code</label>
+                                        <input type="text" class="form-control" id="jobform_other_department_code" name="other_department_code" placeholder="Enter Department Code">
+                                    </div>
+                                </div>
+                            </div>
+                    
+                            <!-- Job Description -->
                             <div class="col-md-6">
-                                <label for="requirements" class="form-label">Job Description <span class="text-danger">*</span></label>
-                                <textarea name="job_description" id="description" class="form-control" rows="10" placeholder="Enter each bullet on a new line..." required></textarea>
-                                <small class="text-muted">Enter each bullet on a new line. The system will format it as a list.</small>
+                                <label for="description" class="form-label">Job Description <span class="text-danger">*</span></label>
+                                <textarea name="job_description" id="description" class="form-control" rows="8" placeholder="Each bullet on a new line..." required></textarea>
+                                <small class="text-muted">Each bullet on a new line. Will format as list.</small>
                             </div>
+                    
+                            <!-- Requirements -->
                             <div class="col-md-6">
-                                <label for="duties" class="form-label">Requirements <span class="text-danger">*</span></label>
-                                <textarea name="requirements" id="requirements" class="form-control" rows="10" placeholder="Enter each bullet on a new line..." required></textarea>
-                                <small class="text-muted">Enter each bullet on a new line. The system will format it as a list.</small>
+                                <label for="requirements" class="form-label">Requirements <span class="text-danger">*</span></label>
+                                <textarea name="requirements" id="requirements" class="form-control" rows="8" placeholder="Each bullet on a new line..." required></textarea>
+                                <small class="text-muted">Each bullet on a new line. Will format as list.</small>
                             </div>
-                        </div>
-                        <div class="row mb-3">
+                    
+                            <!-- Tags -->
                             <div class="col-md-6">
                                 <label for="tags" class="form-label">Tags <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" id="tags" name="tags" placeholder="Enter tags">
                             </div>
+                    
+                            <!-- Date Issued -->
                             <div class="col-md-3">
                                 <label for="dateIssued" class="form-label">Date Issued <span class="text-danger">*</span></label>
                                 <input type="date" class="form-control" id="dateIssued" name="date_issued" required>
                             </div>
+                    
+                            <!-- End Date -->
                             <div class="col-md-3">
                                 <label for="endDate" class="form-label">End Date <span class="text-danger">*</span></label>
                                 <input type="date" class="form-control" id="endDate" name="end_date" required>
                             </div>
                         </div>
-                    </div>
+                    </div>                    
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-primary">Save</button>
                         <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">CANCEL</button>
                     </div>
                 </form>
             </div>
-        </div>
+        </div>           
     </div>
-    <!-- End of Add -->
-
-    <!-- Edit Position Modal -->
-    
-    <!-- End of Edit -->
-
-    
-
-    
-    
-           
-
-    
+    <!-- Add Position Modal -->
 
     
     
@@ -377,7 +390,31 @@
     </script>
     
 
+
     
+    
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const select = document.getElementById("jobform_department");
+            const customFields = document.getElementById("jobform_customDepartmentFields");
+            const nameInput = document.getElementById("jobform_other_department_name");
+            const codeInput = document.getElementById("jobform_other_department_code");
+        
+            if (!select || !customFields) return;
+        
+            function toggleCustomFields() {
+                const show = select.value === "other";
+                customFields.classList.toggle("d-none", !show);
+                nameInput.required = show;
+                codeInput.required = show;
+                console.log("Job Form Dept Changed:", select.value);
+            }
+        
+            toggleCustomFields(); // Run on load
+            select.addEventListener("change", toggleCustomFields);
+        });
+    </script>
 
  <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>

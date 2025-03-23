@@ -23,4 +23,3 @@ yarn-error.log
 /.zed
 storage/logs/*.log
 storage/app/google-drive.json
-storage/app/google-drive.json^M
