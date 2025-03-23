@@ -257,7 +257,7 @@ class ApplicantController extends Controller
             'notes' => 'required|string',
         ]);
     
-        $applicant = Applicant::findOrFail($id);
+        $applicant = Applicant::find($id);
         $applicant->notes = $request->notes;
         $applicant->save();
     

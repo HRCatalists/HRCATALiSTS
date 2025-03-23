@@ -1,26 +1,31 @@
 
 <!-- Edit Notes Modal -->
-<div class="modal fade" id="editNotesModal" tabindex="-1" aria-labelledby="editNotesModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editNotesModalLabel">Edit Notes</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form action="{{ route('applicants.updateNotes', $applicant->id) }}" method="POST">
-                    @csrf
-                    @method('PUT')
-                    <div class="mb-3">
-                        <label for="noteContent" class="form-label">Edit Your Notes:</label>
-                        <textarea class="form-control" id="noteContent" name="notes" rows="5">{{ $applicant->notes }}</textarea>
+            <div class="modal fade" id="editNotesModal" tabindex="-1" aria-labelledby="editNotesModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editNotesModalLabel">Edit Notes</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            @if(isset($applicant)) <!-- ✅ Ensure $applicant exists -->
+                                <form action="{{ route('applicants.updateNotes', $applicant->id) }}" method="POST">
+                                    @csrf
+                                    @method('PUT')
+                                    <div class="mb-3">
+                                        <label for="noteContent" class="form-label">Edit Your Notes:</label>
+                                        <textarea class="form-control" id="noteContent" name="notes" rows="5">{{ old('notes', $applicant->notes ?? '') }}</textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Save</button>
+                                </form>
+                            @else
+                                <p class="text-danger">No applicant found.</p>
+                            @endif
+                        </div>
                     </div>
-                    <button type="submit" class="btn btn-primary">Save</button>
-                </form>
+                </div>
             </div>
-        </div>
-    </div>
-</div>
+
 <!-- End Edit Notes Modal -->
 <div class="offcanvas offcanvas-end p-0" tabindex="-1" id="candidateProfile" aria-labelledby="candidateProfileLabel">
 
@@ -165,21 +170,22 @@
         </div>
    
             <!-- End Overview Tab -->
-       <!-- Notes Tab -->
+   <!-- Notes Tab -->
 <div id="notes" class="tab-content" style="display: none;">
     <div class="notes-section">
-        @if($applicant->notes)
+        @if(isset($applicant) && $applicant->notes) <!-- ✅ Check if $applicant exists -->
             <p><strong>Notes:</strong> {!! nl2br(e($applicant->notes)) !!}</p>
         @else
             <p><strong>No Notes Available.</strong></p>
         @endif
-
+ 
         <div class="notes-btn">
             <button class="btn btn-success mt-3" data-bs-toggle="modal" data-bs-target="#editNotesModal">Edit</button>
         </div>
     </div>
 </div>
 <!-- End Notes Tab -->
+
 
 
 

@@ -47,7 +47,11 @@
                             <td>{{ \Carbon\Carbon::parse($employee->applied_at)->format('F d, Y') }}</td>
                             <td>
                                 <a href="{{ route('employees.show', $employee->id) }}" class="button btn btn-ap-edit">VIEW</a>
-                                <button class="btn btn-danger" onclick="showPopup({{ $employee->id }})">DELETE</button>
+                                <form action="{{ route('employees.delete', $employee->id) }}" method="POST" style="display:inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this employee?')">DELETE</button>
+                            </form>
                             </td>
                         </tr>
                         @endforeach

@@ -49,19 +49,11 @@
                             <td>{{ \Carbon\Carbon::parse($employee->applied_at)->format('F d, Y') }}</td>
                             <td>
                                 <a href="{{ route('employees.show', $employee->id) }}" class="button btn btn-ap-edit">VIEW</a>
-                                <button class="btn btn-danger" onclick="showPopup({{ $employee->id }})">DELETE</button>
-
-                                <div id="rejectPopup" class="custom-popup" style="display: none;">
-                                    <p>Are you sure you want to delete this employee?</p>
-                                    <td class="px-4">
-                                    <div class="dropdown text-center">
-                                        <button class="btn btn-primary border-0" type="button" id="actionsDropdown{{ $employee->id }}" 
-                                            data-bs-toggle="dropdown" aria-expanded="false">
-                                            <i class="fa-solid fa-list"></i> <!-- Bootstrap Icons -->
-                                        </button>
-                                </div>
-
-
+                                <form action="{{ route('employees.delete', $employee->id) }}" method="POST" style="display:inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this employee?')">DELETE</button>
+                            </form>
                             </td>
                         </tr>
                         @endforeach
