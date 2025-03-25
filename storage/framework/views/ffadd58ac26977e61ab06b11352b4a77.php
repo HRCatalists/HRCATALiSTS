@@ -18,30 +18,31 @@
         <h1 class="my-5">JOB OPENINGS</h1>
 
         <!-- Search Bar Container -->
-        <div class="search-container">
+        <div class="container px-3 px-md-5">
+            
             <form id="jobSearchForm" class="search-bar-2">
-                <div class="row w-100">
+                <div class="row w-100 gy-2 flex-md-row flex-column">
                     <!-- Job Title Input -->
-                    <div class="col-4">
-                        <input type="text" id="keyword" name="keyword" placeholder="Enter Job Title or Tags">
+                    <div class="col-md-4">
+                        <input type="text" id="keyword" name="keyword" placeholder="Enter Job Title or Tags" class="form-control">
                     </div>
-        
+            
                     <!-- Searchable Dropdown (Select2) -->                                      
-                    <div class="col-6">
-                        <select id="position" name="position">
+                    <div class="col-md-6">
+                        <select id="position" name="position" class="form-select">
                             <option value="">Select a Department</option>
                             <?php $__currentLoopData = $departments; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $department): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <option value="<?php echo e($department->name); ?>"><?php echo e($department->name); ?></option>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </select> 
                     </div>
-        
+            
                     <!-- Search Button -->
-                    <div class="col-2">
-                        <button type="submit" class="btn btn-primary">Search</button>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-primary w-100">Search</button>
                     </div>
                 </div>                              
-            </form>
+            </form>            
         </div>
         
 

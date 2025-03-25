@@ -13,26 +13,6 @@
             </a>
         </div>
 
-        {{-- Job Openings --}}
-        {{-- <div class="d-flex align-items-center">
-            <span class="text-white login me-2">Looking for a Job?</span>
-            <button class="btn-1">
-                <a href="{{ route('openings') }}">
-                    <div class="original">Job Openings</div>
-                    <div class="letters">
-                        <span>A</span>
-                        <span>P</span>
-                        <span>P</span>
-                        <span>L</span>
-                        <span>Y</span>
-                        <span>&nbsp;</span>
-                        <span>N</span>
-                        <span>O</span>
-                        <span>W</span>
-                    </div>
-                </a>
-            </button>
-        </div> --}}
         {{-- Job Openings / Apply Now Button --}}
         <div class="d-flex align-items-center">
             

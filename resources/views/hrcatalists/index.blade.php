@@ -21,14 +21,14 @@
 
             <div class="row">
                 <div class="col-md-4 d-flex">
-                    <div class="info-card flex-fill">
+                    <div class="info-card card flex-fill">
                         <h3 class="m-3">VISION</h3>
                         <p class="mt-3">Columban College Human Resources Department envisions itself to be the core of manpower of this institution, 
                             since it is duty-bound to uphold proper work training and career enhancement among personnel both teaching and non-teaching.</p>
                     </div>
                 </div>
                 <div class="col-md-4 d-flex">
-                    <div class="info-card flex-fill">
+                    <div class="info-card card flex-fill">
                         <h3 class="m-3">MISSION</h3>
                         <p class="mt-3">Columban College Human Resources Department assures the employees and its clientele the quality service in a workplace 
                             that serves as a career of innovation, professionalism and good human relation, thus producing highly skilled personnel, 
@@ -36,7 +36,7 @@
                     </div>
                 </div>
                 <div class="col-md-4 d-flex">
-                    <div class="info-card flex-fill">
+                    <div class="info-card card flex-fill">
                         <h3 class="m-3">GOALS</h3>
                         <p class="mt-3">
                             
@@ -54,12 +54,12 @@
         <h1>LATEST OPENING</h1>
 
         <div class="container justify-content-center align-items-center mt-5 g-1">
-            <div class="row">
+            <div class="row latest-opening-wrapper">
                 @if ($jobs->isEmpty())
                     <p>No job openings are available at the moment.</p>
                 @else
                     <!-- Swiper -->
-                    <div class="swiper-container col-md-5">
+                    <div class="swiper-container col-md-5 job-column">
                         <div class="swiper mySwiper m-auto">
                             <div class="swiper-wrapper m-auto">
                                 @foreach ($jobs->sortByDesc('created_at')->take(3) as $job) {{-- ✅ Limit to 3 items --}}
@@ -129,7 +129,7 @@
                     </div>
         
                     <!-- Right Image Section -->
-                    <div class="col-md-7 latest-opening-img-container">
+                    <div class="col-md-7 latest-opening-img-container image-column">
                         <img src="images/hiring.jpg" id="latestOpeningImg" class="latest-opening-img">
                     </div>
                 @endif
@@ -194,5 +194,6 @@
     <button id="backToTop" class="back-to-top">
         <i class="fa-solid fa-arrow-up"></i>
     </button>
+  
 
 </x-welcome-layout>

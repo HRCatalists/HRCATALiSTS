@@ -87,7 +87,7 @@
   align-items: center;
   justify-content: space-around;
   width: 933px;
-  height: 110px;
+  /* height: 110px; */
   background-color: white;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -169,50 +169,6 @@
   background-color: #111D5B;
 }
 
-/* .search-bar-2 {
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  width: 933px;
-  height: 110px;
-  background-color: white;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  padding: 20px;
-}
-
-.search-bar-2 input,
-.search-bar-2 select,
-.search-bar-2 button {
-  height: 50px;
-  font-size: 18px;
-  padding: 0 10px;
-  outline: none;
-}
-
-.search-bar-2 input,
-.search-bar-2 select {
-  border: none;
-  border-bottom: 1px solid #111D5B;
-}
-
-.search-bar-2 input {
-  width: 350px;
-}
-
-.search-bar-2 button {
-  background-color: #3377CC;
-  color: white;
-  padding: 0 30px;
-  border-radius: 5px;
-  cursor: pointer;
-  border: none;
-}
-
-.search-bar-2 button:hover {
-  background-color: #111D5B;
-} */
-
 /* About Us Section */
 .about-us {
   background-color: #D0E5FF;
@@ -239,12 +195,9 @@
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease-in-out;
   flex-direction: column;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
-  min-height: 400px !important; 
-  justify-content: center; /* Centers text vertically */
-  align-items: center; /* Centers text horizontally */
-  min-height: 200px; /* Ensures all cards have the same height */
+  min-height: 400px !important;
   font-size: 18px;
 }
 
@@ -480,9 +433,6 @@
 
 /* For Tablets (max-width: 1024px) */
 @media (max-width: 1024px) {
-  .navbar {
-    padding: 0 50px;
-  }
 
   .banner {
     font-size: 36px;
@@ -505,7 +455,7 @@
 
   .job-card {
     width: 100%;
-    height: auto;
+    /* height: auto; */
     margin: 15px 0;
   }
 
@@ -520,6 +470,50 @@
 
   .footer-logo {
     width: 60px;
+    height: 60px;
+  }
+
+  .contact-section,
+  .legal-section {
+    text-align: center;
+  }
+
+  #jobSearchForm .row {
+    flex-direction: column !important;
+  }
+
+  #jobSearchForm .col-md-4,
+  #jobSearchForm .col-md-6,
+  #jobSearchForm .col-md-2 {
+    width: 100% !important;
+  }
+
+  #jobSearchForm button {
+    width: 100%;
+  }
+}
+
+
+@media (max-width: 992px) {
+  .latest-opening-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .job-column,
+  .image-column {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .image-column {
+    order: 1;
+    margin-top: 1rem; /* optional spacing */
+  }
+
+  .job-column {
+    order: 2;
   }
 }
 
@@ -556,12 +550,13 @@
 
   .job-card {
     width: 100%;
-    height: auto;
+    /* height: auto; */
     margin: 15px 0;
   }
 
-  .table-container {
-    padding: 20px;
+  .job-card-container {
+    display: flex;
+    justify-content: center;
   }
 
   .table th, .table td {
@@ -582,6 +577,20 @@
   .footer .logo-section, .contact-section,
   .login-section, .legal-section {
     margin-bottom: 30px;
+  }
+
+  .info-card {
+    margin-bottom: 20px !important;
+  }
+
+  .info-card:last-child {
+    margin-bottom: 0;
+  }
+}
+
+@media (max-width: 612px) {
+  .footer {
+    padding: 0 10px;
   }
 }
 
@@ -757,8 +766,8 @@ input::-webkit-inner-spin-button {
 /* Back to Top Button */
 .back-to-top {
   position: fixed;
-  bottom: 20px;
-  right: 20px;
+  bottom: 30px;
+  right: 50px;
   background: #3377CC;
   color: white;
   border: none;
@@ -770,9 +779,18 @@ input::-webkit-inner-spin-button {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: background 0.3s ease-in-out;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(100px);
+  transition: all 0.4s ease-in-out;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
   z-index: 1000;
+}
+
+.back-to-top.show {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
 }
 
 .back-to-top:hover {

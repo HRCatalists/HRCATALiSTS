@@ -73,6 +73,8 @@
                 <!-- Status Tabs -->
                 <?php
                     $statuses = ['all', 'pending', 'screening', 'scheduled', 'evaluation', 'hired', 'archived'];
+                    // $statuses = ['all', 'pending', 'screening', 'scheduled', 'evaluation', 'hired', 'rejected', 'archived'];
+
                 ?>
 
                 <ul class="nav nav-tabs mt-4" id="statusTabs" role="tablist">

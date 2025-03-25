@@ -22,7 +22,6 @@ a:focus {
 
 .navbar {
     background-color: #3377CC;
-    /* background-color: transparent; */
     border-bottom: 1px solid #3377CC;
     height: 70px;
 }
@@ -52,6 +51,25 @@ a:focus {
 .user-img {
     width: 30px;
     height: 30px;
+}
+
+@media (max-width: 1024px) {
+    .navbar {
+        display: flex;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 991px) {
+    .navbar div {
+        margin: 0;
+    }
+
+    .navbar {
+        padding-top: 10px !important;
+        padding-bottom: 10px !important;
+        max-height: 100%;
+    }
 }
 
 /* Media Query for Smaller Screens */

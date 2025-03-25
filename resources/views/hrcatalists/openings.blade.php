@@ -9,8 +9,8 @@
         <h1 class="my-5">JOB OPENINGS</h1>
 
         <!-- Search Bar Container -->
-        <div class="search-container">
-            <form id="jobSearchForm" class="search-bar-2">
+        <div class="container px-3 px-md-5">
+            {{-- <form id="jobSearchForm" class="search-bar-2">
                 <div class="row w-100">
                     <!-- Job Title Input -->
                     <div class="col-4">
@@ -32,7 +32,30 @@
                         <button type="submit" class="btn btn-primary">Search</button>
                     </div>
                 </div>                              
-            </form>
+            </form> --}}
+            <form id="jobSearchForm" class="search-bar-2">
+                <div class="row w-100 gy-2 flex-md-row flex-column">
+                    <!-- Job Title Input -->
+                    <div class="col-md-4">
+                        <input type="text" id="keyword" name="keyword" placeholder="Enter Job Title or Tags" class="form-control">
+                    </div>
+            
+                    <!-- Searchable Dropdown (Select2) -->                                      
+                    <div class="col-md-6">
+                        <select id="position" name="position" class="form-select">
+                            <option value="">Select a Department</option>
+                            @foreach ($departments as $department)
+                                <option value="{{ $department->name }}">{{ $department->name }}</option>
+                            @endforeach
+                        </select> 
+                    </div>
+            
+                    <!-- Search Button -->
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-primary w-100">Search</button>
+                    </div>
+                </div>                              
+            </form>            
         </div>
         
 
