@@ -6,11 +6,14 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\JobPostController;
 use App\Http\Controllers\ApplicantController;
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\GoogleAuthController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
-use App\Http\Controllers\GoogleAuthController;
+use Illuminate\Support\Facades\Mail; // ✅ Required for sending emails
+use App\Mail\InterviewScheduled;     // ✅ Custom Mailable for interview scheduling
+
 
 
 // Route to show the departments list (for the search dropdown)
@@ -80,6 +83,8 @@ Route::middleware(['auth', PreventBackHistory::class])->group(function () {
     // ATS Routes
     Route::get('/ats-dashboard', [AdminController::class, 'atsDashboard'])->name('ats-dashboard');
     Route::get('/ats-calendar', [AdminController::class, 'atsCalendar'])->name('ats-calendar');
+
+
     Route::get('/events', [AdminController::class, 'getEvents'])->name('events.index');
     Route::post('/events', [AdminController::class, 'storeEvent'])->name('events.store');
     Route::delete('/events/{id}', [AdminController::class, 'deleteEvent'])->name('events.destroy');

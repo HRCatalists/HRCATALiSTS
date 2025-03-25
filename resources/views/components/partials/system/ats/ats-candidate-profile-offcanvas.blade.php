@@ -188,47 +188,43 @@
 
 
 
-
+<div id="interview" class="tab-content" style="display: none;">
     <!-- Interview Tab -->
     @if(isset($applicant))
-
-<div id="interview" class="tab-content" style="display: none;">
-    <div class="interview-section">
-        <form id="scheduleInterviewForm" method="POST" action="{{ route('events.schedule', ['id' => $applicant->id]) }}">
-            @csrf
-            <!-- Schedule Name -->
-            <div class="mb-3">
-                <label for="scheduleName" class="form-label">Schedule Name <span class="text-danger">*</span></label>
-                <input type="text" class="form-control" name="title" id="scheduleName" required>
-            </div>
-            <!-- Name of Applicant -->
-            <div class="mb-3">
-                <label for="applicantName" class="form-label">Name of Applicant <span class="text-danger">*</span></label>
-                <input type="text" class="form-control" name="applicant_name" id="applicantName" value="{{ $applicant->first_name }} {{ $applicant->last_name }}" readonly>
-            </div>
-            <!-- Applicant Email -->
-            <div class="mb-3">
-                <label for="applicantEmail" class="form-label">Applicant Email <span class="text-danger">*</span></label>
-                <input type="email" class="form-control" name="applicant_email" id="applicantEmail" value="{{ $applicant->email }}" readonly>
-            </div>
-            <!-- Schedule Date and Time -->
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label for="scheduleDate" class="form-label">Schedule Date <span class="text-danger">*</span></label>
-                    <input type="date" class="form-control" name="event_date" id="scheduleDate" required>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label for="scheduleTime" class="form-label">Time <span class="text-danger">*</span></label>
-                    <input type="time" class="form-control" name="event_time" id="scheduleTime" required>
-                </div>
-            </div>
-            <!-- Submit Button -->
-            <div class="d-grid">
-                <button type="submit" class="btn btn-primary mt-3">SCHEDULE INTERVIEW</button>
-            </div>
-        </form>
+    <form id="scheduleInterviewForm" method="POST" action="{{ route('events.schedule', ['id' => $applicant->id]) }}">
+    @csrf
+    <!-- Schedule Name -->
+    <div class="mb-3">
+        <label for="scheduleName" class="form-label">Schedule Name <span class="text-danger">*</span></label>
+        <input type="text" class="form-control" name="title" id="scheduleName" required>
     </div>
-</div>
+    <!-- Name of Applicant -->
+    <div class="mb-3">
+        <label for="applicantName" class="form-label">Name of Applicant <span class="text-danger">*</span></label>
+        <input type="text" class="form-control" name="applicant_name" id="applicantName" value="{{ $applicant->first_name }} {{ $applicant->last_name }}" readonly>
+    </div>
+    <!-- Applicant Email -->
+    <div class="mb-3">
+        <label for="applicantEmail" class="form-label">Applicant Email <span class="text-danger">*</span></label>
+        <input type="email" class="form-control" name="applicant_email" id="applicantEmail" value="{{ $applicant->email }}" readonly>
+    </div>
+    <!-- Schedule Date and Time -->
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label for="scheduleDate" class="form-label">Schedule Date <span class="text-danger">*</span></label>
+            <input type="date" class="form-control" name="event_date" id="scheduleDate" required>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label for="scheduleTime" class="form-label">Time <span class="text-danger">*</span></label>
+            <input type="time" class="form-control" name="event_time" id="scheduleTime" required>
+        </div>
+    </div>
+    <!-- Submit Button -->
+    <div class="d-grid">
+        <button type="submit" class="btn btn-primary mt-3">SCHEDULE INTERVIEW</button>
+    </div>
+</form>
+
 <!-- End Interview Tab -->
 @else
     <p>No applicant found.</p>
