@@ -6,11 +6,14 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\JobPostController;
 use App\Http\Controllers\ApplicantController;
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\GoogleAuthController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
-use App\Http\Controllers\GoogleAuthController;
+use Illuminate\Support\Facades\Mail; // ✅ Required for sending emails
+use App\Mail\InterviewScheduled;     // ✅ Custom Mailable for interview scheduling
+
 
 Route::get('/test-department-toggle', function () {
     return view('hrcatalists.ats.ats-dept-modal-other');
@@ -80,6 +83,8 @@ Route::middleware(['auth', PreventBackHistory::class])->group(function () {
     // ATS Routes
     Route::get('/ats-dashboard', [AdminController::class, 'atsDashboard'])->name('ats-dashboard');
     Route::get('/ats-calendar', [AdminController::class, 'atsCalendar'])->name('ats-calendar');
+
+
     Route::get('/events', [AdminController::class, 'getEvents'])->name('events.index');
     Route::post('/events', [AdminController::class, 'storeEvent'])->name('events.store');
     Route::delete('/events/{id}', [AdminController::class, 'deleteEvent'])->name('events.destroy');
@@ -96,6 +101,7 @@ Route::middleware(['auth', PreventBackHistory::class])->group(function () {
     Route::get('/ats-evaluation', [ApplicantController::class, 'evaluation'])->name('ats-evaluation');
     Route::get('/ats-archived', [ApplicantController::class, 'archived'])->name('ats-archived');
     Route::get('/applicants/{id}', [ApplicantController::class, 'show']);
+    Route::put('/applicants/{id}/notes', [ApplicantController::class, 'updateNotes'])->name('applicants.updateNotes');
     Route::post('/events/schedule/{id}', [ApplicantController::class, 'scheduleInterview'])->name('events.schedule');
     Route::post('/applicants/bulk-archive', [ApplicantController::class, 'bulkArchive'])->name('applicants.bulkArchive');
     Route::post('/applicants/bulk-reject', [ApplicantController::class, 'bulkReject'])->name('applicants.bulkReject');

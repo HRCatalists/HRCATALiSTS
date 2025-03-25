@@ -112,5 +112,17 @@ return [
         'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
         'name' => env('MAIL_FROM_NAME', 'Example'),
     ],
+    
+'mailers' => [
+    'gmail' => [
+        'transport' => 'smtp',
+        'host' => 'smtp.gmail.com',
+        'port' => 587,
+        'encryption' => 'tls',
+        'username' => env('GOOGLE_CLIENT_ID'),
+        'password' => env('GOOGLE_CLIENT_SECRET'),
+        'auth_mode' => 'oauth',
+    ],
+],
 
 ];

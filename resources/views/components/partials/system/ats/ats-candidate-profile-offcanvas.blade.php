@@ -1,3 +1,32 @@
+
+<!-- Edit Notes Modal -->
+            <div class="modal fade" id="editNotesModal" tabindex="-1" aria-labelledby="editNotesModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editNotesModalLabel">Edit Notes</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            @if(isset($applicant)) <!-- ✅ Ensure $applicant exists -->
+                                <form action="{{ route('applicants.updateNotes', $applicant->id) }}" method="POST">
+                                    @csrf
+                                    @method('PUT')
+                                    <div class="mb-3">
+                                        <label for="noteContent" class="form-label">Edit Your Notes:</label>
+                                        <textarea class="form-control" id="noteContent" name="notes" rows="5">{{ old('notes', $applicant->notes ?? '') }}</textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Save</button>
+                                </form>
+                            @else
+                                <p class="text-danger">No applicant found.</p>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<!-- End Edit Notes Modal -->
 <div class="offcanvas offcanvas-end p-0" tabindex="-1" id="candidateProfile" aria-labelledby="candidateProfileLabel">
 
     <div class="offcanvas-header">
@@ -141,82 +170,61 @@
         </div>
    
             <!-- End Overview Tab -->
-            <!-- Notes Tab -->
+   <!-- Notes Tab -->
 <div id="notes" class="tab-content" style="display: none;">
     <div class="notes-section">
-        <p id="note1"><strong>No Text Written.</strong> consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...</p>
-        <p id="note2"><strong>No Text Written.</strong> consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...</p>
-        <p id="note3"><strong>No Text Written.</strong> consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...</p>
-
+        @if(isset($applicant) && $applicant->notes) <!-- ✅ Check if $applicant exists -->
+            <p><strong>Notes:</strong> {!! nl2br(e($applicant->notes)) !!}</p>
+        @else
+            <p><strong>No Notes Available.</strong></p>
+        @endif
+ 
         <div class="notes-btn">
-            <button class="btn btn-success mt-3" id="editNotesBtn">Edit</button>
+            <button class="btn btn-success mt-3" data-bs-toggle="modal" data-bs-target="#editNotesModal">Edit</button>
         </div>
     </div>
 </div>
 <!-- End Notes Tab -->
 
-<!-- Edit Notes Modal -->
-<div class="modal fade" id="editNotesModal" tabindex="-1" aria-labelledby="editNotesModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editNotesModalLabel">Edit Notes</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="notesForm">
-                    <div class="mb-3">
-                        <label for="noteContent" class="form-label">Edit Your Notes:</label>
-                        <textarea class="form-control" id="noteContent" rows="5"></textarea>
-                    </div>
-                    <button type="button" class="btn btn-primary" id="saveNotesBtn">Save</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- End Edit Notes Modal -->
 
-    <!-- Interview Tab -->
-    @if(isset($applicant))
 
 <div id="interview" class="tab-content" style="display: none;">
-    <div class="interview-section">
-        <form id="scheduleInterviewForm" method="POST" action="{{ route('events.schedule', ['id' => $applicant->id]) }}">
-            @csrf
-            <!-- Schedule Name -->
-            <div class="mb-3">
-                <label for="scheduleName" class="form-label">Schedule Name <span class="text-danger">*</span></label>
-                <input type="text" class="form-control" name="title" id="scheduleName" required>
-            </div>
-            <!-- Name of Applicant -->
-            <div class="mb-3">
-                <label for="applicantName" class="form-label">Name of Applicant <span class="text-danger">*</span></label>
-                <input type="text" class="form-control" name="applicant_name" id="applicantName" value="{{ $applicant->first_name }} {{ $applicant->last_name }}" readonly>
-            </div>
-            <!-- Applicant Email -->
-            <div class="mb-3">
-                <label for="applicantEmail" class="form-label">Applicant Email <span class="text-danger">*</span></label>
-                <input type="email" class="form-control" name="applicant_email" id="applicantEmail" value="{{ $applicant->email }}" readonly>
-            </div>
-            <!-- Schedule Date and Time -->
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label for="scheduleDate" class="form-label">Schedule Date <span class="text-danger">*</span></label>
-                    <input type="date" class="form-control" name="event_date" id="scheduleDate" required>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label for="scheduleTime" class="form-label">Time <span class="text-danger">*</span></label>
-                    <input type="time" class="form-control" name="event_time" id="scheduleTime" required>
-                </div>
-            </div>
-            <!-- Submit Button -->
-            <div class="d-grid">
-                <button type="submit" class="btn btn-primary mt-3">SCHEDULE INTERVIEW</button>
-            </div>
-        </form>
+    <!-- Interview Tab -->
+    @if(isset($applicant))
+    <form id="scheduleInterviewForm" method="POST" action="{{ route('events.schedule', ['id' => $applicant->id]) }}">
+    @csrf
+    <!-- Schedule Name -->
+    <div class="mb-3">
+        <label for="scheduleName" class="form-label">Schedule Name <span class="text-danger">*</span></label>
+        <input type="text" class="form-control" name="title" id="scheduleName" required>
     </div>
-</div>
+    <!-- Name of Applicant -->
+    <div class="mb-3">
+        <label for="applicantName" class="form-label">Name of Applicant <span class="text-danger">*</span></label>
+        <input type="text" class="form-control" name="applicant_name" id="applicantName" value="{{ $applicant->first_name }} {{ $applicant->last_name }}" readonly>
+    </div>
+    <!-- Applicant Email -->
+    <div class="mb-3">
+        <label for="applicantEmail" class="form-label">Applicant Email <span class="text-danger">*</span></label>
+        <input type="email" class="form-control" name="applicant_email" id="applicantEmail" value="{{ $applicant->email }}" readonly>
+    </div>
+    <!-- Schedule Date and Time -->
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label for="scheduleDate" class="form-label">Schedule Date <span class="text-danger">*</span></label>
+            <input type="date" class="form-control" name="event_date" id="scheduleDate" required>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label for="scheduleTime" class="form-label">Time <span class="text-danger">*</span></label>
+            <input type="time" class="form-control" name="event_time" id="scheduleTime" required>
+        </div>
+    </div>
+    <!-- Submit Button -->
+    <div class="d-grid">
+        <button type="submit" class="btn btn-primary mt-3">SCHEDULE INTERVIEW</button>
+    </div>
+</form>
+
 <!-- End Interview Tab -->
 @else
     <p>No applicant found.</p>

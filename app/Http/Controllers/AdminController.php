@@ -137,9 +137,6 @@ class AdminController extends Controller
              'events' => $events, // ✅ Send events to Blade
          ]);
      }
-      
-    
-
 
      
      public function employees()
@@ -164,13 +161,14 @@ public function deleteEmployee($id)
     $employee = Employee::find($id);
 
     if (!$employee) {
-        return response()->json(['success' => false, 'message' => 'Employee not found.'], 404);
+        return redirect()->back()->with('error', 'Employee not found.');
     }
 
-    $employee->delete(); // Attempt to delete
+    $employee->delete();
 
-    return response()->json(['success' => true, 'message' => 'Employee deleted successfully.']);
+    return redirect()->back()->with('success', 'Employee deleted successfully.');
 }
+
 
 
 

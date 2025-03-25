@@ -25,7 +25,7 @@
                     <div class="card checkbox-card me-3">
                         <div class="container d-flex">
 
-                            <!-- Select All heckbox -->
+                            <!-- Select All Checkbox -->
                             <div class="d-flex me-4 py-3">
                                 <input type="checkbox" id="selectAll" class="rowCheckbox">
                             </div>

@@ -133,19 +133,12 @@
                             @enderror
                         </div>
 
-                        <!-- Privacy Policy Checkbox -->
-                        {{-- <div class="form-group form-check mb-4">
-                            <input type="checkbox" class="form-check-input @error('privacy_policy_agreed') is-invalid @enderror" 
-                                name="privacy_policy_agreed" id="privacy_policy_agreed" required>
-                            <label for="privacy_policy_agreed" class="form-check-label">I agree to the Privacy Policy.</label>
-                            @error('privacy_policy_agreed') <div class="invalid-feedback">{{ $message }}</div> @enderror
-                        </div> --}}
                         <div class="form-check my-4 d-flex align-items-center">
                             <input class="form-check-input me-2" type="checkbox" id="privacyCheck" name="privacy_policy_agreed" disabled required>
                             <label class="form-check-label me-1" for="privacyCheck">I agree to the</label>
                             <a href="#" id="openPrivacyModal" data-bs-toggle="modal" data-bs-target="#privacyPolicyModal">Privacy Policy</a>
                         </div>
-                        <small id="privacyHint" class="text-muted">Please read the Privacy Policy before agreeing.</small>                                                                      
+                        <small id="privacyHint" class="text-muted">Please read the Privacy Policy before agreeing.</small>
 
                         @include('hrcatalists.privacy-policy-modal')
                         
