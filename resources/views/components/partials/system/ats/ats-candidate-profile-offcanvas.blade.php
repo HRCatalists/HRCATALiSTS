@@ -9,7 +9,8 @@
                         </div>
                         <div class="modal-body">
                             @if(isset($applicant)) <!-- ✅ Ensure $applicant exists -->
-                                <form action="{{ route('applicants.updateNotes', $applicant->id) }}" method="POST">
+                            <form action="{{ route('applicants.updateNotes', ['id' => $applicant->id]) }}" method="POST">
+
                                     @csrf
                                     @method('PUT')
                                     <div class="mb-3">
@@ -71,6 +72,7 @@
                             <div class="col-md-6">
                                 <i class="fa-solid fa-envelope me-2"></i> <span id="applicantEmail">{{ $applicant->email ?? 'N/A' }}</span>
                             </div>
+
                             <div class="col-md-6">
                                 <i class="fa-solid fa-phone me-2"></i> <span id="applicantPhone">{{ $applicant->phone ?? 'N/A' }}</span>
                             </div>
@@ -180,7 +182,7 @@
             <!-- Interview Tab -->
             <div id="interview" class="tab-content" style="display: none;">
                 @if(isset($applicant))
-                <form id="scheduleInterviewForm" method="POST" action="{{ route('events.schedule', ['id' => $applicant->id]) }}">
+                <form id="scheduleInterviewForm" method="POST" action="{{ route('applicants.updateStatus', ['id' => $applicant->id]) }}">
                     @csrf
                     <div class="mb-3">
                         <label for="scheduleName" class="form-label">Schedule Name <span class="text-danger">*</span></label>
@@ -292,6 +294,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 'applicantAddress': data.address,
                 'applicantResume': data.resume,
                 'applicantJobTitle': data.jobTitle
+                
             }).forEach(([id, value]) => {
                 const el = document.getElementById(id);
                 if (el) el.innerText = value;

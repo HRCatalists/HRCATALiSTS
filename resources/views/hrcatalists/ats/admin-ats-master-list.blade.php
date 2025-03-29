@@ -144,9 +144,12 @@
                                                         data-applicant-name="{{ $applicant->first_name }} {{ $applicant->last_name }}"
                                                         data-applicant-status="{{ $applicant->status }}"
                                                         data-applicant-email="{{ $applicant->email }}"
-                                                        data-applicant-phone="{{ $applicant->phone_number }}"
+                                                        data-applicant-phone="{{ $applicant->phone }}"
                                                         data-applicant-position="{{ $applicant->job->job_title ?? 'N/A' }}"
-                                                        data-applicant-address="{{ $applicant->address }}">
+                                                        data-applicant-address="{{ $applicant->address }}"
+                                                        data-applicant-notes="{{ $applicant->notes }}">
+                                                        
+
                                                         VIEW
                                                     </button>
                                                 </div>
