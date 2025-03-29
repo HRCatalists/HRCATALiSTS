@@ -241,21 +241,21 @@ class ApplicantController extends Controller
         return view('hrcatalists.ats.admin-ats-evaluation', compact('interviewedApplicants'));
     }
 
-    public function show($id)
-    {
-        if (!Auth::check()) {
-            return redirect()->route('login')->with('error', 'Please log in to view applicant details.');
-        }
+    // public function show($id)
+    // {
+    //     if (!Auth::check()) {
+    //         return redirect()->route('login')->with('error', 'Please log in to view applicant details.');
+    //     }
 
-        // Fetch applicant with the job relationship
-        $applicant = Applicant::with('job')->find($id); 
+    //     // Fetch applicant with the job relationship
+    //     $applicant = Applicant::with('job')->find($id); 
 
-        if (!$applicant) {
-            return redirect()->route('applicants.index')->with('error', 'Applicant not found.');
-        }
+    //     if (!$applicant) {
+    //         return redirect()->route('applicants.index')->with('error', 'Applicant not found.');
+    //     }
 
-        return view('hrcatalists.ats.show-applicant', compact('applicant'));
-    }
+    //     return view('hrcatalists.ats.show-applicant', compact('applicant'));
+    // }
 
     public function updateNotes(Request $request, $id)
     {

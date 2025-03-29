@@ -308,52 +308,64 @@
 
     {{-- Applying button color changes based on the status --}}
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const offcanvas = document.getElementById('candidateProfile');
+       offcanvas.addEventListener('show.bs.offcanvas', function (event) {
+    const button = event.relatedTarget;
+    if (!button) return;
+
+    console.log("Button Clicked:", button);  // Debugging Line
+
+    const data = {
+        name: button.dataset.applicantName || 'N/A',
+        status: button.dataset.applicantStatus || 'N/A',
+        email: button.dataset.applicantEmail || 'N/A',
+        phone: button.dataset.applicantPhone || 'N/A',
+        position: button.dataset.applicantPosition || 'N/A',
+        address: button.dataset.applicantAddress || 'N/A',
+        resume: button.dataset.applicantResume || 'N/A',
+        jobTitle: button.dataset.applicantJobTitle || 'N/A'
+    };
+
+    console.log("Applicant Data:", data);  // Debugging Line
+
+    // Update Offcanvas Content
+    Object.entries({
+        'applicantName': data.name,
+        'applicantEmail': data.email,
+        'applicantPhone': data.phone,
+        'applicantPosition': data.position,
+        'applicantAddress': data.address,
+        'applicantResume': data.resume,
+        'applicantJobTitle': data.jobTitle
+    }).forEach(([id, value]) => {
+        const el = document.getElementById(id);
+        if (el) el.innerText = value;
+    });
+
+    // Status color
+    const statusColors = {
+        'pending': '#6c757d',
+        'screening': '#17a2b8',
+        'scheduled': '#ffc107',
+        'evaluation': '#007bff',
+        'hired': '#28a745',
+        'rejected': '#dc3545',
+        'archived': '#343a40'
+    };
     
-            offcanvas.addEventListener('show.bs.offcanvas', function (event) {
-                const button = event.relatedTarget;
-    
-                // Get applicant data from data attributes
-                const applicantName = button.getAttribute('data-applicant-name');
-                const applicantStatus = button.getAttribute('data-applicant-status');
-                const applicantEmail = button.getAttribute('data-applicant-email');
-                const applicantPhone = button.getAttribute('data-applicant-phone');
-                const applicantPosition = button.getAttribute('data-applicant-position');
-                const applicantAddress = button.getAttribute('data-applicant-address');
-                const applicantResume = button.getAttribute('data-applicant-resume') || 'N/A';
-    
-                // Status color mapping
-                const statusColors = {
-                    'pending': '#6c757d',       // Gray
-                    'screening': '#17a2b8',     // Teal
-                    'scheduled': '#ffc107',     // Yellow
-                    'evaluation': '#007bff',   // Blue
-                    'hired': '#28a745',         // Green
-                    'rejected': '#dc3545',      // Red
-                    'archived': '#4b0082'      // Indigo
-                };
-    
-                const statusColor = statusColors[applicantStatus] || '#000000'; // Default black
-    
-                // Populate the Offcanvas fields
-                document.getElementById('applicantName').innerText = applicantName;
-                document.getElementById('applicantStatus').innerText = 'STAGE: ' + applicantStatus.toUpperCase();
-                document.getElementById('applicantEmail').innerText = applicantEmail;
-                document.getElementById('applicantPhone').innerText = applicantPhone;
-                document.getElementById('applicantPosition').innerText = applicantPosition;
-                document.getElementById('applicantAddress').innerText = applicantAddress;
-                document.getElementById('applicantResume').innerText = applicantResume;
-    
-                // Apply color and border to status
-                const statusElement = document.getElementById('applicantStatus');
-                statusElement.setAttribute('style', `
-                    color: ${statusColor} !important;
-                    border: 2px solid ${statusColor} !important;
-                    background-color: transparent !important;
-                `);
-            });
+    const statusColor = statusColors[data.status.toLowerCase()] || '#000000';
+
+    const statusEl = document.getElementById('applicantStatus');
+    if (statusEl) {
+        statusEl.innerText = `STAGE: ${data.status.toUpperCase()}`;
+        Object.assign(statusEl.style, {
+            color: statusColor,
+            border: `2px solid ${statusColor}`,
+            backgroundColor: 'transparent',
+            fontWeight: '600'
         });
+    }
+});
+
     </script>
     {{-- Applying button color changes based on the status --}}
 

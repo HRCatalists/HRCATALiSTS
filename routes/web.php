@@ -94,13 +94,13 @@ Route::middleware(['auth', PreventBackHistory::class])->group(function () {
 
     // Applicant Routes
     Route::get('/ats-applicants', [ApplicantController::class, 'byStatus'])->name('ats-applicants');
-    Route::get('/ats/applicants/status/{status}', [ApplicantController::class, 'byStatus'])->name('applicants.byStatus');
+    Route::get('/ats/applicants/status/{status}/{id?}', [ApplicantController::class, 'byStatus'])->name('applicants.byStatus');
     Route::get('/ats-pending', [ApplicantController::class, 'pending'])->name('ats-pending');
     Route::get('/ats-screening', [ApplicantController::class, 'screening'])->name('ats-screening');
     Route::get('/ats-scheduled', [ApplicantController::class, 'scheduled'])->name('ats-scheduled');
     Route::get('/ats-evaluation', [ApplicantController::class, 'evaluation'])->name('ats-evaluation');
     Route::get('/ats-archived', [ApplicantController::class, 'archived'])->name('ats-archived');
-    Route::get('/applicants/{id}', [ApplicantController::class, 'show']);
+    // Route::get('/applicants/{id}', [ApplicantController::class, 'show']);
     Route::put('/applicants/{id}/notes', [ApplicantController::class, 'updateNotes'])->name('applicants.updateNotes');
     Route::post('/events/schedule/{id}', [ApplicantController::class, 'scheduleInterview'])->name('events.schedule');
 
