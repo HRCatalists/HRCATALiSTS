@@ -227,14 +227,12 @@ endif;
 unset($__errorArgs, $__bag); ?>
                         </div>
 
-                        <!-- Privacy Policy Checkbox -->
-                        
                         <div class="form-check my-4 d-flex align-items-center">
                             <input class="form-check-input me-2" type="checkbox" id="privacyCheck" name="privacy_policy_agreed" disabled required>
                             <label class="form-check-label me-1" for="privacyCheck">I agree to the</label>
                             <a href="#" id="openPrivacyModal" data-bs-toggle="modal" data-bs-target="#privacyPolicyModal">Privacy Policy</a>
                         </div>
-                        <small id="privacyHint" class="text-muted">Please read the Privacy Policy before agreeing.</small>                                                                      
+                        <small id="privacyHint" class="text-muted">Please read the Privacy Policy before agreeing.</small>
 
                         <?php echo $__env->make('hrcatalists.privacy-policy-modal', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
                         

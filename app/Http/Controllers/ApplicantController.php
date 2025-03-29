@@ -139,44 +139,44 @@ class ApplicantController extends Controller
         return redirect()->back()->with('success', "Applicant status updated to " . ucfirst($newStatus) . ".");
     }
     public function scheduleInterview(Request $request, $id)
-{
-    if (!Auth::check()) {
-        return redirect()->route('login')->with('error', 'Please log in to schedule interviews.');
-    }
+    {
+        if (!Auth::check()) {
+            return redirect()->route('login')->with('error', 'Please log in to schedule interviews.');
+        }
 
-    $request->validate([
-        'title' => 'required|string|max:255',
-        'event_date' => 'required|date',
-        'event_time' => 'required',
-        'applicant_email' => 'required|email',
-        'applicant_name' => 'required|string|max:255'
-    ]);
-
-    try {
-        $applicant = Applicant::findOrFail($id);
-
-        // Create new event
-        Event::create([
-            'user_id' => Auth::id(),
-            'title' => $request->title,
-            'description' => "Interview scheduled for {$request->applicant_name} ({$request->applicant_email})",
-            'event_date' => $request->event_date,
-            'event_time' => $request->event_time,
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'event_date' => 'required|date',
+            'event_time' => 'required',
+            'applicant_email' => 'required|email',
+            'applicant_name' => 'required|string|max:255'
         ]);
 
-        // Update applicant status
-        $applicant->status = 'scheduled';
-        $applicant->save();
+        try {
+            $applicant = Applicant::findOrFail($id);
 
-        // Send Email Notification
-        Mail::to($request->applicant_email)->send(new InterviewScheduled($applicant, $request->event_date, $request->event_time));
+            // Create new event
+            Event::create([
+                'user_id' => Auth::id(),
+                'title' => $request->title,
+                'description' => "Interview scheduled for {$request->applicant_name} ({$request->applicant_email})",
+                'event_date' => $request->event_date,
+                'event_time' => $request->event_time,
+            ]);
 
-        return redirect()->back()->with('success', 'Interview scheduled successfully and email sent.');
-    } catch (\Exception $e) {
-        \Log::error("Interview scheduling failed: " . $e->getMessage());
-        return redirect()->back()->with('error', 'Failed to schedule the interview. Please try again.');
+            // Update applicant status
+            $applicant->status = 'scheduled';
+            $applicant->save();
+
+            // Send Email Notification
+            Mail::to($request->applicant_email)->send(new InterviewScheduled($applicant, $request->event_date, $request->event_time));
+
+            return redirect()->back()->with('success', 'Interview scheduled successfully and email sent.');
+        } catch (\Exception $e) {
+            \Log::error("Interview scheduling failed: " . $e->getMessage());
+            return redirect()->back()->with('error', 'Failed to schedule the interview. Please try again.');
+        }
     }
-}
     public function byStatus($status = null)
     {
         if (!Auth::check()) {

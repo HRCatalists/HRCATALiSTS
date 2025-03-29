@@ -26,6 +26,8 @@ Route::middleware(['auth', PreventBackHistory::class])->group(function () {
     Route::get('/ats-scheduled', [ApplicantController::class, 'scheduled'])->name('ats-scheduled');
     Route::get('/ats-evaluation', [ApplicantController::class, 'evaluation'])->name('ats-evaluation');
     Route::get('/ats-archived', [ApplicantController::class, 'archived'])->name('ats-archived');
+    Route::post('/applicants/bulk-archive', [ApplicantController::class, 'bulkArchive'])->name('applicants.bulkArchive');
+    Route::post('/applicants/bulk-reject', [ApplicantController::class, 'bulkReject'])->name('applicants.bulkReject');
 
     Route::get('/applicants/{id}', [ApplicantController::class, 'show']);
     Route::put('/applicants/{id}/notes', [ApplicantController::class, 'updateNotes'])->name('applicants.updateNotes');

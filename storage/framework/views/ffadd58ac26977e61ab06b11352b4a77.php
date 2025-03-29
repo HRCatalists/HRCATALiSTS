@@ -18,13 +18,13 @@
         <h1 class="my-5">JOB OPENINGS</h1>
 
         <!-- Search Bar Container -->
-        <div class="container px-3 px-md-5">
+        <div class="container d-flex justify-content-center px-3 px-md-5">
             
             <form id="jobSearchForm" class="search-bar-2">
                 <div class="row w-100 gy-2 flex-md-row flex-column">
                     <!-- Job Title Input -->
                     <div class="col-md-4">
-                        <input type="text" id="keyword" name="keyword" placeholder="Enter Job Title or Tags" class="form-control">
+                        <input type="text" id="keyword" name="keyword" placeholder="Enter Job Title or Tags" class="">
                     </div>
             
                     <!-- Searchable Dropdown (Select2) -->                                      
