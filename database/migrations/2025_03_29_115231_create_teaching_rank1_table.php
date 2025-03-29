@@ -56,8 +56,8 @@ return new class extends Migration {
 
             $table->integer('TotalPoints')->nullable();
 
-            // Foreign key constraint
-            $table->foreign('emp_id')->references('emp_id')->on('employee')->onDelete('cascade');
+              // Foreign key constraint
+              $table->foreign('emp_id')->references('id')->on('employees')->onDelete('cascade');
 
             $table->timestamps();
         });

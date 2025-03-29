@@ -8,16 +8,16 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('emp_rank1', function (Blueprint $table) {
-            $table->id(); // Auto-increment primary key
-            $table->unsignedBigInteger('emp_id'); // Employee ID reference
-
+            $table->id(); // Primary key (auto-increment)
+            $table->unsignedBigInteger('emp_id'); // Foreign key reference
+        
             $table->integer('AcademicUnitsDegree')->nullable();
             $table->integer('AdditionalDegree')->nullable();
             $table->integer('Special_Training')->nullable();
-
-            // Foreign key constraint linking to employee table
-            $table->foreign('emp_id')->references('emp_id')->on('employee')->onDelete('cascade');
-
+        
+            // Ensure `emp_id` references `id` in `employees`
+            $table->foreign('emp_id')->references('id')->on('employees')->onDelete('cascade');
+        
             $table->timestamps();
         });
     }
@@ -27,4 +27,3 @@ return new class extends Migration {
         Schema::dropIfExists('emp_rank1');
     }
 };
-
