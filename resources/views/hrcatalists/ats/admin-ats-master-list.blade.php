@@ -180,8 +180,6 @@
                                                         data-applicant-position="{{ $applicant->job->job_title ?? 'N/A' }}"
                                                         data-applicant-address="{{ $applicant->address }}"
                                                         data-applicant-notes="{{ $applicant->notes }}">
-                                                        
-
                                                         VIEW
                                                     </button>
                                                 </div>
@@ -207,65 +205,88 @@
 
     {{-- Applying button color changes based on the status --}}
     <script>
-       offcanvas.addEventListener('show.bs.offcanvas', function (event) {
-    const button = event.relatedTarget;
-    if (!button) return;
-
-    console.log("Button Clicked:", button);  // Debugging Line
-
-    const data = {
-        name: button.dataset.applicantName || 'N/A',
-        status: button.dataset.applicantStatus || 'N/A',
-        email: button.dataset.applicantEmail || 'N/A',
-        phone: button.dataset.applicantPhone || 'N/A',
-        position: button.dataset.applicantPosition || 'N/A',
-        address: button.dataset.applicantAddress || 'N/A',
-        resume: button.dataset.applicantResume || 'N/A',
-        jobTitle: button.dataset.applicantJobTitle || 'N/A'
-    };
-
-    console.log("Applicant Data:", data);  // Debugging Line
-
-    // Update Offcanvas Content
-    Object.entries({
-        'applicantName': data.name,
-        'applicantEmail': data.email,
-        'applicantPhone': data.phone,
-        'applicantPosition': data.position,
-        'applicantAddress': data.address,
-        'applicantResume': data.resume,
-        'applicantJobTitle': data.jobTitle
-    }).forEach(([id, value]) => {
-        const el = document.getElementById(id);
-        if (el) el.innerText = value;
-    });
-
-    // Status color
-    const statusColors = {
-        'pending': '#6c757d',
-        'screening': '#17a2b8',
-        'scheduled': '#ffc107',
-        'evaluation': '#007bff',
-        'hired': '#28a745',
-        'rejected': '#dc3545',
-        'archived': '#343a40'
-    };
-    
-    const statusColor = statusColors[data.status.toLowerCase()] || '#000000';
-
-    const statusEl = document.getElementById('applicantStatus');
-    if (statusEl) {
-        statusEl.innerText = `STAGE: ${data.status.toUpperCase()}`;
-        Object.assign(statusEl.style, {
-            color: statusColor,
-            border: `2px solid ${statusColor}`,
-            backgroundColor: 'transparent',
-            fontWeight: '600'
+        document.addEventListener("DOMContentLoaded", function () {
+            const offcanvas = document.getElementById('candidateProfile');
+            if (!offcanvas) return;
+        
+            offcanvas.addEventListener('show.bs.offcanvas', function (event) {
+                const button = event.relatedTarget;
+                if (!button) return;
+        
+                const applicantId = button.dataset.applicantId;
+                const name = button.dataset.applicantName || 'N/A';
+                const email = button.dataset.applicantEmail || 'N/A';
+                const phone = button.dataset.applicantPhone || 'N/A';
+                const position = button.dataset.applicantPosition || 'N/A';
+                const address = button.dataset.applicantAddress || 'N/A';
+                const notes = button.dataset.applicantNotes || 'No Notes Available';
+                const status = button.dataset.applicantStatus || 'N/A';
+        
+                // Set DOM content
+                document.getElementById('applicantName').innerText = name;
+                document.getElementById('applicantEmail').innerText = email;
+                document.getElementById('applicantPhone').innerText = phone;
+                document.getElementById('applicantJob').innerText = position;
+                document.getElementById('applicantAddress').innerText = address;
+                document.getElementById('applicantNotes').innerText = notes;
+        
+                // Update status badge
+                const statusEl = document.getElementById('applicantStatus');
+                const statusColors = {
+                    pending: '#6c757d',
+                    screening: '#17a2b8',
+                    scheduled: '#ffc107',
+                    evaluation: '#007bff',
+                    hired: '#28a745',
+                    rejected: '#dc3545',
+                    archived: '#343a40'
+                };
+                const color = statusColors[status.toLowerCase()] || '#000';
+                statusEl.innerText = `STAGE: ${status.toUpperCase()}`;
+                statusEl.style.border = `2px solid ${color}`;
+                statusEl.style.color = color;
+        
+                // SweetAlert
+                Swal.fire({
+                    icon: 'info',
+                    title: name,
+                    html: `<strong>Status:</strong> ${status.toUpperCase()}`,
+                    confirmButtonColor: color,
+                    confirmButtonText: 'Continue'
+                });
+        
+                // ✅ Update form actions dynamically
+                const notesForm = document.getElementById('editNotesForm');
+                if (notesForm) {
+                    notesForm.action = `/applicants/${applicantId}/notes`;
+                    document.getElementById('noteContent').value = notes;
+                }
+        
+                const interviewForm = document.getElementById('scheduleInterviewForm');
+                if (interviewForm) {
+                    interviewForm.action = `/events/schedule/${applicantId}`;
+                    document.getElementById('applicantNameInput').value = name;
+                    document.getElementById('applicantEmailInput').value = email;
+                }
+        
+                // Pass/Fail/Approve/Reject/Archive Button Forms
+                document.querySelectorAll('#defaultButtons form, #demoButtons form').forEach(form => {
+                    form.action = `/applicants/${applicantId}/update-status`;
+                });
+        
+                // Toggle pass/fail or default buttons
+                const demoBtns = document.getElementById('demoButtons');
+                const defaultBtns = document.getElementById('defaultButtons');
+                if (status.toLowerCase() === 'evaluation') {
+                    demoBtns?.classList.remove('d-none');
+                    defaultBtns?.classList.add('d-none');
+                } else {
+                    demoBtns?.classList.add('d-none');
+                    defaultBtns?.classList.remove('d-none');
+                }
+            });
         });
-    }
-});
-
-    </script>
+        </script>        
     {{-- Applying button color changes based on the status --}}
 
     {{-- File upload and validation --}}
@@ -299,7 +320,6 @@
             });
         });
     </script>
-    
     {{-- File upload and validation --}}
 
     {{-- Job Selection Dropdown --}}

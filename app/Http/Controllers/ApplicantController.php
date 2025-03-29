@@ -138,6 +138,10 @@ class ApplicantController extends Controller
 
         return redirect()->back()->with('success', "Applicant status updated to " . ucfirst($newStatus) . ".");
     }
+    // *
+    // **
+    // ***
+    // ****Sending email for scheduling add it to events
     public function scheduleInterview(Request $request, $id)
     {
         if (!Auth::check()) {
@@ -177,6 +181,31 @@ class ApplicantController extends Controller
             return redirect()->back()->with('error', 'Failed to schedule the interview. Please try again.');
         }
     }
+    // *
+    // **
+    // ***
+    // ****Adding Notes
+    public function updateNotes(Request $request, $id)
+    {
+        $request->validate([
+            'notes' => 'required|string',
+        ]);
+    
+        $applicant = Applicant::find($id);
+    
+        if (!$applicant) {
+            return back()->with('error', 'Applicant not found.');
+        }
+    
+        $applicant->notes = $request->notes;
+        $applicant->save();
+    
+        return redirect()->back()->with('success', 'Note(s) added successfully.');
+    }
+    // *
+    // **
+    // ***
+    // ****Show applicant datatables by status using bootstrap tabs
     public function byStatus($status = null)
     {
         if (!Auth::check()) {
@@ -270,23 +299,6 @@ class ApplicantController extends Controller
 
     //     return view('hrcatalists.ats.show-applicant', compact('applicant'));
     // }
-
-    public function updateNotes(Request $request, $id)
-    {
-        dd($id, $request->all()); // Debugging: Check what ID and data is received
-    
-        $request->validate([
-            'notes' => 'required|string',
-        ]);
-    
-        $applicant = Applicant::find($id);
-    
-        if (!$applicant) {
-            return back()->with('error', 'Applicant not found.');
-        }
-    
-    }
-    
     
     protected $googleDriveService;
 

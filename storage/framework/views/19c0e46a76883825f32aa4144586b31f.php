@@ -180,9 +180,10 @@
                                                         data-applicant-name="<?php echo e($applicant->first_name); ?> <?php echo e($applicant->last_name); ?>"
                                                         data-applicant-status="<?php echo e($applicant->status); ?>"
                                                         data-applicant-email="<?php echo e($applicant->email); ?>"
-                                                        data-applicant-phone="<?php echo e($applicant->phone_number); ?>"
+                                                        data-applicant-phone="<?php echo e($applicant->phone); ?>"
                                                         data-applicant-position="<?php echo e($applicant->job->job_title ?? 'N/A'); ?>"
-                                                        data-applicant-address="<?php echo e($applicant->address); ?>">
+                                                        data-applicant-address="<?php echo e($applicant->address); ?>"
+                                                        data-applicant-notes="<?php echo e($applicant->notes); ?>">
                                                         VIEW
                                                     </button>
                                                 </div>
@@ -208,53 +209,88 @@
 
     
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener("DOMContentLoaded", function () {
             const offcanvas = document.getElementById('candidateProfile');
-    
+            if (!offcanvas) return;
+        
             offcanvas.addEventListener('show.bs.offcanvas', function (event) {
                 const button = event.relatedTarget;
-    
-                // Get applicant data from data attributes
-                const applicantName = button.getAttribute('data-applicant-name');
-                const applicantStatus = button.getAttribute('data-applicant-status');
-                const applicantEmail = button.getAttribute('data-applicant-email');
-                const applicantPhone = button.getAttribute('data-applicant-phone');
-                const applicantPosition = button.getAttribute('data-applicant-position');
-                const applicantAddress = button.getAttribute('data-applicant-address');
-                const applicantResume = button.getAttribute('data-applicant-resume') || 'N/A';
-    
-                // Status color mapping
+                if (!button) return;
+        
+                const applicantId = button.dataset.applicantId;
+                const name = button.dataset.applicantName || 'N/A';
+                const email = button.dataset.applicantEmail || 'N/A';
+                const phone = button.dataset.applicantPhone || 'N/A';
+                const position = button.dataset.applicantPosition || 'N/A';
+                const address = button.dataset.applicantAddress || 'N/A';
+                const notes = button.dataset.applicantNotes || 'No Notes Available';
+                const status = button.dataset.applicantStatus || 'N/A';
+        
+                // Set DOM content
+                document.getElementById('applicantName').innerText = name;
+                document.getElementById('applicantEmail').innerText = email;
+                document.getElementById('applicantPhone').innerText = phone;
+                document.getElementById('applicantJob').innerText = position;
+                document.getElementById('applicantAddress').innerText = address;
+                document.getElementById('applicantNotes').innerText = notes;
+        
+                // Update status badge
+                const statusEl = document.getElementById('applicantStatus');
                 const statusColors = {
-                    'pending': '#6c757d',       // Gray
-                    'screening': '#17a2b8',     // Teal
-                    'scheduled': '#ffc107',     // Yellow
-                    'evaluation': '#007bff',   // Blue
-                    'hired': '#28a745',         // Green
-                    'rejected': '#dc3545',      // Red
-                    'archived': '#4b0082'      // Indigo
+                    pending: '#6c757d',
+                    screening: '#17a2b8',
+                    scheduled: '#ffc107',
+                    evaluation: '#007bff',
+                    hired: '#28a745',
+                    rejected: '#dc3545',
+                    archived: '#343a40'
                 };
-    
-                const statusColor = statusColors[applicantStatus] || '#000000'; // Default black
-    
-                // Populate the Offcanvas fields
-                document.getElementById('applicantName').innerText = applicantName;
-                document.getElementById('applicantStatus').innerText = 'STAGE: ' + applicantStatus.toUpperCase();
-                document.getElementById('applicantEmail').innerText = applicantEmail;
-                document.getElementById('applicantPhone').innerText = applicantPhone;
-                document.getElementById('applicantPosition').innerText = applicantPosition;
-                document.getElementById('applicantAddress').innerText = applicantAddress;
-                document.getElementById('applicantResume').innerText = applicantResume;
-    
-                // Apply color and border to status
-                const statusElement = document.getElementById('applicantStatus');
-                statusElement.setAttribute('style', `
-                    color: ${statusColor} !important;
-                    border: 2px solid ${statusColor} !important;
-                    background-color: transparent !important;
-                `);
+                const color = statusColors[status.toLowerCase()] || '#000';
+                statusEl.innerText = `STAGE: ${status.toUpperCase()}`;
+                statusEl.style.border = `2px solid ${color}`;
+                statusEl.style.color = color;
+        
+                // SweetAlert
+                Swal.fire({
+                    icon: 'info',
+                    title: name,
+                    html: `<strong>Status:</strong> ${status.toUpperCase()}`,
+                    confirmButtonColor: color,
+                    confirmButtonText: 'Continue'
+                });
+        
+                // ✅ Update form actions dynamically
+                const notesForm = document.getElementById('editNotesForm');
+                if (notesForm) {
+                    notesForm.action = `/applicants/${applicantId}/notes`;
+                    document.getElementById('noteContent').value = notes;
+                }
+        
+                const interviewForm = document.getElementById('scheduleInterviewForm');
+                if (interviewForm) {
+                    interviewForm.action = `/events/schedule/${applicantId}`;
+                    document.getElementById('applicantNameInput').value = name;
+                    document.getElementById('applicantEmailInput').value = email;
+                }
+        
+                // Pass/Fail/Approve/Reject/Archive Button Forms
+                document.querySelectorAll('#defaultButtons form, #demoButtons form').forEach(form => {
+                    form.action = `/applicants/${applicantId}/update-status`;
+                });
+        
+                // Toggle pass/fail or default buttons
+                const demoBtns = document.getElementById('demoButtons');
+                const defaultBtns = document.getElementById('defaultButtons');
+                if (status.toLowerCase() === 'evaluation') {
+                    demoBtns?.classList.remove('d-none');
+                    defaultBtns?.classList.add('d-none');
+                } else {
+                    demoBtns?.classList.add('d-none');
+                    defaultBtns?.classList.remove('d-none');
+                }
             });
         });
-    </script>
+        </script>        
     
 
     
@@ -288,7 +324,6 @@
             });
         });
     </script>
-    
     
 
     

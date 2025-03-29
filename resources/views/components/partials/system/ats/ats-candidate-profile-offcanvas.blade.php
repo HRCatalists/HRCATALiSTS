@@ -1,31 +1,26 @@
-
 <!-- Edit Notes Modal -->
 <div class="modal fade" id="editNotesModal" tabindex="-1" aria-labelledby="editNotesModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="editNotesModalLabel">Edit Notes</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            @if(isset($applicant)) <!-- ✅ Ensure $applicant exists -->
-                            <form action="{{ route('applicants.updateNotes', ['id' => $applicant->id]) }}" method="POST">
-
-                                    @csrf
-                                    @method('PUT')
-                                    <div class="mb-3">
-                                        <label for="noteContent" class="form-label">Edit Your Notes:</label>
-                                        <textarea class="form-control" id="noteContent" name="notes" rows="5">{{ old('notes', $applicant->notes ?? '') }}</textarea>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary">Save</button>
-                                </form>
-                            @else
-                                <p class="text-danger">No applicant found.</p>
-                            @endif
-                        </div>
-                    </div>
-                </div>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editNotesModalLabel">Edit Notes</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+            <div class="modal-body">
+                <form id="editNotesForm" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <div class="mb-3">
+                        <label for="noteContent" class="form-label">Edit Your Notes:</label>
+                        <textarea class="form-control" id="noteContent" name="notes" rows="5"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Candidate Profile Offcanvas -->
 <div class="offcanvas offcanvas-end p-0" tabindex="-1" id="candidateProfile" aria-labelledby="candidateProfileLabel">
     <div class="offcanvas-header">
@@ -34,7 +29,7 @@
     </div>
 
     <div class="offcanvas-body-wrapper px-4">
-        <div class="content-section">
+        <div class="container content-section">
             <div class="d-flex align-items-center justify-content-between my-4">
                 <h5 id="applicantName">
                     {{ $applicant->first_name ?? 'Applicant Name' }} {{ $applicant->last_name ?? '' }}
@@ -97,33 +92,6 @@
                     @else
                         <p id="cvMessage">No CV available.</p>
                     @endif
-                      <!-- Action Buttons -->
-                      {{-- <div class="d-grid mt-5">
-                        @if(isset($applicant))
-                            <!-- APPROVE -->
-                            <form method="POST" action="{{ route('applicants.updateStatus', $applicant->id) }}">
-                                @csrf
-                                <input type="hidden" name="action" value="approve">
-                                <button type="submit" class="btn btn-success">APPROVE</button>
-                            </form>
-
-                            <!-- REJECT (Redirects to 'ats-applicant') -->
-                            <form method="POST" action="{{ route('applicants.updateStatus', $applicant->id) }}">
-                                @csrf
-                                <input type="hidden" name="action" value="reject">
-                                <button type="submit" class="btn btn-danger">REJECT</button>
-                            </form>
-
-                            <!-- ARCHIVE -->
-                            <form method="POST" action="{{ route('applicants.updateStatus', $applicant->id) }}">
-                                @csrf
-                                <input type="hidden" name="action" value="archive">
-                                <button type="submit" class="btn btn-outline-danger">ARCHIVE</button>
-                            </form>
-                        @else
-                            <p class="text-danger">Applicant data not found.</p>
-                        @endif
-                    </div> --}}
 
                     <div class="d-grid mt-5">
                         @if(isset($applicant))
@@ -181,20 +149,19 @@
 
             <!-- Interview Tab -->
             <div id="interview" class="tab-content" style="display: none;">
-                @if(isset($applicant))
-                <form id="scheduleInterviewForm" method="POST" action="{{ route('applicants.updateStatus', ['id' => $applicant->id]) }}">
+                <form id="scheduleInterviewForm" method="POST">
                     @csrf
                     <div class="mb-3">
-                        <label for="scheduleName" class="form-label">Schedule Name <span class="text-danger">*</span></label>
+                        <label for="scheduleName" class="form-label">Schedule Title <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" name="title" id="scheduleName" required>
                     </div>
                     <div class="mb-3">
                         <label for="applicantNameInput" class="form-label">Name of Applicant <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" name="applicant_name" id="applicantNameInput" value="{{ $applicant->first_name }} {{ $applicant->last_name }}" readonly>
+                        <input type="text" class="form-control" name="applicant_name" id="applicantNameInput" readonly>
                     </div>
                     <div class="mb-3">
                         <label for="applicantEmailInput" class="form-label">Applicant Email <span class="text-danger">*</span></label>
-                        <input type="email" class="form-control" name="applicant_email" id="applicantEmailInput" value="{{ $applicant->email }}" readonly>
+                        <input type="email" class="form-control" name="applicant_email" id="applicantEmailInput" readonly>
                     </div>
                     <div class="row">
                         <div class="col-md-6 mb-3">
@@ -209,10 +176,7 @@
                     <div class="d-grid">
                         <button type="submit" class="btn btn-primary mt-3">SCHEDULE INTERVIEW</button>
                     </div>
-                </form>
-                @else
-                    <p>No applicant found.</p>
-                @endif
+                </form>                
             </div>
             <!-- End Interview Tab -->
         </div>
