@@ -138,7 +138,7 @@
                 </li>
 
                 <li>
-                    <a href="admin-ems-non-teaching.html" class="nav-link px-0"> <span class="sidebar-effect-1">Non-Teaching Ranking</span> </a>
+                    <a href="{{ route('non-ranking') }}" class="nav-link px-0"> <span class="sidebar-effect-1">Non-Teaching Ranking</span> </a>
                 </li>
             </ul>
         </li>

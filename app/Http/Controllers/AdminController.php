@@ -258,7 +258,7 @@ public function deleteEmployee($id)
             return redirect()->route('login');
         }
         $employees = Employee::where('department', 'None-Teaching')->get();
-        return view('hrcatalists.ems.admin-ems-dept-non-teaching',compact('employees')); // College of Basic Education
+        return view('hrcatalists.ems.admin-ems-dept-non-teaching',compact('employees')); // Non-teaching
     }
 
     public function ranking()
@@ -267,6 +267,13 @@ public function deleteEmployee($id)
             return redirect()->route('login');
         }
         return view('hrcatalists.ems.admin-ems-faculty-ranking'); // EMS Faculty/Non-teaching Ranking
+    }
+    public function non_ranking()
+    {
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+        return view('hrcatalists.ems.admin-ems-non-teaching'); // EMS Faculty/Non-teaching Ranking
     }
 
     public function companyPolicy()

@@ -23,6 +23,7 @@ Route::middleware(['auth', PreventBackHistory::class])->group(function () {
     // EMS Extras
     Route::get('/ems-calendar', [AdminController::class, 'emscalendar'])->name('ems-calendar');
     Route::get('/ems-ranking', [AdminController::class, 'ranking'])->name('ems-ranking');
+    Route::get('/ems-non', [AdminController::class, 'non_ranking'])->name('non-ranking');
     Route::get('/ems-policy', [AdminController::class, 'companyPolicy'])->name('ems-policy');
     Route::get('/ems-logs', [AdminController::class, 'logs'])->name('ems-logs');
 });
