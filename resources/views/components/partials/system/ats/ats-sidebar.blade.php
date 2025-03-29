@@ -133,7 +133,8 @@
 
             <ul class="collapse flex-column ms-1" id="ranking" data-bs-parent="#menu">
                 <li class="mt-2">
-                    <a href="admin-ems-faculty-ranking.html" class="nav-link px-0"> <span class="sidebar-effect-1">Faculty Ranking</span> </a>
+                <a href="{{ route('ems-ranking') }}" class="nav-link px-0"> <span class="sidebar-effect-1">Faculty Ranking</span> </a>
+              
                 </li>
 
                 <li>

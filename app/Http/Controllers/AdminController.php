@@ -266,7 +266,7 @@ public function deleteEmployee($id)
         if (!Auth::check()) {
             return redirect()->route('login');
         }
-        return view('hrcatalists.ems.admin-ems-ranking'); // EMS Faculty/Non-teaching Ranking
+        return view('hrcatalists.ems.admin-ems-faculty-ranking'); // EMS Faculty/Non-teaching Ranking
     }
 
     public function companyPolicy()

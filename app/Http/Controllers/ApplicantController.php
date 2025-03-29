@@ -220,15 +220,21 @@ class ApplicantController extends Controller
         $allApplicants = Applicant::whereIn('status', ['screening'])->get();
         return view('hrcatalists.ats.admin-ats-screening', compact('allApplicants'));
     }
-    public function scheduled()
+    public function scheduled($id)
     {
         if (!Auth::check()) {
             return redirect()->route('login')->with('error', 'Please log in to view screening applicants.');
         }
-
-        $allApplicants = Applicant::whereIn('status', ['screening'])->get();
-        return view('hrcatalists.ats.admin-ats-scheduled', compact('allApplicants'));
+    
+        $applicant = Applicant::where('status', 'screening')->find($id);
+    
+        if (!$applicant) {
+            return redirect()->route('ats-scheduled')->with('error', 'Applicant not found.');
+        }
+    
+        return view('hrcatalists.ats.admin-ats-scheduled', compact('applicant'));
     }
+    
     public function archived()
     {
         if (!Auth::check()) {
@@ -249,33 +255,36 @@ class ApplicantController extends Controller
         return view('hrcatalists.ats.admin-ats-evaluation', compact('interviewedApplicants'));
     }
 
-    public function show($id)
-    {
-        if (!Auth::check()) {
-            return redirect()->route('login')->with('error', 'Please log in to view applicant details.');
-        }
+    // public function show($id)
+    // {
+    //     if (!Auth::check()) {
+    //         return redirect()->route('login')->with('error', 'Please log in to view applicant details.');
+    //     }
 
-        // Fetch applicant with the job relationship
-        $applicant = Applicant::with('job')->find($id); 
+    //     // Fetch applicant with the job relationship
+    //     $applicant = Applicant::with('job')->find($id); 
 
-        if (!$applicant) {
-            return redirect()->route('applicants.index')->with('error', 'Applicant not found.');
-        }
+    //     if (!$applicant) {
+    //         return redirect()->route('applicants.index')->with('error', 'Applicant not found.');
+    //     }
 
-        return view('hrcatalists.ats.show-applicant', compact('applicant'));
-    }
+    //     return view('hrcatalists.ats.show-applicant', compact('applicant'));
+    // }
 
     public function updateNotes(Request $request, $id)
     {
+        dd($id, $request->all()); // Debugging: Check what ID and data is received
+    
         $request->validate([
             'notes' => 'required|string',
         ]);
     
         $applicant = Applicant::find($id);
-        $applicant->notes = $request->notes;
-        $applicant->save();
     
-        return back()->with('success', 'Notes updated successfully.');
+        if (!$applicant) {
+            return back()->with('error', 'Applicant not found.');
+        }
+    
     }
     
     
