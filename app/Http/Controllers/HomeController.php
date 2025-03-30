@@ -95,8 +95,9 @@ class HomeController extends Controller
         $keyword = $request->input('keyword');
         $department = $request->input('position');
     
-        // Query to fetch jobs based on search criteria
-        $jobs = Job::when($keyword, function ($query, $keyword) {
+        // Query to fetch only active jobs and apply filters
+        $jobs = Job::where('status', 'active') // Only active jobs
+            ->when($keyword, function ($query, $keyword) {
                 return $query->where(function ($q) use ($keyword) {
                     $q->where('job_title', 'LIKE', "%$keyword%")
                       ->orWhere('tags', 'LIKE', "%$keyword%")
@@ -104,17 +105,12 @@ class HomeController extends Controller
                       ->orWhere('requirements', 'LIKE', "%$keyword%");
                 });
             })
-            ->when($department && $department !== '', function ($query) use ($department) {
+            ->when($department, function ($query, $department) {
                 return $query->where('department', $department);
-            })
-            ->orWhere(function ($query) use ($department) {
-                if (!$department || $department === '') {
-                    return $query;
-                }
             })
             ->get();
     
         return response()->json(['jobs' => $jobs]);
-    }
+    }    
     
 }

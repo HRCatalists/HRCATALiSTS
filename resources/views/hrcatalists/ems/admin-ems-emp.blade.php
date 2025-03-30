@@ -21,6 +21,20 @@
                     </div>
                 </div>
 
+                @if(session('success'))
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{ session('success') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                @endif
+
+                @if(session('error'))
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        {{ session('error') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                @endif
+
                 <!-- Employee Table -->
                 <table id="employeeTable" class="table table-bordered display">
                     <thead>
@@ -46,11 +60,30 @@
                             <td>{{ $employee->job_title }}</td>
                             <td>{{ \Carbon\Carbon::parse($employee->applied_at)->format('F d, Y') }}</td>
                             <td>
-                                <a href="{{ route('employees.show', $employee->id) }}" class="button btn btn-ap-edit">VIEW</a>
-                                <form action="{{ route('employees.delete', $employee->id) }}" method="POST" style="display:inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this employee?')">DELETE</button>
+                                <div class="dropdown text-center">
+                                    <button class="btn btn-primary border-0" type="button" data-bs-toggle="dropdown">
+                                        <i class="fa-solid fa-list"></i>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <!-- Approve -->
+                                        <li>
+                                            {{-- <a href="{{ route('employees.show', $employee->id) }}" class="button btn text-primary">VIEW</a> --}}
+                                            <button type="button" class="dropdown-item text-info" data-bs-toggle="modal" data-bs-target="#employeeModal-{{ $employee->id }}">
+                                                VIEW
+                                            </button>                                            
+                                        </li>
+
+                                        <!-- Delete -->
+                                        <li>
+                                            <form action="{{ route('employees.delete', $employee->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this employee?');">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="dropdown-item text-danger">DELETE</button>
+                                            </form>
+                                        </li>                                        
+                                    </ul>
+                                </div>
+                                
                             </form>
                             </td>
                         </tr>
@@ -61,47 +94,58 @@
         </div>
     </div>
 
-    <!-- Delete Confirmation Popup -->
-    <div id="rejectPopup" class="custom-popup" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3); z-index: 1000;">
-        <div class="popup-content">
-            <p>Are you sure you want to delete this employee?</p>
-            <button type="button" class="btn btn-danger" id="confirmDelete">Yes, delete the employee!</button>
-            <button type="button" class="btn btn-outline-secondary" onclick="closePopup()">Cancel</button>
+    {{-- View Modal --}}
+    <div class="modal fade" id="employeeModal-{{ $employee->id }}" tabindex="-1" aria-labelledby="employeeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Employee Profile</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+    
+                <div class="modal-body">
+                    @include('hrcatalists.partials.employment-summary', ['employee' => $employee])
+                    @include('hrcatalists.partials.personal-data', ['employee' => $employee])
+                    @include('hrcatalists.partials.education', ['employee' => $employee])
+                    @include('hrcatalists.partials.employment-details', ['employee' => $employee])
+                    @include('hrcatalists.partials.licenses', ['employee' => $employee])
+                    @include('hrcatalists.partials.service-record', ['employee' => $employee])
+                    @include('hrcatalists.partials.trainings', ['employee' => $employee])
+                    @include('hrcatalists.partials.organizations', ['employee' => $employee])
+                    @include('hrcatalists.partials.others', ['employee' => $employee])
+                </div>
+    
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
         </div>
     </div>
+    {{-- View Modal --}}
 
     <script>
-        let deleteEmployeeId = null;
-
-        function showPopup(employeeId) {
-            deleteEmployeeId = employeeId;
-            document.getElementById("rejectPopup").style.display = "block";
-        }
-
-        function closePopup() {
-            document.getElementById("rejectPopup").style.display = "none";
-        }
-
-        document.getElementById("confirmDelete").addEventListener("click", function() {
-            if (deleteEmployeeId) {
-                fetch(`/employees/${deleteEmployeeId}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                        'Content-Type': 'application/json'
-                    }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        document.getElementById(`row-${deleteEmployeeId}`).remove();
-                        closePopup();
+        function deleteWithConfirm(employeeId) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "This employee record will be permanently deleted!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#e3342f',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Yes, delete it!',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const form = document.getElementById(`delete-form-${employeeId}`);
+                    if (form) {
+                        form.submit();
                     } else {
-                        alert('Failed to delete the employee.');
+                        console.error('Form not found for employee ID:', employeeId);
                     }
-                })
-                .catch(error => console.error('Error:', error));
-            }
-        });
+                }
+            });
+        }
     </script>
+
+    
 </x-admin-ems-layout>

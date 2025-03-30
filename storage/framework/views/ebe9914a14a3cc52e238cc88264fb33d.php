@@ -44,7 +44,6 @@
             <div class="container mt-5">
 
                 <!-- ✅ Flash Messages for changing job status -->
-                
                 <?php if(session('success')): ?>
                     <script>
                         Swal.fire({
@@ -131,15 +130,14 @@
                                         </button>
                                         <ul class="dropdown-menu" aria-labelledby="actionsDropdown<?php echo e($job->id); ?>">
                                             <!-- Activate / Deactivate -->
-                                            
-                                            <!-- Deactivate / Activate -->
                                             <li>
                                                 <button 
-                                                    class="dropdown-item text-warning toggle-status-btn" 
+                                                    class="dropdown-item <?php echo e($job->status === 'active' ? 'text-warning' : 'text-success'); ?> toggle-status-btn" 
                                                     data-id="<?php echo e($job->id); ?>" 
                                                     data-title="<?php echo e($job->job_title); ?>"
                                                     data-status="<?php echo e($job->status); ?>"
                                                 >
+                                                    <i class="fas <?php echo e($job->status === 'active' ? 'fa-toggle-off' : 'fa-toggle-on'); ?> me-2"></i>
                                                     <?php echo e($job->status === 'active' ? 'Deactivate' : 'Activate'); ?>
 
                                                 </button>
@@ -147,23 +145,26 @@
 
                                             <!-- Edit Job (Opens Modal) -->
                                             <li>
-                                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#editPositionModal-<?php echo e($job->id); ?>">
-                                                    Edit
+                                                <a class="dropdown-item text-primary" href="#" data-bs-toggle="modal" data-bs-target="#editPositionModal-<?php echo e($job->id); ?>">
+                                                    <i class="fas fa-edit me-2"></i>Edit
                                                 </a>
                                             </li>
 
                                             <!-- View Job -->
-                                            <li><a class="dropdown-item" href="#">View</a></li>
+                                            <li>
+                                                <a class="dropdown-item text-info" href="#">
+                                                    <i class="fas fa-eye me-2"></i>View
+                                                </a>
+                                            </li>
                                 
                                             <!-- Delete Job -->
-                                            
                                             <li>
                                                 <button 
                                                     class="dropdown-item text-danger delete-job-btn" 
                                                     data-id="<?php echo e($job->id); ?>" 
                                                     data-title="<?php echo e($job->job_title); ?>"
                                                 >
-                                                    Delete
+                                                    <i class="fas fa-trash-alt me-2"></i>Delete
                                                 </button>
                                             </li>                                                                                       
                                         </ul>

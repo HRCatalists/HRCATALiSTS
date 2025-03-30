@@ -10,6 +10,7 @@ Route::middleware(['auth', PreventBackHistory::class])->group(function () {
     Route::get('/employees/{id}', [AdminController::class, 'showEmployee'])->name('employees.show');
     Route::delete('/employees/{id}/delete', [AdminController::class, 'deleteEmployee'])->name('employees.delete');
 
+
     // Departments
     Route::get('/ems-emp-dept-coa', [AdminController::class, 'deptCOA'])->name('ems-dept-coa');
     Route::get('/ems-emp-dept-cased', [AdminController::class, 'deptCASED'])->name('ems-dept-cased');

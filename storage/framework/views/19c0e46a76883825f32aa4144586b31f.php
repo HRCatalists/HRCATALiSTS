@@ -49,8 +49,6 @@
                     </div>     
                 </div>
 
-                
-
                 <div class="d-flex align-items-center flex-wrap my-3">
                     <div>
                         <button type="button" class="btn archive-btn add-btn bulk-archive-btn bulk-action-btn me-2" style="display: none;">
@@ -65,9 +63,9 @@
                         ADD APPLICANT
                     </button>
                 
-                    <button class="btn shadow print-btn ms-auto">
-                        <i class="fa fa-print"></i> PRINT
-                    </button>
+                    <button type="button" class="btn shadow print-btn ms-auto">
+                        <i class="fas fa-print me-2"></i> Print
+                    </button>              
                 </div>
                 
                 <!-- Status Tabs -->
@@ -108,9 +106,8 @@
                         
                         <a href="#" class="select-link text-decoration-underline" data-status="archived">Archived</a>
                     </div>                    
-                    <?php $__currentLoopData = $statuses; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $stat): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                        <div 
-                            class="tab-pane fade <?php echo e($key === 0 ? 'show active' : ''); ?>" 
+                    <?php $__currentLoopData = $statuses; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $stat): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?> 
+                        <div class="tab-pane fade <?php echo e($key === 0 ? 'show active' : ''); ?>" 
                             id="tab-<?php echo e($stat); ?>" 
                             role="tabpanel" 
                             aria-labelledby="<?php echo e($stat); ?>-tab"
@@ -138,9 +135,12 @@
                                             'rejected' => '#8b0000',
                                             'archived' => '#4b0082'
                                         ];
-                                        $filteredApplicants = $stat === 'all'
-                                            ? $allApplicants
-                                            : $allApplicants->where('status', $stat);
+
+                                        if ($stat === 'all') {
+                                            $filteredApplicants = $allApplicants->whereNotIn('status', ['hired', 'archived']);
+                                        } else {
+                                            $filteredApplicants = $allApplicants->where('status', $stat);
+                                        }
                                     ?>
 
                                     <?php $__currentLoopData = $filteredApplicants; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $applicant): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
@@ -172,21 +172,56 @@
                                             </td>                                    
                                             <td><?php echo e($applicant->job->job_title ?? 'N/A'); ?></td>
                                             <td>
-                                                <div class="d-flex justify-content-around">
-                                                    <button class="btn btn-ap-edit" 
-                                                        data-bs-toggle="offcanvas" 
-                                                        data-bs-target="#candidateProfile" 
-                                                        data-applicant-id="<?php echo e($applicant->id); ?>"
-                                                        data-applicant-name="<?php echo e($applicant->first_name); ?> <?php echo e($applicant->last_name); ?>"
-                                                        data-applicant-status="<?php echo e($applicant->status); ?>"
-                                                        data-applicant-email="<?php echo e($applicant->email); ?>"
-                                                        data-applicant-phone="<?php echo e($applicant->phone); ?>"
-                                                        data-applicant-position="<?php echo e($applicant->job->job_title ?? 'N/A'); ?>"
-                                                        data-applicant-address="<?php echo e($applicant->address); ?>"
-                                                        data-applicant-notes="<?php echo e($applicant->notes); ?>">
-                                                        VIEW
+                                                <div class="dropdown text-center">
+                                                    <button class="btn btn-primary border-0" type="button" data-bs-toggle="dropdown">
+                                                        <i class="fa-solid fa-list"></i>
                                                     </button>
-                                                </div>
+                                                    <ul class="dropdown-menu">
+                                                        <!-- Approve -->
+                                                        <li>
+                                                            <button class="dropdown-item text-success action-approve" 
+                                                                data-id="<?php echo e($applicant->id); ?>" 
+                                                                data-name="<?php echo e($applicant->first_name); ?> <?php echo e($applicant->last_name); ?>">
+                                                                <i class="fa fa-check me-2"></i> Approve
+                                                            </button>
+                                                        </li>
+                                                
+                                                        <!-- View Button -->
+                                                        <li>
+                                                            <button type="button" class="dropdown-item text-primary"
+                                                                data-bs-toggle="offcanvas"
+                                                                data-bs-target="#candidateProfile"
+                                                                data-applicant-id="<?php echo e($applicant->id); ?>"
+                                                                data-applicant-name="<?php echo e($applicant->first_name); ?> <?php echo e($applicant->last_name); ?>"
+                                                                data-applicant-status="<?php echo e($applicant->status); ?>"
+                                                                data-applicant-email="<?php echo e($applicant->email); ?>"
+                                                                data-applicant-phone="<?php echo e($applicant->phone); ?>"
+                                                                data-applicant-position="<?php echo e($applicant->job->job_title ?? 'N/A'); ?>"
+                                                                data-applicant-address="<?php echo e($applicant->address); ?>"
+                                                                data-applicant-notes="<?php echo e($applicant->notes); ?>">
+                                                                <i class="fa fa-eye me-2"></i> View
+                                                            </button>
+                                                        </li>
+                                                
+                                                        <!-- Reject -->
+                                                        <li>
+                                                            <button class="dropdown-item text-danger action-reject" 
+                                                                data-id="<?php echo e($applicant->id); ?>" 
+                                                                data-name="<?php echo e($applicant->first_name); ?> <?php echo e($applicant->last_name); ?>">
+                                                                <i class="fa fa-times me-2"></i> Reject
+                                                            </button>
+                                                        </li>
+
+                                                        <!-- Archive -->
+                                                        <li>
+                                                            <button class="dropdown-item text-purple action-archive"
+                                                                data-id="<?php echo e($applicant->id); ?>" 
+                                                                data-name="<?php echo e($applicant->first_name); ?> <?php echo e($applicant->last_name); ?>">
+                                                                <i class="fa fa-box-archive me-2"></i> Archive
+                                                            </button>
+                                                        </li>
+                                                    </ul>
+                                                </div>                                                
                                             </td>
                                         </tr>
                                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -618,6 +653,61 @@
         });
     </script>
     
+
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            function confirmAction(buttonClass, title, text, confirmColor, urlSuffix) {
+                document.querySelectorAll(buttonClass).forEach(button => {
+                    button.addEventListener('click', function () {
+                        const id = this.dataset.id;
+                        const name = this.dataset.name;
+
+                        Swal.fire({
+                            title: `${title} ${name}?`,
+                            text: text,
+                            icon: urlSuffix === 'reject' ? 'error' : (urlSuffix === 'approve' ? 'success' : 'info'),
+                            showCancelButton: true,
+                            confirmButtonColor: confirmColor,
+                            cancelButtonColor: '#6c757d',
+                            confirmButtonText: `Yes, ${urlSuffix}`
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                fetch(`/applicants/${id}/${urlSuffix}`, {
+                                    method: "POST",
+                                    headers: {
+                                        "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content,
+                                        "Accept": "application/json"
+                                    }
+                                })
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.success) {
+                                        Swal.fire("Success", data.message, "success").then(() => location.reload());
+                                    } else {
+                                        Swal.fire("Error", data.message || "Something went wrong.", "error");
+                                    }
+                                })
+                                .catch(() => {
+                                    Swal.fire("Error", "Network error occurred.", "error");
+                                });
+                            }
+                        });
+                    });
+                });
+            }
+
+            confirmAction('.action-approve', 'Approve', 'This will hire the applicant and transfer them to employees.', '#28a745', 'approve');
+            confirmAction('.action-reject', 'Reject', 'This will permanently delete the applicant.', '#d33', 'reject');
+            confirmAction('.action-archive', 'Archive', 'This will move the applicant to the archived list.', '#6f42c1', 'archive');
+        });
+    </script>
+    
+
+    
+    
+    
+
         
  <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>

@@ -35,7 +35,6 @@
 <?php unset($__componentOriginald5876c07269e58343b8102e8c5f829ec); ?>
 <?php endif; ?>
 
-        
         <div id="content" class="flex-grow-1">
             <div class="container mt-5">
                 <div class="welcome-text-only">Welcome, <?php echo e(auth()->user()->name); ?>!</div>

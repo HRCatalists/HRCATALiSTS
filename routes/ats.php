@@ -28,13 +28,18 @@ Route::middleware(['auth', PreventBackHistory::class])->group(function () {
     Route::get('/ats-archived', [ApplicantController::class, 'archived'])->name('ats-archived');
     Route::post('/applicants/bulk-archive', [ApplicantController::class, 'bulkArchive'])->name('applicants.bulkArchive');
     Route::post('/applicants/bulk-reject', [ApplicantController::class, 'bulkReject'])->name('applicants.bulkReject');
+    Route::get('/applicants/print/{status}', [AdminController::class, 'printApplicantsByStatus'])->name('applicants.print');
 
+    // Action button routes
     Route::get('/applicants/{id}', [ApplicantController::class, 'show']);
     Route::put('/applicants/{id}/notes', [ApplicantController::class, 'updateNotes'])->name('applicants.updateNotes');
     Route::post('/events/schedule/{id}', [ApplicantController::class, 'scheduleInterview'])->name('events.schedule');
     Route::post('/applicants/{id}/update-status', [ApplicantController::class, 'updateStatus'])->name('applicants.updateStatus');
     Route::post('/applicants/{id}/choose-status', [ApplicantController::class, 'chooseStatus'])->name('applicants.chooseStatus');
-
+    Route::post('/applicants/{id}/approve', [ApplicantController::class, 'approve'])->name('applicants.approve');
+    Route::post('/applicants/{id}/reject', [ApplicantController::class, 'reject'])->name('applicants.reject');
+    Route::post('/applicants/{id}/archive', [ApplicantController::class, 'archive'])->name('applicants.archive');
+    
     // Job Post (Nested)
     Route::prefix('ats-job-openings')->group(function () {
         Route::get('/job-posts', [JobPostController::class, 'index'])->name('job-posts.index');

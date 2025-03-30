@@ -82,35 +82,41 @@ class ApplicantController extends Controller
         if (!Auth::check()) {
             return redirect()->route('login')->with('error', 'Please log in to update applicant status.');
         }
-
-        $applicant = Applicant::find($id);
+    
+        $applicant = Applicant::with('job')->find($id); // Load job only (no department relation needed)
         if (!$applicant) {
             return redirect()->back()->with('error', 'Applicant not found.');
         }
-
+    
         $validStatuses = ['pending', 'screening', 'scheduled', 'evaluation', 'hired', 'rejected', 'archived'];
         $newStatus = $request->input('status');
+        $oldStatus = $applicant->status;
 
+            // 🚫 Prevent reverting back to "pending"
+            if ($oldStatus !== 'pending' && $newStatus === 'pending') {
+                return redirect()->back()->with('error', 'You cannot revert an applicant back to Pending status.');
+            }
+    
         if (!in_array($newStatus, $validStatuses)) {
             return redirect()->back()->with('error', 'Invalid status provided.');
         }
-
+    
         $applicantName = trim($applicant->first_name . ' ' . $applicant->last_name);
         $oldStatus = $applicant->status;
-
+    
         // Update applicant status
         $applicant->status = $newStatus;
         $applicant->save();
-
+    
         // If status is "hired", move the applicant to the Employee table
         if ($newStatus === 'hired') {
             // Check if email already exists in the employees table
             if (Employee::where('email', $applicant->email)->exists()) {
                 return redirect()->back()->with('error', 'This applicant is already hired. Duplicate email found.');
             }
-
-            $job = Job::find($applicant->job_id);
-
+    
+            $job = $applicant->job;
+    
             Employee::create([
                 'first_name' => $applicant->first_name,
                 'last_name' => $applicant->last_name,
@@ -121,23 +127,21 @@ class ApplicantController extends Controller
                 'privacy_policy_agreed' => $applicant->privacy_policy_agreed,
                 'status' => 'hired',
                 'applied_at' => $applicant->applied_at,
-                'department' => $job->department ?? 'Unknown',
-                'job_title' => $job->job_title ?? 'Unknown',
+                'job_title' => $job?->job_title ?? 'Not Set',
+                'department' => $job?->department ?? 'Not Set', // ✅ now accesses department string directly
             ]);
-
-            // Optionally, delete the applicant after transferring
-            $applicant->delete();
         }
-
+    
         // Log the update
         Log::create([
             'user_id' => Auth::id(),
             'activity' => "Updated status for applicant: {$applicantName} from " . ucfirst($oldStatus) . " to " . ucfirst($newStatus),
             'created_at' => now(),
         ]);
-
+    
         return redirect()->back()->with('success', "Applicant status updated to " . ucfirst($newStatus) . ".");
-    }
+    }    
+
     // *
     // **
     // ***
@@ -206,7 +210,7 @@ class ApplicantController extends Controller
     // **
     // ***
     // ****Show applicant datatables by status using bootstrap tabs
-    public function byStatus($status = null)
+    public function byStatus($status = 'all')
     {
         if (!Auth::check()) {
             return redirect()->route('login')->with('error', 'Please log in.');
@@ -214,21 +218,16 @@ class ApplicantController extends Controller
     
         $validStatuses = ['pending', 'screening', 'scheduled', 'evaluation', 'hired', 'rejected', 'archived'];
     
-        $query = Applicant::with('job');
-    
-        if ($status && $status !== 'all') {
-            if (!in_array($status, $validStatuses)) {
-                abort(404);
-            }
-    
-            $query->where('status', $status);
+        if (!in_array($status, array_merge($validStatuses, ['all']))) {
+            abort(404);
         }
     
-        $allApplicants = $query->get();
-        $jobs = Job::all(); // 👈 Include this
+        $allApplicants = Applicant::with('job')->get(); // Fetch all
     
-        return view('hrcatalists.ats.admin-ats-master-list', compact('allApplicants', 'status', 'jobs')); // 👈 Now passing jobs
-    }       
+        $jobs = Job::all();
+    
+        return view('hrcatalists.ats.admin-ats-master-list', compact('allApplicants', 'status', 'jobs'));
+    }    
 
     public function pending()
     {
@@ -394,7 +393,71 @@ class ApplicantController extends Controller
             \Log::error('Bulk reject (delete) failed: ' . $e->getMessage());
             return response()->json(['success' => false, 'message' => 'Failed to delete applicants.']);
         }
-    }    
+    }
 
+    // *
+    // **
+    // ***
+    // ****Action button approve
+    public function approve($id)
+    {
+        $applicant = Applicant::with('job')->findOrFail($id);
+        $applicant->status = 'hired';
+        $applicant->save();
+    
+        // ✅ Check if this applicant already exists in the employees table
+        if (Employee::where('email', $applicant->email)->exists()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'This applicant is already hired. Duplicate email found in employees table.'
+            ], 409); // 409 = Conflict
+        }
+    
+        $job = $applicant->job;
+    
+        Employee::create([
+            'first_name' => $applicant->first_name,
+            'last_name' => $applicant->last_name,
+            'email' => $applicant->email,
+            'phone' => $applicant->phone,
+            'address' => $applicant->address,
+            'cv' => $applicant->cv,
+            'privacy_policy_agreed' => $applicant->privacy_policy_agreed,
+            'status' => 'hired',
+            'applied_at' => $applicant->applied_at,
+            'job_title' => $job?->job_title ?? 'Not Set',
+            'department' => $job?->department ?? 'Not Set',
+        ]);
+    
+        return response()->json([
+            'success' => true,
+            'message' => 'Applicant approved and transferred to employees.'
+        ]);
+    }         
+
+    // *
+    // **
+    // ***
+    // ****Action button reject/delete
+    public function reject($id)
+    {
+        $applicant = Applicant::findOrFail($id);
+        $applicant->delete();
+
+        return response()->json(['success' => true, 'message' => 'Applicant permanently deleted.']);
+    }
+
+    // *
+    // **
+    // ***
+    // ****Action button archive
+    public function archive($id)
+    {
+        $applicant = Applicant::findOrFail($id);
+        $applicant->status = 'archived';
+        $applicant->save();
+
+        return response()->json(['success' => true, 'message' => 'Applicant archived successfully.']);
+    }
 }
     

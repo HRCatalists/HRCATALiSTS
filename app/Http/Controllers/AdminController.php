@@ -156,6 +156,11 @@ class AdminController extends Controller
     $employee = Employee::findOrFail($id); // Fetch employee or fail
     return view('hrcatalists.ems.admin-ems-view-emp', compact('employee'));
 }
+
+// *
+// **
+// ***
+// ****Delete employee data
 public function deleteEmployee($id)
 {
     $employee = Employee::find($id);
@@ -168,11 +173,6 @@ public function deleteEmployee($id)
 
     return redirect()->back()->with('success', 'Employee deleted successfully.');
 }
-
-
-
-
-
 
 
        // Load the ems Calendar View
@@ -459,4 +459,18 @@ public function deleteEmployee($id)
             'count' => $expiredJobCount
         ]);
     }
+
+    public function printApplicantsByStatus($status)
+    {
+        $validStatuses = ['pending', 'screening', 'scheduled', 'evaluation', 'hired', 'rejected', 'archived'];
+
+        if (!in_array($status, $validStatuses)) {
+            abort(404);
+        }
+
+        $applicants = Applicant::where('status', $status)->get();
+
+        return view('hrcatalists.print.applicants-by-status', compact('applicants', 'status'));
+    }
+
 }
