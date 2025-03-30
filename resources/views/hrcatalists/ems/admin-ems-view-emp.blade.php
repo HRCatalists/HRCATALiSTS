@@ -3,11 +3,6 @@
         Columban College Inc. | Teaching Staff
         
     </x-slot:title>
-    
-  
-        
-
-      
 
     <div class="d-flex">
         <!-- Sidebar -->
@@ -268,7 +263,7 @@
                             </div>
                         </div>
 
-                        <!-- Employment Data 1 -->
+                        <!-- Employment Details -->
                         <div class="border-1 border-top border-dark mb-5">
                             <h4 class="db-h4 my-5">Employment Data</h4>
                         
@@ -344,7 +339,7 @@
 
                         </div>
 
-                        <!-- Employemtn Service Record -->  
+                        <!-- Employement Service Record -->  
                         <div class="border-1 border-top border-dark mb-5">
                             <h4 class="db-h4 my-5">Employment Service Record</h4>
 
@@ -480,7 +475,5 @@
             </div>
 
         </div>
-
-
   
 </x-admin-ems-layout>

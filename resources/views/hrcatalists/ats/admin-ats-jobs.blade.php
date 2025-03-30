@@ -16,21 +16,6 @@
             <div class="container mt-5">
 
                 <!-- ✅ Flash Messages for changing job status -->
-                {{-- <div class="container mt-3">
-                    @if(session('success'))
-                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            {{ session('success') }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    @endif
-
-                    @if(session('error'))
-                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            {{ session('error') }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    @endif
-                </div> --}}
                 @if(session('success'))
                     <script>
                         Swal.fire({
@@ -117,52 +102,40 @@
                                         </button>
                                         <ul class="dropdown-menu" aria-labelledby="actionsDropdown{{ $job->id }}">
                                             <!-- Activate / Deactivate -->
-                                            {{-- <li>
-                                                <form action="{{ route('jobs.toggle-status', $job->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to {{ $job->status === 'active' ? 'deactivate' : 'activate' }} this job?');">
-                                                    @csrf
-                                                    <button type="submit" class="dropdown-item">
-                                                        {{ $job->status === 'active' ? 'Deactivate' : 'Activate' }}
-                                                    </button>
-                                                </form>
-                                            </li> --}}
-                                            <!-- Deactivate / Activate -->
                                             <li>
                                                 <button 
-                                                    class="dropdown-item text-warning toggle-status-btn" 
+                                                    class="dropdown-item {{ $job->status === 'active' ? 'text-warning' : 'text-success' }} toggle-status-btn" 
                                                     data-id="{{ $job->id }}" 
                                                     data-title="{{ $job->job_title }}"
                                                     data-status="{{ $job->status }}"
                                                 >
+                                                    <i class="fas {{ $job->status === 'active' ? 'fa-toggle-off' : 'fa-toggle-on' }} me-2"></i>
                                                     {{ $job->status === 'active' ? 'Deactivate' : 'Activate' }}
                                                 </button>
                                             </li>                                            
 
                                             <!-- Edit Job (Opens Modal) -->
                                             <li>
-                                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#editPositionModal-{{ $job->id }}">
-                                                    Edit
+                                                <a class="dropdown-item text-primary" href="#" data-bs-toggle="modal" data-bs-target="#editPositionModal-{{ $job->id }}">
+                                                    <i class="fas fa-edit me-2"></i>Edit
                                                 </a>
                                             </li>
 
                                             <!-- View Job -->
-                                            <li><a class="dropdown-item" href="#">View</a></li>
+                                            <li>
+                                                <a class="dropdown-item text-info" href="#">
+                                                    <i class="fas fa-eye me-2"></i>View
+                                                </a>
+                                            </li>
                                 
                                             <!-- Delete Job -->
-                                            {{-- <li>
-                                                <form action="{{ route('job-posts.destroy', $job->id) }}" method="POST" 
-                                                      onsubmit="return confirm('Are you sure you want to delete this job?');" style="display:inline;">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="dropdown-item text-danger">Delete</button>
-                                                </form>
-                                            </li> --}}
                                             <li>
                                                 <button 
                                                     class="dropdown-item text-danger delete-job-btn" 
                                                     data-id="{{ $job->id }}" 
                                                     data-title="{{ $job->job_title }}"
                                                 >
-                                                    Delete
+                                                    <i class="fas fa-trash-alt me-2"></i>Delete
                                                 </button>
                                             </li>                                                                                       
                                         </ul>

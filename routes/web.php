@@ -1,8 +1,6 @@
 <?php
 
-use App\Http\Middleware\PreventBackHistory;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\AdminController;
 use App\Http\Controllers\JobPostController;
 use App\Http\Controllers\ApplicantController;
 use App\Http\Controllers\DepartmentController;

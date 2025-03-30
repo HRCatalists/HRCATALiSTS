@@ -21,35 +21,6 @@
                     </div>     
                 </div>
 
-                {{-- <div class="d-flex">
-                    <div class="card checkbox-card me-3">
-                        <div class="container d-flex">
-
-                            <!-- Select All Checkbox -->
-                            <div class="d-flex me-4 py-3">
-                                <input type="checkbox" id="selectAll" class="rowCheckbox">
-                            </div>
-                            
-                            <!-- Archive and Reject Buttons -->
-                            <div class="d-flex py-1">
-                                <button class="btn archive-btn btn-sm me-2">ARCHIVE</button>
-                                <button class="btn reject-btn btn-sm">REJECT</button>
-                            </div>
-                            
-                        </div>
-                    </div>
-
-                    <!-- Add Position Button -->
-                    <button type="button" class="btn add-btn me-2" data-bs-toggle="modal" data-bs-target="#addApplicantModal">
-                        ADD APPLICANT
-                    </button>                 
-
-                    <button class="btn shadow print-btn ms-auto">
-                        <i class="fa fa-print"></i> PRINT
-                        <a href=""></a>
-                    </button>
-                </div> --}}
-
                 <div class="d-flex align-items-center flex-wrap my-3">
                     <div>
                         <button type="button" class="btn archive-btn add-btn bulk-archive-btn bulk-action-btn me-2" style="display: none;">
@@ -64,9 +35,9 @@
                         ADD APPLICANT
                     </button>
                 
-                    <button class="btn shadow print-btn ms-auto">
-                        <i class="fa fa-print"></i> PRINT
-                    </button>
+                    <button type="button" class="btn shadow print-btn ms-auto">
+                        <i class="fas fa-print me-2"></i> Print
+                    </button>              
                 </div>
                 
                 <!-- Status Tabs -->
@@ -106,9 +77,8 @@
                         {{-- <a href="#" class="select-link text-decoration-underline" data-status="rejected">Rejected</a> --}}
                         <a href="#" class="select-link text-decoration-underline" data-status="archived">Archived</a>
                     </div>                    
-                    @foreach ($statuses as $key => $stat)
-                        <div 
-                            class="tab-pane fade {{ $key === 0 ? 'show active' : '' }}" 
+                    @foreach ($statuses as $key => $stat) 
+                        <div class="tab-pane fade {{ $key === 0 ? 'show active' : '' }}" 
                             id="tab-{{ $stat }}" 
                             role="tabpanel" 
                             aria-labelledby="{{ $stat }}-tab"
@@ -136,9 +106,12 @@
                                             'rejected' => '#8b0000',
                                             'archived' => '#4b0082'
                                         ];
-                                        $filteredApplicants = $stat === 'all'
-                                            ? $allApplicants
-                                            : $allApplicants->where('status', $stat);
+
+                                        if ($stat === 'all') {
+                                            $filteredApplicants = $allApplicants->whereNotIn('status', ['hired', 'archived']);
+                                        } else {
+                                            $filteredApplicants = $allApplicants->where('status', $stat);
+                                        }
                                     @endphp
 
                                     @foreach($filteredApplicants as $applicant)
@@ -168,21 +141,56 @@
                                             </td>                                    
                                             <td>{{ $applicant->job->job_title ?? 'N/A' }}</td>
                                             <td>
-                                                <div class="d-flex justify-content-around">
-                                                    <button class="btn btn-ap-edit" 
-                                                        data-bs-toggle="offcanvas" 
-                                                        data-bs-target="#candidateProfile" 
-                                                        data-applicant-id="{{ $applicant->id }}"
-                                                        data-applicant-name="{{ $applicant->first_name }} {{ $applicant->last_name }}"
-                                                        data-applicant-status="{{ $applicant->status }}"
-                                                        data-applicant-email="{{ $applicant->email }}"
-                                                        data-applicant-phone="{{ $applicant->phone }}"
-                                                        data-applicant-position="{{ $applicant->job->job_title ?? 'N/A' }}"
-                                                        data-applicant-address="{{ $applicant->address }}"
-                                                        data-applicant-notes="{{ $applicant->notes }}">
-                                                        VIEW
+                                                <div class="dropdown text-center">
+                                                    <button class="btn btn-primary border-0" type="button" data-bs-toggle="dropdown">
+                                                        <i class="fa-solid fa-list"></i>
                                                     </button>
-                                                </div>
+                                                    <ul class="dropdown-menu">
+                                                        <!-- Approve -->
+                                                        <li>
+                                                            <button class="dropdown-item text-success action-approve" 
+                                                                data-id="{{ $applicant->id }}" 
+                                                                data-name="{{ $applicant->first_name }} {{ $applicant->last_name }}">
+                                                                <i class="fa fa-check me-2"></i> Approve
+                                                            </button>
+                                                        </li>
+                                                
+                                                        <!-- View Button -->
+                                                        <li>
+                                                            <button type="button" class="dropdown-item text-primary"
+                                                                data-bs-toggle="offcanvas"
+                                                                data-bs-target="#candidateProfile"
+                                                                data-applicant-id="{{ $applicant->id }}"
+                                                                data-applicant-name="{{ $applicant->first_name }} {{ $applicant->last_name }}"
+                                                                data-applicant-status="{{ $applicant->status }}"
+                                                                data-applicant-email="{{ $applicant->email }}"
+                                                                data-applicant-phone="{{ $applicant->phone }}"
+                                                                data-applicant-position="{{ $applicant->job->job_title ?? 'N/A' }}"
+                                                                data-applicant-address="{{ $applicant->address }}"
+                                                                data-applicant-notes="{{ $applicant->notes }}">
+                                                                <i class="fa fa-eye me-2"></i> View
+                                                            </button>
+                                                        </li>
+                                                
+                                                        <!-- Reject -->
+                                                        <li>
+                                                            <button class="dropdown-item text-danger action-reject" 
+                                                                data-id="{{ $applicant->id }}" 
+                                                                data-name="{{ $applicant->first_name }} {{ $applicant->last_name }}">
+                                                                <i class="fa fa-times me-2"></i> Reject
+                                                            </button>
+                                                        </li>
+
+                                                        <!-- Archive -->
+                                                        <li>
+                                                            <button class="dropdown-item text-purple action-archive"
+                                                                data-id="{{ $applicant->id }}" 
+                                                                data-name="{{ $applicant->first_name }} {{ $applicant->last_name }}">
+                                                                <i class="fa fa-box-archive me-2"></i> Archive
+                                                            </button>
+                                                        </li>
+                                                    </ul>
+                                                </div>                                                
                                             </td>
                                         </tr>
                                     @endforeach
@@ -614,5 +622,64 @@
         });
     </script>
     {{-- bulk selection of archived and rejected --}}
+
+    {{-- Reject & Archive action button sweetalert --}}
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            function confirmAction(buttonClass, title, text, confirmColor, urlSuffix) {
+                document.querySelectorAll(buttonClass).forEach(button => {
+                    button.addEventListener('click', function () {
+                        const id = this.dataset.id;
+                        const name = this.dataset.name;
+
+                        Swal.fire({
+                            title: `${title} ${name}?`,
+                            text: text,
+                            icon: urlSuffix === 'reject' ? 'error' : (urlSuffix === 'approve' ? 'success' : 'info'),
+                            showCancelButton: true,
+                            confirmButtonColor: confirmColor,
+                            cancelButtonColor: '#6c757d',
+                            confirmButtonText: `Yes, ${urlSuffix}`
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                fetch(`/applicants/${id}/${urlSuffix}`, {
+                                    method: "POST",
+                                    headers: {
+                                        "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content,
+                                        "Accept": "application/json"
+                                    }
+                                })
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.success) {
+                                        Swal.fire("Success", data.message, "success").then(() => location.reload());
+                                    } else {
+                                        Swal.fire("Error", data.message || "Something went wrong.", "error");
+                                    }
+                                })
+                                .catch(() => {
+                                    Swal.fire("Error", "Network error occurred.", "error");
+                                });
+                            }
+                        });
+                    });
+                });
+            }
+
+            confirmAction('.action-approve', 'Approve', 'This will hire the applicant and transfer them to employees.', '#28a745', 'approve');
+            confirmAction('.action-reject', 'Reject', 'This will permanently delete the applicant.', '#d33', 'reject');
+            confirmAction('.action-archive', 'Archive', 'This will move the applicant to the archived list.', '#6f42c1', 'archive');
+        });
+    </script>
+    {{-- Reject & Archive action button sweetalert --}}
+
+    {{-- Print --}}
+    {{-- <script>
+        document.querySelector('.print-btn').addEventListener('click', function () {
+            window.print();
+        });
+    </script>  --}}
+    {{-- Print --}}
+
         
 </x-admin-ats-layout>
