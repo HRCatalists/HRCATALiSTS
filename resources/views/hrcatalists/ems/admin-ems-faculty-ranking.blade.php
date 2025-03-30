@@ -15,17 +15,13 @@
         <!-- Profile Content -->
         <div id="content" class="flex-grow-1">
             <div class="container mt-5">
-
                 <div>
-
                     <div class="container mt-5">
-
                         <div class="d-flex justify-content-center mb-4">
                             <h2 class="db-h2">FACULTY RANKING SYSTEM</h2>   
                         </div>
     
                         <div class="container">
-    
                             <div class="search-container ">
                                 <!-- <h4 class="text-center mb-3">Search Personnel</h4> -->
                                 <div class="d-flex">
@@ -93,7 +89,6 @@
 
                         <!-- Tab content -->
                         <div class="tab-content" id="myTabContent">
-                            
                             <div class="tab-pane fade show active" id="content1" role="tabpanel">
 
                                 <table class="table table-bordered mt-5">
@@ -370,9 +365,7 @@
                             
                             </div>
 
-
                             <!-- TEACHING EXPERIENCE AND PROFESSIONAL/ WORK EXPERIENCE -->
-
                             <div class="tab-pane fade" id="content2" role="tabpanel">
 
                                 <table class="table table-bordered mt-5">
@@ -557,10 +550,7 @@
                                 
                             </div>
 
-
-
                             <!-- FACULTY PERFORMANCE AS A PROFESSIONAL EDUCATOR -->
-
                             <div class="tab-pane fade" id="content3" role="tabpanel">
                                 
                                 <table class="table table-bordered mt-5">
@@ -610,9 +600,7 @@
                                 
                             </div>
 
-
                             <!-- CORPORATE COMMITMENT (IN/ OFF CAMPUS) SERVICES -->
-
                             <div class="tab-pane fade" id="content4" role="tabpanel">
                                 <table class="table table-bordered mt-5">
                                     <thead>
@@ -668,9 +656,7 @@
                                 
                             </div>
 
-
                             <!-- SUMMARY -->
-
                             <div class="tab-pane fade" id="content5" role="tabpanel">
                                 
                                 <table class="table table-bordered mt-5">
@@ -748,8 +734,6 @@
                             </div>
 
                         </div>
-
-                    
                     </div>
 
                 </div>

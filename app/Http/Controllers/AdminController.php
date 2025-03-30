@@ -139,40 +139,114 @@ class AdminController extends Controller
      }
 
      
-     public function employees()
-     {
-         if (!Auth::check()) {
-             return redirect()->route('login');
-         }
-     
-         // Fetch employees from the database
-         $employees = Employee::all();
-     
-         // Pass employees to the view
-         return view('hrcatalists.ems.admin-ems-emp', compact('employees'));
-     }
-     public function showEmployee($id)
-{
-    $employee = Employee::findOrFail($id); // Fetch employee or fail
-    return view('hrcatalists.ems.admin-ems-view-emp', compact('employee'));
-}
-
-// *
-// **
-// ***
-// ****Delete employee data
-public function deleteEmployee($id)
-{
-    $employee = Employee::find($id);
-
-    if (!$employee) {
-        return redirect()->back()->with('error', 'Employee not found.');
+    public function employees()
+    {
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+    
+        // Fetch employees from the database
+        $employees = Employee::all();
+    
+        // Pass employees to the view
+        return view('hrcatalists.ems.admin-ems-emp', compact('employees'));
+    }
+    public function showEmployee($id)
+    {
+        $employee = Employee::findOrFail($id); // Fetch employee or fail
+        return view('hrcatalists.ems.admin-ems-view-emp', compact('employee'));
     }
 
-    $employee->delete();
+    // *
+    // **
+    // ***
+    // ****Delete employee data
+    public function deleteEmployee($id)
+    {
+        $employee = Employee::find($id);
 
-    return redirect()->back()->with('success', 'Employee deleted successfully.');
-}
+        if (!$employee) {
+            return redirect()->back()->with('error', 'Employee not found.');
+        }
+
+        $employee->delete();
+
+        return redirect()->back()->with('success', 'Employee deleted successfully.');
+    }
+
+    // *
+    // **
+    // ***
+    // ****Edit employee data
+    public function update(Request $request, $id)
+    {
+        $employee = Employee::findOrFail($id);
+    
+        // Update main employee fields
+        $employee->update($request->only([
+            'first_name',
+            'last_name',
+            'email',
+            'phone',
+            'address',
+            'cv',
+            'privacy_policy_agreed',
+            'status',
+            'applied_at',
+            'department',
+            'job_title',
+            'faculty_code',
+            'school_of',
+            'designation_group',
+            'branch',
+            'date_of_birth',
+            'place_of_birth',
+            'gender',
+            'religion',
+            'civil_status',
+            'citizenship',
+            'spouse_name',
+            'spouse_address',
+            'spouse_occupation',
+            'no_of_dependents',
+            'children_birthdates',
+            'father_name',
+            'mother_name',
+            'mother_address',
+            'sss_no',
+            'pagibig_no',
+            'philhealth_no',
+            'tin_no',
+        ]));
+    
+        // ✅ Update or create employment details
+        $employmentData = [
+            'parent_department'   => $request->input('parent_department'),
+            'parent_college'      => $request->input('parent_college'),
+            'classification'      => $request->input('classification'),
+            'employment_status'   => $request->input('employment_status'),
+            'date_employed'       => $request->input('date_employed'),
+            'accreditation'       => $request->input('accreditation'),
+            'date_permanent'      => $request->input('date_permanent'),
+        ];
+    
+        if ($employee->employmentDetails) {
+            $employee->employmentDetails->update($employmentData);
+        } else {
+            $employee->employmentDetails()->create($employmentData);
+        }
+    
+        // ✅ Replace education records
+        $employee->educations()->delete();
+    
+        if ($request->has('educations')) {
+            foreach ($request->educations as $edu) {
+                $employee->educations()->create($edu);
+            }
+        }
+    
+        return back()->with('success', 'Employee updated successfully.');
+    }
 
 
        // Load the ems Calendar View
@@ -472,5 +546,4 @@ public function deleteEmployee($id)
 
         return view('hrcatalists.print.applicants-by-status', compact('applicants', 'status'));
     }
-
 }
