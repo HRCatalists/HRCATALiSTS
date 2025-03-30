@@ -9,6 +9,14 @@ use Illuminate\Support\Facades\Log as LaravelLog;
 use App\Models\Employee;
 use App\Mail\InterviewScheduled;
 use Illuminate\Support\Facades\Mail;
+use App\Models\FacultyTeachingRank1;
+use App\Models\FacultyTeachingRank2;
+use App\Models\FacultyTeachingRank3;
+use App\Models\FacultyTeachingRank4;
+// use App\Models\FacultyTeachingRank2;
+// use App\Models\FacultyTeachingRank2;
+// use App\Models\FacultyTeachingRank2;
+
 
 
 
@@ -82,36 +90,37 @@ class ApplicantController extends Controller
         if (!Auth::check()) {
             return redirect()->route('login')->with('error', 'Please log in to update applicant status.');
         }
-
+    
         $applicant = Applicant::find($id);
         if (!$applicant) {
             return redirect()->back()->with('error', 'Applicant not found.');
         }
-
+    
         $validStatuses = ['pending', 'screening', 'scheduled', 'evaluation', 'hired', 'rejected', 'archived'];
         $newStatus = $request->input('status');
-
+    
         if (!in_array($newStatus, $validStatuses)) {
             return redirect()->back()->with('error', 'Invalid status provided.');
         }
-
+    
         $applicantName = trim($applicant->first_name . ' ' . $applicant->last_name);
         $oldStatus = $applicant->status;
-
+    
         // Update applicant status
         $applicant->status = $newStatus;
         $applicant->save();
-
+    
         // If status is "hired", move the applicant to the Employee table
         if ($newStatus === 'hired') {
             // Check if email already exists in the employees table
             if (Employee::where('email', $applicant->email)->exists()) {
                 return redirect()->back()->with('error', 'This applicant is already hired. Duplicate email found.');
             }
-
+    
             $job = Job::find($applicant->job_id);
-
-            Employee::create([
+    
+            // Create a new employee entry
+            $employee = Employee::create([
                 'first_name' => $applicant->first_name,
                 'last_name' => $applicant->last_name,
                 'email' => $applicant->email,
@@ -124,20 +133,55 @@ class ApplicantController extends Controller
                 'department' => $job->department ?? 'Unknown',
                 'job_title' => $job->job_title ?? 'Unknown',
             ]);
-
+    
+            // Also insert the employee's id into the teaching_rank1 table
+            FacultyTeachingRank1::create([
+                'emp_id' => $employee->id,
+                'department' => $employee->department,
+            ]);
+             FacultyTeachingRank2::create([
+                 'emp_id' => $employee->id,
+                
+             ]);
+             FacultyTeachingRank3::create([
+                'emp_id' => $employee->id,
+               
+            ]);
+            FacultyTeachingRank4::create([
+                'emp_id' => $employee->id,
+               
+            ]);
+            // FacultyTeachingRank1::create([
+            //     'emp_id' => $employee->id,
+            //     'department' => $employee->department,
+            // ]);
+            // FacultyTeachingRank1::create([
+            //     'emp_id' => $employee->id,
+            //     'department' => $employee->department,
+            // ]);
+            // FacultyTeachingRank1::create([
+            //     'emp_id' => $employee->id,
+            //     'department' => $employee->department,
+            // ]);
+            // FacultyTeachingRank1::create([
+            //     'emp_id' => $employee->id,
+            //     'department' => $employee->department,
+            // ]);
+    
             // Optionally, delete the applicant after transferring
             $applicant->delete();
         }
-
+    
         // Log the update
         Log::create([
             'user_id' => Auth::id(),
             'activity' => "Updated status for applicant: {$applicantName} from " . ucfirst($oldStatus) . " to " . ucfirst($newStatus),
             'created_at' => now(),
         ]);
-
+    
         return redirect()->back()->with('success', "Applicant status updated to " . ucfirst($newStatus) . ".");
     }
+    
     // *
     // **
     // ***

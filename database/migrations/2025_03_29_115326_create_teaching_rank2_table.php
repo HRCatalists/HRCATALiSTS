@@ -41,7 +41,7 @@ return new class extends Migration {
             $table->integer('membership_member')->nullable();
 
             // Total points calculation
-            $table->integer('TotalPoints')->nullable();
+            $table->integer('total_Points')->nullable();
 
             // Foreign key constraint
             $table->foreign('emp_id')->references('emp_id')->on('teaching_rank1')->onDelete('cascade');
