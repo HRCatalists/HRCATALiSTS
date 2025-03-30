@@ -261,21 +261,7 @@ public function deleteEmployee($id)
         return view('hrcatalists.ems.admin-ems-dept-non-teaching',compact('employees')); // Non-teaching
     }
 
-    public function ranking()
-    {
-        if (!Auth::check()) {
-            return redirect()->route('login');
-        }
-        return view('hrcatalists.ems.admin-ems-faculty-ranking'); // EMS Faculty/Non-teaching Ranking
-    }
-    public function non_ranking()
-    {
-        if (!Auth::check()) {
-            return redirect()->route('login');
-        }
-        return view('hrcatalists.ems.admin-ems-non-teaching'); // EMS Faculty/Non-teaching Ranking
-    }
-
+  
     public function companyPolicy()
     {
         if (!Auth::check()) {

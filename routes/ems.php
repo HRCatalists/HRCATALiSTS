@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Middleware\PreventBackHistory;
+use App\Http\Controllers\FacultyRankingController;
 
 Route::middleware(['auth', PreventBackHistory::class])->group(function () {
     Route::get('/ems-dashboard', [AdminController::class, 'emsDashboard'])->name('ems-dashboard');
@@ -23,8 +24,17 @@ Route::middleware(['auth', PreventBackHistory::class])->group(function () {
 
     // EMS Extras
     Route::get('/ems-calendar', [AdminController::class, 'emscalendar'])->name('ems-calendar');
-    Route::get('/ems-ranking', [AdminController::class, 'ranking'])->name('ems-ranking');
-    Route::get('/ems-non', [AdminController::class, 'non_ranking'])->name('non-ranking');
+  
+   
     Route::get('/ems-policy', [AdminController::class, 'companyPolicy'])->name('ems-policy');
     Route::get('/ems-logs', [AdminController::class, 'logs'])->name('ems-logs');
+
+
+    //ems ranking
+    Route::get('/ems-ranking', [FacultyRankingController::class, 'ranking'])->name('ems-ranking');
+    Route::get('/ems-non', [FacultyRankingController::class, 'non_ranking'])->name('non-ranking');
+    // Route definition for search functionality
+    Route::post('/search-faculty', [FacultyRankingController::class, 'search'])->name('faculty.search');
+
+    Route::post('/update-score', [FacultyRankingController::class, 'updateScore']);
 });

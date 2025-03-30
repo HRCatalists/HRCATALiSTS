@@ -125,7 +125,7 @@ class ApplicantController extends Controller
     
             $job = $applicant->job;
     
-            Employee::create([
+            $employee = Employee::create([
                 'first_name' => $applicant->first_name,
                 'last_name' => $applicant->last_name,
                 'email' => $applicant->email,
@@ -156,24 +156,7 @@ class ApplicantController extends Controller
                 'emp_id' => $employee->id,
                
             ]);
-            // FacultyTeachingRank1::create([
-            //     'emp_id' => $employee->id,
-            //     'department' => $employee->department,
-            // ]);
-            // FacultyTeachingRank1::create([
-            //     'emp_id' => $employee->id,
-            //     'department' => $employee->department,
-            // ]);
-            // FacultyTeachingRank1::create([
-            //     'emp_id' => $employee->id,
-            //     'department' => $employee->department,
-            // ]);
-            // FacultyTeachingRank1::create([
-            //     'emp_id' => $employee->id,
-            //     'department' => $employee->department,
-            // ]);
-    
-            // Optionally, delete the applicant after transferring
+           
             $applicant->delete();
         }
     
