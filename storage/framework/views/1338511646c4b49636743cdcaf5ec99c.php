@@ -39,8 +39,9 @@
 
         <div class="col-md-6 mb-3">
             <label class="form-label fw-bold">Date of Employment:</label>
-            <input type="date" name="date_employed" class="<?php echo e($fieldClass); ?>" 
-                value="<?php echo e(old('date_employed', $employee->employmentDetails->date_employed ?? 'N/A')); ?>" readonly>
+            
+            <input type="date" name="date_employed" class="<?php echo e($fieldClass); ?>"
+                value="<?php echo e(old('date_employed', $employee->employmentDetails->date_employed ?? $employee->created_at->format('Y-m-d'))); ?>" readonly>
         </div>
 
         <div class="col-md-6 mb-3">

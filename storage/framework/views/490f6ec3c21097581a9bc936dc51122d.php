@@ -38,8 +38,8 @@
             </tbody>
         </table>
 
-        <button type="button" class="btn btn-sm btn-success d-none mt-2" id="addEducationBtn-<?php echo e($employee->id); ?>">
-            Add More...
+        <button type="button" class="btn btn-sm btn-outline-success mb-3 d-none mt-2" id="addEducationBtn-<?php echo e($employee->id); ?>">
+           + Add Education
         </button>
     </div>
 </div>

@@ -182,71 +182,120 @@ class AdminController extends Controller
     {
         $employee = Employee::findOrFail($id);
     
-        // Update main employee fields
-        $employee->update($request->only([
-            'first_name',
-            'last_name',
-            'email',
-            'phone',
-            'address',
-            'cv',
-            'privacy_policy_agreed',
-            'status',
-            'applied_at',
-            'department',
-            'job_title',
-            'faculty_code',
-            'school_of',
-            'designation_group',
-            'branch',
-            'date_of_birth',
-            'place_of_birth',
-            'gender',
-            'religion',
-            'civil_status',
-            'citizenship',
-            'spouse_name',
-            'spouse_address',
-            'spouse_occupation',
-            'no_of_dependents',
-            'children_birthdates',
-            'father_name',
-            'mother_name',
-            'mother_address',
-            'sss_no',
-            'pagibig_no',
-            'philhealth_no',
-            'tin_no',
-        ]));
+        // ✅ Validate minimal fields (editable but safe)
+        $validated = $request->validate([
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'email' => 'nullable|email|max:255',
+            'phone' => 'nullable|string|max:20',
+            'address' => 'nullable|string|max:255',
+            'cv' => 'nullable|string|max:255',
+            'privacy_policy_agreed' => 'nullable|boolean',
+            'status' => 'nullable|string|max:100',
+            'applied_at' => 'nullable|date',
+            'department' => 'nullable|string|max:255',
+            'job_title' => 'nullable|string|max:255',
+            'faculty_code' => 'nullable|string|max:255',
+            'school_of' => 'nullable|string|max:255',
+            'designation_group' => 'nullable|string|max:255',
+            'branch' => 'nullable|string|max:255',
+            'date_of_birth' => 'nullable|date',
+            'place_of_birth' => 'nullable|string|max:255',
+            'gender' => 'nullable|string|max:50',
+            'religion' => 'nullable|string|max:100',
+            'civil_status' => 'nullable|string|max:100',
+            'citizenship' => 'nullable|string|max:100',
+            'spouse_name' => 'nullable|string|max:255',
+            'spouse_address' => 'nullable|string|max:255',
+            'spouse_occupation' => 'nullable|string|max:255',
+            'no_of_dependents' => 'nullable|numeric',
+            'children_birthdates' => 'nullable|string|max:255',
+            'father_name' => 'nullable|string|max:255',
+            'mother_name' => 'nullable|string|max:255',
+            'mother_address' => 'nullable|string|max:255',
+            'sss_no' => 'nullable|string|max:50',
+            'pagibig_no' => 'nullable|string|max:50',
+            'philhealth_no' => 'nullable|string|max:50',
+            'tin_no' => 'nullable|string|max:50',
     
-        // ✅ Update or create employment details
+            // Employment Details
+            'parent_department' => 'nullable|string|max:255',
+            'parent_college' => 'nullable|string|max:255',
+            'classification' => 'nullable|string|max:255',
+            'employment_status' => 'nullable|string|max:255',
+            'date_employed' => 'nullable|date',
+            'accreditation' => 'nullable|string|max:255',
+            'date_permanent' => 'nullable|date',
+
+            // Licenses
+            'licenses.*.license_name' => 'nullable|string|max:255',
+            'licenses.*.license_number' => 'nullable|string|max:100',
+            'licenses.*.expiry_date' => 'nullable|date',
+            'licenses.*.renewal_from' => 'nullable|date',
+            'licenses.*.renewal_to' => 'nullable|date',
+
+            // Trainings
+            'trainings.*.training_date' => 'nullable|date',
+            'trainings.*.title' => 'nullable|string|max:255',
+            'trainings.*.venue' => 'nullable|string|max:255',
+            'trainings.*.remark' => 'nullable|string|max:255',
+
+            // Service Records
+            'service_records.*.department' => 'nullable|string|max:255',
+            'service_records.*.inclusive_date' => 'nullable|string|max:255',
+            'service_records.*.appointment_record' => 'nullable|string|max:255',
+            'service_records.*.position' => 'nullable|string|max:255',
+            'service_records.*.rank' => 'nullable|string|max:100',
+            'service_records.*.remarks' => 'nullable|string|max:255',
+
+            // Organizations
+            'organizations.*.registration_date' => 'nullable|date',
+            'organizations.*.validity_date' => 'nullable|date',
+            'organizations.*.organization_name' => 'nullable|string|max:255',
+            'organizations.*.place' => 'nullable|string|max:255',
+            'organizations.*.position' => 'nullable|string|max:255',
+
+            // Others
+            'others.*.date' => 'nullable|date',
+            'others.*.description' => 'nullable|string|max:255',
+        ]);
+    
+        $employee->update($validated);
+    
+        // ✅ Employment details
         $employmentData = [
-            'parent_department'   => $request->input('parent_department'),
-            'parent_college'      => $request->input('parent_college'),
-            'classification'      => $request->input('classification'),
-            'employment_status'   => $request->input('employment_status'),
-            'date_employed'       => $request->input('date_employed'),
-            'accreditation'       => $request->input('accreditation'),
-            'date_permanent'      => $request->input('date_permanent'),
+            'parent_department' => $request->input('parent_department'),
+            'parent_college' => $request->input('parent_college'),
+            'classification' => $request->input('classification'),
+            'employment_status' => $request->input('employment_status'),
+            'date_employed' => $request->input('date_employed') ?? $employee->created_at->toDateString(),
+            'accreditation' => $request->input('accreditation'),
+            'date_permanent' => $request->input('date_permanent'),
         ];
     
-        if ($employee->employmentDetails) {
-            $employee->employmentDetails->update($employmentData);
-        } else {
-            $employee->employmentDetails()->create($employmentData);
-        }
+        $employee->employmentDetails()->updateOrCreate([], $employmentData);
     
-        // ✅ Replace education records
-        $employee->educations()->delete();
+        // ✅ Update related tables (delete old, create new)
+        $relations = [
+            'educations' => 'educations',
+            'licenses' => 'licenses',
+            'trainings' => 'trainings',
+            'service_records' => 'serviceRecords',
+            'organizations' => 'organizations',
+            'others' => 'others',
+        ];
     
-        if ($request->has('educations')) {
-            foreach ($request->educations as $edu) {
-                $employee->educations()->create($edu);
+        foreach ($relations as $input => $relationMethod) {
+            if ($request->has($input)) {
+                $employee->{$relationMethod}()->delete();
+                foreach ($request->$input as $record) {
+                    $employee->{$relationMethod}()->create($record);
+                }
             }
         }
     
         return back()->with('success', 'Employee updated successfully.');
-    }
+    }       
 
 
        // Load the ems Calendar View
