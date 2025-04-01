@@ -11,14 +11,19 @@ return new class extends Migration {
             $table->id(); // Auto-increment primary key
             $table->unsignedBigInteger('emp_id'); // Employee ID reference
 
-            // Evaluation scores
-            $table->integer('classroom_TeacherEvaluation')->nullable();
-            $table->integer('Work_Performance_Evaluation')->nullable();
+            // Classroom/Teacher Performance Evaluation
+            $table->integer('classroom_evaluation')->nullable(); // 50 pts maximum
 
-            // Total Points calculation
-            $table->integer('TotalPoints')->nullable();
+            // Work Performance Evaluation
+            $table->integer('work_evaluation')->nullable(); // 50 pts maximum
 
-            // Foreign key constraint
+            // Total Points earned
+            $table->integer('total_points')->nullable();
+
+            // Weighted Total Points (35%)
+            $table->decimal('total_percentage', 5, 2)->nullable(); // Stores the weighted score
+
+            // Foreign key constraint to reference employee in teaching_rank2
             $table->foreign('emp_id')->references('emp_id')->on('teaching_rank2')->onDelete('cascade');
 
             $table->timestamps();
@@ -30,4 +35,3 @@ return new class extends Migration {
         Schema::dropIfExists('teaching_rank3');
     }
 };
-

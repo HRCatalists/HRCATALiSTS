@@ -56,7 +56,7 @@
   </table>
 </div>
 
-<<script>
+<!-- <script>
 document.addEventListener('DOMContentLoaded', function () {
     // Function to calculate and update the summary table
     function updateSummary() {
@@ -128,4 +128,4 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-</script>
+</script> -->

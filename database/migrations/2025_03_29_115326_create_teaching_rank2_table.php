@@ -1,57 +1,88 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
+namespace App\Models;
 
-return new class extends Migration {
-    public function up(): void
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class TeachingRank2 extends Model
+{
+    use HasFactory;
+
+    // Define the table name
+    protected $table = 'teaching_rank2';
+
+    // List all fields that can be mass-assigned
+    protected $fillable = [
+        'emp_id',
+        'full_time_cc',
+        'full_time_other_schools',
+        'part_time_cc',
+        'part_time_other_schools',
+        'research_class_based',
+        'research_school_based',
+        'research_community_based',
+        'course_module',
+        'workbook_lab_manual',
+        'research_articles',
+        'journal_editorship',
+        'participation_chairman',
+        'participation_member',
+        'resource_person_within',
+        'resource_person_outside',
+        'membership_officer_accreditor',
+        'membership_member',
+        'total_points'
+    ];
+
+    // Define relationship with TeachingRank1 model (emp_id belongs to teaching_rank1)
+    public function teachingRank1()
     {
-        Schema::create('teaching_rank2', function (Blueprint $table) {
-            $table->id(); // Auto-increment primary key
-            $table->unsignedBigInteger('emp_id'); // Employee ID
-
-            // Teaching experience
-            $table->integer('full_time_cc')->nullable();
-            $table->integer('full_time_other_schools')->nullable();
-            $table->integer('part_time_cc')->nullable();
-            $table->integer('part_time_other_schools')->nullable();
-
-            // Research involvement
-            $table->integer('research_class_based')->nullable();
-            $table->integer('research_school_based')->nullable();
-            $table->integer('research_community_based')->nullable();
-
-            // Academic contributions
-            $table->integer('course_module')->nullable();
-            $table->integer('workbook_lab_manual')->nullable();
-            $table->integer('research_articles')->nullable();
-            $table->integer('journal_editorship')->nullable();
-
-            // Participation in committees
-            $table->integer('participation_chairman')->nullable();
-            $table->integer('participation_member')->nullable();
-
-            // Resource person activities
-            $table->integer('resource_person_within')->nullable();
-            $table->integer('resource_person_outside')->nullable();
-
-            // Membership & leadership roles
-            $table->integer('membership_officer_accreditor')->nullable();
-            $table->integer('membership_member')->nullable();
-
-            // Total points calculation
-            $table->integer('total_Points')->nullable();
-
-            // Foreign key constraint
-            $table->foreign('emp_id')->references('emp_id')->on('teaching_rank1')->onDelete('cascade');
-
-            $table->timestamps();
-        });
+        return $this->belongsTo(TeachingRank1::class, 'emp_id', 'emp_id');
     }
 
-    public function down(): void
+    // Calculate total points method
+    public function calculateTotalPoints()
     {
-        Schema::dropIfExists('teaching_rank2');
+        $totalPoints = 0;
+
+        // Add points for each relevant field, ensuring numeric values are valid
+        $fields = [
+            'full_time_cc' => 2,
+            'full_time_other_schools' => 1,
+            'part_time_cc' => 0.5,
+            'part_time_other_schools' => 0.25,
+            'research_class_based' => 15,
+            'research_school_based' => 15,
+            'research_community_based' => 15,
+            'course_module' => 5,
+            'workbook_lab_manual' => 5,
+            'research_articles' => 2,
+            'journal_editorship' => 2,
+            'participation_chairman' => 5,
+            'participation_member' => 3,
+            'resource_person_within' => 1,
+            'resource_person_outside' => 1,
+            'membership_officer_accreditor' => 2,
+            'membership_member' => 1,
+        ];
+
+        foreach ($fields as $field => $points) {
+            if (is_numeric($this->$field)) {
+                $totalPoints += $this->$field * $points;
+            }
+        }
+
+        // Save the total points if necessary
+        $this->total_points = $totalPoints;
+        $this->save();
+
+        return $totalPoints;
     }
-};
+
+    // Optional: Casting boolean fields (if any)
+    protected $casts = [
+        // 'some_field' => 'boolean',
+    ];
+
+}

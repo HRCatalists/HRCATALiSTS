@@ -16,6 +16,7 @@ return new class extends Migration {
             $table->string('email')->unique();
             $table->string('phone')->nullable();
             $table->text('address')->nullable();
+            $table->text('notes')->nullable();
             $table->string('cv')->nullable(); // File path
             $table->boolean('privacy_policy_agreed')->default(false);
             $table->string('status')->default('active');

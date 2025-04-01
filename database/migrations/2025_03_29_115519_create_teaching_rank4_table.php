@@ -11,15 +11,22 @@ return new class extends Migration {
             $table->id(); // Auto-increment primary key
             $table->unsignedBigInteger('emp_id'); // Employee ID reference
 
-            // Participation fields
-            $table->integer('Attendance_school_sponsored_activities')->nullable();
-            $table->integer('Committee_Involvement')->nullable();
-            $table->integer('Participation_in_the_CC_Community_Extension_Program')->nullable();
+            // Attendance in school-sponsored activities
+            $table->boolean('attendance_activities')->default(false); // 30 pts max
 
-            // Total Points calculation
-            $table->integer('TotalPoints')->nullable();
+            // Committee Involvement / Voluntary Services
+            $table->boolean('committee_involvement')->default(false); // 30 pts max
 
-            // Foreign key constraint
+            // Participation in Community Extension Program
+            $table->boolean('community_extension')->default(false); // 40 pts max
+
+            // Total points earned
+            $table->integer('total_points')->nullable();
+
+            // Weighted total points (15%)
+            $table->decimal('total_percentage', 5, 2)->nullable(); // Stores the weighted score
+
+            // Foreign key constraint to reference employee in teaching_rank3
             $table->foreign('emp_id')->references('emp_id')->on('teaching_rank3')->onDelete('cascade');
 
             $table->timestamps();

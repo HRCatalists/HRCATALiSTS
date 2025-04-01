@@ -47,7 +47,7 @@
     </table>
 </div>
 
-<script>
+<!-- <script>
 document.addEventListener('DOMContentLoaded', function () {
     function calculateTotalPointsIII() {
         let totalPoints = 0;
@@ -81,4 +81,4 @@ document.addEventListener('DOMContentLoaded', function () {
     // Initial calculation on page load for Form 3
     calculateTotalPointsIII();
 });
-</script>
+</script> -->

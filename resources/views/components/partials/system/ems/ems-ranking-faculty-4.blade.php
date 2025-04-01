@@ -58,7 +58,7 @@
     </table>
 </div>
 
-<script>
+<!-- <script>
 document.addEventListener('DOMContentLoaded', function () {
     // Function to calculate total points for checkboxes
     function calculateTotalPointsIV() {
@@ -92,4 +92,4 @@ document.addEventListener('DOMContentLoaded', function () {
     calculateTotalPointsIV();
 });
 
-</script>
+</script> -->

@@ -19,15 +19,16 @@ class FacultyTeachingRank2 extends Model
         'membership_officer_accreditor', 'membership_member',
         'total_points'
     ];
-
     public function employee()
     {
-        return $this->belongsTo(Employee::class, 'emp_id');
+        return $this->belongsTo(Employee::class, 'emp_id', 'id');
     }
 
-    public function teachingRank1()
+
+   
+    public function FacultyTeachingRank1()
     {
-        return $this->belongsTo(TeachingRank1::class, 'emp_id', 'id');
+        return $this->belongsTo(FacultyTeachingRank1::class, 'emp_id', 'emp_id');
     }
 
     public function calculateTotalPoints()

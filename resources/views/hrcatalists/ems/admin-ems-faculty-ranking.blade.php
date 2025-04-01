@@ -2,7 +2,7 @@
     <x-slot:title>
         Columban College Inc. | ATS Calendar
     </x-slot:title>
-
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <div class="d-flex">
         <x-partials.system.ats.ats-sidebar />
     </div>
@@ -14,19 +14,26 @@
                     <h2 class="db-h2">FACULTY RANKING SYSTEM</h2>   
                 </div>
 
+                <!-- Search Section -->
                 <div class="container">
                     <div class="search-container">
                         <div class="d-flex">
                             <input type="text" id="searchName" class="form-control me-2" placeholder="Enter Name of Personnel" aria-label="Search by Name">
                             <select id="searchDepartment" class="form-select me-2">
                                 <option value="" disabled selected>-Select a Department-</option>
-                                <option value="engineering">College of Nursing</option>
+                                <option value="College of Nursing">College of Nursing</option>
+                                <option value="College of Computer Studies">College of Computer Studies</option>
+                                <!-- Add other departments here -->
                             </select>
                             <button class="btn search-btn" onclick="searchPersonnel()">SEARCH</button>
                         </div>
                     </div>
                 </div>
 
+                <!-- Search Results Section (optional, if you want to display a message) -->
+                <div class="mt-5" id="search-results"></div>
+
+                <!-- Print Button -->
                 <div class="d-flex justify-content-end mb-3">
                     <button class="btn shadow print-btn">
                         <i class="fa fa-print"></i> PRINT
@@ -54,6 +61,7 @@
 
                 <!-- Tab content -->
                 <div class="tab-content" id="myTabContent">  
+                    <!-- This partial contains the Faculty Rank 1 form -->
                     <x-partials.system.ems.ems-ranking-faculty-1 />
                     <x-partials.system.ems.ems-ranking-faculty-2 />
                     <x-partials.system.ems.ems-ranking-faculty-3 />
@@ -63,53 +71,7 @@
             </div>
         </div>
     </div>
-    </div>
-</div>
-</div>
 </x-admin-ems-layout>
 
-<script>
-   function searchPersonnel() {
-    const name = document.getElementById('searchName').value;
-    const department = document.getElementById('searchDepartment').value;
-    
-    // Send AJAX request to the server
-    $.ajax({
-        url: '{{ route('faculty.search') }}',  // Ensure the correct route is set
-        type: 'POST',
-        data: {
-            _token: '{{ csrf_token() }}',
-            name: name,
-            department: department
-        },
-        success: function(response) {
-            console.log(response);  // The filtered faculty data returned from the server
-
-            // Update the table or the display area with faculty info
-            updateFacultyList(response); // Function to update the UI with search results
-        },
-        error: function(xhr) {
-            console.error("Error occurred: ", xhr);
-        }
-    });
-}
-
-function updateFacultyList(faculties) {
-    const facultyContainer = document.getElementById('facultyContainer');
-    facultyContainer.innerHTML = '';
-
-    faculties.forEach(faculty => {
-        const facultyDiv = document.createElement('div');
-        facultyDiv.classList.add('faculty-item');
-        facultyDiv.innerHTML = `
-            <h5>${faculty.employee.first_name} ${faculty.employee.last_name}</h5>
-            <p>Department: ${faculty.employee.department}</p>
-            <button class="btn btn-info" onclick="showGrades(${faculty.id})">Show Grades</button>
-        `;
-        facultyContainer.appendChild(facultyDiv);
-    });
-}
 
 
-
-</script>

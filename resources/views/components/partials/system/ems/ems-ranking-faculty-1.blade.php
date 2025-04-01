@@ -1,4 +1,11 @@
+<!-- Ensure this meta tag is in your layout's head -->
+<meta name="csrf-token" content="{{ csrf_token() }}">
+
+<!-- Faculty Rank 1 Partial Form -->
 <div class="tab-pane fade show active" id="content1" role="tabpanel">
+  <!-- Hidden field for emp_id; ensure that $faculty is passed to the view -->
+  <input type="hidden" name="emp_id" value="{{ $faculty->emp_id ?? '' }}">
+
   <table class="table table-bordered mt-5">
     <thead>
       <tr>
@@ -11,334 +18,578 @@
     <tbody>
       <!-- I. ACADEMIC PREPARATION & OTHER QUALIFICATIONS -->
       <tr>
-        <td><strong>I. ACADEMIC PREPARATION & Other Qualifications</strong></td>
-        <td></td>
-        <td><strong>100 POINTS</strong></td>
-        <td><strong>x 30%</strong></td>
+        <td colspan="4"><strong>I. ACADEMIC PREPARATION & Other Qualifications</strong></td>
       </tr>
       <!-- A. Educational Degrees (cap 50 pts) -->
       <tr>
-        <td><strong>A. Educational Degrees</strong></td>
-        <td class="text-center"></td>
-        <td class="text-center"><strong>(50 pts maximum)</strong></td>
-        <td></td>
+        <td colspan="4"><strong>A. Educational Degrees (50 pts max)</strong></td>
       </tr>
       <tr>
         <td>Bachelor's Degree</td>
-        <td class="text-center"><input type="checkbox" name="edu" value="20"></td>
+        <td class="text-center">
+          <input type="checkbox" name="bachelor_degree" value="20" 
+          {{ isset($faculty) && $faculty->bachelor_degree ? 'checked' : '' }}>
+        </td>
         <td class="text-center">20 pts</td>
         <td></td>
       </tr>
       <tr>
-        <td>Academic Units towards Master's Degree (last 3 years) for every 6 Units<br><small>(Enter units in the field below)</small></td>
+        <td>Academic Units toward Master's Degree (enter units; 6 units = 1 pt)</td>
         <td>
-          <input type="number" name="masters_academic_units" class="form-control" placeholder="Units">
+          <input type="number" name="academic_units_master_degree" class="form-control" placeholder="Units" 
+          value="{{ $faculty->academic_units_master_degree ?? '' }}">
         </td>
-        <td class="text-center">6 units = 1 pt</td>
+        <td class="text-center">Calculated</td>
         <td></td>
       </tr>
       <tr>
         <td>MA/MS/MAT/MBA/MPM (Candidate): Completed Academic Requirements</td>
-        <td class="text-center"><input type="checkbox" name="edu" value="25"></td>
+        <td class="text-center">
+          <input type="checkbox" name="ma_ms_candidate" value="25" 
+          {{ isset($faculty) && $faculty->ma_ms_candidate ? 'checked' : '' }}>
+        </td>
         <td class="text-center">25 pts</td>
         <td></td>
       </tr>
       <tr>
         <td>Master's Thesis defended without S.O.</td>
-        <td class="text-center"><input type="checkbox" name="edu" value="28"></td>
+        <td class="text-center">
+          <input type="checkbox" name="masters_thesis_completed" value="28" 
+          {{ isset($faculty) && $faculty->masters_thesis_completed ? 'checked' : '' }}>
+        </td>
         <td class="text-center">28 pts</td>
         <td></td>
       </tr>
       <tr>
         <td>Full-fledged Master's Degree</td>
-        <td class="text-center"><input type="checkbox" name="edu" value="30"></td>
+        <td class="text-center">
+          <input type="checkbox" name="full_master_degree" value="30" 
+          {{ isset($faculty) && $faculty->full_master_degree ? 'checked' : '' }}>
+        </td>
         <td class="text-center">30 pts</td>
         <td></td>
       </tr>
       <tr>
-        <td>Academic Units earned towards Doctorate Degree (last 3 years) for every 6 Units<br><small>(Enter units in the field below)</small></td>
+        <td>Academic Units toward Doctorate Degree (enter units; 6 units = 1 pt)</td>
         <td>
-          <input type="number" name="doctorate_academic_units" class="form-control" placeholder="Units">
+          <input type="number" name="academic_units_doctorate_degree" class="form-control" placeholder="Units" 
+          value="{{ $faculty->academic_units_doctorate_degree ?? '' }}">
         </td>
-        <td class="text-center">6 units = 1 pt</td>
+        <td class="text-center">Calculated</td>
         <td></td>
       </tr>
       <tr>
         <td>Ph.D./Ed.D. (Candidate): Completed Academic Requirements</td>
-        <td class="text-center"><input type="checkbox" name="edu" value="40"></td>
+        <td class="text-center">
+          <input type="checkbox" name="phd_education" value="40" 
+          {{ isset($faculty) && $faculty->phd_education ? 'checked' : '' }}>
+        </td>
         <td class="text-center">40 pts</td>
         <td></td>
       </tr>
       <tr>
         <td>Doctorate Dissertation defended without S.O.</td>
-        <td class="text-center"><input type="checkbox" name="edu" value="45"></td>
+        <td class="text-center">
+          <input type="checkbox" name="doctorate_dissertation_completed" value="45" 
+          {{ isset($faculty) && $faculty->doctorate_dissertation_completed ? 'checked' : '' }}>
+        </td>
         <td class="text-center">45 pts</td>
         <td></td>
       </tr>
       <tr>
         <td>Full-fledged Doctorate Degree</td>
-        <td class="text-center"><input type="checkbox" name="edu" value="50"></td>
+        <td class="text-center">
+          <input type="checkbox" name="full_doctorate_degree" value="50" 
+          {{ isset($faculty) && $faculty->full_doctorate_degree ? 'checked' : '' }}>
+        </td>
         <td class="text-center">50 pts</td>
         <td></td>
       </tr>
       <!-- B. Additional Degrees (cap 10 pts) -->
       <tr>
-        <td><strong>B. Additional Degrees</strong></td>
-        <td class="text-center"></td>
-        <td class="text-center"><strong>(10 pts maximum)</strong></td>
-        <td></td>
+        <td colspan="4"><strong>B. Additional Degrees (10 pts max)</strong></td>
       </tr>
       <tr>
         <td>Another Bachelor's Degree</td>
-        <td class="text-center"><input type="checkbox" name="additional" value="4"></td>
+        <td class="text-center">
+          <input type="checkbox" name="additional_bachelor_degree" value="4" 
+          {{ isset($faculty) && $faculty->additional_bachelor_degree ? 'checked' : '' }}>
+        </td>
         <td class="text-center">4 pts</td>
         <td></td>
       </tr>
       <tr>
         <td>Another Master's Degree - Full Pledged</td>
-        <td class="text-center"><input type="checkbox" name="additional" value="6"></td>
+        <td class="text-center">
+          <input type="checkbox" name="additional_master_degree" value="6" 
+          {{ isset($faculty) && $faculty->additional_master_degree ? 'checked' : '' }}>
+        </td>
         <td class="text-center">6 pts</td>
         <td></td>
       </tr>
       <tr>
         <td>Another Doctorate Degree - Full Pledged</td>
-        <td class="text-center"><input type="checkbox" name="additional" value="10"></td>
+        <td class="text-center">
+          <input type="checkbox" name="additional_doctorate_degree" value="10" 
+          {{ isset($faculty) && $faculty->additional_doctorate_degree ? 'checked' : '' }}>
+        </td>
         <td class="text-center">10 pts</td>
         <td></td>
       </tr>
       <tr>
         <td>Two or more degrees</td>
-        <td class="text-center"><input type="checkbox" name="additional" value="10"></td>
+        <td class="text-center">
+          <input type="checkbox" name="multiple_degrees" value="10" 
+          {{ isset($faculty) && $faculty->multiple_degrees ? 'checked' : '' }}>
+        </td>
         <td class="text-center">10 pts</td>
         <td></td>
       </tr>
       <!-- C. Additional Training (cap 10 pts) -->
       <tr>
-        <td><strong>C. Additional Training</strong></td>
-        <td class="text-center"></td>
-        <td class="text-center"><strong>(10 pts maximum)</strong></td>
-        <td></td>
+        <td colspan="4"><strong>C. Additional Training (10 pts max)</strong></td>
       </tr>
       <tr>
         <td>Advanced/Special training in related field (3 weeks maximum)</td>
-        <td class="text-center"><input type="checkbox" name="training" value="2"></td>
+        <td class="text-center">
+          <input type="checkbox" name="specialized_training" value="2" 
+          {{ isset($faculty) && $faculty->specialized_training ? 'checked' : '' }}>
+        </td>
         <td class="text-center">2 pts per training</td>
         <td></td>
       </tr>
       <tr>
         <td>Travel related to field/assignment and Scholarship/Study Grant (Domestic Abroad)</td>
-        <td class="text-center"><input type="checkbox" name="training" value="5"></td>
+        <td class="text-center">
+          <input type="checkbox" name="travel_grant_for_study" value="5" 
+          {{ isset($faculty) && $faculty->travel_grant_for_study ? 'checked' : '' }}>
+        </td>
         <td class="text-center">5 pts pro-rated</td>
         <td></td>
       </tr>
       <tr>
-        <td>Seminars/Workshops/Conventions/Conferences (cumulative)<br><small>(Enter days attended below)</small></td>
+        <td>Seminars/Workshops/Conventions/Conferences (enter days attended)</td>
         <td>
-          <input type="number" name="seminars_workshops" class="form-control" placeholder="Days">
+          <input type="number" name="seminars_attended" class="form-control" placeholder="Days" 
+          value="{{ $faculty->seminars_attended ?? '' }}">
         </td>
-        <td class="text-center">.33 pt per day (or 1 pt per 3 days)</td>
+        <td class="text-center">.33 pt per day</td>
         <td></td>
       </tr>
       <tr>
         <td>18 units of Professional Education Subjects</td>
-        <td class="text-center"><input type="checkbox" name="training" value="5"></td>
+        <td class="text-center">
+          <input type="checkbox" name="professional_education_units" value="5" 
+          {{ isset($faculty) && $faculty->professional_education_units ? 'checked' : '' }}>
+        </td>
         <td class="text-center">5 pts</td>
         <td></td>
       </tr>
       <tr>
         <td>Plumbing Licenses</td>
-        <td class="text-center"><input type="checkbox" name="training" value="5"></td>
+        <td class="text-center">
+          <input type="checkbox" name="plumbing_certification" value="5" 
+          {{ isset($faculty) && $faculty->plumbing_certification ? 'checked' : '' }}>
+        </td>
         <td class="text-center">5 pts</td>
         <td></td>
       </tr>
       <tr>
         <td>Certificate of Completion</td>
-        <td class="text-center"><input type="checkbox" name="training" value="3"></td>
+        <td class="text-center">
+          <input type="checkbox" name="certificate_of_completion" value="3" 
+          {{ isset($faculty) && $faculty->certificate_of_completion ? 'checked' : '' }}>
+        </td>
         <td class="text-center">3 pts</td>
         <td></td>
       </tr>
       <tr>
         <td>National Certificate</td>
-        <td class="text-center"><input type="checkbox" name="training" value="5"></td>
+        <td class="text-center">
+          <input type="checkbox" name="national_certification" value="5" 
+          {{ isset($faculty) && $faculty->national_certification ? 'checked' : '' }}>
+        </td>
         <td class="text-center">5 pts</td>
         <td></td>
       </tr>
       <tr>
         <td>Trainor's Methodology Certificate</td>
-        <td class="text-center"><input type="checkbox" name="training" value="10"></td>
+        <td class="text-center">
+          <input type="checkbox" name="trainers_methodology" value="10" 
+          {{ isset($faculty) && $faculty->trainers_methodology ? 'checked' : '' }}>
+        </td>
         <td class="text-center">10 pts</td>
         <td></td>
       </tr>
       <!-- D. Government Examinations (cap 20 pts) -->
       <tr>
-        <td><strong>D. Government Examinations Passed/Eligibility</strong></td>
-        <td class="text-center"></td>
-        <td class="text-center"><strong>(20 pts maximum)</strong></td>
-        <td></td>
+        <td colspan="4"><strong>D. Government Examinations Passed/Eligibility (20 pts max)</strong></td>
       </tr>
       <tr>
         <td>Teachers Board (LET)</td>
-        <td class="text-center"><input type="checkbox" name="exam" value="20"></td>
+        <td class="text-center">
+          <input type="checkbox" name="teachers_board_certified" value="20" 
+          {{ isset($faculty) && $faculty->teachers_board_certified ? 'checked' : '' }}>
+        </td>
         <td class="text-center">20 pts</td>
         <td></td>
       </tr>
       <tr>
         <td>CS Certification Eligibility/Career Professional</td>
-        <td class="text-center"><input type="checkbox" name="exam" value="15"></td>
+        <td class="text-center">
+          <input type="checkbox" name="career_service_certification" value="15" 
+          {{ isset($faculty) && $faculty->career_service_certification ? 'checked' : '' }}>
+        </td>
         <td class="text-center">15 pts</td>
         <td></td>
       </tr>
       <tr>
         <td>Bar/CPA/MD/DM/DV/Engineering etc.</td>
-        <td class="text-center"><input type="checkbox" name="exam" value="20"></td>
+        <td class="text-center">
+          <input type="checkbox" name="bar_exam_certification" value="20" 
+          {{ isset($faculty) && $faculty->bar_exam_certification ? 'checked' : '' }}>
+        </td>
         <td class="text-center">20 pts</td>
         <td></td>
       </tr>
       <!-- E. Academic Honors/Awards (cap 10 pts) -->
       <tr>
-        <td><strong>E. Academic Honors/Awards Received</strong></td>
-        <td class="text-center"></td>
-        <td class="text-center"><strong>(10 pts maximum)</strong></td>
-        <td></td>
+        <td colspan="4"><strong>E. Academic Honors/Awards Received (10 pts max)</strong></td>
       </tr>
       <tr>
         <td>Board/Bar Placer</td>
-        <td class="text-center"><input type="checkbox" name="honor" value="10"></td>
+        <td class="text-center">
+          <input type="checkbox" name="board_exam_placer" value="10" 
+          {{ isset($faculty) && $faculty->board_exam_placer ? 'checked' : '' }}>
+        </td>
         <td class="text-center">10 pts</td>
         <td></td>
       </tr>
       <tr>
         <td>Awards - Local</td>
-        <td class="text-center"><input type="checkbox" name="honor" value="3"></td>
+        <td class="text-center">
+          <input type="checkbox" name="local_awards" value="3" 
+          {{ isset($faculty) && $faculty->local_awards ? 'checked' : '' }}>
+        </td>
         <td class="text-center">3 pts</td>
         <td></td>
       </tr>
       <tr>
         <td>Awards - Regional</td>
-        <td class="text-center"><input type="checkbox" name="honor" value="5"></td>
+        <td class="text-center">
+          <input type="checkbox" name="regional_awards" value="5" 
+          {{ isset($faculty) && $faculty->regional_awards ? 'checked' : '' }}>
+        </td>
         <td class="text-center">5 pts</td>
         <td></td>
       </tr>
       <tr>
         <td>Awards - National/International</td>
-        <td class="text-center"><input type="checkbox" name="honor" value="10"></td>
+        <td class="text-center">
+          <input type="checkbox" name="national_awards" value="10" 
+          {{ isset($faculty) && $faculty->national_awards ? 'checked' : '' }}>
+        </td>
         <td class="text-center">10 pts</td>
         <td></td>
       </tr>
       <tr>
         <td>Summa Cum Laude</td>
-        <td class="text-center"><input type="checkbox" name="honor" value="10"></td>
+        <td class="text-center">
+          <input type="checkbox" name="summa_cum_laude" value="10" 
+          {{ isset($faculty) && $faculty->summa_cum_laude ? 'checked' : '' }}>
+        </td>
         <td class="text-center">10 pts</td>
         <td></td>
       </tr>
       <tr>
         <td>Magna Cum Laude</td>
-        <td class="text-center"><input type="checkbox" name="honor" value="8"></td>
+        <td class="text-center">
+          <input type="checkbox" name="magna_cum_laude" value="8" 
+          {{ isset($faculty) && $faculty->magna_cum_laude ? 'checked' : '' }}>
+        </td>
         <td class="text-center">8 pts</td>
         <td></td>
       </tr>
       <tr>
         <td>Cum Laude</td>
-        <td class="text-center"><input type="checkbox" name="honor" value="6"></td>
+        <td class="text-center">
+          <input type="checkbox" name="cum_laude" value="6" 
+          {{ isset($faculty) && $faculty->cum_laude ? 'checked' : '' }}>
+        </td>
         <td class="text-center">6 pts</td>
         <td></td>
       </tr>
       <tr>
         <td>With Distinction</td>
-        <td class="text-center"><input type="checkbox" name="honor" value="3"></td>
+        <td class="text-center">
+          <input type="checkbox" name="with_distinction" value="3" 
+          {{ isset($faculty) && $faculty->with_distinction ? 'checked' : '' }}>
+        </td>
         <td class="text-center">3 pts</td>
         <td></td>
       </tr>
       <!-- Totals -->
       <tr>
         <td><strong>TOTAL CREDIT POINTS EARNED (I)</strong></td>
-        <td></td>
-        <td></td>
-        <!-- Changed ID from totalPoints to totalPointsI -->
         <td id="totalPointsI"><strong>0</strong></td>
+        <td></td>
+        <td></td>
       </tr>
       <tr>
         <td><strong>TOTAL CREDIT POINTS EARNED x 30%</strong></td>
-        <td></td>
-        <td></td>
         <td id="totalPercentageI"><strong>0</strong></td>
+        <td></td>
+        <td></td>
       </tr>
     </tbody>
   </table>
 </div>
+<!-- Save Button -->
+<div class="mt-4 text-center">
+  <button id="saveButton" class="btn btn-primary">Save</button>
+</div>
 
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-  function calculateTotalPointsForm1() {
-    let maxTotalPoints = 100; // Overall maximum for Form 1
+document.addEventListener("DOMContentLoaded", function () {
+    // Retrieve emp_id from the hidden input (if available)
+    const empIdElement = document.querySelector('[name="emp_id"]');
+    const emp_id = empIdElement ? empIdElement.value : null;
+    if (!emp_id) {
+        console.error("Employee ID is missing from the form.");
+    }
 
-    // Define caps for each category in Form 1
-    let categoryCaps = {
-      edu: 50,
-      additional: 10,
-      training: 10,
-      exam: 20,
-      honor: 10
-    };
+    // ---------- SEARCH AND AUTO-POPULATE FUNCTIONS ----------
 
-    // Initialize the sums for each category
-    let categoryPoints = {
-      edu: 0,
-      additional: 0,
-      training: 0,
-      exam: 0,
-      honor: 0
-    };
+    function searchPersonnel() {
+        const name = document.getElementById("searchName").value;
+        const department = document.getElementById("searchDepartment").value;
+        const resultsContainer = document.getElementById("search-results");
+        resultsContainer.innerHTML = "<p>Searching...</p>";
 
-    // Process checked checkboxes for each category in Form 1 (scope to #content1)
-    document.querySelectorAll('#content1 input[type="checkbox"]:checked').forEach(function (checkbox) {
-      let cat = checkbox.name; // Category the checkbox belongs to
-      let val = parseInt(checkbox.value) || 0; // Value of the checkbox
+        fetch("/search-faculty", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content")
+            },
+            body: JSON.stringify({ name: name, department: department })
+        })
+        .then(response => {
+            if (response.redirected) {
+                window.location.href = response.url;
+                throw new Error("Redirected to login.");
+            }
+            if (!response.ok) {
+                return response.json().then(errData => { throw errData; });
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.message) {
+                displayNoResults(data.message);
+            } else if (data.length === 0) {
+                displayNoResults("No personnel found matching the criteria.");
+            } else {
+                populateFacultyForm(data[0]);
+                resultsContainer.innerHTML = "";
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            displayNoResults("An error occurred while searching.");
+        });
+    }
 
-      // Only add points if we haven't reached the cap in this category
-      if (categoryPoints[cat] + val <= categoryCaps[cat]) {
-        categoryPoints[cat] += val;
-      } else {
-        // If adding the full value exceeds the cap, only add the difference
-        let diff = categoryCaps[cat] - categoryPoints[cat];
-        if (diff > 0) {
-          categoryPoints[cat] += diff;
+    function displayNoResults(message) {
+        const resultsContainer = document.getElementById("search-results");
+        resultsContainer.innerHTML = `<p>${message}</p>`;
+    }
+
+    function populateFacultyForm(faculty) {
+        const fields = [
+            "bachelor_degree",
+            "academic_units_master_degree",
+            "ma_ms_candidate",
+            "masters_thesis_completed",
+            "full_master_degree",
+            "academic_units_doctorate_degree",
+            "phd_education",
+            "doctorate_dissertation_completed",
+            "full_doctorate_degree",
+            "additional_bachelor_degree",
+            "additional_master_degree",
+            "additional_doctorate_degree",
+            "multiple_degrees",
+            "specialized_training",
+            "travel_grant_for_study",
+            "seminars_attended",
+            "professional_education_units",
+            "plumbing_certification",
+            "certificate_of_completion",
+            "national_certification",
+            "trainers_methodology",
+            "teachers_board_certified",
+            "career_service_certification",
+            "bar_exam_certification",
+            "board_exam_placer",
+            "local_awards",
+            "regional_awards",
+            "national_awards",
+            "summa_cum_laude",
+            "magna_cum_laude",
+            "cum_laude",
+            "with_distinction"
+        ];
+        fields.forEach(field => {
+            let value = faculty[field];
+            let input = document.querySelector(`#content1 [name="${field}"]`);
+            if (input) {
+                if (input.type === "checkbox" || input.type === "radio") {
+                    input.checked = Boolean(value);
+                } else {
+                    input.value = value || "";
+                }
+            }
+        });
+
+        if (faculty.total_points !== undefined) {
+            document.getElementById("totalPointsI").innerText = parseFloat(faculty.total_points).toFixed(2);
+            document.getElementById("totalPercentageI").innerText = parseFloat(faculty.total_points * 0.3).toFixed(2);
         }
-      }
+
+        updateTotalPoints();
+    }
+
+    // ---------- CALCULATE TOTAL POINTS FUNCTION ----------
+
+    function updateTotalPoints() {
+        let totalPoints = 0;
+
+        // Sum values from checkboxes
+        document.querySelectorAll('#content1 input[type="checkbox"]:checked').forEach(checkbox => {
+            totalPoints += parseFloat(checkbox.value) || 0;
+        });
+
+        // Sum values from radio buttons (if any)
+        document.querySelectorAll('#content1 input[type="radio"]:checked').forEach(radio => {
+            totalPoints += parseFloat(radio.value) || 0;
+        });
+
+        // Sum numeric inputs (assuming 1 unit = 0.1667 points)
+        document.querySelectorAll('#content1 input[type="number"]').forEach(input => {
+            const value = parseFloat(input.value);
+            if (!isNaN(value)) {
+                totalPoints += value * 0.1667;
+            }
+        });
+
+        totalPoints = Math.min(totalPoints, 100);
+
+        const totalPointsElement = document.getElementById("totalPointsI");
+        const totalPercentageElement = document.getElementById("totalPercentageI");
+        if (totalPointsElement) {
+            totalPointsElement.innerText = totalPoints.toFixed(2);
+        }
+        if (totalPercentageElement) {
+            totalPercentageElement.innerText = (totalPoints * 0.3).toFixed(2);
+        }
+    }
+
+    // Attach event listeners to recalc when inputs change
+    document.querySelectorAll('#content1 input[type="checkbox"], #content1 input[type="radio"], #content1 input[type="number"]').forEach(input => {
+        input.addEventListener("change", updateTotalPoints);
+    });
+    updateTotalPoints();
+
+    // ---------- SAVE BUTTON FUNCTIONALITY ----------
+    document.getElementById("saveButton").addEventListener("click", function () {
+        const empIdElement = document.querySelector('[name="emp_id"]');
+        if (!empIdElement) {
+            alert("Employee ID is missing.");
+            return;
+        }
+        const emp_id = empIdElement.value;
+        let totalPoints = parseFloat(document.getElementById("totalPointsI").innerText) || 0;
+
+        // Build FormData with all fields from the form
+        const formData = new FormData();
+        const fields = [
+            "emp_id",
+            "bachelor_degree",
+            "academic_units_master_degree",
+            "ma_ms_candidate",
+            "masters_thesis_completed",
+            "full_master_degree",
+            "academic_units_doctorate_degree",
+            "phd_education",
+            "doctorate_dissertation_completed",
+            "full_doctorate_degree",
+            "additional_bachelor_degree",
+            "additional_master_degree",
+            "additional_doctorate_degree",
+            "multiple_degrees",
+            "specialized_training",
+            "travel_grant_for_study",
+            "seminars_attended",
+            "professional_education_units",
+            "plumbing_certification",
+            "certificate_of_completion",
+            "national_certification",
+            "trainers_methodology",
+            "teachers_board_certified",
+            "career_service_certification",
+            "bar_exam_certification",
+            "board_exam_placer",
+            "local_awards",
+            "regional_awards",
+            "national_awards",
+            "summa_cum_laude",
+            "magna_cum_laude",
+            "cum_laude",
+            "with_distinction"
+        ];
+        fields.forEach(field => {
+            let input = document.querySelector(`[name="${field}"]`);
+            if (input) {
+                if (input.type === "checkbox" || input.type === "radio") {
+                    formData.append(field, input.checked ? input.value : 0);
+                } else {
+                    formData.append(field, input.value);
+                }
+            }
+        });
+        // Optionally, append the calculated totalPoints
+        formData.append("totalPoints", totalPoints);
+
+        fetch("/save-points", {
+            method: "POST",
+            body: formData,
+            headers: {
+                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content")
+            }
+        })
+        .then(response => {
+            if (response.redirected) {
+                window.location.href = response.url;
+                throw new Error("Redirected to login.");
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.status === "success") {
+                alert("Faculty ranking saved successfully!");
+                window.location.href = "/ems-ranking";
+            } else {
+                alert("Error saving data: " + data.message);
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            alert("An error occurred while saving the data.");
+        });
     });
 
-    // Process number inputs for units towards Master's or Doctorate degrees in Form 1 (scope to #content1)
-    document.querySelectorAll('#content1 input[type="number"]').forEach(function (input) {
-      let units = parseFloat(input.value) || 0;
-      let points = units / 6; // 6 units = 1 pt
-
-      // Add these points to the "edu" category without exceeding its cap
-      if (categoryPoints.edu + points <= categoryCaps.edu) {
-        categoryPoints.edu += points;
-      } else {
-        let diff = categoryCaps.edu - categoryPoints.edu;
-        if (diff > 0) {
-          categoryPoints.edu += diff;
-        }
-      }
-    });
-
-    // Sum total points from all categories
-    let totalPoints = Object.values(categoryPoints).reduce((a, b) => a + b, 0);
-    totalPoints = Math.min(totalPoints, maxTotalPoints); // Cap the total points if necessary
-
-    // Update the totals in the DOM for Form 1
-    document.getElementById('totalPointsI').innerText = totalPoints.toFixed(2);
-    let totalPercentage = totalPoints * 0.30; // Weight of 30% for Form 1
-    document.getElementById('totalPercentageI').innerText = totalPercentage.toFixed(2);
-  }
-
-  // Attach event listeners for checkboxes and number inputs in Form 1
-  document.querySelectorAll('#content1 input[type="checkbox"], #content1 input[type="number"]').forEach(function (input) {
-    input.addEventListener('change', calculateTotalPointsForm1);
-  });
-
-  // Initial calculation for Form 1
-  calculateTotalPointsForm1();
+    // Expose searchPersonnel globally so that the search button can call it
+    window.searchPersonnel = searchPersonnel;
 });
 </script>

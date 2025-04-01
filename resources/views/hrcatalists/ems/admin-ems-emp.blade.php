@@ -126,7 +126,7 @@
 
                                     <!-- ✅ footer is INSIDE the form and modal-body -->
                                     <div class="modal-footer">
-                                        <button type="submit" class="btn text-success">Update</button>
+                                        <button type="submit" class="btn text-success" onclick="this.disabled=true; this.form.submit();">Update</button>
                                         <button type="button" class="btn text-secondary" data-bs-dismiss="modal">Close</button>
                                     </div>
                                 </form>
@@ -135,7 +135,6 @@
                         </div>
                     </div>
                 </div>
-
                 @endforeach                        
             </div>
         </div>
@@ -167,66 +166,92 @@
     </script>
     {{-- deleteWithConfirm --}}
 
-    {{-- Make rows editable + Add new ones in Education--}}
-    {{-- // ✅ Unified edit/save/cancel handler for ALL sections --}}
+    {{-- JavaScript logic to support dynamic edit/add/remove for all sections in editing employee's information --}}
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            const sections = ['education', 'licenses', 'trainings', 'service-records', 'organizations', 'others'];
+
+            function capitalize(str) {
+                return str.charAt(0).toUpperCase() + str.slice(1);
+            }
+
+            function getAddButtonId(section, employeeId) {
+                const idMap = {
+                    'education': `addEducationBtn-${employeeId}`,
+                    'licenses': `addLicenseBtn-${employeeId}`,
+                    'trainings': `addTrainingBtn-${employeeId}`,
+                    'service-records': `addServiceRecordBtn-${employeeId}`,
+                    'organizations': `addOrganizationBtn-${employeeId}`,
+                    'others': `addOtherBtn-${employeeId}`
+                };
+                return idMap[section];
+            }
+
+            function getTableId(section, employeeId) {
+                const idMap = {
+                    'education': `educationTable-${employeeId}`,
+                    'licenses': `licensesTable-${employeeId}`,
+                    'trainings': `trainingsTable-${employeeId}`,
+                    'service-records': `serviceRecordTable-${employeeId}`,
+                    'organizations': `organizationTable-${employeeId}`,
+                    'others': `othersTable-${employeeId}`
+                };
+                return idMap[section];
+            }
+
             function bindEditButtons() {
                 document.querySelectorAll('.toggle-edit-btn').forEach(btn => {
                     btn.removeEventListener('click', handleEditClick);
                     btn.addEventListener('click', handleEditClick);
                 });
             }
-        
+
             function handleEditClick() {
                 const section = this.dataset.section;
                 const employeeId = this.dataset.employeeId;
+                const wrapper = document.getElementById(`section-${section}-${employeeId}`);
                 const inputs = document.querySelectorAll(`.section-field-${section}-${employeeId}`);
                 const buttonContainer = this.parentElement;
-                const wrapper = document.getElementById(`section-${section}-${employeeId}`);
-        
-                // Avoid rebinding or editing already active sections
+
                 if (wrapper && wrapper.dataset.editing === "true") return;
                 if (wrapper) wrapper.dataset.editing = "true";
-        
-                // Make inputs editable
+
                 inputs.forEach(input => {
                     input.readOnly = false;
                     input.dataset.originalValue = input.value;
                 });
-        
-                // Show buttons for education
-                if (section === 'education') {
-                    document.getElementById(`addEducationBtn-${employeeId}`)?.classList.remove('d-none');
-                    wrapper?.querySelectorAll('.action-column').forEach(col => col.classList.remove('d-none'));
-                    wrapper?.querySelectorAll('.remove-edu-row').forEach(btn => btn.classList.remove('d-none'));
-                }
-        
+
+                const addBtn = document.getElementById(getAddButtonId(section, employeeId));
+                if (addBtn) addBtn.classList.remove('d-none');
+
+                wrapper?.querySelectorAll('.action-column').forEach(col => col.classList.remove('d-none'));
+                wrapper?.querySelectorAll('.remove-edu-row').forEach(btn => btn.classList.remove('d-none'));
+
                 buttonContainer.innerHTML = `
                     <button type="button" class="btn btn-sm btn-success me-2 save-edit-btn"
                         data-section="${section}" data-employee-id="${employeeId}">Save</button>
                     <button type="button" class="btn btn-sm btn-secondary cancel-edit-btn"
                         data-section="${section}" data-employee-id="${employeeId}">Cancel</button>
                 `;
-        
+
                 bindActionButtons();
             }
-        
+
             function bindActionButtons() {
                 document.querySelectorAll('.save-edit-btn, .cancel-edit-btn').forEach(btn => {
                     btn.removeEventListener('click', handleSaveCancel);
                     btn.addEventListener('click', handleSaveCancel);
                 });
             }
-        
-            function handleSaveCancel(e) {
+
+            function handleSaveCancel() {
                 const isSave = this.classList.contains('save-edit-btn');
                 const section = this.dataset.section;
                 const employeeId = this.dataset.employeeId;
                 const wrapper = document.getElementById(`section-${section}-${employeeId}`);
                 const inputs = document.querySelectorAll(`.section-field-${section}-${employeeId}`);
                 const buttonContainer = this.parentElement;
-        
+
                 if (isSave) {
                     inputs.forEach(input => {
                         input.readOnly = true;
@@ -238,63 +263,122 @@
                         input.readOnly = true;
                     });
                 }
-        
-                // Reset extra controls for education
-                if (section === 'education') {
-                    document.getElementById(`addEducationBtn-${employeeId}`)?.classList.add('d-none');
-                    wrapper?.querySelectorAll('.action-column').forEach(col => col.classList.add('d-none'));
-                    wrapper?.querySelectorAll('.remove-edu-row').forEach(btn => btn.classList.add('d-none'));
-                }
-        
+
+                wrapper?.querySelectorAll('.action-column').forEach(col => col.classList.add('d-none'));
+                wrapper?.querySelectorAll('.remove-edu-row').forEach(btn => btn.classList.add('d-none'));
+
+                const addBtn = document.getElementById(getAddButtonId(section, employeeId));
+                if (addBtn) addBtn.classList.add('d-none');
+
                 if (wrapper) wrapper.dataset.editing = "false";
-        
+
                 buttonContainer.innerHTML = `
                     <button type="button" class="btn btn-sm btn-outline-primary toggle-edit-btn"
                         data-section="${section}" data-employee-id="${employeeId}">Edit</button>
                 `;
-        
+
                 bindEditButtons();
             }
-        
-            // Add row (education only)
-            document.querySelectorAll('[id^="addEducationBtn-"]').forEach(addBtn => {
-                addBtn.addEventListener('click', function () {
-                    const employeeId = this.id.split('-').pop();
-                    const tableBody = document.querySelector(`#educationTable-${employeeId} tbody`);
-                    const index = tableBody.querySelectorAll('tr').length;
-        
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td><input type="text" name="educations[${index}][level]" class="form-control section-field-education-${employeeId}"></td>
-                        <td><input type="text" name="educations[${index}][school]" class="form-control section-field-education-${employeeId}"></td>
-                        <td><input type="text" name="educations[${index}][course]" class="form-control section-field-education-${employeeId}"></td>
-                        <td><input type="text" name="educations[${index}][major]" class="form-control section-field-education-${employeeId}"></td>
-                        <td><input type="text" name="educations[${index}][remarks]" class="form-control section-field-education-${employeeId}"></td>
-                        <td class="action-column text-center">
-                            <button type="button" class="btn btn-sm btn-danger remove-edu-row">Remove</button>
-                        </td>
-                    `;
-                    tableBody.appendChild(row);
-                    bindRemoveEducationButtons();
+
+            function bindAddButtons() {
+                sections.forEach(section => {
+                    document.querySelectorAll(`[id^="${getAddButtonId(section, '')}"]`).forEach(btn => {
+                        btn.removeEventListener('click', addRow);
+                        btn.addEventListener('click', addRow);
+                    });
                 });
-            });
-        
-            function bindRemoveEducationButtons() {
+            }
+
+            function addRow() {
+                const id = this.id;
+                const section = sections.find(sec => id.startsWith(getAddButtonId(sec, '')));
+                const employeeId = id.split('-').pop();
+                const tableBody = document.querySelector(`#${getTableId(section, employeeId)} tbody`);
+                const index = tableBody.querySelectorAll('tr').length;
+                let html = '';
+
+                switch (section) {
+                    case 'education':
+                        html = `
+                            <td><input type="text" name="educations[${index}][level]" class="form-control section-field-education-${employeeId}"></td>
+                            <td><input type="text" name="educations[${index}][school]" class="form-control section-field-education-${employeeId}"></td>
+                            <td><input type="text" name="educations[${index}][course]" class="form-control section-field-education-${employeeId}"></td>
+                            <td><input type="text" name="educations[${index}][major]" class="form-control section-field-education-${employeeId}"></td>
+                            <td><input type="text" name="educations[${index}][remarks]" class="form-control section-field-education-${employeeId}"></td>
+                            <td class="action-column text-center"><button type="button" class="btn btn-sm btn-danger remove-edu-row">Remove</button></td>
+                        `;
+                        break;
+                    case 'licenses':
+                        html = `
+                            <td><input type="text" name="licenses[${index}][license_name]" class="form-control section-field-licenses-${employeeId}"></td>
+                            <td><input type="text" name="licenses[${index}][license_number]" class="form-control section-field-licenses-${employeeId}"></td>
+                            <td><input type="date" name="licenses[${index}][expiry_date]" class="form-control section-field-licenses-${employeeId}"></td>
+                            <td><input type="date" name="licenses[${index}][renewal_from]" class="form-control section-field-licenses-${employeeId}"></td>
+                            <td><input type="date" name="licenses[${index}][renewal_to]" class="form-control section-field-licenses-${employeeId}"></td>
+                            <td class="action-column text-center"><button type="button" class="btn btn-sm btn-danger remove-edu-row">Remove</button></td>
+                        `;
+                        break;
+                    case 'trainings':
+                        html = `
+                            <td><input type="date" name="trainings[${index}][training_date]" class="form-control section-field-trainings-${employeeId}"></td>
+                            <td><input type="text" name="trainings[${index}][title]" class="form-control section-field-trainings-${employeeId}"></td>
+                            <td><input type="text" name="trainings[${index}][venue]" class="form-control section-field-trainings-${employeeId}"></td>
+                            <td><input type="text" name="trainings[${index}][remark]" class="form-control section-field-trainings-${employeeId}"></td>
+                            <td class="action-column text-center"><button type="button" class="btn btn-sm btn-danger remove-edu-row">Remove</button></td>
+                        `;
+                        break;
+                    case 'service-records':
+                        html = `
+                            <td><input type="text" name="service_records[${index}][department]" class="form-control section-field-service-records-${employeeId}"></td>
+                            <td><input type="text" name="service_records[${index}][inclusive_date]" class="form-control section-field-service-records-${employeeId}"></td>
+                            <td><input type="text" name="service_records[${index}][appointment_record]" class="form-control section-field-service-records-${employeeId}"></td>
+                            <td><input type="text" name="service_records[${index}][position]" class="form-control section-field-service-records-${employeeId}"></td>
+                            <td><input type="text" name="service_records[${index}][rank]" class="form-control section-field-service-records-${employeeId}"></td>
+                            <td><input type="text" name="service_records[${index}][remarks]" class="form-control section-field-service-records-${employeeId}"></td>
+                            <td class="action-column text-center"><button type="button" class="btn btn-sm btn-danger remove-edu-row">Remove</button></td>
+                        `;
+                        break;
+                    case 'organizations':
+                        html = `
+                            <td><input type="date" name="organizations[${index}][registration_date]" class="form-control section-field-organizations-${employeeId}"></td>
+                            <td><input type="date" name="organizations[${index}][validity_date]" class="form-control section-field-organizations-${employeeId}"></td>
+                            <td><input type="text" name="organizations[${index}][organization_name]" class="form-control section-field-organizations-${employeeId}"></td>
+                            <td><input type="text" name="organizations[${index}][place]" class="form-control section-field-organizations-${employeeId}"></td>
+                            <td><input type="text" name="organizations[${index}][position]" class="form-control section-field-organizations-${employeeId}"></td>
+                            <td class="action-column text-center"><button type="button" class="btn btn-sm btn-danger remove-edu-row">Remove</button></td>
+                        `;
+                        break;
+                    case 'others':
+                        html = `
+                            <td><input type="date" name="others[${index}][date]" class="form-control section-field-others-${employeeId}"></td>
+                            <td><input type="text" name="others[${index}][description]" class="form-control section-field-others-${employeeId}"></td>
+                            <td class="action-column text-center"><button type="button" class="btn btn-sm btn-danger remove-edu-row">Remove</button></td>
+                        `;
+                        break;
+                }
+
+                const row = document.createElement('tr');
+                row.innerHTML = html;
+                tableBody.appendChild(row);
+                bindRemoveButtons();
+            }
+
+            function bindRemoveButtons() {
                 document.querySelectorAll('.remove-edu-row').forEach(btn => {
                     btn.removeEventListener('click', removeRow);
                     btn.addEventListener('click', removeRow);
                 });
             }
-        
+
             function removeRow() {
                 this.closest('tr').remove();
             }
-        
+
             bindEditButtons();
-            bindRemoveEducationButtons();
+            bindAddButtons();
+            bindRemoveButtons();
         });
     </script>
-    {{-- // ✅ Unified edit/save/cancel handler for ALL sections --}}         
-    {{-- Make rows editable + Add new ones --}}
+        
     
 </x-admin-ems-layout>

@@ -1,135 +1,125 @@
 <?php
 
 namespace App\Http\Controllers;
-namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Routing\Controller;
-use App\Models\Applicant;
-use App\Models\Job;
-use App\Models\Log;
-use App\Models\Event;
-use Carbon\Carbon;
-use App\Models\Employee;
-
-
 use App\Models\FacultyTeachingRank1;
+use App\Models\FacultyTeachingRank2; // Import FacultyTeachingRank2 model
+use App\Models\Employee;
+use Illuminate\Support\Facades\Log;
 
 class FacultyRankingController extends Controller
 {
+    // EMS Faculty Ranking page
     public function ranking()
     {
         if (!Auth::check()) {
             return redirect()->route('login');
         }
-        return view('hrcatalists.ems.admin-ems-faculty-ranking'); // EMS Faculty/Non-teaching Ranking
+        return view('hrcatalists.ems.admin-ems-faculty-ranking');
     }
+
+    // EMS Non-Faculty Ranking page
     public function non_ranking()
     {
         if (!Auth::check()) {
             return redirect()->route('login');
         }
-        return view('hrcatalists.ems.admin-ems-non-teaching'); // EMS Faculty/Non-teaching Ranking
+        return view('hrcatalists.ems.admin-ems-non-teaching');
     }
 
+    // Search function to filter faculty by name and department
     public function search(Request $request)
     {
-        // Prepare query to filter based on employee's name and department
-        $query = FacultyTeachingRank1::query();
-
-        // Apply filter if 'name' is provided
-        if ($request->has('name') && $request->name) {
-            $query->whereHas('employee', function($q) use ($request) {
-                $q->where('first_name', 'like', '%' . $request->name . '%')
-                  ->orWhere('last_name', 'like', '%' . $request->name . '%');
-            });
+        try {
+            Log::info('Search Request Data:', $request->all()); // Log the incoming request data
+    
+            // Default to FacultyTeachingRank1, but check for a specific parameter to switch to FacultyTeachingRank2
+            $rankType = $request->input('rank_type', 'rank1'); // Default to 'rank1' if not provided
+    
+            // Dynamically choose the model based on the rank type
+            $query = $rankType === 'rank2' ? FacultyTeachingRank2::query() : FacultyTeachingRank1::query();
+    
+            // Filter by faculty name
+            if ($request->has('name') && $request->name) {
+                $query->whereHas('employee', function ($q) use ($request) {
+                    $q->where('first_name', 'like', '%' . $request->name . '%')
+                      ->orWhere('last_name', 'like', '%' . $request->name . '%');
+                });
+            }
+    
+            // Filter by department
+            if ($request->has('department') && $request->department) {
+                $query->whereHas('employee', function ($q) use ($request) {
+                    $q->where('department', 'like', '%' . $request->department . '%');
+                });
+            }
+    
+            // Fetch the filtered faculties along with their employee data
+            $faculties = $query->with('employee')->get();
+    
+            // If no results found, return a 404 response
+            if ($faculties->isEmpty()) {
+                return response()->json(['message' => 'No results found'], 404);
+            }
+    
+            return response()->json($faculties);
+    
+        } catch (\Exception $e) {
+            Log::error('Error searching faculty: ' . $e->getMessage()); // Log the error message
+            return response()->json([
+                'message' => 'An error occurred while searching',
+                'error' => $e->getMessage(),
+                'stack' => $e->getTraceAsString()
+            ], 500);
         }
-
-        // Apply filter if 'department' is provided
-        if ($request->has('department') && $request->department) {
-            $query->whereHas('employee', function($q) use ($request) {
-                $q->where('department', 'like', '%' . $request->department . '%');
-            });
-        }
-
-        // Fetch faculties along with their scores and employee information
-        $faculties = $query->with('employee')->get(); // Eager load employee data
-
-        // Return the faculty data as a JSON response
-        return response()->json($faculties);
     }
     
-public function updatePoints(Request $request)
-{
-    // Validate the incoming points data
-    $validated = $request->validate([
-        'emp_id' => 'required|exists:faculty_teaching_ranks,emp_id', // Ensure the employee ID exists
 
-        // Educational qualifications
-        'bachelors_degree' => 'nullable|integer|min:0',
-        'academic_units_masters' => 'nullable|integer|min:0',
-        'ma_ms_mat_mba_mpm_candidate' => 'nullable|integer|min:0',
-        'masters_thesis_no_so' => 'nullable|integer|min:0',
-        'full_masters_degree' => 'nullable|integer|min:0',
-        'academic_units_doctorate' => 'nullable|integer|min:0',
-        'phd_ed' => 'nullable|integer|min:0',
-        'doctorate_dissertation' => 'nullable|integer|min:0',
-        'full_doctorate_degree' => 'nullable|integer|min:0',
+    // Save total points after calculating them
+    public function saveTotalPoints(Request $request)
+    {
+        if (!Auth::check()) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
 
-        // Additional degrees
-        'another_bachelors' => 'nullable|integer|min:0',
-        'another_masters' => 'nullable|integer|min:0',
-        'another_doctorate' => 'nullable|integer|min:0',
-        'multiple_degrees' => 'nullable|integer|min:0',
+        // Validate the incoming request data
+        $validated = $request->validate([
+            'emp_id' => 'required|exists:teaching_rank1,emp_id', // Ensure emp_id exists in teaching_rank1
+        ]);
 
-        // Certifications and training
-        'special_training' => 'nullable|integer|min:0',
-        'travel_study_grant' => 'nullable|integer|min:0',
-        'seminars_workshops' => 'nullable|integer|min:0',
-        'professional_education_units' => 'nullable|integer|min:0',
-        'plumbing_license' => 'nullable|integer|min:0',
-        'certificate_completion' => 'nullable|integer|min:0',
-        'national_certificate' => 'nullable|integer|min:0',
-        'trainors_methodology' => 'nullable|integer|min:0',
+        try {
+            // Fetch the faculty entry from FacultyTeachingRank1
+            $faculty = FacultyTeachingRank1::where('emp_id', $validated['emp_id'])->first();
 
-        // Certifications (Changed to boolean where applicable)
-        'teachers_board' => 'nullable|boolean',
-        'cs_certification' => 'nullable|boolean',
-        'bar_cpa_md_engineering' => 'nullable|boolean',
+            if (!$faculty) {
+                return response()->json(['error' => 'Faculty not found'], 404);
+            }
 
-        // Achievements
-        'board_bar_placer' => 'nullable|integer|min:0|max:10',
-        'award_local' => 'nullable|integer|min:0|max:3',
-        'award_regional' => 'nullable|integer|min:0|max:5',
-        'award_national' => 'nullable|integer|min:0|max:10',
-        'summa_cum_laude' => 'nullable|integer|min:0|max:10',
-        'magna_cum_laude' => 'nullable|integer|min:0|max:8',
-        'cum_laude' => 'nullable|integer|min:0|max:6',
-        'with_distinction' => 'nullable|integer|min:0|max:3',
-    ]);
+            // Log the incoming request data for debugging
+            Log::info('Request Data: ', $request->all());
 
-    // Find the faculty record by emp_id
-    $faculty = FacultyTeachingRank1::where('emp_id', $validated['emp_id'])->first();
+            // Recalculate total points using the method in FacultyTeachingRank1 model
+            $faculty->total_points = $faculty->calculateTotalPoints();
 
-    if (!$faculty) {
-        return response()->json(['status' => 'error', 'message' => 'Faculty not found.'], 404);
-    }
+            // Save the updated total points
+            $faculty->save();
 
-    // Update the points for each field
-    foreach ($validated as $field => $points) {
-        // Skip the emp_id key as it is not a field in the database
-        if ($field !== 'emp_id') {
-            $faculty->$field = $points;
+            // Also update FacultyTeachingRank2 total points (if applicable)
+            $facultyRank2 = FacultyTeachingRank2::where('emp_id', $validated['emp_id'])->first();
+            if ($facultyRank2) {
+                $facultyRank2->total_points = $facultyRank2->calculateTotalPoints();
+                $facultyRank2->save();
+            }
+
+            // Return success response
+            return response()->json(['success' => true, 'message' => 'Total points saved successfully!']);
+
+        } catch (\Exception $e) {
+            // Log the error and return a response
+            Log::error('Error saving total points: ' . $e->getMessage());
+            return response()->json(['error' => 'Error saving total points: ' . $e->getMessage()], 500);
         }
     }
-
-    // Recalculate the total points after updating
-    $faculty->total_points = $faculty->calculateTotalPoints();
-
-    // Save the updated faculty record
-    $faculty->save();
-
-    return response()->json(['status' => 'success', 'message' => 'Points updated successfully!', 'data' => $faculty]);
-}
 }

@@ -29,12 +29,23 @@ Route::middleware(['auth', PreventBackHistory::class])->group(function () {
     Route::get('/ems-policy', [AdminController::class, 'companyPolicy'])->name('ems-policy');
     Route::get('/ems-logs', [AdminController::class, 'logs'])->name('ems-logs');
 
+// EMS ranking routes
+Route::get('/ems-ranking', [FacultyRankingController::class, 'ranking'])->name('ems-ranking');
+Route::get('/ems-non', [FacultyRankingController::class, 'non_ranking'])->name('non-ranking');
 
-    //ems ranking
-    Route::get('/ems-ranking', [FacultyRankingController::class, 'ranking'])->name('ems-ranking');
-    Route::get('/ems-non', [FacultyRankingController::class, 'non_ranking'])->name('non-ranking');
-    // Route definition for search functionality
-    Route::post('/search-faculty', [FacultyRankingController::class, 'search'])->name('faculty.search');
+// Route for faculty search
+Route::post('/search-faculty', [FacultyRankingController::class, 'search'])->name('faculty.search');
 
-    Route::post('/update-score', [FacultyRankingController::class, 'updateScore']);
+// Route for updating faculty scores (using the existing `updatePoints` method)
+Route::post('/update-score', [FacultyRankingController::class, 'updatePoints']); // changed from 'updateScore' to 'updatePoints'
+
+
+
+// In routes/web.php or routes/api.php
+Route::post('/save-points', [FacultyRankingController::class, 'saveTotalPoints']);
+
+
+
+
+
 });

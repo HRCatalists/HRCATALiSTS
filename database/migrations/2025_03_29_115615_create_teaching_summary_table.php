@@ -11,11 +11,11 @@ return new class extends Migration {
             $table->id(); // Auto-increment primary key
             $table->unsignedBigInteger('emp_id'); // Employee ID reference
 
-            // Foreign keys linking to total points from different teaching rank tables
-            $table->integer('Academy_Preparation_Other_Qualifications')->nullable();
-            $table->integer('Faculty_Performance')->nullable();
-            $table->integer('Corporate_Commitmen')->nullable();
-            $table->integer('TeachingAndWorkExp')->nullable();
+            // Credit Points Earned from Different Categories
+            $table->integer('academy_preparation_other_qualifications')->nullable();
+            $table->integer('faculty_performance')->nullable();
+            $table->integer('corporate_commitment')->nullable();
+            $table->integer('teaching_and_work_exp')->nullable();
 
             // Foreign key constraints
             $table->foreign('emp_id')->references('emp_id')->on('teaching_rank4')->onDelete('cascade');
@@ -29,4 +29,3 @@ return new class extends Migration {
         Schema::dropIfExists('teaching_summary');
     }
 };
-
