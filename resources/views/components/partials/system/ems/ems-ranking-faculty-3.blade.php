@@ -17,17 +17,20 @@
             </tr>
             <tr>
                 <td>A. Classroom/ Teacher Performance Evaluation</td>
-                <td class="text-center"><input type="checkbox" id="classroomEvaluation" name="performanceEvaluation" value="50"></td>
+                <td class="text-center">
+                    <input type="number" id="classroomEvaluationIII" name="performanceEvaluationIII" class="score-input" min="0" max="50">
+                </td>
                 <td class="text-center">(50 pts maximum)</td>
                 <td></td>
             </tr>
             <tr>
                 <td>B. Work Performance Evaluation</td>
-                <td class="text-center"><input type="checkbox" id="workEvaluation" name="performanceEvaluation" value="50"></td>
+                <td class="text-center">
+                    <input type="number" id="workEvaluationIII" name="performanceEvaluationIII" class="score-input" min="0" max="50">
+                </td>
                 <td class="text-center">(50 pts maximum)</td>
                 <td></td>
             </tr>
-
             <tr>
                 <td><strong>TOTAL CREDIT POINTS EARNED (III)</strong></td>
                 <td id="totalPointsIII">0</td>
@@ -46,34 +49,36 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    // Function to calculate total points for Faculty Performance section
     function calculateTotalPointsIII() {
         let totalPoints = 0;
+        const maxScore = 100;
 
-        // Loop through each checkbox input in this section and calculate selected values
-        document.querySelectorAll('input[name="performanceEvaluation"]:checked').forEach(function (checkbox) {
-            totalPoints += parseFloat(checkbox.value);
+        // Get all numeric inputs in the Faculty Performance section (Form 3)
+        document.querySelectorAll('#content3 .score-input').forEach(function (input) {
+            let value = parseFloat(input.value) || 0; // Convert input to number or default to 0
+            if (value > parseFloat(input.max)) {
+                value = parseFloat(input.max); // Ensure value does not exceed max allowed score
+            }
+            totalPoints += value;
         });
 
-        // Ensure totalPoints does not exceed the maximum score of 100
-        if (totalPoints > 100) {
-            totalPoints = 100;
-        }
+        // Ensure total does not exceed the maximum score
+        totalPoints = Math.min(totalPoints, maxScore);
 
-        // Update total points for this section
-        document.getElementById('totalPointsIII').innerText = totalPoints;
+        // Update total points (in Form 3)
+        document.getElementById('totalPointsIII').innerText = totalPoints.toFixed(2);
 
-        // Calculate the total percentage (total points x 35%)
+        // Calculate weighted percentage (35%)
         let totalPercentage = totalPoints * 0.35;
         document.getElementById('totalPercentageIII').innerText = totalPercentage.toFixed(2);
     }
 
-    // Attach event listeners to all checkboxes for change
-    document.querySelectorAll('input[name="performanceEvaluation"]').forEach(function (input) {
-        input.addEventListener('change', calculateTotalPointsIII);
+    // Attach event listeners to input fields (in Form 3)
+    document.querySelectorAll('#content3 .score-input').forEach(function (input) {
+        input.addEventListener('input', calculateTotalPointsIII);
     });
 
-    // Initial calculation on page load
+    // Initial calculation on page load for Form 3
     calculateTotalPointsIII();
 });
 </script>
