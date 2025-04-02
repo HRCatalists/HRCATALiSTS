@@ -14,6 +14,7 @@ class FacultyTeachingRank1 extends Model
     // List all fields that can be mass assigned
     protected $fillable = [
         'emp_id',
+        'department',
         'bachelor_degree',
         'academic_units_master_degree',
         'ma_ms_candidate',

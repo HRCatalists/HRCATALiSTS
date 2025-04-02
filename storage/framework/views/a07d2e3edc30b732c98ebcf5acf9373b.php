@@ -58,6 +58,12 @@
                     </div>
                 </div>
 
+                <!-- Display Selected Person's Name -->
+                <div class="mt-3">
+                    <h5>Selected Personnel:</h5>
+                    <div id="selected-person" class="alert alert-info" style="display: none;"></div>
+                </div>
+
                 <!-- Search Results Section (optional, if you want to display a message) -->
                 <div class="mt-5" id="search-results"></div>
 
@@ -194,6 +200,23 @@
             </div>
         </div>
     </div>
+
+    <script>
+        function searchPersonnel() {
+            let name = document.getElementById("searchName").value;
+            let department = document.getElementById("searchDepartment").value;
+
+            if (name.trim() === "" || department === "") {
+                alert("Please enter a name and select a department.");
+                return;
+            }
+
+            // Display the selected name
+            let selectedPersonDiv = document.getElementById("selected-person");
+            selectedPersonDiv.style.display = "block";
+            selectedPersonDiv.innerHTML = `<strong>Name:</strong> ${name} <br> <strong>Department:</strong> ${department}`;
+        }
+    </script>
  <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginal5aa067d06d1afdd090a728cb9bf57c48)): ?>
@@ -204,7 +227,4 @@
 <?php $component = $__componentOriginal5aa067d06d1afdd090a728cb9bf57c48; ?>
 <?php unset($__componentOriginal5aa067d06d1afdd090a728cb9bf57c48); ?>
 <?php endif; ?>
-
-
-
 <?php /**PATH C:\Users\raide\OneDrive\Desktop\HRCATALiSTS-hr-catalists\resources\views/hrcatalists/ems/admin-ems-faculty-ranking.blade.php ENDPATH**/ ?>
