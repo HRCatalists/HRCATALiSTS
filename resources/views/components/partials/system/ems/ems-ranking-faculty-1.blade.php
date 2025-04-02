@@ -350,246 +350,165 @@
 </div>
 
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-    // Retrieve emp_id from the hidden input (if available)
-    const empIdElement = document.querySelector('[name="emp_id"]');
-    const emp_id = empIdElement ? empIdElement.value : null;
-    if (!emp_id) {
-        console.error("Employee ID is missing from the form.");
-    }
+  document.addEventListener("DOMContentLoaded", function () {
+      // Make search globally callable
+      window.searchPersonnel = function () {
+          const name = document.getElementById("searchName").value;
+          const department = document.getElementById("searchDepartment").value;
+          const resultsContainer = document.getElementById("search-results");
+          resultsContainer.innerHTML = "<p>Searching...</p>";
+  
+          fetch("/search-faculty", {
+              method: "POST",
+              headers: {
+                  "Content-Type": "application/json",
+                  "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
+              },
+              body: JSON.stringify({ name, department })
+          })
+          .then(res => res.json())
+          .then(data => {
+              if (!Array.isArray(data) || data.length === 0) {
+                  displayNoResults("No results found.");
+                  return;
+              }
+  
+              const faculty = data[0];
+              const emp = faculty.employee || faculty;
+              const empIdInput = document.querySelector('[name="emp_id"]');
+              if (empIdInput) empIdInput.value = emp.emp_id || faculty.emp_id;
+  
+              document.getElementById("selectedEmployeeName").textContent =
+                  `${emp.first_name || ''} ${emp.last_name || ''} (${emp.department || ''})`;
+  
+              populateFacultyForm(faculty);
+          })
+          .catch(err => {
+              console.error("Search error:", err);
+              displayNoResults("An error occurred.");
+          });
+      };
+  
+      function displayNoResults(msg) {
+          document.getElementById("search-results").innerHTML = `<p>${msg}</p>`;
+      }
+  
+      function populateFacultyForm(faculty) {
+          const fields = [
+              "bachelor_degree", "academic_units_master_degree", "ma_ms_candidate",
+              "masters_thesis_completed", "full_master_degree", "academic_units_doctorate_degree",
+              "phd_education", "doctorate_dissertation_completed", "full_doctorate_degree",
+              "additional_bachelor_degree", "additional_master_degree", "additional_doctorate_degree",
+              "multiple_degrees", "specialized_training", "travel_grant_for_study",
+              "seminars_attended", "professional_education_units", "plumbing_certification",
+              "certificate_of_completion", "national_certification", "trainers_methodology",
+              "teachers_board_certified", "career_service_certification", "bar_exam_certification",
+              "board_exam_placer", "local_awards", "regional_awards", "national_awards",
+              "summa_cum_laude", "magna_cum_laude", "cum_laude", "with_distinction"
+          ];
+  
+          fields.forEach(field => {
+              const input = document.querySelector(`[name="${field}"]`);
+              const value = faculty[field];
+              if (!input) return;
+  
+              if (input.type === "checkbox") {
+                  input.checked = parseFloat(value) > 0;
+              } else {
+                  input.value = value ?? "";
+              }
+          });
+  
+          updateTotalPoints(); // ✅ Ensure totals are recalculated after populating
+      }
+  
+      function updateTotalPoints() {
+          let total = 0;
+  
+          // Sum all checked checkbox values
+          document.querySelectorAll('#content1 input[type="checkbox"]:checked').forEach(el => {
+              total += parseFloat(el.value) || 0;
+          });
+  
+          // Add calculated fields
+          const masterUnits = parseFloat(document.querySelector('[name="academic_units_master_degree"]')?.value) || 0;
+          const doctorateUnits = parseFloat(document.querySelector('[name="academic_units_doctorate_degree"]')?.value) || 0;
+          const seminars = parseFloat(document.querySelector('[name="seminars_attended"]')?.value) || 0;
+  
+          total += masterUnits / 6;
+          total += doctorateUnits / 6;
+          total += seminars * 0.33;
+  
+          total = parseFloat(total.toFixed(2));
+          document.getElementById("totalPointsI").innerText = total.toFixed(2);
+          document.getElementById("totalPercentageI").innerText = (total * 0.3).toFixed(2);
+      }
+  
+      // Attach update trigger to all inputs
+      document.querySelectorAll('#content1 input').forEach(input => {
+          input.addEventListener("input", updateTotalPoints);
+      });
+  
+      // SAVE FUNCTION
+      document.getElementById("saveButton").addEventListener("click", function () {
+        const emp_id = document.querySelector('[name="emp_id"]').value;
+        if (!emp_id) return alert("Employee ID is missing.");
 
-    // ---------- SEARCH AND AUTO-POPULATE FUNCTIONS ----------
-
-    function searchPersonnel() {
-        const name = document.getElementById("searchName").value;
-        const department = document.getElementById("searchDepartment").value;
-        const resultsContainer = document.getElementById("search-results");
-        resultsContainer.innerHTML = "<p>Searching...</p>";
-
-        fetch("/search-faculty", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content")
-            },
-            body: JSON.stringify({ name: name, department: department })
-        })
-        .then(response => {
-            if (response.redirected) {
-                window.location.href = response.url;
-                throw new Error("Redirected to login.");
-            }
-            if (!response.ok) {
-                return response.json().then(errData => { throw errData; });
-            }
-            return response.json();
-        })
-        .then(data => {
-            if (data.message) {
-                displayNoResults(data.message);
-            } else if (data.length === 0) {
-                displayNoResults("No personnel found matching the criteria.");
-            } else {
-                populateFacultyForm(data[0]);
-                resultsContainer.innerHTML = "";
-            }
-        })
-        .catch(error => {
-            console.error("Error:", error);
-            displayNoResults("An error occurred while searching.");
-        });
-    }
-
-    function displayNoResults(message) {
-        const resultsContainer = document.getElementById("search-results");
-        resultsContainer.innerHTML = `<p>${message}</p>`;
-    }
-
-    function populateFacultyForm(faculty) {
-        const fields = [
-            "bachelor_degree",
-            "academic_units_master_degree",
-            "ma_ms_candidate",
-            "masters_thesis_completed",
-            "full_master_degree",
-            "academic_units_doctorate_degree",
-            "phd_education",
-            "doctorate_dissertation_completed",
-            "full_doctorate_degree",
-            "additional_bachelor_degree",
-            "additional_master_degree",
-            "additional_doctorate_degree",
-            "multiple_degrees",
-            "specialized_training",
-            "travel_grant_for_study",
-            "seminars_attended",
-            "professional_education_units",
-            "plumbing_certification",
-            "certificate_of_completion",
-            "national_certification",
-            "trainers_methodology",
-            "teachers_board_certified",
-            "career_service_certification",
-            "bar_exam_certification",
-            "board_exam_placer",
-            "local_awards",
-            "regional_awards",
-            "national_awards",
-            "summa_cum_laude",
-            "magna_cum_laude",
-            "cum_laude",
-            "with_distinction"
-        ];
-        fields.forEach(field => {
-            let value = faculty[field];
-            let input = document.querySelector(`#content1 [name="${field}"]`);
-            if (input) {
-                if (input.type === "checkbox" || input.type === "radio") {
-                    input.checked = Boolean(value);
-                } else {
-                    input.value = value || "";
-                }
-            }
-        });
-
-        if (faculty.total_points !== undefined) {
-            document.getElementById("totalPointsI").innerText = parseFloat(faculty.total_points).toFixed(2);
-            document.getElementById("totalPercentageI").innerText = parseFloat(faculty.total_points * 0.3).toFixed(2);
-        }
-
-        updateTotalPoints();
-    }
-
-    // ---------- CALCULATE TOTAL POINTS FUNCTION ----------
-
-    function updateTotalPoints() {
-        let totalPoints = 0;
-
-        // Sum values from checkboxes
-        document.querySelectorAll('#content1 input[type="checkbox"]:checked').forEach(checkbox => {
-            totalPoints += parseFloat(checkbox.value) || 0;
-        });
-
-        // Sum values from radio buttons (if any)
-        document.querySelectorAll('#content1 input[type="radio"]:checked').forEach(radio => {
-            totalPoints += parseFloat(radio.value) || 0;
-        });
-
-        // Sum numeric inputs (assuming 1 unit = 0.1667 points)
-        document.querySelectorAll('#content1 input[type="number"]').forEach(input => {
-            const value = parseFloat(input.value);
-            if (!isNaN(value)) {
-                totalPoints += value * 0.1667;
-            }
-        });
-
-        totalPoints = Math.min(totalPoints, 100);
-
-        const totalPointsElement = document.getElementById("totalPointsI");
-        const totalPercentageElement = document.getElementById("totalPercentageI");
-        if (totalPointsElement) {
-            totalPointsElement.innerText = totalPoints.toFixed(2);
-        }
-        if (totalPercentageElement) {
-            totalPercentageElement.innerText = (totalPoints * 0.3).toFixed(2);
-        }
-    }
-
-    // Attach event listeners to recalc when inputs change
-    document.querySelectorAll('#content1 input[type="checkbox"], #content1 input[type="radio"], #content1 input[type="number"]').forEach(input => {
-        input.addEventListener("change", updateTotalPoints);
-    });
-    updateTotalPoints();
-
-    // ---------- SAVE BUTTON FUNCTIONALITY ----------
-    document.getElementById("saveButton").addEventListener("click", function () {
-        const empIdElement = document.querySelector('[name="emp_id"]');
-        if (!empIdElement) {
-            alert("Employee ID is missing.");
-            return;
-        }
-        const emp_id = empIdElement.value;
-        let totalPoints = parseFloat(document.getElementById("totalPointsI").innerText) || 0;
-
-        // Build FormData with all fields from the form
+        const totalPoints = parseFloat(document.getElementById("totalPointsI").innerText) || 0;
         const formData = new FormData();
+
         const fields = [
-            "emp_id",
-            "bachelor_degree",
-            "academic_units_master_degree",
-            "ma_ms_candidate",
-            "masters_thesis_completed",
-            "full_master_degree",
-            "academic_units_doctorate_degree",
-            "phd_education",
-            "doctorate_dissertation_completed",
-            "full_doctorate_degree",
-            "additional_bachelor_degree",
-            "additional_master_degree",
-            "additional_doctorate_degree",
-            "multiple_degrees",
-            "specialized_training",
-            "travel_grant_for_study",
-            "seminars_attended",
-            "professional_education_units",
-            "plumbing_certification",
-            "certificate_of_completion",
-            "national_certification",
-            "trainers_methodology",
-            "teachers_board_certified",
-            "career_service_certification",
-            "bar_exam_certification",
-            "board_exam_placer",
-            "local_awards",
-            "regional_awards",
-            "national_awards",
-            "summa_cum_laude",
-            "magna_cum_laude",
-            "cum_laude",
-            "with_distinction"
+            "emp_id", "bachelor_degree", "academic_units_master_degree", "ma_ms_candidate",
+            "masters_thesis_completed", "full_master_degree", "academic_units_doctorate_degree",
+            "phd_education", "doctorate_dissertation_completed", "full_doctorate_degree",
+            "additional_bachelor_degree", "additional_master_degree", "additional_doctorate_degree",
+            "multiple_degrees", "specialized_training", "travel_grant_for_study",
+            "seminars_attended", "professional_education_units", "plumbing_certification",
+            "certificate_of_completion", "national_certification", "trainers_methodology",
+            "teachers_board_certified", "career_service_certification", "bar_exam_certification",
+            "board_exam_placer", "local_awards", "regional_awards", "national_awards",
+            "summa_cum_laude", "magna_cum_laude", "cum_laude", "with_distinction"
         ];
+
         fields.forEach(field => {
-            let input = document.querySelector(`[name="${field}"]`);
+            const input = document.querySelector(`[name="${field}"]`);
             if (input) {
-                if (input.type === "checkbox" || input.type === "radio") {
-                    formData.append(field, input.checked ? input.value : 0);
-                } else {
-                    formData.append(field, input.value);
-                }
+                formData.append(field, input.type === "checkbox" ? (input.checked ? input.value : 0) : input.value);
             }
         });
-        // Optionally, append the calculated totalPoints
-        formData.append("totalPoints", totalPoints);
+
+        formData.append("total_points", totalPoints);
+
+        const saveBtn = document.getElementById("saveButton");
+        saveBtn.disabled = true;
+        saveBtn.innerText = "Saving...";
 
         fetch("/save-points", {
             method: "POST",
             body: formData,
             headers: {
-                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content")
+                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
             }
         })
-        .then(response => {
-            if (response.redirected) {
-                window.location.href = response.url;
-                throw new Error("Redirected to login.");
-            }
-            return response.json();
-        })
+        .then(res => res.json())
         .then(data => {
-            if (data.status === "success") {
+            saveBtn.disabled = false;
+            saveBtn.innerText = "Save";
+
+            if (data.success) {
                 alert("Faculty ranking saved successfully!");
-                window.location.href = "/ems-ranking";
             } else {
-                alert("Error saving data: " + data.message);
+                alert("Error saving: " + (data.message || "Unknown error"));
             }
         })
-        .catch(error => {
-            console.error("Error:", error);
-            alert("An error occurred while saving the data.");
+        .catch(err => {
+            saveBtn.disabled = false;
+            saveBtn.innerText = "Save";
+            console.error("Save error:", err);
+            alert("An error occurred while saving.");
         });
     });
-
-    // Expose searchPersonnel globally so that the search button can call it
-    window.searchPersonnel = searchPersonnel;
-});
-</script>
+  });
+  </script>
+   
+  

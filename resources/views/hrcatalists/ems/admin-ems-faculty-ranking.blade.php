@@ -40,6 +40,11 @@
                     </button>
                 </div>
 
+                <!-- Employee Name Display -->
+                <div class="text-center mt-4 mb-2">
+                    <h4 id="selectedEmployeeName" class="fw-bold text-primary"></h4>
+                </div>
+
                 <!-- Tab links -->
                 <ul class="nav nav-tabs mt-5" id="myTabs" role="tablist">
                     <li class="nav-item" role="presentation">

@@ -83,43 +83,90 @@ class FacultyRankingController extends Controller
         if (!Auth::check()) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
-
-        // Validate the incoming request data
+    
+        // Validate incoming request data
         $validated = $request->validate([
-            'emp_id' => 'required|exists:teaching_rank1,emp_id', // Ensure emp_id exists in teaching_rank1
+            'emp_id' => 'required|exists:teaching_rank1,emp_id',
         ]);
-
+    
         try {
-            // Fetch the faculty entry from FacultyTeachingRank1
+            // Fetch Faculty Rank 1 record
             $faculty = FacultyTeachingRank1::where('emp_id', $validated['emp_id'])->first();
-
+    
             if (!$faculty) {
                 return response()->json(['error' => 'Faculty not found'], 404);
             }
-
-            // Log the incoming request data for debugging
-            Log::info('Request Data: ', $request->all());
-
-            // Recalculate total points using the method in FacultyTeachingRank1 model
+    
+            // Log full request for debugging
+            Log::info('Faculty Save Request:', $request->all());
+    
+            // Fields to update
+            $fields = [
+                'bachelor_degree',
+                'academic_units_master_degree',
+                'ma_ms_candidate',
+                'masters_thesis_completed',
+                'full_master_degree',
+                'academic_units_doctorate_degree',
+                'phd_education',
+                'doctorate_dissertation_completed',
+                'full_doctorate_degree',
+                'additional_bachelor_degree',
+                'additional_master_degree',
+                'additional_doctorate_degree',
+                'multiple_degrees',
+                'specialized_training',
+                'travel_grant_for_study',
+                'seminars_attended',
+                'professional_education_units',
+                'plumbing_certification',
+                'certificate_of_completion',
+                'national_certification',
+                'trainers_methodology',
+                'teachers_board_certified',
+                'career_service_certification',
+                'bar_exam_certification',
+                'board_exam_placer',
+                'local_awards',
+                'regional_awards',
+                'national_awards',
+                'summa_cum_laude',
+                'magna_cum_laude',
+                'cum_laude',
+                'with_distinction',
+            ];
+    
+            // Assign all values
+            foreach ($fields as $field) {
+                $faculty->$field = $request->input($field, 0); // fallback to 0 if not present
+            }
+    
+            // Option 1: Calculate total from model logic
             $faculty->total_points = $faculty->calculateTotalPoints();
-
-            // Save the updated total points
+    
+            // Option 2 (optional): Accept frontend-sent total_points
+            // $faculty->total_points = $request->input('total_points', $faculty->calculateTotalPoints());
+    
             $faculty->save();
-
-            // Also update FacultyTeachingRank2 total points (if applicable)
+    
+            // Optional: Update Rank 2 if it exists
             $facultyRank2 = FacultyTeachingRank2::where('emp_id', $validated['emp_id'])->first();
             if ($facultyRank2) {
                 $facultyRank2->total_points = $facultyRank2->calculateTotalPoints();
                 $facultyRank2->save();
             }
-
-            // Return success response
-            return response()->json(['success' => true, 'message' => 'Total points saved successfully!']);
-
+    
+            return response()->json([
+                'success' => true,
+                'message' => 'Faculty ranking saved successfully.',
+                'data' => $faculty // optionally return full updated record
+            ]);
+    
         } catch (\Exception $e) {
-            // Log the error and return a response
-            Log::error('Error saving total points: ' . $e->getMessage());
-            return response()->json(['error' => 'Error saving total points: ' . $e->getMessage()], 500);
+            Log::error('Error saving faculty ranking: ' . $e->getMessage());
+            return response()->json([
+                'error' => 'Error saving data: ' . $e->getMessage()
+            ], 500);
         }
-    }
+    }      
 }

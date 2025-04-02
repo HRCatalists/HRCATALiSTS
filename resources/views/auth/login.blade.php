@@ -58,13 +58,13 @@
                                     <a href="{{ route('password.request') }}" class="small text-muted">Forgot Password?</a>
                                 </div>
                             </div>
-                            <a href="{{ route('google.login') }}" class="btn btn-danger">
-                            <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google Logo" style="width: 20px; margin-right: 8px;">
-                             Sign in with Google
-                                </a>
 
                             <!-- Submit Button -->
                             <button type="submit" class="btn btn-primary w-100 mt-4">Log In</button>
+                            <a href="{{ route('google.login') }}" class="btn btn-danger">
+                                <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google Logo" style="width: 20px; margin-right: 8px;">
+                                Sign in with Google
+                            </a>
                         </form>
                     </div>
                 </div>
