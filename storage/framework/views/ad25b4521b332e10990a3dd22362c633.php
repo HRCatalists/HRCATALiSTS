@@ -1,4 +1,7 @@
-<?php $employeeId = $employee->id; ?>
+<?php
+    $employeeId = $employee->id ?? 'new';
+    $licenses = $employee->licenses ?? collect(); // use empty collection if null
+?>
 
 <!-- =================== LICENSES =================== -->
 <div class="border-top border-dark mb-5" id="section-licenses-<?php echo e($employeeId); ?>">
@@ -22,17 +25,25 @@
             </tr>
         </thead>
         <tbody>
-            <?php $__currentLoopData = $employee->licenses; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $i => $license): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <?php $__empty_1 = true; $__currentLoopData = $licenses; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $i => $license): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                 <tr>
                     <td><input type="text" name="licenses[<?php echo e($i); ?>][license_name]" class="form-control section-field-licenses-<?php echo e($employeeId); ?>" value="<?php echo e($license->license_name); ?>" readonly></td>
                     <td><input type="text" name="licenses[<?php echo e($i); ?>][license_number]" class="form-control section-field-licenses-<?php echo e($employeeId); ?>" value="<?php echo e($license->license_number); ?>" readonly></td>
                     <td><input type="date" name="licenses[<?php echo e($i); ?>][expiry_date]" class="form-control section-field-licenses-<?php echo e($employeeId); ?>" value="<?php echo e($license->expiry_date); ?>" readonly></td>
                     <td><input type="date" name="licenses[<?php echo e($i); ?>][renewal_from]" class="form-control section-field-licenses-<?php echo e($employeeId); ?>" value="<?php echo e($license->renewal_from); ?>" readonly></td>
                     <td><input type="date" name="licenses[<?php echo e($i); ?>][renewal_to]" class="form-control section-field-licenses-<?php echo e($employeeId); ?>" value="<?php echo e($license->renewal_to); ?>" readonly></td>
-                    <td class="action-column d-none text-center"><button type="button" class="btn btn-sm btn-danger remove-edu-row">Remove</button></td>
+                    <td class="action-column d-none text-center">
+                        <button type="button" class="btn btn-sm btn-danger remove-edu-row d-none">Remove</button>
+                    </td>
                 </tr>
-            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+                
+            <?php endif; ?>
         </tbody>
     </table>
-    <button type="button" class="btn btn-sm btn-outline-success mb-3 d-none" id="addLicenseBtn-<?php echo e($employeeId); ?>">+ Add License</button>
-</div><?php /**PATH C:\laragon\www\hr_catalists\resources\views/hrcatalists/partials/licenses-view.blade.php ENDPATH**/ ?>
+
+    <button type="button" class="btn btn-sm btn-outline-success mb-3 d-none" id="addLicenseBtn-<?php echo e($employeeId); ?>">
+        + Add License
+    </button>
+</div>
+<?php /**PATH C:\laragon\www\hr_catalists\resources\views/hrcatalists/partials/licenses-view.blade.php ENDPATH**/ ?>

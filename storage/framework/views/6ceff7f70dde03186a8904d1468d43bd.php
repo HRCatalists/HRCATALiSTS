@@ -38,16 +38,33 @@
         <!-- Employee List -->
         <div id="content" class="flex-grow-1">
             <div class="container mt-5">
-                
-                <div class="d-flex justify-content-between align-items-center mt-5 mb-5">
-                    <h2 class="db-h2">Employee List</h2>
-                    <div class="d-flex">
-                        <a href="<?php echo e(route('ems-employees')); ?>" class="button btn add-btn">ADD EMPLOYEE</a>
-                        <button class="btn shadow print-btn">
-                            <i class="fa fa-print"></i> PRINT
+
+                <div class="d-flex justify-content-between align-items-center my-5">
+                    <div>
+                        <h2 class="db-h2">Employee List</h2>
+                    </div>     
+                </div>
+
+                <div class="d-flex align-items-center flex-wrap my-3">
+                    <div>
+                        <button type="button" class="btn archive-btn add-btn bulk-archive-btn bulk-action-btn me-2" style="display: none;">
+                            ARCHIVE
+                        </button>
+                        <button type="button" class="btn reject-btn add-btn bulk-reject-btn bulk-action-btn me-2" style="display: none;">
+                            REJECT
                         </button>
                     </div>
+                
+                    <button type="button" class="btn btn-primary add-btn action-btn me-2" data-bs-toggle="modal" data-bs-target="#addEmployeeModal">
+                        ADD EMPLOYEE
+                    </button>
+                
+                    <button type="button" class="btn shadow print-btn ms-auto">
+                        <i class="fas fa-print me-2"></i> Print
+                    </button>              
                 </div>
+                
+                
 
                 <?php if(session('success')): ?>
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -113,11 +130,7 @@
                                             </li>
                                             
                                             
-                                            <li>
-                                                <button type="button" class="dropdown-item text-warning" data-bs-toggle="modal" data-bs-target="#editEmployeeModal-<?php echo e($employee->id); ?>">
-                                                    EDIT
-                                                </button>
-                                            </li>                                            
+                                            
                                         </ul>
                                     </div>
                                 </td>
@@ -147,12 +160,14 @@
                                     <?php echo $__env->make('hrcatalists.partials.employment-summary-view', ['employee' => $employee], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
                                     <?php echo $__env->make('hrcatalists.partials.personal-data-view', ['employee' => $employee], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
                                     <?php echo $__env->make('hrcatalists.partials.education-view', ['employee' => $employee], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
-                                    <?php echo $__env->make('hrcatalists.partials.employment-details-view', ['employee' => $employee], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+                                    <?php echo $__env->make('hrcatalists.partials.employment-details-view', ['employee' => $employee, 'jobs' => $jobs], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
                                     <?php echo $__env->make('hrcatalists.partials.licenses-view', ['employee' => $employee], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
                                     <?php echo $__env->make('hrcatalists.partials.service-record-view', ['employee' => $employee], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
                                     <?php echo $__env->make('hrcatalists.partials.trainings-view', ['employee' => $employee], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
                                     <?php echo $__env->make('hrcatalists.partials.organizations-view', ['employee' => $employee], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
                                     <?php echo $__env->make('hrcatalists.partials.others-view', ['employee' => $employee], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+
+
 
                                     <!-- ✅ footer is INSIDE the form and modal-body -->
                                     <div class="modal-footer">
@@ -169,6 +184,44 @@
             </div>
         </div>
     </div>
+
+    <!-- Add Employee Modal -->
+    <div class="modal fade" id="addEmployeeModal" tabindex="-1" aria-labelledby="addEmployeeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title">Add New Employee</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <form method="POST" action="<?php echo e(route('employees.store')); ?>" id="addEmployeeForm" enctype="multipart/form-data">
+                        <?php echo csrf_field(); ?>
+
+                        
+                        <?php echo $__env->make('hrcatalists.partials.employment-summary-view', ['employee' => null], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+                        <?php echo $__env->make('hrcatalists.partials.personal-data-view', ['employee' => null], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+                        <?php echo $__env->make('hrcatalists.partials.education-view', ['employee' => null], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+                        <?php echo $__env->make('hrcatalists.partials.employment-details-view', ['employee' => null, 'jobs' => $jobs], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+                        <?php echo $__env->make('hrcatalists.partials.licenses-view', ['employee' => null], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+                        <?php echo $__env->make('hrcatalists.partials.service-record-view', ['employee' => null], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+                        <?php echo $__env->make('hrcatalists.partials.trainings-view', ['employee' => null], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+                        <?php echo $__env->make('hrcatalists.partials.organizations-view', ['employee' => null], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+                        <?php echo $__env->make('hrcatalists.partials.others-view', ['employee' => null], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+
+                        <div class="modal-footer">
+                            <button type="submit" class="btn text-success" onclick="this.disabled=true; this.form.submit();">Submit</button>
+                            <button type="button" class="btn text-secondary" data-bs-dismiss="modal">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- Add Employee Modal -->
+
 
     
     <script>
@@ -234,6 +287,11 @@
                     btn.removeEventListener('click', handleEditClick);
                     btn.addEventListener('click', handleEditClick);
                 });
+
+                document.querySelectorAll('select[id^="job_id_"]').forEach(select => {
+                    select.disabled = true;
+                });
+
             }
 
             function handleEditClick() {
@@ -243,6 +301,7 @@
                 const inputs = document.querySelectorAll(`.section-field-${section}-${employeeId}`);
                 const buttonContainer = this.parentElement;
 
+
                 if (wrapper && wrapper.dataset.editing === "true") return;
                 if (wrapper) wrapper.dataset.editing = "true";
 
@@ -250,6 +309,10 @@
                     input.readOnly = false;
                     input.dataset.originalValue = input.value;
                 });
+
+                // ✅ Enable dropdown if it's disabled (like the job dropdown)
+                const selectField = document.querySelector(`#job_id_${employeeId}`);
+                if (selectField) selectField.disabled = false;
 
                 const addBtn = document.getElementById(getAddButtonId(section, employeeId));
                 if (addBtn) addBtn.classList.remove('d-none');
@@ -293,6 +356,11 @@
                         input.readOnly = true;
                     });
                 }
+
+                // ✅ Disable job dropdown regardless of save/cancel
+                const selectField = document.querySelector(`#job_id_${employeeId}`);
+                if (selectField) selectField.disabled = true;
+
 
                 wrapper?.querySelectorAll('.action-column').forEach(col => col.classList.add('d-none'));
                 wrapper?.querySelectorAll('.remove-edu-row').forEach(btn => btn.classList.add('d-none'));

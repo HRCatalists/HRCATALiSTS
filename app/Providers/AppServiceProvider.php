@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\Facades\View;
 use App\Models\Department;
 use Illuminate\Support\ServiceProvider;
+use App\Services\GoogleDriveService;
 use Illuminate\Console\Scheduling\Schedule;
 use App\Models\FacultyTeachingRank;
 
@@ -19,5 +20,12 @@ class AppServiceProvider extends ServiceProvider
             $departments = Department::all();
             $view->with('departments', $departments);
         });
-    }          
+    }   
+    
+    public function register()
+    {
+        $this->app->bind(GoogleDriveService::class, function ($app) {
+            return new GoogleDriveService();
+        });
+    }
 }

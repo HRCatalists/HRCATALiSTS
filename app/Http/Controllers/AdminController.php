@@ -11,6 +11,9 @@ use App\Models\Log;
 use App\Models\Event;
 use Carbon\Carbon;
 use App\Models\Employee;
+use App\Services\GoogleDriveService;
+use Illuminate\Support\Facades\DB;
+
 
 
 
@@ -139,23 +142,25 @@ class AdminController extends Controller
      }
 
      
-    public function employees()
+     public function employees()
+     {
+         if (!Auth::check()) {
+             return redirect()->route('login');
+         }
+     
+         $employees = Employee::with(['employmentDetails'])->get();
+         $jobs = Job::all(); // ✅ Required for dropdown in the modal
+     
+         return view('hrcatalists.ems.admin-ems-emp', compact('employees', 'jobs')); // ✅ FIXED
+     }
+     
+    public function showEmployees()
     {
-        if (!Auth::check()) {
-            return redirect()->route('login');
-        }
+        $employees = Employee::with('employmentDetails')->get();
+        $jobs = Job::all(); // <-- this line is the key!
     
-        // Fetch employees from the database
-        $employees = Employee::all();
-    
-        // Pass employees to the view
-        return view('hrcatalists.ems.admin-ems-emp', compact('employees'));
-    }
-    public function showEmployee($id)
-    {
-        $employee = Employee::findOrFail($id); // Fetch employee or fail
-        return view('hrcatalists.ems.admin-ems-view-emp', compact('employee'));
-    }
+        return view('hrcatalists.ems.admin-ems-emp', compact('employees', 'jobs'));
+    }    
 
     // *
     // **
@@ -194,6 +199,7 @@ class AdminController extends Controller
             'status' => 'nullable|string|max:100',
             'applied_at' => 'nullable|date',
             'department' => 'nullable|string|max:255',
+            'job_id' => 'nullable|exists:jobs,id',
             'job_title' => 'nullable|string|max:255',
             'faculty_code' => 'nullable|string|max:255',
             'school_of' => 'nullable|string|max:255',
@@ -293,9 +299,15 @@ class AdminController extends Controller
                 }
             }
         }
+
+        // ✅ Create log entry after employee update
+        Log::create([
+            'user_id' => Auth::id(),
+            'activity' => "Updated employee profile: {$employee->first_name} {$employee->last_name} (ID: {$employee->id})",
+        ]);
     
         return back()->with('success', 'Employee updated successfully.');
-    }       
+    }
 
 
        // Load the ems Calendar View
@@ -588,4 +600,155 @@ class AdminController extends Controller
 
         return view('hrcatalists.print.applicants-by-status', compact('applicants', 'status'));
     }
+
+    protected $googleDriveService;
+    public function __construct(GoogleDriveService $googleDriveService)
+    {
+        $this->googleDriveService = $googleDriveService;
+    }
+
+
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            // Core employee fields
+            'job_title' => 'nullable|string|max:255',
+            'department' => 'nullable|string|max:255',
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'email' => 'nullable|email|max:255|unique:employees,email',
+            'phone' => 'nullable|string|max:20',
+            'address' => 'nullable|string|max:255',
+            'cv' => 'nullable|mimes:pdf|max:2048',
+            'job_id' => 'nullable|exists:jobs,id',
+            'privacy_policy_agreed' => 'nullable|boolean',
+            'status' => 'nullable|string|max:100',
+            'applied_at' => 'nullable|date',
+            'faculty_code' => 'nullable|string|max:255',
+            'school_of' => 'nullable|string|max:255',
+            'designation_group' => 'nullable|string|max:255',
+            'branch' => 'nullable|string|max:255',
+            'date_of_birth' => 'nullable|date',
+            'place_of_birth' => 'nullable|string|max:255',
+            'gender' => 'nullable|string|max:50',
+            'religion' => 'nullable|string|max:100',
+            'civil_status' => 'nullable|string|max:100',
+            'citizenship' => 'nullable|string|max:100',
+            'spouse_name' => 'nullable|string|max:255',
+            'spouse_address' => 'nullable|string|max:255',
+            'spouse_occupation' => 'nullable|string|max:255',
+            'no_of_dependents' => 'nullable|integer',
+            'children_birthdates' => 'nullable|string|max:255',
+            'father_name' => 'nullable|string|max:255',
+            'mother_name' => 'nullable|string|max:255',
+            'mother_address' => 'nullable|string|max:255',
+            'sss_no' => 'nullable|string|max:50',
+            'pagibig_no' => 'nullable|string|max:50',
+            'philhealth_no' => 'nullable|string|max:50',
+            'tin_no' => 'nullable|string|max:50',
+    
+            // Employment Details
+            'parent_department' => 'nullable|string|max:255',
+            'parent_college' => 'nullable|string|max:255',
+            'classification' => 'nullable|string|max:255',
+            'employment_status' => 'nullable|string|max:255',
+            'date_employed' => 'nullable|date',
+            'accreditation' => 'nullable|string|max:255',
+            'date_permanent' => 'nullable|date',
+    
+            // Nested related fields
+            'educations.*.level' => 'nullable|string|max:255',
+            'educations.*.school' => 'nullable|string|max:255',
+            'educations.*.course' => 'nullable|string|max:255',
+            'educations.*.major' => 'nullable|string|max:255',
+            'educations.*.remarks' => 'nullable|string|max:255',
+    
+            'licenses.*.license_name' => 'nullable|string|max:255',
+            'licenses.*.license_number' => 'nullable|string|max:255',
+            'licenses.*.expiry_date' => 'nullable|date',
+            'licenses.*.renewal_from' => 'nullable|date',
+            'licenses.*.renewal_to' => 'nullable|date',
+    
+            'trainings.*.training_date' => 'nullable|date',
+            'trainings.*.title' => 'nullable|string|max:255',
+            'trainings.*.venue' => 'nullable|string|max:255',
+            'trainings.*.remark' => 'nullable|string|max:255',
+    
+            'service_records.*.department' => 'nullable|string|max:255',
+            'service_records.*.inclusive_date' => 'nullable|string|max:255',
+            'service_records.*.appointment_record' => 'nullable|string|max:255',
+            'service_records.*.position' => 'nullable|string|max:255',
+            'service_records.*.rank' => 'nullable|string|max:100',
+            'service_records.*.remarks' => 'nullable|string|max:255',
+    
+            'organizations.*.registration_date' => 'nullable|date',
+            'organizations.*.validity_date' => 'nullable|date',
+            'organizations.*.organization_name' => 'nullable|string|max:255',
+            'organizations.*.place' => 'nullable|string|max:255',
+            'organizations.*.position' => 'nullable|string|max:255',
+    
+            'others.*.date' => 'nullable|date',
+            'others.*.description' => 'nullable|string|max:255',
+        ]);
+    
+        $cvFileId = null; // Initialize $cvFileId with a default value
+        $employee = null; // Declare $employee outside the closure
+        DB::transaction(function () use ($validated, $request, $cvFileId, &$employee) {
+            $employeeData = collect($validated)->except([
+                'educations', 'licenses', 'trainings', 'service_records', 'organizations', 'others'
+            ])->toArray();
+        
+            // ✅ Upload CV and attach it to $employeeData
+            if ($request->hasFile('cv')) {
+                $cvFile = $request->file('cv');
+                $cvFileId = $this->googleDriveService->uploadFile($cvFile);
+                $employeeData['cv'] = $cvFileId;
+            } else {
+                $employeeData['cv'] = null;
+            }
+        
+            // ✅ Now create employee with cv field
+            $employee = Employee::create($employeeData);        
+    
+            // Create employment details
+            $employee->employmentDetails()->create([
+                'parent_department' => $request->input('parent_department'),
+                'parent_college' => $request->input('parent_college'),
+                'classification' => $request->input('classification'),
+                'employment_status' => $request->input('employment_status'),
+                'date_employed' => $request->input('date_employed') ?? now(),
+                'accreditation' => $request->input('accreditation'),
+                'date_permanent' => $request->input('date_permanent'),
+                'cv' => $cvFileId,
+            ]);
+    
+            // Handle related records
+            $relations = [
+                'educations' => 'educations',
+                'licenses' => 'licenses',
+                'trainings' => 'trainings',
+                'service_records' => 'serviceRecords',
+                'organizations' => 'organizations',
+                'others' => 'others',
+            ];
+    
+            foreach ($relations as $input => $relationMethod) {
+                if ($request->has($input)) {
+                    foreach ($request->input($input) as $record) {
+                        if (array_filter($record)) {
+                            $employee->{$relationMethod}()->create($record);
+                        }
+                    }
+                }
+            }
+        });
+
+        // ✅ Create log entry after employee creation
+        Log::create([
+            'user_id' => Auth::id(),
+            'activity' => "Added new employee: {$employee->first_name} {$employee->last_name} (Job Title: {$employee->job_title})",
+        ]);
+    
+        return back()->with('success', 'New employee added successfully.');
+    }    
 }
