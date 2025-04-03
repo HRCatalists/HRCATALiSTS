@@ -21,5 +21,6 @@ yarn-error.log
 /.nova
 /.vscode
 /.zed
-storage/logs/*.log
+/storage/logs/*.log
+/storage/framework/views/*.php
 storage/app/google-drive.json
