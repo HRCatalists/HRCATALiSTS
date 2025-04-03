@@ -18,15 +18,15 @@
         </li>
 
         <li class="d-flex align-items-center ranking pe-5">   
-            <a href="#applicants" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
+            <a href="{{ route('ats-applicants') }}" class="nav-link px-0 align-middle">
                 <img src="images/table.png" class="icon" alt="applicant-icon">
 
                 <span class="ms-3 sidebar-effect">APPLICANTS</span> 
 
-                <i class="fa-solid fa-chevron-up chevron-icon" id="chevron-arrow"></i>
+                {{-- <i class="fa-solid fa-chevron-up chevron-icon" id="chevron-arrow"></i> --}}
             </a>
 
-            <ul class="collapse flex-column ms-1" id="applicants" data-bs-parent="#menu">
+            {{-- <ul class="collapse flex-column ms-1" id="applicants" data-bs-parent="#menu">
                 <li class="mt-2">
                     <a href="{{ route('ats-applicants') }}" class="nav-link px-0"> <span class="sidebar-effect">Applicant List</span> </a>
                 </li>
@@ -49,14 +49,14 @@
                     <a href="{{ route('ats-evaluation') }}" class="nav-link px-0"> <span class="sidebar-effect">Evaulation</span> </a>
                 </li>
 
-                {{-- <li>
+                <li>
                     <a href="{{ route('ats-hired') }}" class="nav-link px-0"> <span class="sidebar-effect">Hired</span> </a>
-                </li> --}}
+                </li>
 
                 <li class="d-flex align-items-center pe-5">   
                     <a href="{{ route('ats-archived') }}" class="nav-link px-0 align-middle"><span class="sidebar-effect">Archived</span></a>
                 </li>
-            </ul>
+            </ul> --}}
         </li>
 
         <li class="d-flex align-items-center pe-5">   
@@ -70,15 +70,15 @@
         <li class="d-flex align-items-center employee pe-5">
                     
 
-            <a href="#employee" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
+            <a href="{{ route('ems-employees') }}" class="nav-link px-0 align-middle">
                 <img src="images/employee.png" class="icon" alt="applicant-icon">
 
                 <span class="ms-3 sidebar-effect">EMPLOYEES</span> 
                 
-                <i class="fa-solid fa-chevron-up chevron-icon" id="chevron-arrow"></i>
+                {{-- <i class="fa-solid fa-chevron-up chevron-icon" id="chevron-arrow"></i> --}}
             </a>
 
-            <ul class="collapse flex-column ms-1" id="employee" data-bs-parent="#menu">
+            {{-- <ul class="collapse flex-column ms-1" id="employee" data-bs-parent="#menu">
                 <li class="mt-2">
                     <a href="{{ route('ems-employees') }}" class="nav-link px-0"> <span class="sidebar-effect">Employee List</span> </a>
                 </li>
@@ -117,7 +117,7 @@
                         </li>
                     </ul>
                 </li>
-            </ul>
+            </ul> --}}
             
         </li>
 
