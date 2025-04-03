@@ -11,6 +11,7 @@ Route::middleware(['auth', PreventBackHistory::class])->group(function () {
     Route::get('/employees/{id}', [AdminController::class, 'showEmployee'])->name('employees.show');
     Route::delete('/employees/{id}/delete', [AdminController::class, 'deleteEmployee'])->name('employees.delete');
     Route::put('/employees/{id}/update', [AdminController::class, 'update'])->name('employees.update');
+    Route::post('/employees', [AdminController::class, 'store'])->name('employees.store');
 
     // Departments
     Route::get('/ems-emp-dept-coa', [AdminController::class, 'deptCOA'])->name('ems-dept-coa');
@@ -24,7 +25,6 @@ Route::middleware(['auth', PreventBackHistory::class])->group(function () {
 
     // EMS Extras
     Route::get('/ems-calendar', [AdminController::class, 'emscalendar'])->name('ems-calendar');
-  
    
     Route::get('/ems-policy', [AdminController::class, 'companyPolicy'])->name('ems-policy');
     Route::get('/ems-logs', [AdminController::class, 'logs'])->name('ems-logs');
@@ -43,6 +43,10 @@ Route::post('/update-score', [FacultyRankingController::class, 'updatePoints']);
 
 // In routes/web.php or routes/api.php
 Route::post('/save-points', [FacultyRankingController::class, 'saveTotalPoints']);
+// In routes/web.php or routes/api.php
+Route::post('/save-points2', [FacultyRankingController::class, 'saveTotalPoints2']);
+Route::post('/save-points3', [FacultyRankingController::class, 'saveTotalPoints3']);
+Route::post('/save-points4', [FacultyRankingController::class, 'saveTotalPoints4']);
 
 
 

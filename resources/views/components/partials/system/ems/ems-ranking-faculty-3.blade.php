@@ -18,7 +18,7 @@
             <tr>
                 <td>A. Classroom/ Teacher Performance Evaluation</td>
                 <td class="text-center">
-                    <input type="number" id="classroomEvaluationIII" name="performanceEvaluationIII" class="score-input" min="0" max="50">
+                    <input type="number" id="classroomEvaluationIII" name="classroom_evaluation" class="score-input" min="0" max="50">
                 </td>
                 <td class="text-center">(50 pts maximum)</td>
                 <td></td>
@@ -26,7 +26,7 @@
             <tr>
                 <td>B. Work Performance Evaluation</td>
                 <td class="text-center">
-                    <input type="number" id="workEvaluationIII" name="performanceEvaluationIII" class="score-input" min="0" max="50">
+                    <input type="number" id="workEvaluationIII" name="work_evaluation" class="score-input" min="0" max="50">
                 </td>
                 <td class="text-center">(50 pts maximum)</td>
                 <td></td>
@@ -47,38 +47,82 @@
     </table>
 </div>
 
-<!-- <script>
-document.addEventListener('DOMContentLoaded', function () {
-    function calculateTotalPointsIII() {
-        let totalPoints = 0;
-        const maxScore = 100;
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    // Populate Rank 3
+    window.populateFacultyFormRank3 = function (faculty) {
+        const classroom = document.querySelector('#content3 [name="classroom_evaluation"]');
+        const work = document.querySelector('#content3 [name="work_evaluation"]');
 
-        // Get all numeric inputs in the Faculty Performance section (Form 3)
-        document.querySelectorAll('#content3 .score-input').forEach(function (input) {
-            let value = parseFloat(input.value) || 0; // Convert input to number or default to 0
-            if (value > parseFloat(input.max)) {
-                value = parseFloat(input.max); // Ensure value does not exceed max allowed score
-            }
-            totalPoints += value;
-        });
+        if (classroom) classroom.value = faculty.classroom_evaluation ?? 0;
+        if (work) work.value = faculty.work_evaluation ?? 0;
 
-        // Ensure total does not exceed the maximum score
-        totalPoints = Math.min(totalPoints, maxScore);
+        updateTotalPointsRank3();
+    };
 
-        // Update total points (in Form 3)
-        document.getElementById('totalPointsIII').innerText = totalPoints.toFixed(2);
+    function updateTotalPointsRank3() {
+        const classroom = parseFloat(document.querySelector('#content3 [name="classroom_evaluation"]')?.value) || 0;
+        const work = parseFloat(document.querySelector('#content3 [name="work_evaluation"]')?.value) || 0;
 
-        // Calculate weighted percentage (35%)
-        let totalPercentage = totalPoints * 0.35;
-        document.getElementById('totalPercentageIII').innerText = totalPercentage.toFixed(2);
+        const total = classroom + work;
+        const percentage = total * 0.35;
+
+        document.getElementById("totalPointsIII").innerText = total.toFixed(2);
+        document.getElementById("totalPercentageIII").innerText = percentage.toFixed(2);
     }
 
-    // Attach event listeners to input fields (in Form 3)
-    document.querySelectorAll('#content3 .score-input').forEach(function (input) {
-        input.addEventListener('input', calculateTotalPointsIII);
+    document.querySelectorAll('#content3 input').forEach(input => {
+        input.addEventListener("input", updateTotalPointsRank3);
     });
 
-    // Initial calculation on page load for Form 3
-    calculateTotalPointsIII();
+    const saveBtn = document.createElement("button");
+    saveBtn.id = "saveButtonRank3";
+    saveBtn.className = "btn btn-primary mt-3";
+    saveBtn.textContent = "Save";
+    document.querySelector("#content3").appendChild(saveBtn);
+
+    saveBtn.addEventListener("click", function () {
+        const emp_id = document.querySelector('[name="emp_id"]')?.value;
+        if (!emp_id) return alert("Please select a faculty first.");
+
+        const classroom = document.querySelector('#content3 [name="classroom_evaluation"]')?.value || 0;
+        const work = document.querySelector('#content3 [name="work_evaluation"]')?.value || 0;
+
+        const formData = new FormData();
+        formData.append("emp_id", emp_id);
+        formData.append("classroom_evaluation", classroom);
+        formData.append("work_evaluation", work);
+
+        fetch("/save-points3", {
+            method: "POST",
+            body: formData,
+            headers: {
+                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
+            }
+        })
+        .then(async (res) => {
+            const text = await res.text();
+            try {
+                const json = JSON.parse(text);
+                if (!res.ok) {
+                    console.error("Rank 3 Save Response Error:", json);
+                    alert("Failed to save Rank 3: " + (json.error || json.message || "Unknown error"));
+                    return;
+                }
+                alert("Rank 3 saved successfully!");
+                return json;
+            } catch (err) {
+                console.error("Rank 3 Save Error (invalid JSON):", text);
+                alert("Unexpected server response:\n" + text);
+                throw err;
+            }
+        })
+        .catch(err => {
+            console.error("Rank 3 Save Error:", err);
+            alert("An error occurred while saving Rank 3.");
+        });
+    });
+
+    window.updateTotalPointsRank3 = updateTotalPointsRank3;
 });
-</script> -->
+</script>

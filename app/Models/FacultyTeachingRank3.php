@@ -13,9 +13,10 @@ class FacultyTeachingRank3 extends Model
 
     protected $fillable = [
         'emp_id', 
-        'classroom_TeacherEvaluation', 
-        'Work_Performance_Evaluation', 
-        'total_points'
+        'classroom_evaluation', 
+        'work_evaluation', 
+        'total_points',
+        'total_percentage',
     ];
 
     /**
@@ -39,14 +40,9 @@ class FacultyTeachingRank3 extends Model
      */
     public function calculateTotalPoints()
     {
-        $points = 0;
-
-        // Evaluation scores
-        $points += ($this->classroom_TeacherEvaluation ?? 0);
-        $points += ($this->Work_Performance_Evaluation ?? 0);
-
-        // Update total points
+        $points = ($this->classroom_evaluation ?? 0) + ($this->work_evaluation ?? 0);
         $this->total_points = $points;
+        $this->total_percentage = $points * 0.35;
         $this->save();
     }
 }

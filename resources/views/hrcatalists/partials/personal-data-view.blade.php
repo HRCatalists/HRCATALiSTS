@@ -1,108 +1,86 @@
-<div class="mb-5" id="section-personal-data-{{ $employee->id }}">
+@php
+    $employeeId = $employee->id ?? 'new';
+    $fieldClass = 'plain-input section-field-personal-data-' . $employeeId;
+
+    $values = [
+        'phone' => old('phone', $employee->phone ?? 'N/A'),
+        'email' => old('email', $employee->email ?? 'N/A'),
+        'address' => old('address', $employee->address ?? 'N/A'),
+        'tel_no' => old('tel_no', $employee->tel_no ?? 'N/A'),
+        'date_of_birth' => old('date_of_birth', $employee->date_of_birth ?? ''),
+        'place_of_birth' => old('place_of_birth', $employee->place_of_birth ?? 'N/A'),
+        'gender' => old('gender', $employee->gender ?? 'N/A'),
+        'religion' => old('religion', $employee->religion ?? 'N/A'),
+        'citizenship' => old('citizenship', $employee->citizenship ?? 'N/A'),
+        'civil_status' => old('civil_status', $employee->civil_status ?? 'N/A'),
+        'spouse_name' => old('spouse_name', $employee->spouse_name ?? 'N/A'),
+        'spouse_address' => old('spouse_address', $employee->spouse_address ?? 'N/A'),
+        'spouse_occupation' => old('spouse_occupation', $employee->spouse_occupation ?? 'N/A'),
+        'no_of_dependents' => old('no_of_dependents', $employee->no_of_dependents ?? ''),
+        'children_birthdates' => old('children_birthdates', $employee->children_birthdates ?? 'N/A'),
+        'father_name' => old('father_name', $employee->father_name ?? 'N/A'),
+        'mother_name' => old('mother_name', $employee->mother_name ?? 'N/A'),
+        'mother_address' => old('mother_address', $employee->mother_address ?? 'N/A'),
+        'sss_no' => old('sss_no', $employee->sss_no ?? 'N/A'),
+        'philhealth_no' => old('philhealth_no', $employee->philhealth_no ?? 'N/A'),
+        'tin_no' => old('tin_no', $employee->tin_no ?? 'N/A'),
+        'pagibig_no' => old('pagibig_no', $employee->pagibig_no ?? 'N/A'),
+    ];
+@endphp
+
+<div class="mb-5" id="section-personal-data-{{ $employeeId }}">
     <div class="row">
         <div class="d-flex justify-content-between align-items-center">
             <h4 class="db-h4 my-4">Personal Data</h4>
             <div>
-                <button type="button" class="btn btn-sm btn-outline-primary toggle-edit-btn" 
-                        data-section="personal-data" 
-                        data-employee-id="{{ $employee->id }}">
+                <button type="button" class="btn btn-sm btn-outline-primary toggle-edit-btn"
+                        data-section="personal-data"
+                        data-employee-id="{{ $employeeId }}">
                     Edit
                 </button>
             </div>
         </div>
 
         <div class="col-md-12">
-            @php $fieldClass = 'plain-input section-field-personal-data-' . $employee->id; @endphp
-
             <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label class="form-label fw-bold">Mobile Number:</label>
-                    <input type="text" name="phone" class="{{ $fieldClass }}" value="{{ old('phone', $employee->phone ?? 'N/A') }}" readonly>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label class="form-label fw-bold">E-mail Address:</label>
-                    <input type="email" name="email" class="{{ $fieldClass }}" value="{{ old('email', $employee->email ?? 'N/A') }}" readonly>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label class="form-label fw-bold">Address:</label>
-                    <input type="text" name="address" class="{{ $fieldClass }}" value="{{ old('address', $employee->address ?? 'N/A') }}" readonly>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label class="form-label fw-bold">Tel No.:</label>
-                    <input type="text" name="tel_no" class="{{ $fieldClass }}" value="{{ old('tel_no', $employee->tel_no ?? 'N/A') }}" readonly>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label class="form-label fw-bold">Date of Birth:</label>
-                    <input type="date" name="date_of_birth" class="{{ $fieldClass }}" value="{{ old('date_of_birth', $employee->date_of_birth) }}" readonly>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label class="form-label fw-bold">Place of Birth:</label>
-                    <input type="text" name="place_of_birth" class="{{ $fieldClass }}" value="{{ old('place_of_birth', $employee->place_of_birth ?? 'N/A') }}" readonly>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label class="form-label fw-bold">Gender:</label>
-                    <input type="text" name="gender" class="{{ $fieldClass }}" value="{{ old('gender', $employee->gender ?? 'N/A') }}" readonly>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label class="form-label fw-bold">Religion:</label>
-                    <input type="text" name="religion" class="{{ $fieldClass }}" value="{{ old('religion', $employee->religion ?? 'N/A') }}" readonly>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label class="form-label fw-bold">Citizenship:</label>
-                    <input type="text" name="citizenship" class="{{ $fieldClass }}" value="{{ old('citizenship', $employee->citizenship ?? 'N/A') }}" readonly>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label class="form-label fw-bold">Civil Status:</label>
-                    <input type="text" name="civil_status" class="{{ $fieldClass }}" value="{{ old('civil_status', $employee->civil_status ?? 'N/A') }}" readonly>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label class="form-label fw-bold">Name of Spouse:</label>
-                    <input type="text" name="spouse_name" class="{{ $fieldClass }}" value="{{ old('spouse_name', $employee->spouse_name ?? 'N/A') }}" readonly>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label class="form-label fw-bold">Spouse Address:</label>
-                    <input type="text" name="spouse_address" class="{{ $fieldClass }}" value="{{ old('spouse_address', $employee->spouse_address ?? 'N/A') }}" readonly>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label class="form-label fw-bold">Spouse Occupation:</label>
-                    <input type="text" name="spouse_occupation" class="{{ $fieldClass }}" value="{{ old('spouse_occupation', $employee->spouse_occupation ?? 'N/A') }}" readonly>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label class="form-label fw-bold">No. of Dependents:</label>
-                    <input type="number" name="no_of_dependents" class="{{ $fieldClass }}" value="{{ old('no_of_dependents', $employee->no_of_dependents ?? 'N/A') }}" readonly>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label class="form-label fw-bold">Children Birthdates:</label>
-                    <input type="text" name="children_birthdates" class="{{ $fieldClass }}" value="{{ old('children_birthdates', $employee->children_birthdates ?? 'N/A') }}" readonly>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label class="form-label fw-bold">Father's Name:</label>
-                    <input type="text" name="father_name" class="{{ $fieldClass }}" value="{{ old('father_name', $employee->father_name ?? 'N/A') }}" readonly>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label class="form-label fw-bold">Mother's Name:</label>
-                    <input type="text" name="mother_name" class="{{ $fieldClass }}" value="{{ old('mother_name', $employee->mother_name ?? 'N/A') }}" readonly>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label class="form-label fw-bold">Mother's Address:</label>
-                    <input type="text" name="mother_address" class="{{ $fieldClass }}" value="{{ old('mother_address', $employee->mother_address ?? 'N/A') }}" readonly>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label class="form-label fw-bold">SSS No.:</label>
-                    <input type="text" name="sss_no" class="{{ $fieldClass }}" value="{{ old('sss_no', $employee->sss_no ?? 'N/A') }}" readonly>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label class="form-label fw-bold">PhilHealth No.:</label>
-                    <input type="text" name="philhealth_no" class="{{ $fieldClass }}" value="{{ old('philhealth_no', $employee->philhealth_no ?? 'N/A') }}" readonly>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label class="form-label fw-bold">TIN No.:</label>
-                    <input type="text" name="tin_no" class="{{ $fieldClass }}" value="{{ old('tin_no', $employee->tin_no ?? 'N/A') }}" readonly>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label class="form-label fw-bold">Pag-Ibig No.:</label>
-                    <input type="text" name="pagibig_no" class="{{ $fieldClass }}" value="{{ old('pagibig_no', $employee->pagibig_no ?? 'N/A') }}" readonly>
-                </div>
+                @foreach ($values as $key => $val)
+                    @php
+                        // Customize label text and input type if needed
+                        $labels = [
+                            'phone' => 'Mobile Number',
+                            'email' => 'E-mail Address',
+                            'address' => 'Address',
+                            'tel_no' => 'Tel No.',
+                            'date_of_birth' => 'Date of Birth',
+                            'place_of_birth' => 'Place of Birth',
+                            'gender' => 'Gender',
+                            'religion' => 'Religion',
+                            'citizenship' => 'Citizenship',
+                            'civil_status' => 'Civil Status',
+                            'spouse_name' => 'Name of Spouse',
+                            'spouse_address' => 'Spouse Address',
+                            'spouse_occupation' => 'Spouse Occupation',
+                            'no_of_dependents' => 'No. of Dependents',
+                            'children_birthdates' => 'Children Birthdates',
+                            'father_name' => "Father's Name",
+                            'mother_name' => "Mother's Name",
+                            'mother_address' => "Mother's Address",
+                            'sss_no' => "SSS No.",
+                            'philhealth_no' => "PhilHealth No.",
+                            'tin_no' => "TIN No.",
+                            'pagibig_no' => "Pag-Ibig No.",
+                        ];
+
+                        $label = $labels[$key] ?? ucfirst(str_replace('_', ' ', $key));
+                        $type = in_array($key, ['email']) ? 'email' : (str_contains($key, 'date') ? 'date' : 'text');
+                        if ($key === 'no_of_dependents') $type = 'number';
+                    @endphp
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold">{{ $label }}:</label>
+                        <input type="{{ $type }}" name="{{ $key }}" class="{{ $fieldClass }}" value="{{ $val }}" readonly>
+                    </div>
+                @endforeach
             </div>
         </div>
     </div>

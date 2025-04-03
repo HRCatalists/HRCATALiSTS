@@ -13,7 +13,6 @@
         <!-- Master List -->
         <div id="content" class="flex-grow-1">
             <div class="container mt-5">
-
                 
                 <div class="d-flex justify-content-between align-items-center my-5">
                     <div>
@@ -294,7 +293,7 @@
                 }
             });
         });
-        </script>        
+    </script>        
     {{-- Applying button color changes based on the status --}}
 
     {{-- File upload and validation --}}

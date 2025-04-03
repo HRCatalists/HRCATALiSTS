@@ -11,7 +11,6 @@ class FacultyTeachingRank1 extends Model
 
     protected $table = 'teaching_rank1';
 
-    // List all fields that can be mass assigned
     protected $fillable = [
         'emp_id',
         'department',
@@ -50,23 +49,25 @@ class FacultyTeachingRank1 extends Model
         'total_points'
     ];
 
-    // Define relationship with Employee model
     public function employee()
     {
         return $this->belongsTo(Employee::class, 'emp_id', 'id');
     }
 
-    // Calculate total points method: Adjust the calculation logic as needed
     public function calculateTotalPoints()
     {
-        $totalPoints = 0;
+        $total = 0;
         $fields = [
-            'bachelor_degree',
+            // Numeric fields (number inputs)
             'academic_units_master_degree',
+            'academic_units_doctorate_degree',
+            'seminars_attended',
+
+            // Point-based checkboxes
+            'bachelor_degree',
             'ma_ms_candidate',
             'masters_thesis_completed',
             'full_master_degree',
-            'academic_units_doctorate_degree',
             'phd_education',
             'doctorate_dissertation_completed',
             'full_doctorate_degree',
@@ -76,7 +77,6 @@ class FacultyTeachingRank1 extends Model
             'multiple_degrees',
             'specialized_training',
             'travel_grant_for_study',
-            'seminars_attended',
             'professional_education_units',
             'plumbing_certification',
             'certificate_of_completion',
@@ -96,18 +96,18 @@ class FacultyTeachingRank1 extends Model
         ];
 
         foreach ($fields as $field) {
-            // Only add numeric fields to the total points, ensuring no errors due to invalid values
-            $totalPoints += is_numeric($this->$field) ? $this->$field : 0;
+            $value = $this->$field;
+            $total += is_numeric($value) ? (float) $value : 0;
         }
 
-        return $totalPoints;
+        return $total;
     }
 
-    // Optional: Casting boolean fields
+    // Cast numeric fields only
     protected $casts = [
-        'teachers_board_certified' => 'boolean',
-        'career_service_certification' => 'boolean',
-        'bar_exam_certification' => 'boolean',
+        'academic_units_master_degree' => 'float',
+        'academic_units_doctorate_degree' => 'float',
+        'seminars_attended' => 'float',
+        'total_points' => 'float',
     ];
-    
 }

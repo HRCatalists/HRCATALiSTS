@@ -9,63 +9,61 @@ class FacultyTeachingRank2 extends Model
 {
     use HasFactory;
 
-    protected $table = 'teaching_rank2'; // Explicit table name
+    protected $table = 'teaching_rank2';
+
+    protected $primaryKey = 'id';
+
     protected $fillable = [
-        'emp_id', 'full_time_cc', 'full_time_other_schools', 'part_time_cc', 'part_time_other_schools',
-        'research_class_based', 'research_school_based', 'research_community_based',
-        'course_module', 'workbook_lab_manual', 'research_articles', 'journal_editorship',
-        'participation_chairman', 'participation_member',
-        'resource_person_within', 'resource_person_outside',
-        'membership_officer_accreditor', 'membership_member',
-        'total_points'
+        'emp_id',
+        'full_time_cc',
+        'full_time_other_schools',
+        'part_time_cc',
+        'part_time_other_schools',
+        'research_class_based',
+        'research_school_based',
+        'research_community_based',
+        'course_module',
+        'workbook_lab_manual',
+        'research_articles',
+        'journal_editorship',
+        'participation_chairman',
+        'participation_member',
+        'resource_person_within',
+        'resource_person_outside',
+        'membership_officer_accreditor',
+        'membership_member',
+        'total_points',
     ];
+
     public function employee()
-    {
-        return $this->belongsTo(Employee::class, 'emp_id', 'id');
-    }
-
-
-   
-    public function FacultyTeachingRank1()
     {
         return $this->belongsTo(FacultyTeachingRank1::class, 'emp_id', 'emp_id');
     }
 
     public function calculateTotalPoints()
     {
-        $points = 0;
+        return
+            ($this->full_time_cc * 2) +
+            ($this->full_time_other_schools * 1) +
+            ($this->part_time_cc * 0.5) +
+            ($this->part_time_other_schools * 0.25) +
 
-        // Teaching experience
-        $points += $this->full_time_cc * 2;
-        $points += $this->full_time_other_schools * 2;
-        $points += $this->part_time_cc * 1;
-        $points += $this->part_time_other_schools * 1;
+            ($this->research_class_based * 5) +
+            ($this->research_school_based * 15) +
+            ($this->research_community_based * 5) +
 
-        // Research involvement
-        $points += $this->research_class_based * 5;
-        $points += $this->research_school_based * 5;
-        $points += $this->research_community_based * 5;
+            ($this->course_module * 5) +
+            ($this->workbook_lab_manual * 5) +
+            ($this->research_articles * 2) +
+            ($this->journal_editorship * 2) +
 
-        // Academic contributions
-        $points += $this->course_module * 3;
-        $points += $this->workbook_lab_manual * 4;
-        $points += $this->research_articles * 5;
-        $points += $this->journal_editorship * 6;
+            ($this->participation_chairman * 5) +
+            ($this->participation_member * 3) +
 
-        // Participation in committees
-        $points += $this->participation_chairman * 3;
-        $points += $this->participation_member * 2;
+            ($this->resource_person_within * 1) +
+            ($this->resource_person_outside * 1) +
 
-        // Resource person activities
-        $points += $this->resource_person_within * 4;
-        $points += $this->resource_person_outside * 5;
-
-        // Membership & leadership roles
-        $points += $this->membership_officer_accreditor * 3;
-        $points += $this->membership_member * 2;
-
-        // Update total points
-        $this->total_points = $points;
-        $this->save();
+            ($this->membership_officer_accreditor * 2) +
+            ($this->membership_member * 1);
     }
 }

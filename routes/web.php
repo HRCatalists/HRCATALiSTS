@@ -52,6 +52,9 @@ Route::post('/logout', function () {
     return redirect('/login');
 })->name('logout');
 
+Route::view('/privacy-policy', 'hrcatalists.legal-privacy-policy')->name('privacy.policy');
+Route::view('/terms-of-use', 'hrcatalists.legal-terms-of-use')->name('terms.of.use');
+
 // Auth routes
 require __DIR__.'/auth.php';
 require __DIR__.'/admin.php';

@@ -443,7 +443,7 @@ class ApplicantController extends Controller
     
         $job = $applicant->job;
     
-        Employee::create([
+        $employee = Employee::create([
             'first_name' => $applicant->first_name,
             'last_name' => $applicant->last_name,
             'email' => $applicant->email,
@@ -456,12 +456,30 @@ class ApplicantController extends Controller
             'job_title' => $job?->job_title ?? 'Not Set',
             'department' => $job?->department ?? 'Not Set',
         ]);
+
+        // Also insert the employee's id into the teaching_rank1 table
+        FacultyTeachingRank1::create([
+            'emp_id' => $employee->id,
+            'department' => $job?->department ?? 'Not Set',
+        ]);
+            FacultyTeachingRank2::create([
+                'emp_id' => $employee->id,
+            
+            ]);
+            FacultyTeachingRank3::create([
+            'emp_id' => $employee->id,
+            
+        ]);
+        FacultyTeachingRank4::create([
+            'emp_id' => $employee->id,
+            
+        ]);
     
         return response()->json([
             'success' => true,
             'message' => 'Applicant approved and transferred to employees.'
         ]);
-    }         
+    }
 
     // *
     // **

@@ -1,4 +1,7 @@
-@php $employeeId = $employee->id; @endphp
+@php
+    $employeeId = $employee->id ?? 'new';
+    $serviceRecords = $employee->serviceRecords ?? collect([]);
+@endphp
 
 <!-- =================== SERVICE RECORDS =================== -->
 <div class="border-top border-dark mb-5" id="section-service-records-{{ $employeeId }}">
@@ -23,7 +26,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($employee->serviceRecords as $i => $record)
+            @forelse ($serviceRecords as $i => $record)
                 <tr>
                     <td><input type="text" name="service_records[{{ $i }}][department]" class="form-control section-field-service-records-{{ $employeeId }}" value="{{ $record->department }}" readonly></td>
                     <td><input type="text" name="service_records[{{ $i }}][inclusive_date]" class="form-control section-field-service-records-{{ $employeeId }}" value="{{ $record->inclusive_date }}" readonly></td>
@@ -33,8 +36,11 @@
                     <td><input type="text" name="service_records[{{ $i }}][remarks]" class="form-control section-field-service-records-{{ $employeeId }}" value="{{ $record->remarks }}" readonly></td>
                     <td class="action-column d-none text-center"><button type="button" class="btn btn-sm btn-danger remove-edu-row">Remove</button></td>
                 </tr>
-            @endforeach
+            @empty
+                {{-- No records initially; nothing shown --}}
+            @endforelse
         </tbody>
     </table>
+
     <button type="button" class="btn btn-sm btn-outline-success mb-3 d-none" id="addServiceRecordBtn-{{ $employeeId }}">+ Add Service Record</button>
 </div>
