@@ -100,8 +100,6 @@
         }
     </script>
 </x-admin-ems-layout>
-<<<<<<< HEAD
-=======
 <script>
 window.searchPersonnel = function () {
     const name = document.getElementById("searchName").value;
@@ -151,4 +149,3 @@ window.searchPersonnel = function () {
 };
 </script>
 
->>>>>>> hr-catalists
