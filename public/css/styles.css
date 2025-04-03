@@ -10,10 +10,6 @@
     font-family: 'Caudex', sans-serif;
 }
 
-body {
-    padding-top: 95px; /* match your header height */
-}
-
 html, body {
     height: 100%;
 }

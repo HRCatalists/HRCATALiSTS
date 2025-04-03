@@ -4,6 +4,14 @@
         Columban College Inc. | Privacy Policy
     </x-slot:title>
 
+    @push('styles')
+        <style>
+            body {
+                padding-top: 95px;
+            }
+        </style>
+    @endpush
+
     <!-- Back to Top Button -->
     <button id="backToTop" class="back-to-top">
         <i class="fa-solid fa-arrow-up"></i>

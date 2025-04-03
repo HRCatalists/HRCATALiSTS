@@ -60,9 +60,11 @@
                             </div>
 
                             <!-- Submit Button -->
-                            <button type="submit" class="btn btn-primary w-100 mt-4">Log In</button>
-                            <a href="{{ route('google.login') }}" class="btn btn-danger">
-                                <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google Logo" style="width: 20px; margin-right: 8px;">
+                            <button type="submit" class="btn btn-primary w-100 my-3">Log In</button>
+                            <a href="{{ route('google.login') }}" class="btn shadow-sm w-100" style="background-color: #4285F4; color: white;">
+                                <i class="fab fa-google me-2"></i>
+                                {{-- Uncomment the line below to add Google logo --}}
+                                {{-- <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google Logo" style="width: 20px; margin-right: 8px;"> --}}
                                 Sign in with Google
                             </a>
                         </form>

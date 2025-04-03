@@ -4,6 +4,14 @@
         Columban College Inc. | Terms of Use
     </x-slot:title>
 
+    @push('styles')
+        <style>
+            body {
+                padding-top: 95px;
+            }
+        </style>
+    @endpush
+
     <!-- Back to Top Button -->
     <button id="backToTop" class="back-to-top">
         <i class="fa-solid fa-arrow-up"></i>
@@ -40,29 +48,29 @@
 
                     <h6 class="mt-5 fw-bold">TABLE OF CONTENTS</h6>
                     <p>You can jump to particular topics by going to the headings below:</p>
-                    <ul>
-                        <li><a href="#section-our-services">1. OUR SERVICES</a></li>
-                        <li><a href="#section-ip-rights">2. INTELLECTUAL PROPERTY RIGHTS</a></li>
-                        <li><a href="#section-user-rep">3. USER REPRESENTATIONS</a></li>
-                        <li><a href="#section-prohibited">4. PROHIBITED ACTIVITIES</a></li>
-                        <li><a href="#section-user-contributions">5. USER GENERATED CONTRIBUTIONS</a></li>
-                        <li><a href="#section-contribution-license">6. CONTRIBUTION LICENSE</a></li>
-                        <li><a href="#section-management">7. SERVICES MANAGEMENT</a></li>
-                        <li><a href="#section-privacy">8. PRIVACY POLICY</a></li>
-                        <li><a href="#section-copyright">9. COPYRIGHT INFRINGEMENTS</a></li>
-                        <li><a href="#section-term">10. TERM AND TERMINATION</a></li>
-                        <li><a href="#section-modifications">11. MODIFICATIONS AND INTERRUPTIONS</a></li>
-                        <li><a href="#section-law">12. GOVERNING LAW</a></li>
-                        <li><a href="#section-dispute">13. DISPUTE RESOLUTION</a></li>
-                        <li><a href="#section-corrections">14. CORRECTIONS</a></li>
-                        <li><a href="#section-disclaimer">15. DISCLAIMER</a></li>
-                        <li><a href="#section-limitations">16. LIMITATIONS OF LIABILITY</a></li>
-                        <li><a href="#section-indemnification">17. INDEMNIFICATION</a></li>
-                        <li><a href="#section-user-data">18. USER DATA</a></li>
-                        <li><a href="#section-electronic">19. ELECTRONIC COMMUNICATIONS, TRANSACTIONS, AND SIGNATURES</a></li>
-                        <li><a href="#section-misc">20. MISCELLANEOUS</a></li>
-                        <li><a href="#section-contact">21. CONTACT US</a></li>
-                    </ul>
+                    <ol class="">
+                        <li><a href="#section-our-services" class="text-decoration-underline">OUR SERVICES</a></li>
+                        <li><a href="#section-ip-rights" class="text-decoration-underline">INTELLECTUAL PROPERTY RIGHTS</a></li>
+                        <li><a href="#section-user-rep" class="text-decoration-underline">USER REPRESENTATIONS</a></li>
+                        <li><a href="#section-prohibited" class="text-decoration-underline">PROHIBITED ACTIVITIES</a></li>
+                        <li><a href="#section-user-contributions" class="text-decoration-underline">USER GENERATED CONTRIBUTIONS</a></li>
+                        <li><a href="#section-contribution-license" class="text-decoration-underline">CONTRIBUTION LICENSE</a></li>
+                        <li><a href="#section-management" class="text-decoration-underline">SERVICES MANAGEMENT</a></li>
+                        <li><a href="#section-privacy" class="text-decoration-underline">PRIVACY POLICY</a></li>
+                        <li><a href="#section-copyright" class="text-decoration-underline">COPYRIGHT INFRINGEMENTS</a></li>
+                        <li><a href="#section-term" class="text-decoration-underline">TERM AND TERMINATION</a></li>
+                        <li><a href="#section-modifications" class="text-decoration-underline">MODIFICATIONS AND INTERRUPTIONS</a></li>
+                        <li><a href="#section-law" class="text-decoration-underline">GOVERNING LAW</a></li>
+                        <li><a href="#section-dispute" class="text-decoration-underline">DISPUTE RESOLUTION</a></li>
+                        <li><a href="#section-corrections" class="text-decoration-underline">CORRECTIONS</a></li>
+                        <li><a href="#section-disclaimer" class="text-decoration-underline">DISCLAIMER</a></li>
+                        <li><a href="#section-limitations" class="text-decoration-underline">LIMITATIONS OF LIABILITY</a></li>
+                        <li><a href="#section-indemnification" class="text-decoration-underline">INDEMNIFICATION</a></li>
+                        <li><a href="#section-user-data" class="text-decoration-underline">USER DATA</a></li>
+                        <li><a href="#section-electronic" class="text-decoration-underline">ELECTRONIC COMMUNICATIONS, TRANSACTIONS, AND SIGNATURES</a></li>
+                        <li><a href="#section-misc" class="text-decoration-underline">MISCELLANEOUS</a></li>
+                        <li><a href="#section-contact" class="text-decoration-underline">CONTACT US</a></li>
+                    </ol>                                  
 
                     <h6 id="section-our-services" class="mt-5 fw-bold">1. OUR SERVICES</h6>
                     <p>The information provided when using the Services is not intended for distribution to or use by any person or entity in any jurisdiction 

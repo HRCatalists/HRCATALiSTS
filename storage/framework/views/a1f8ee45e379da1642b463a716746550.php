@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="<?php echo e(asset('images/ccihr-logo.png')); ?>">
 
     <title><?php echo e($title ?? 'Columban College Inc. | Careers'); ?></title>
 
@@ -29,6 +30,8 @@
 
     
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+    <?php echo $__env->yieldPushContent('styles'); ?>
 
 </head>
 <body>
