@@ -8,6 +8,8 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
 
+    <link rel="icon" type="image/png" href="{{ asset('images/ccihr-logo.png') }}">
+
 
     <title>{{ $title ?? 'Columban College Inc. | HR CATALISTS' }}</title>
 

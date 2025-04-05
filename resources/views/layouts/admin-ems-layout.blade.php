@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    <link rel="icon" type="image/png" href="{{ asset('images/ccihr-logo.png') }}">
+
+
     <title>{{ $title ?? 'Columban College Inc. | EMS-Dashboard' }}</title>
 
     <!-- Font Awesome -->
