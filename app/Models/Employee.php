@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\JobPost;
 
 class Employee extends Model
 {
@@ -21,6 +22,7 @@ class Employee extends Model
         'applied_at',
         'department',
         'job_title',
+        'job_id',
 
         // ✅ Add all fields based on your DB
         'faculty_code',
@@ -73,5 +75,10 @@ class Employee extends Model
     
     public function trainings() {
         return $this->hasMany(EmployeeTraining::class);
+    }
+
+    public function job()
+    {
+        return $this->belongsTo(JobPost::class, 'job_id'); // assuming you have JobPost model
     }
 }

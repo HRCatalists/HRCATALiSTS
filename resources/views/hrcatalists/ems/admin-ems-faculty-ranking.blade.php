@@ -99,54 +99,57 @@
             selectedPersonDiv.innerHTML = `<strong>Name:</strong> ${name} <br> <strong>Department:</strong> ${department}`;
         }
     </script>
+
     <script>
-window.searchPersonnel = function () {
-    const name = document.getElementById("searchName").value;
-    const department = document.getElementById("searchDepartment").value;
-    const resultsContainer = document.getElementById("search-results");
-    resultsContainer.innerHTML = "<p>Searching...</p>";
-
-    const headers = {
-        "Content-Type": "application/json",
-        "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
-    };
-
-    const rankFetchers = [
-        { rank_type: "rank1", populateFn: populateFacultyForm },
-        { rank_type: "rank2", populateFn: populateFacultyFormRank2 },
-        { rank_type: "rank3", populateFn: populateFacultyFormRank3 },
-        { rank_type: "rank4", populateFn: populateFacultyFormRank4 } // ✅ Added Rank 4
-    ];
-
-    rankFetchers.forEach(({ rank_type, populateFn }) => {
-        fetch("/search-faculty", {
-            method: "POST",
-            headers,
-            body: JSON.stringify({ name, department, rank_type })
-        })
-        .then(res => {
-            if (!res.ok) throw new Error(`Server returned ${res.status}`);
-            return res.json();
-        })
-        .then(data => {
-            const faculty = Array.isArray(data) ? data[0] : null;
-            if (!faculty) return;
-
-            if (rank_type === "rank1") {
-                const emp = faculty.employee || faculty;
-                document.querySelector('[name="emp_id"]').value = emp.emp_id || faculty.emp_id;
-                document.getElementById("selectedEmployeeName").textContent = `${emp.first_name} ${emp.last_name} (${emp.department})`;
-            }
-
-            populateFn(faculty); // Call correct populate function
-        })
-        .catch(err => {
-            console.error(`Search failed for ${rank_type}:`, err);
-            resultsContainer.innerHTML = `<p>Error searching for ${rank_type.toUpperCase()}: ${err.message}</p>`;
-        });
-    });
-};
-</script>
+        window.searchPersonnel = function () {
+            const name = document.getElementById("searchName").value;
+            const department = document.getElementById("searchDepartment").value;
+            const resultsContainer = document.getElementById("search-results");
+            resultsContainer.innerHTML = "<p>Searching...</p>";
+        
+            const headers = {
+                "Content-Type": "application/json",
+                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
+            };
+        
+            const rankFetchers = [
+                { rank_type: "rank1", populateFn: populateFacultyForm },
+                { rank_type: "rank2", populateFn: populateFacultyFormRank2 },
+                { rank_type: "rank3", populateFn: populateFacultyFormRank3 },
+                { rank_type: "rank4", populateFn: populateFacultyFormRank4 } // ✅ Added Rank 4
+            ];
+        
+            rankFetchers.forEach(({ rank_type, populateFn }) => {
+                fetch("/search-faculty", {
+                    method: "POST",
+                    headers,
+                    body: JSON.stringify({ name, department, rank_type })
+                })
+                .then(res => {
+                    if (!res.ok) throw new Error(`Server returned ${res.status}`);
+                    return res.json();
+                })
+                .then(data => {
+                    const faculty = Array.isArray(data) ? data[0] : null;
+                    if (!faculty) return;
+        
+                    if (rank_type === "rank1") {
+                        const emp = faculty.employee || faculty;
+                        document.querySelector('[name="emp_id"]').value = emp.emp_id || faculty.emp_id;
+                        document.getElementById("selectedEmployeeName").textContent = `${emp.first_name} ${emp.last_name} (${emp.department})`;
+                    }
+        
+                    populateFn(faculty); // Call correct populate function
+                })
+                .catch(err => {
+                    console.error(`Search failed for ${rank_type}:`, err);
+                    resultsContainer.innerHTML = `<p>Error searching for ${rank_type.toUpperCase()}: ${err.message}</p>`;
+                });
+            });
+        };
+    </script>
+    
+</x-admin-ems-layout>
 
 </x-admin-ems-layout>
 
