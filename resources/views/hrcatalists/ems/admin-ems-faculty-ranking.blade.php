@@ -99,8 +99,7 @@
             selectedPersonDiv.innerHTML = `<strong>Name:</strong> ${name} <br> <strong>Department:</strong> ${department}`;
         }
     </script>
-</x-admin-ems-layout>
-<script>
+    <script>
 window.searchPersonnel = function () {
     const name = document.getElementById("searchName").value;
     const department = document.getElementById("searchDepartment").value;
@@ -148,4 +147,6 @@ window.searchPersonnel = function () {
     });
 };
 </script>
+
+</x-admin-ems-layout>
 

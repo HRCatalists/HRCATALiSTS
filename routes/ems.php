@@ -5,7 +5,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Middleware\PreventBackHistory;
 use App\Http\Controllers\FacultyRankingController;
 
-Route::middleware(['auth', PreventBackHistory::class])->group(function () {
+Route::middleware([RoleMiddleware::class . ':admin,secretary'])->group(function () {
     Route::get('/ems-dashboard', [AdminController::class, 'emsDashboard'])->name('ems-dashboard');
     Route::get('/ems-employees', [AdminController::class, 'employees'])->name('ems-employees');
     Route::get('/employees/{id}', [AdminController::class, 'showEmployee'])->name('employees.show');

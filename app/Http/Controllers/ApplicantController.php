@@ -13,6 +13,7 @@ use App\Models\FacultyTeachingRank1;
 use App\Models\FacultyTeachingRank2;
 use App\Models\FacultyTeachingRank3;
 use App\Models\FacultyTeachingRank4;
+use App\Models\User;
 // use App\Models\FacultyTeachingRank2;
 // use App\Models\FacultyTeachingRank2;
 // use App\Models\FacultyTeachingRank2;
@@ -113,18 +114,14 @@ class ApplicantController extends Controller
         $oldStatus = $applicant->status;
     
         // Update applicant status
-        $applicant->status = $newStatus;
-        $applicant->save();
-    
-        // If status is "hired", move the applicant to the Employee table
         if ($newStatus === 'hired') {
-            // Check if email already exists in the employees table
+            // Prevent duplicate hire
             if (Employee::where('email', $applicant->email)->exists()) {
                 return redirect()->back()->with('error', 'This applicant is already hired. Duplicate email found.');
             }
-    
+        
             $job = $applicant->job;
-    
+        
             $employee = Employee::create([
                 'first_name' => $applicant->first_name,
                 'last_name' => $applicant->last_name,
@@ -136,30 +133,30 @@ class ApplicantController extends Controller
                 'status' => 'hired',
                 'applied_at' => $applicant->applied_at,
                 'job_title' => $job?->job_title ?? 'Not Set',
-                'department' => $job?->department ?? 'Not Set', // ✅ now accesses department string directly
+                'department' => $job?->department ?? 'Not Set',
             ]);
-    
-            // Also insert the employee's id into the teaching_rank1 table
-            FacultyTeachingRank1::create([
-                'emp_id' => $employee->id,
-                'department' => $employee->department,
-            ]);
-             FacultyTeachingRank2::create([
-                 'emp_id' => $employee->id,
-                
-             ]);
-             FacultyTeachingRank3::create([
-                'emp_id' => $employee->id,
-               
-            ]);
-            FacultyTeachingRank4::create([
-                'emp_id' => $employee->id,
-               
-            ]);
-           
+        
+            FacultyTeachingRank1::create(['emp_id' => $employee->id, 'department' => $employee->department]);
+            FacultyTeachingRank2::create(['emp_id' => $employee->id]);
+            FacultyTeachingRank3::create(['emp_id' => $employee->id]);
+            FacultyTeachingRank4::create(['emp_id' => $employee->id]);
+        
+            // ✅ Create login using phone number
+            if (!User::where('email', $applicant->email)->exists()) {
+                $rawPassword = 'P@SSW0RD';
+            
+                User::create([
+                    'name' => $applicant->first_name . ' ' . $applicant->last_name,
+                    'email' => $applicant->email,
+                    'password' => bcrypt($rawPassword),
+                    'role' => 'Employee',
+                ]);
+            }
+            
+        
             $applicant->delete();
         }
-    
+        
         // Log the update
         Log::create([
             'user_id' => Auth::id(),
