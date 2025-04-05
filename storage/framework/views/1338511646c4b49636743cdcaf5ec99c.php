@@ -17,68 +17,78 @@
     </div>
 
     <div class="row">
-        <!-- Job Selection Dropdown -->
+        <!-- Job Selection -->
         <div class="col-md-6 mb-3">
             <label for="job_id_<?php echo e($employeeId); ?>" class="form-label fw-bold">Select Position:</label>
             <select name="job_id_visible" id="job_id_<?php echo e($employeeId); ?>" class="form-select <?php echo e($fieldClass); ?>" <?php echo e(isset($employee) ? 'disabled' : ''); ?>>
                 <option value="">Select Position</option>
                 <?php $__currentLoopData = $jobs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $job): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <option 
-                        value="<?php echo e($job->id); ?>" 
-                        data-slug="<?php echo e($job->slug); ?>"
+                        value="<?php echo e($job->id); ?>"
+                        data-department="<?php echo e($job->department); ?>"
+                        data-title="<?php echo e($job->job_title); ?>"
+                        data-classification="<?php echo e($job->classification ?? ''); ?>"
+                        data-college="<?php echo e($job->parent_college ?? ''); ?>"
+                        data-status="<?php echo e($job->employment_status ?? ''); ?>"
+                        data-accreditation="<?php echo e($job->accreditation ?? ''); ?>"
                         <?php echo e(old('job_id', $employee?->job_id) == $job->id ? 'selected' : ''); ?>>
                         <?php echo e($job->job_title); ?> (<?php echo e($job->department); ?>)
                     </option>
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </select>
-            
-            
-            <input type="hidden" name="job_id" id="job_id_hidden_<?php echo e($employeeId); ?>" value="<?php echo e(old('job_id', $employee?->job_id)); ?>">                      
+            <input type="hidden" name="job_id" id="job_id_hidden_<?php echo e($employeeId); ?>" value="<?php echo e(old('job_id', $employee?->job_id)); ?>">
         </div>
-
-        <!-- Parent Department -->
+    
+        <!-- Department -->
         <div class="col-md-6 mb-3">
             <label class="form-label fw-bold">Parent Department:</label>
-            <input type="text" name="parent_department" class="<?php echo e($fieldClass); ?>" 
-                value="<?php echo e(old('parent_department', $employment->parent_department ?? 'N/A')); ?>" readonly>
+            <input type="text" name="department" id="department_<?php echo e($employeeId); ?>" class="<?php echo e($fieldClass); ?>" 
+                value="<?php echo e(old('department', $employee->department ?? '')); ?>" readonly>
         </div>
 
+        <!-- Job Title -->
+        <div class="col-md-6 mb-3">
+            <label class="form-label fw-bold">Job Position:</label>
+            <input type="text" name="job_title" id="job_title_<?php echo e($employeeId); ?>" class="<?php echo e($fieldClass); ?>"
+                value="<?php echo e(old('job_title', $employee->job_title ?? '')); ?>" readonly>
+        </div>
+    
         <!-- Parent College -->
         <div class="col-md-6 mb-3">
             <label class="form-label fw-bold">Parent College:</label>
-            <input type="text" name="parent_college" class="<?php echo e($fieldClass); ?>" 
-                value="<?php echo e(old('parent_college', $employment->parent_college ?? 'N/A')); ?>" readonly>
+            <input type="text" name="parent_college" id="parent_college_<?php echo e($employeeId); ?>" class="<?php echo e($fieldClass); ?>" 
+                value="<?php echo e(old('parent_college', $employment->parent_college ?? '')); ?>" readonly>
         </div>
-
+    
         <!-- Classification -->
         <div class="col-md-6 mb-3">
             <label class="form-label fw-bold">Classification:</label>
-            <input type="text" name="classification" class="<?php echo e($fieldClass); ?>" 
-                value="<?php echo e(old('classification', $employment->classification ?? 'N/A')); ?>" readonly>
+            <input type="text" name="classification" id="classification_<?php echo e($employeeId); ?>" class="<?php echo e($fieldClass); ?>" 
+                value="<?php echo e(old('classification', $employment->classification ?? '')); ?>" readonly>
         </div>
-
+    
         <!-- Employment Status -->
         <div class="col-md-6 mb-3">
             <label class="form-label fw-bold">Employment Status:</label>
-            <input type="text" name="employment_status" class="<?php echo e($fieldClass); ?>" 
-                value="<?php echo e(old('employment_status', $employment->employment_status ?? 'N/A')); ?>" readonly>
+            <input type="text" name="employment_status" id="employment_status_<?php echo e($employeeId); ?>" class="<?php echo e($fieldClass); ?>" 
+                value="<?php echo e(old('employment_status', $employment->employment_status ?? '')); ?>" readonly>
         </div>
-
+    
         <!-- Date of Employment -->
         <div class="col-md-6 mb-3">
             <label class="form-label fw-bold">Date of Employment:</label>
             <input type="date" name="date_employed" class="<?php echo e($fieldClass); ?>"
                 value="<?php echo e(old('date_employed', $employment->date_employed ?? now()->format('Y-m-d'))); ?>" readonly>
         </div>
-
+    
         <!-- Accreditation -->
         <div class="col-md-6 mb-3">
             <label class="form-label fw-bold">Accreditation:</label>
-            <input type="text" name="accreditation" class="<?php echo e($fieldClass); ?>" 
-                value="<?php echo e(old('accreditation', $employment->accreditation ?? 'N/A')); ?>" readonly>
+            <input type="text" name="accreditation" id="accreditation_<?php echo e($employeeId); ?>" class="<?php echo e($fieldClass); ?>" 
+                value="<?php echo e(old('accreditation', $employment->accreditation ?? '')); ?>" readonly>
         </div>
-
-        <!-- Date of Permanent Status -->
+    
+        <!-- Permanent Status -->
         <div class="col-md-6 mb-3">
             <label class="form-label fw-bold">Date of Permanent Status:</label>
             <input type="date" name="date_permanent" class="<?php echo e($fieldClass); ?>" 
@@ -136,5 +146,6 @@ unset($__errorArgs, $__bag); ?>
             <?php endif; ?>
         </div>
     </div>
+    
 </div>
 <?php /**PATH C:\laragon\www\hr_catalists\resources\views/hrcatalists/partials/employment-details-view.blade.php ENDPATH**/ ?>

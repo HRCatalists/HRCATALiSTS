@@ -199,7 +199,7 @@ class AdminController extends Controller
             'status' => 'nullable|string|max:100',
             'applied_at' => 'nullable|date',
             'department' => 'nullable|string|max:255',
-            'job_id' => 'nullable|exists:jobs,id',
+            'job_id' => 'nullable|exists:job_posts,id',
             'job_title' => 'nullable|string|max:255',
             'faculty_code' => 'nullable|string|max:255',
             'school_of' => 'nullable|string|max:255',

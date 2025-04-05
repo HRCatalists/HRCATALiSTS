@@ -8,6 +8,8 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
 
+    <link rel="icon" type="image/png" href="<?php echo e(asset('images/ccihr-logo.png')); ?>">
+
 
     <title><?php echo e($title ?? 'Columban College Inc. | HR CATALISTS'); ?></title>
 

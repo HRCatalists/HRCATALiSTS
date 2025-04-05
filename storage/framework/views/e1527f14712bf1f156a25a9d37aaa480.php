@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
 
+    <link rel="icon" type="image/png" href="<?php echo e(asset('images/ccihr-logo.png')); ?>">
+
+
     <title><?php echo e($title ?? 'Columban College Inc. | EMS-Dashboard'); ?></title>
 
     <!-- Font Awesome -->

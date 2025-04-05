@@ -140,46 +140,44 @@
                 </table>
                 
                 <?php $__currentLoopData = $employees; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $employee): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                <!-- View/Edit Modal -->
-                <div class="modal fade" id="employeeModal-<?php echo e($employee->id); ?>" tabindex="-1" aria-labelledby="employeeModalLabel-<?php echo e($employee->id); ?>" aria-hidden="true">
-                    <div class="modal-dialog modal-xl modal-dialog-scrollable">
-                        <div class="modal-content">
+                    <!-- View/Edit Modal -->
+                    <div class="modal fade" id="employeeModal-<?php echo e($employee->id); ?>" tabindex="-1" aria-labelledby="employeeModalLabel-<?php echo e($employee->id); ?>" aria-hidden="true">
+                        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+                            <div class="modal-content">
 
-                            <!-- ✅ header outside the form -->
-                            <div class="modal-header">
-                                <h5 class="modal-title">Employee Profile</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                <!-- ✅ header outside the form -->
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Employee Profile</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+
+                                <!-- ✅ form starts inside modal-body (scrollable area) -->
+                                <div class="modal-body">
+                                    <form method="POST" action="<?php echo e(route('employees.update', $employee->id)); ?>" id="employeeMainForm-<?php echo e($employee->id); ?>">
+                                        <?php echo csrf_field(); ?>
+                                        <?php echo method_field('PUT'); ?>
+
+                                        <?php echo $__env->make('hrcatalists.partials.employment-summary-view', ['employee' => $employee], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+                                        <?php echo $__env->make('hrcatalists.partials.personal-data-view', ['employee' => $employee], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+                                        <?php echo $__env->make('hrcatalists.partials.education-view', ['employee' => $employee], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+                                        <?php echo $__env->make('hrcatalists.partials.employment-details-view', ['employee' => $employee, 'jobs' => $jobs], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+                                        <?php echo $__env->make('hrcatalists.partials.licenses-view', ['employee' => $employee], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+                                        <?php echo $__env->make('hrcatalists.partials.service-record-view', ['employee' => $employee], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+                                        <?php echo $__env->make('hrcatalists.partials.trainings-view', ['employee' => $employee], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+                                        <?php echo $__env->make('hrcatalists.partials.organizations-view', ['employee' => $employee], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+                                        <?php echo $__env->make('hrcatalists.partials.others-view', ['employee' => $employee], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+
+                                        <!-- ✅ footer is INSIDE the form and modal-body -->
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn text-success" onclick="this.disabled=true; this.form.submit();">Update</button>
+                                            <button type="button" class="btn text-secondary" data-bs-dismiss="modal">Close</button>
+                                        </div>
+                                    </form>
+                                </div>
+
                             </div>
-
-                            <!-- ✅ form starts inside modal-body (scrollable area) -->
-                            <div class="modal-body">
-                                <form method="POST" action="<?php echo e(route('employees.update', $employee->id)); ?>" id="employeeMainForm-<?php echo e($employee->id); ?>">
-                                    <?php echo csrf_field(); ?>
-                                    <?php echo method_field('PUT'); ?>
-
-                                    <?php echo $__env->make('hrcatalists.partials.employment-summary-view', ['employee' => $employee], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
-                                    <?php echo $__env->make('hrcatalists.partials.personal-data-view', ['employee' => $employee], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
-                                    <?php echo $__env->make('hrcatalists.partials.education-view', ['employee' => $employee], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
-                                    <?php echo $__env->make('hrcatalists.partials.employment-details-view', ['employee' => $employee, 'jobs' => $jobs], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
-                                    <?php echo $__env->make('hrcatalists.partials.licenses-view', ['employee' => $employee], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
-                                    <?php echo $__env->make('hrcatalists.partials.service-record-view', ['employee' => $employee], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
-                                    <?php echo $__env->make('hrcatalists.partials.trainings-view', ['employee' => $employee], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
-                                    <?php echo $__env->make('hrcatalists.partials.organizations-view', ['employee' => $employee], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
-                                    <?php echo $__env->make('hrcatalists.partials.others-view', ['employee' => $employee], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
-
-
-
-                                    <!-- ✅ footer is INSIDE the form and modal-body -->
-                                    <div class="modal-footer">
-                                        <button type="submit" class="btn text-success" onclick="this.disabled=true; this.form.submit();">Update</button>
-                                        <button type="button" class="btn text-secondary" data-bs-dismiss="modal">Close</button>
-                                    </div>
-                                </form>
-                            </div>
-
                         </div>
                     </div>
-                </div>
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>                        
             </div>
         </div>
@@ -199,7 +197,6 @@
                     <form method="POST" action="<?php echo e(route('employees.store')); ?>" id="addEmployeeForm" enctype="multipart/form-data">
                         <?php echo csrf_field(); ?>
 
-                        
                         <?php echo $__env->make('hrcatalists.partials.employment-summary-view', ['employee' => null], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
                         <?php echo $__env->make('hrcatalists.partials.personal-data-view', ['employee' => null], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
                         <?php echo $__env->make('hrcatalists.partials.education-view', ['employee' => null], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
@@ -475,6 +472,31 @@
             bindEditButtons();
             bindAddButtons();
             bindRemoveButtons();
+
+            // ✅ Update hidden job_id when dropdown changes
+            document.querySelectorAll('select[id^="job_id_"]').forEach(function(select) {
+                select.addEventListener('change', function () {
+                    const selected = this.options[this.selectedIndex];
+                    const employeeId = this.id.split('_')[2] || 'new';
+
+                    const fields = {
+                        'department': selected.dataset.department,
+                        'job_title': selected.dataset.title,
+                        'classification': selected.dataset.classification,
+                        'parent_college': selected.dataset.college,
+                        'employment_status': selected.dataset.status,
+                        'accreditation': selected.dataset.accreditation,
+                    };
+
+                    Object.entries(fields).forEach(([field, value]) => {
+                        const input = document.getElementById(`${field}_${employeeId}`);
+                        if (input) input.value = value || '';
+                    });
+
+                    const hiddenInput = document.getElementById('job_id_hidden_' + employeeId);
+                    if (hiddenInput) hiddenInput.value = this.value;
+                });
+            });
         });
     </script>
         
