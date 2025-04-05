@@ -343,114 +343,75 @@
       </tr>
     </tbody>
   </table>
-</div>
-<!-- Save Button -->
-<div class="mt-4 text-center">
+  <div class="mt-4 text-center">
   <button id="saveButton" class="btn btn-primary">Save</button>
 </div>
+</div>
+<!-- Save Button -->
 
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
-      // Make search globally callable
-      window.searchPersonnel = function () {
-          const name = document.getElementById("searchName").value;
-          const department = document.getElementById("searchDepartment").value;
-          const resultsContainer = document.getElementById("search-results");
-          resultsContainer.innerHTML = "<p>Searching...</p>";
-  
-          fetch("/search-faculty", {
-              method: "POST",
-              headers: {
-                  "Content-Type": "application/json",
-                  "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
-              },
-              body: JSON.stringify({ name, department })
-          })
-          .then(res => res.json())
-          .then(data => {
-              if (!Array.isArray(data) || data.length === 0) {
-                  displayNoResults("No results found.");
-                  return;
-              }
-  
-              const faculty = data[0];
-              const emp = faculty.employee || faculty;
-              const empIdInput = document.querySelector('[name="emp_id"]');
-              if (empIdInput) empIdInput.value = emp.emp_id || faculty.emp_id;
-  
-              document.getElementById("selectedEmployeeName").textContent =
-                  `${emp.first_name || ''} ${emp.last_name || ''} (${emp.department || ''})`;
-  
-              populateFacultyForm(faculty);
-          })
-          .catch(err => {
-              console.error("Search error:", err);
-              displayNoResults("An error occurred.");
-          });
-      };
-  
-      function displayNoResults(msg) {
-          document.getElementById("search-results").innerHTML = `<p>${msg}</p>`;
-      }
-  
-      function populateFacultyForm(faculty) {
-          const fields = [
-              "bachelor_degree", "academic_units_master_degree", "ma_ms_candidate",
-              "masters_thesis_completed", "full_master_degree", "academic_units_doctorate_degree",
-              "phd_education", "doctorate_dissertation_completed", "full_doctorate_degree",
-              "additional_bachelor_degree", "additional_master_degree", "additional_doctorate_degree",
-              "multiple_degrees", "specialized_training", "travel_grant_for_study",
-              "seminars_attended", "professional_education_units", "plumbing_certification",
-              "certificate_of_completion", "national_certification", "trainers_methodology",
-              "teachers_board_certified", "career_service_certification", "bar_exam_certification",
-              "board_exam_placer", "local_awards", "regional_awards", "national_awards",
-              "summa_cum_laude", "magna_cum_laude", "cum_laude", "with_distinction"
-          ];
-  
-          fields.forEach(field => {
-              const input = document.querySelector(`[name="${field}"]`);
-              const value = faculty[field];
-              if (!input) return;
-  
-              if (input.type === "checkbox") {
-                  input.checked = parseFloat(value) > 0;
-              } else {
-                  input.value = value ?? "";
-              }
-          });
-  
-          updateTotalPoints(); // ✅ Ensure totals are recalculated after populating
-      }
-  
-      function updateTotalPoints() {
-          let total = 0;
-  
-          // Sum all checked checkbox values
-          document.querySelectorAll('#content1 input[type="checkbox"]:checked').forEach(el => {
-              total += parseFloat(el.value) || 0;
-          });
-  
-          // Add calculated fields
-          const masterUnits = parseFloat(document.querySelector('[name="academic_units_master_degree"]')?.value) || 0;
-          const doctorateUnits = parseFloat(document.querySelector('[name="academic_units_doctorate_degree"]')?.value) || 0;
-          const seminars = parseFloat(document.querySelector('[name="seminars_attended"]')?.value) || 0;
-  
-          total += masterUnits / 6;
-          total += doctorateUnits / 6;
-          total += seminars * 0.33;
-  
-          total = parseFloat(total.toFixed(2));
-          document.getElementById("totalPointsI").innerText = total.toFixed(2);
-          document.getElementById("totalPercentageI").innerText = (total * 0.3).toFixed(2);
-      }
-  
-      // Attach update trigger to all inputs
-      document.querySelectorAll('#content1 input').forEach(input => {
-          input.addEventListener("input", updateTotalPoints);
-      });
-  
-      // SAVE FUNCTION
-      document.getElementById("saveButton").addEventListener("click", function () {
+document.addEventListener("DOMContentLoaded", function () {
+    // ✅ Populates Rank 1 form only
+    window.populateFacultyForm = function (faculty) {
+        const fields = [
+            "bachelor_degree", "academic_units_master_degree", "ma_ms_candidate",
+            "masters_thesis_completed", "full_master_degree", "academic_units_doctorate_degree",
+            "phd_education", "doctorate_dissertation_completed", "full_doctorate_degree",
+            "additional_bachelor_degree", "additional_master_degree", "additional_doctorate_degree",
+            "multiple_degrees", "specialized_training", "travel_grant_for_study",
+            "seminars_attended", "professional_education_units", "plumbing_certification",
+            "certificate_of_completion", "national_certification", "trainers_methodology",
+            "teachers_board_certified", "career_service_certification", "bar_exam_certification",
+            "board_exam_placer", "local_awards", "regional_awards", "national_awards",
+            "summa_cum_laude", "magna_cum_laude", "cum_laude", "with_distinction"
+        ];
+
+        fields.forEach(field => {
+            const input = document.querySelector(`#content1 [name="${field}"]`);
+            const value = faculty[field];
+            if (!input) return;
+
+            if (input.type === "checkbox") {
+                input.checked = Boolean(Number(value));
+            } else {
+                input.value = value ?? "";
+            }
+        });
+
+        updateTotalPoints(); // ✅ Recalculate total points
+    };
+
+    function updateTotalPoints() {
+        let total = 0;
+
+        // Sum all checked checkbox values in content1
+        document.querySelectorAll('#content1 input[type="checkbox"]:checked').forEach(el => {
+            total += parseFloat(el.value) || 0;
+        });
+
+        const masterUnits = parseFloat(document.querySelector('#content1 [name="academic_units_master_degree"]')?.value) || 0;
+        const doctorateUnits = parseFloat(document.querySelector('#content1 [name="academic_units_doctorate_degree"]')?.value) || 0;
+        const seminars = parseFloat(document.querySelector('#content1 [name="seminars_attended"]')?.value) || 0;
+
+        total += masterUnits / 6;
+        total += doctorateUnits / 6;
+        total += seminars * 0.33;
+
+        total = parseFloat(total.toFixed(2));
+        document.getElementById("totalPointsI").innerText = total.toFixed(2);
+        document.getElementById("totalPercentageI").innerText = (total * 0.3).toFixed(2);
+    }
+
+    // Recalculate when any input changes inside Rank 1
+    document.querySelectorAll('#content1 input').forEach(input => {
+        input.addEventListener("input", updateTotalPoints);
+        if (input.type === "checkbox") {
+            input.addEventListener("change", updateTotalPoints);
+        }
+    });
+
+    // SAVE FUNCTION for Rank 1
+    document.getElementById("saveButton").addEventListener("click", function () {
         const emp_id = document.querySelector('[name="emp_id"]').value;
         if (!emp_id) return alert("Employee ID is missing.");
 
@@ -471,7 +432,7 @@
         ];
 
         fields.forEach(field => {
-            const input = document.querySelector(`[name="${field}"]`);
+            const input = document.querySelector(`#content1 [name="${field}"]`);
             if (input) {
                 formData.append(field, input.type === "checkbox" ? (input.checked ? input.value : 0) : input.value);
             }
@@ -494,7 +455,6 @@
         .then(data => {
             saveBtn.disabled = false;
             saveBtn.innerText = "Save";
-
             if (data.success) {
                 alert("Faculty ranking saved successfully!");
             } else {
@@ -508,7 +468,5 @@
             alert("An error occurred while saving.");
         });
     });
-  });
-  </script>
-   
-  
+});
+</script>

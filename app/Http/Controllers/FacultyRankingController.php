@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\FacultyTeachingRank1;
 use App\Models\FacultyTeachingRank2; // Import FacultyTeachingRank2 model
+use App\Models\FacultyTeachingRank3;
+use App\Models\FacultyTeachingRank4;
+
 use App\Models\Employee;
 use Illuminate\Support\Facades\Log;
 
@@ -168,5 +171,115 @@ class FacultyRankingController extends Controller
                 'error' => 'Error saving data: ' . $e->getMessage()
             ], 500);
         }
-    }      
+    }
+    public function saveTotalPoints2(Request $request)
+    {
+        if (!Auth::check()) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        $validated = $request->validate([
+            'emp_id' => 'required|exists:teaching_rank2,emp_id',
+        ]);
+
+        try {
+            $faculty = FacultyTeachingRank2::where('emp_id', $validated['emp_id'])->first();
+
+            if (!$faculty) {
+                return response()->json(['error' => 'Faculty not found'], 404);
+            }
+
+            $fields = [
+                'full_time_cc', 'full_time_other_schools', 'part_time_cc', 'part_time_other_schools',
+                'research_class_based', 'research_school_based', 'research_community_based',
+                'course_module', 'workbook_lab_manual', 'research_articles', 'journal_editorship',
+                'participation_chairman', 'participation_member',
+                'resource_person_within', 'resource_person_outside',
+                'membership_officer_accreditor', 'membership_member'
+            ];
+
+            foreach ($fields as $field) {
+                $faculty->$field = $request->input($field, 0);
+            }
+
+            $faculty->total_points = $faculty->calculateTotalPoints();
+            $faculty->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Rank 2 points saved successfully.',
+                'data' => $faculty
+            ]);
+
+        } catch (\Exception $e) {
+            \Log::error('Rank 2 Save Error: ' . $e->getMessage());
+            return response()->json([
+                'error' => 'Server error: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+    public function saveTotalPoints3(Request $request)
+{
+    try {
+        $validated = $request->validate([
+            'emp_id' => 'required|exists:teaching_rank3,emp_id',
+            'classroom_evaluation' => 'nullable|numeric|min:0|max:50',
+            'work_evaluation' => 'nullable|numeric|min:0|max:50',
+        ]);
+
+        $faculty = FacultyTeachingRank3::where('emp_id', $validated['emp_id'])->first();
+
+        if (!$faculty) {
+            return response()->json(['error' => 'Faculty not found'], 404);
+        }
+
+        $faculty->classroom_evaluation = $request->input('classroom_evaluation', 0);
+        $faculty->work_evaluation = $request->input('work_evaluation', 0);
+        $faculty->calculateTotalPoints();
+
+        return response()->json(['success' => true, 'data' => $faculty]);
+
+    } catch (\Exception $e) {
+        \Log::error("Rank 3 Save Error: " . $e->getMessage());
+        return response()->json(['error' => 'Server error'], 500);
+    }
+}
+public function saveTotalPoints4(Request $request)
+{
+    try {
+        $validated = $request->validate([
+            'emp_id' => 'required|exists:teaching_rank4,emp_id',
+            'attendance_activities' => 'nullable|in:0,30',
+            'committee_involvement' => 'nullable|in:0,30',
+            'community_extension' => 'nullable|in:0,40',
+        ]);
+
+        $faculty = \App\Models\FacultyTeachingRank4::where('emp_id', $validated['emp_id'])->first();
+
+        if (!$faculty) {
+            return response()->json(['error' => 'Faculty not found'], 404);
+        }
+
+        $faculty->attendance_activities = $request->input('attendance_activities', 0);
+        $faculty->committee_involvement = $request->input('committee_involvement', 0);
+        $faculty->community_extension = $request->input('community_extension', 0);
+
+        $faculty->total_points = 
+            $faculty->attendance_activities + 
+            $faculty->committee_involvement + 
+            $faculty->community_extension;
+
+        $faculty->total_percentage = $faculty->total_points * 0.15;
+
+        $faculty->save();
+
+        return response()->json(['success' => true, 'data' => $faculty]);
+    } catch (\Exception $e) {
+        \Log::error("Rank 4 Save Error: " . $e->getMessage());
+        return response()->json(['error' => 'Server error'], 500);
+    }
+}
+
+
+
 }

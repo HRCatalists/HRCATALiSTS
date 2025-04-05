@@ -12,11 +12,12 @@ class FacultyTeachingRank4 extends Model
     protected $table = 'teaching_rank4'; // Explicit table name
 
     protected $fillable = [
-        'emp_id', 
-        'Attendance_school_sponsored_activities', 
-        'Committee_Involvement', 
-        'Participation_in_the_CC_Community_Extension_Program', 
-        'total_points'
+        'emp_id',
+        'attendance_activities',
+        'committee_involvement',
+        'community_extension',
+        'total_points',
+        'total_percentage'
     ];
 
     /**
@@ -36,19 +37,20 @@ class FacultyTeachingRank4 extends Model
     }
 
     /**
-     * Calculate and update total points.
+     * Calculate and update total points and percentage.
      */
     public function calculateTotalPoints()
     {
-        $points = 0;
+        $points = 
+            ($this->attendance_activities ?? 0) +
+            ($this->committee_involvement ?? 0) +
+            ($this->community_extension ?? 0);
 
-        // Participation Points
-        $points += ($this->Attendance_school_sponsored_activities ?? 0);
-        $points += ($this->Committee_Involvement ?? 0);
-        $points += ($this->Participation_in_the_CC_Community_Extension_Program ?? 0);
+        $percentage = $points * 0.15;
 
-        // Update total points
         $this->total_points = $points;
+        $this->total_percentage = $percentage;
+
         $this->save();
     }
 }

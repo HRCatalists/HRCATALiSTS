@@ -43,6 +43,10 @@ Route::post('/update-score', [FacultyRankingController::class, 'updatePoints']);
 
 // In routes/web.php or routes/api.php
 Route::post('/save-points', [FacultyRankingController::class, 'saveTotalPoints']);
+// In routes/web.php or routes/api.php
+Route::post('/save-points2', [FacultyRankingController::class, 'saveTotalPoints2']);
+Route::post('/save-points3', [FacultyRankingController::class, 'saveTotalPoints3']);
+Route::post('/save-points4', [FacultyRankingController::class, 'saveTotalPoints4']);
 
 
 
