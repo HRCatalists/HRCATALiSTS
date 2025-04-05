@@ -120,6 +120,19 @@
                                                 </button>                                            
                                             </li>
 
+                                            <!-- Download CV -->
+                                            <?php if(!empty($employee->cv)): ?>
+                                                <li>
+                                                    <a 
+                                                        href="https://drive.google.com/uc?id=<?php echo e($employee->cv); ?>&export=download" 
+                                                        target="_blank" 
+                                                        class="dropdown-item text-success"
+                                                    >
+                                                        DOWNLOAD CV
+                                                    </a>
+                                                </li>
+                                            <?php endif; ?>
+
                                             <!-- Delete -->
                                             <li>
                                                 <form action="<?php echo e(route('employees.delete', $employee->id)); ?>" method="POST" onsubmit="return confirm('Are you sure you want to delete this employee?');">
@@ -128,9 +141,6 @@
                                                     <button type="submit" class="dropdown-item text-danger">DELETE</button>
                                                 </form>
                                             </li>
-                                            
-                                            
-                                            
                                         </ul>
                                     </div>
                                 </td>
@@ -141,7 +151,7 @@
                 
                 <?php $__currentLoopData = $employees; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $employee): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <!-- View/Edit Modal -->
-                    <div class="modal fade" id="employeeModal-<?php echo e($employee->id); ?>" tabindex="-1" aria-labelledby="employeeModalLabel-<?php echo e($employee->id); ?>" aria-hidden="true">
+                    <div class="modal fade" id="employeeModal-<?php echo e($employee->id); ?>" tabindex="-1" aria-labelledby="employeeModalLabel-<?php echo e($employee->id); ?>" aria-hidden="true" enctype="multipart/form-data">
                         <div class="modal-dialog modal-xl modal-dialog-scrollable">
                             <div class="modal-content">
 
@@ -247,93 +257,88 @@
     
 
     
+    
+
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const sections = ['education', 'licenses', 'trainings', 'service-records', 'organizations', 'others'];
-
-            function capitalize(str) {
-                return str.charAt(0).toUpperCase() + str.slice(1);
-            }
-
+    
             function getAddButtonId(section, employeeId) {
-                const idMap = {
+                return {
                     'education': `addEducationBtn-${employeeId}`,
                     'licenses': `addLicenseBtn-${employeeId}`,
                     'trainings': `addTrainingBtn-${employeeId}`,
                     'service-records': `addServiceRecordBtn-${employeeId}`,
                     'organizations': `addOrganizationBtn-${employeeId}`,
                     'others': `addOtherBtn-${employeeId}`
-                };
-                return idMap[section];
+                }[section];
             }
-
+    
             function getTableId(section, employeeId) {
-                const idMap = {
+                return {
                     'education': `educationTable-${employeeId}`,
                     'licenses': `licensesTable-${employeeId}`,
                     'trainings': `trainingsTable-${employeeId}`,
                     'service-records': `serviceRecordTable-${employeeId}`,
                     'organizations': `organizationTable-${employeeId}`,
                     'others': `othersTable-${employeeId}`
-                };
-                return idMap[section];
+                }[section];
             }
-
+    
+            function toggleCVInput(employeeId, enable = false) {
+                const fileInput = document.getElementById(`cv-${employeeId}`);
+                if (fileInput) {
+                    fileInput.disabled = !enable;
+                }
+            }
+    
             function bindEditButtons() {
                 document.querySelectorAll('.toggle-edit-btn').forEach(btn => {
                     btn.removeEventListener('click', handleEditClick);
                     btn.addEventListener('click', handleEditClick);
                 });
-
+    
                 document.querySelectorAll('select[id^="job_id_"]').forEach(select => {
                     select.disabled = true;
                 });
-
             }
-
+    
             function handleEditClick() {
                 const section = this.dataset.section;
                 const employeeId = this.dataset.employeeId;
                 const wrapper = document.getElementById(`section-${section}-${employeeId}`);
                 const inputs = document.querySelectorAll(`.section-field-${section}-${employeeId}`);
                 const buttonContainer = this.parentElement;
-
-
+    
                 if (wrapper && wrapper.dataset.editing === "true") return;
                 if (wrapper) wrapper.dataset.editing = "true";
-
+    
                 inputs.forEach(input => {
                     input.readOnly = false;
                     input.dataset.originalValue = input.value;
                 });
-
-                // ✅ Enable dropdown if it's disabled (like the job dropdown)
+    
                 const selectField = document.querySelector(`#job_id_${employeeId}`);
                 if (selectField) selectField.disabled = false;
-
+    
                 const addBtn = document.getElementById(getAddButtonId(section, employeeId));
                 if (addBtn) addBtn.classList.remove('d-none');
-
+    
                 wrapper?.querySelectorAll('.action-column').forEach(col => col.classList.remove('d-none'));
                 wrapper?.querySelectorAll('.remove-edu-row').forEach(btn => btn.classList.remove('d-none'));
-
+    
+                toggleCVInput(employeeId, true);
+    
                 buttonContainer.innerHTML = `
                     <button type="button" class="btn btn-sm btn-success me-2 save-edit-btn"
                         data-section="${section}" data-employee-id="${employeeId}">Save</button>
                     <button type="button" class="btn btn-sm btn-secondary cancel-edit-btn"
                         data-section="${section}" data-employee-id="${employeeId}">Cancel</button>
                 `;
-
+    
                 bindActionButtons();
             }
-
-            function bindActionButtons() {
-                document.querySelectorAll('.save-edit-btn, .cancel-edit-btn').forEach(btn => {
-                    btn.removeEventListener('click', handleSaveCancel);
-                    btn.addEventListener('click', handleSaveCancel);
-                });
-            }
-
+    
             function handleSaveCancel() {
                 const isSave = this.classList.contains('save-edit-btn');
                 const section = this.dataset.section;
@@ -341,7 +346,7 @@
                 const wrapper = document.getElementById(`section-${section}-${employeeId}`);
                 const inputs = document.querySelectorAll(`.section-field-${section}-${employeeId}`);
                 const buttonContainer = this.parentElement;
-
+    
                 if (isSave) {
                     inputs.forEach(input => {
                         input.readOnly = true;
@@ -353,28 +358,35 @@
                         input.readOnly = true;
                     });
                 }
-
-                // ✅ Disable job dropdown regardless of save/cancel
+    
                 const selectField = document.querySelector(`#job_id_${employeeId}`);
                 if (selectField) selectField.disabled = true;
-
-
+    
                 wrapper?.querySelectorAll('.action-column').forEach(col => col.classList.add('d-none'));
                 wrapper?.querySelectorAll('.remove-edu-row').forEach(btn => btn.classList.add('d-none'));
-
+    
                 const addBtn = document.getElementById(getAddButtonId(section, employeeId));
                 if (addBtn) addBtn.classList.add('d-none');
-
+    
+                toggleCVInput(employeeId, false);
+    
                 if (wrapper) wrapper.dataset.editing = "false";
-
+    
                 buttonContainer.innerHTML = `
                     <button type="button" class="btn btn-sm btn-outline-primary toggle-edit-btn"
                         data-section="${section}" data-employee-id="${employeeId}">Edit</button>
                 `;
-
+    
                 bindEditButtons();
             }
-
+    
+            function bindActionButtons() {
+                document.querySelectorAll('.save-edit-btn, .cancel-edit-btn').forEach(btn => {
+                    btn.removeEventListener('click', handleSaveCancel);
+                    btn.addEventListener('click', handleSaveCancel);
+                });
+            }
+    
             function bindAddButtons() {
                 sections.forEach(section => {
                     document.querySelectorAll(`[id^="${getAddButtonId(section, '')}"]`).forEach(btn => {
@@ -383,14 +395,15 @@
                     });
                 });
             }
-
+    
             function addRow() {
                 const id = this.id;
                 const section = sections.find(sec => id.startsWith(getAddButtonId(sec, '')));
                 const employeeId = id.split('-').pop();
                 const tableBody = document.querySelector(`#${getTableId(section, employeeId)} tbody`);
                 const index = tableBody.querySelectorAll('tr').length;
-                let html = '';
+    
+                let html = ''; // your HTML rows still inserted here (unchanged)
 
                 switch (section) {
                     case 'education':
@@ -451,34 +464,30 @@
                         `;
                         break;
                 }
-
+    
                 const row = document.createElement('tr');
                 row.innerHTML = html;
                 tableBody.appendChild(row);
                 bindRemoveButtons();
             }
-
+    
             function bindRemoveButtons() {
                 document.querySelectorAll('.remove-edu-row').forEach(btn => {
                     btn.removeEventListener('click', removeRow);
                     btn.addEventListener('click', removeRow);
                 });
             }
-
+    
             function removeRow() {
                 this.closest('tr').remove();
             }
-
-            bindEditButtons();
-            bindAddButtons();
-            bindRemoveButtons();
-
-            // ✅ Update hidden job_id when dropdown changes
-            document.querySelectorAll('select[id^="job_id_"]').forEach(function(select) {
+    
+            // Update hidden job_id field and auto-fill others
+            document.querySelectorAll('select[id^="job_id_"]').forEach(select => {
                 select.addEventListener('change', function () {
                     const selected = this.options[this.selectedIndex];
                     const employeeId = this.id.split('_')[2] || 'new';
-
+    
                     const fields = {
                         'department': selected.dataset.department,
                         'job_title': selected.dataset.title,
@@ -487,19 +496,36 @@
                         'employment_status': selected.dataset.status,
                         'accreditation': selected.dataset.accreditation,
                     };
-
+    
                     Object.entries(fields).forEach(([field, value]) => {
                         const input = document.getElementById(`${field}_${employeeId}`);
                         if (input) input.value = value || '';
                     });
-
+    
                     const hiddenInput = document.getElementById('job_id_hidden_' + employeeId);
                     if (hiddenInput) hiddenInput.value = this.value;
                 });
             });
+    
+            // Update label when a file is chosen
+            document.querySelectorAll('input[type="file"][id^="cv-"]').forEach(input => {
+                input.addEventListener('change', function () {
+                    const employeeId = this.id.split('-')[1] || 'new';
+                    const label = document.getElementById(`cvLabel-${employeeId}`);
+                    const fileName = this.files[0] ? this.files[0].name : 'No file selected';
+                    if (label) {
+                        label.textContent = 'Selected: ' + fileName;
+                    }
+                });
+            });
+    
+            // Initial bindings
+            bindEditButtons();
+            bindAddButtons();
+            bindRemoveButtons();
         });
     </script>
-        
+    
     
  <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>

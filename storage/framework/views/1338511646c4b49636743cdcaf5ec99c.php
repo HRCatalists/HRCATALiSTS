@@ -94,58 +94,50 @@
             <input type="date" name="date_permanent" class="<?php echo e($fieldClass); ?>" 
                 value="<?php echo e(old('date_permanent', $employment->date_permanent ?? '')); ?>" readonly>
         </div>
+    </div>
 
-        <!-- CV Upload -->
-        <div class="col-md-12 mb-3">
-            <label for="cv-<?php echo e($employeeId); ?>" class="form-label fw-bold">Attach CV <span class="text-danger">*</span></label>
-            <div class="input-group">
-                <input 
-                    type="file" 
-                    name="cv" 
-                    id="cv-<?php echo e($employeeId); ?>" 
-                    class="form-control d-none <?php $__errorArgs = ['cv'];
+    <!-- CV Upload (always editable and fetches existing CV) -->
+    <div class="col-md-12 mb-3">
+        <label for="cv-<?php echo e($employeeId); ?>" class="form-label fw-bold">Attach CV <span class="text-danger">*</span></label>
+
+        <input 
+            type="file" 
+            name="cv" 
+            id="cv-<?php echo e($employeeId); ?>" 
+            class="form-control <?php $__errorArgs = ['cv'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?> <?php echo e($fieldClass); ?>" 
-                    accept=".pdf" 
-                    <?php echo e(isset($employee->id) ? '' : 'required'); ?>
+unset($__errorArgs, $__bag); ?>" 
+            accept=".pdf"
+            <?php echo e(isset($employee->id) ? '' : 'required'); ?>
 
-                >
-                <label for="cv-<?php echo e($employeeId); ?>" class="btn btn-primary">Choose File</label>
-                <span class="input-group-text file-label" id="cvLabel-<?php echo e($employeeId); ?>">
-                    <?php echo e($employee->cv ?? 'No file selected'); ?>
+        >
 
-                </span>
-            </div>
-            <small class="form-text text-muted">Submit your file in .pdf format (Max: 2 MB)</small>
-
-            <?php $__errorArgs = ['cv'];
+        
+        <?php if(!empty($employee?->cv)): ?>
+            <small class="form-text text-muted d-block mt-2" id="cvLabel-<?php echo e($employee->id); ?>">
+                Current CV:
+                <strong><?php echo e($employee->cv_file_name ?? 'Unnamed File'); ?></strong><br>
+                <a href="https://drive.google.com/file/d/<?php echo e($employee->cv); ?>/view" target="_blank" class="text-primary">View</a>
+                |
+                <a href="https://drive.google.com/uc?id=<?php echo e($employee->cv); ?>&export=download" target="_blank" class="text-success">Download</a>
+            </small>
+        <?php endif; ?>
+    
+        <?php $__errorArgs = ['cv'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> 
-                <div class="invalid-feedback d-block"><?php echo e($message); ?></div>
-            <?php unset($message);
+            <div class="invalid-feedback d-block"><?php echo e($message); ?></div>
+        <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
-
-            <?php if(!is_null($employee) && $employee->cv): ?>
-                <div>
-                    <a href="https://drive.google.com/uc?id=<?php echo e($employee->cv); ?>&export=download" target="_blank" class="text-success">
-                        Download
-                    </a>
-                    <a href="https://drive.google.com/file/d/<?php echo e($employee->cv); ?>/view" target="_blank" class="text-primary">
-                        View
-                    </a>
-                </div>
-            <?php endif; ?>
-        </div>
     </div>
-    
 </div>
 <?php /**PATH C:\laragon\www\hr_catalists\resources\views/hrcatalists/partials/employment-details-view.blade.php ENDPATH**/ ?>

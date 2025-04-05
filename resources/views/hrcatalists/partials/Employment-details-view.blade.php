@@ -94,41 +94,34 @@
             <input type="date" name="date_permanent" class="{{ $fieldClass }}" 
                 value="{{ old('date_permanent', $employment->date_permanent ?? '') }}" readonly>
         </div>
-
-        <!-- CV Upload -->
-        <div class="col-md-12 mb-3">
-            <label for="cv-{{ $employeeId }}" class="form-label fw-bold">Attach CV <span class="text-danger">*</span></label>
-            <div class="input-group">
-                <input 
-                    type="file" 
-                    name="cv" 
-                    id="cv-{{ $employeeId }}" 
-                    class="form-control d-none @error('cv') is-invalid @enderror {{ $fieldClass }}" 
-                    accept=".pdf" 
-                    {{ isset($employee->id) ? '' : 'required' }}
-                >
-                <label for="cv-{{ $employeeId }}" class="btn btn-primary">Choose File</label>
-                <span class="input-group-text file-label" id="cvLabel-{{ $employeeId }}">
-                    {{ $employee->cv ?? 'No file selected' }}
-                </span>
-            </div>
-            <small class="form-text text-muted">Submit your file in .pdf format (Max: 2 MB)</small>
-
-            @error('cv') 
-                <div class="invalid-feedback d-block">{{ $message }}</div>
-            @enderror
-
-            @if (!is_null($employee) && $employee->cv)
-                <div>
-                    <a href="https://drive.google.com/uc?id={{ $employee->cv }}&export=download" target="_blank" class="text-success">
-                        Download
-                    </a>
-                    <a href="https://drive.google.com/file/d/{{ $employee->cv }}/view" target="_blank" class="text-primary">
-                        View
-                    </a>
-                </div>
-            @endif
-        </div>
     </div>
+
+    <!-- CV Upload (always editable and fetches existing CV) -->
+    <div class="col-md-12 mb-3">
+        <label for="cv-{{ $employeeId }}" class="form-label fw-bold">Attach CV <span class="text-danger">*</span></label>
+
+        <input 
+            type="file" 
+            name="cv" 
+            id="cv-{{ $employeeId }}" 
+            class="form-control @error('cv') is-invalid @enderror" 
+            accept=".pdf"
+            {{ isset($employee->id) ? '' : 'required' }}
+        >
+
+        {{-- Show current CV file (if exists) --}}
+        @if (!empty($employee?->cv))
+            <small class="form-text text-muted d-block mt-2" id="cvLabel-{{ $employee->id }}">
+                Current CV:
+                <strong>{{ $employee->cv_file_name ?? 'Unnamed File' }}</strong><br>
+                <a href="https://drive.google.com/file/d/{{ $employee->cv }}/view" target="_blank" class="text-primary">View</a>
+                |
+                <a href="https://drive.google.com/uc?id={{ $employee->cv }}&export=download" target="_blank" class="text-success">Download</a>
+            </small>
+        @endif
     
+        @error('cv') 
+            <div class="invalid-feedback d-block">{{ $message }}</div>
+        @enderror
+    </div>
 </div>
