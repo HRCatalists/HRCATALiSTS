@@ -43,9 +43,25 @@
 
         <div class="col-md-12">
             <div class="row">
+                
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-bold">First Name:<span class="text-danger">*</span></label>
+                    <input type="text" name="first_name" 
+                           class="<?php echo e($fieldClass); ?> required" 
+                           value="<?php echo e(old('first_name', $employee->first_name ?? '')); ?>" readonly>
+                </div>
+        
+                
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-bold">Last Name:<span class="text-danger">*</span></label>
+                    <input type="text" name="last_name" 
+                           class="<?php echo e($fieldClass); ?> required" 
+                           value="<?php echo e(old('last_name', $employee->last_name ?? '')); ?>" readonly>
+                </div>
+        
+                
                 <?php $__currentLoopData = $values; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $val): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <?php
-                        // Customize label text and input type if needed
                         $labels = [
                             'phone' => 'Mobile Number',
                             'email' => 'E-mail Address',
@@ -70,19 +86,22 @@
                             'tin_no' => "TIN No.",
                             'pagibig_no' => "Pag-Ibig No.",
                         ];
-
+        
                         $label = $labels[$key] ?? ucfirst(str_replace('_', ' ', $key));
                         $type = in_array($key, ['email']) ? 'email' : (str_contains($key, 'date') ? 'date' : 'text');
                         if ($key === 'no_of_dependents') $type = 'number';
                     ?>
-
+        
                     <div class="col-md-6 mb-3">
                         <label class="form-label fw-bold"><?php echo e($label); ?>:</label>
-                        <input type="<?php echo e($type); ?>" name="<?php echo e($key); ?>" class="<?php echo e($fieldClass); ?>" value="<?php echo e($val); ?>" readonly>
+                        <input type="<?php echo e($type); ?>" name="<?php echo e($key); ?>" 
+                               class="<?php echo e($fieldClass); ?>" 
+                               value="<?php echo e($val); ?>" readonly>
                     </div>
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </div>
         </div>
+        
     </div>
 </div>
 <?php /**PATH C:\laragon\www\hr_catalists\resources\views/hrcatalists/partials/personal-data-view.blade.php ENDPATH**/ ?>

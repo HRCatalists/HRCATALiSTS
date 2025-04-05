@@ -60,6 +60,16 @@
                     </div>
                 @endif
 
+                @if ($errors->any())
+                    <div class="alert alert-danger alert-dismissible">
+                        <ul class="mb-0">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
                 <!-- Employee Table -->
                 <table id="employeeTable" class="table table-bordered display">
                     <thead>
@@ -129,7 +139,7 @@
                 
                 @foreach ($employees as $employee)
                     <!-- View/Edit Modal -->
-                    <div class="modal fade" id="employeeModal-{{ $employee->id }}" tabindex="-1" aria-labelledby="employeeModalLabel-{{ $employee->id }}" aria-hidden="true" enctype="multipart/form-data">
+                    <div class="modal fade" id="employeeModal-{{ $employee->id }}" tabindex="-1" aria-labelledby="employeeModalLabel-{{ $employee->id }}" aria-hidden="true">
                         <div class="modal-dialog modal-xl modal-dialog-scrollable">
                             <div class="modal-content">
 
@@ -141,7 +151,7 @@
 
                                 <!-- ✅ form starts inside modal-body (scrollable area) -->
                                 <div class="modal-body">
-                                    <form method="POST" action="{{ route('employees.update', $employee->id) }}" id="employeeMainForm-{{ $employee->id }}">
+                                    <form method="POST" action="{{ route('employees.update', $employee->id) }}" id="employeeMainForm-{{ $employee->id }}" enctype="multipart/form-data">
                                         @csrf
                                         @method('PUT')
 
@@ -182,6 +192,7 @@
                 </div>
 
                 <div class="modal-body">
+
                     <form method="POST" action="{{ route('employees.store') }}" id="addEmployeeForm" enctype="multipart/form-data">
                         @csrf
 
@@ -196,7 +207,8 @@
                         @include('hrcatalists.partials.others-view', ['employee' => null])
 
                         <div class="modal-footer">
-                            <button type="submit" class="btn text-success" onclick="this.disabled=true; this.form.submit();">Submit</button>
+                            {{-- <button type="submit" class="btn text-success" onclick="this.disabled=true; this.form.submit();">Submit</button> --}}
+                            <button type="submit" class="btn text-success">Submit</button>
                             <button type="button" class="btn text-secondary" data-bs-dismiss="modal">Cancel</button>
                         </div>
                     </form>
@@ -541,7 +553,10 @@
             function toggleCVInput(employeeId, enable = false) {
                 const fileInput = document.getElementById(`cv-${employeeId}`);
                 if (fileInput) {
-                    fileInput.disabled = !enable;
+                    // fileInput.disabled = !enable;
+                    fileInput.readOnly = !enable;
+                    fileInput.style.pointerEvents = enable ? 'auto' : 'none'; // prevent clicking
+                    fileInput.style.opacity = enable ? '1' : '0.6'; // show it visually disabled
                 }
             }
     
@@ -599,6 +614,9 @@
                 const wrapper = document.getElementById(`section-${section}-${employeeId}`);
                 const inputs = document.querySelectorAll(`.section-field-${section}-${employeeId}`);
                 const buttonContainer = this.parentElement;
+                const label = document.getElementById(`cvLabel-${employeeId}`);
+
+                if (label) label.textContent = 'No file selected';
     
                 if (isSave) {
                     inputs.forEach(input => {

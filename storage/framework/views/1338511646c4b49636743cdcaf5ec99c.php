@@ -16,29 +16,7 @@
         </div>
     </div>
 
-    <div class="row">
-        <!-- Job Selection -->
-        <div class="col-md-6 mb-3">
-            <label for="job_id_<?php echo e($employeeId); ?>" class="form-label fw-bold">Select Position:</label>
-            <select name="job_id_visible" id="job_id_<?php echo e($employeeId); ?>" class="form-select <?php echo e($fieldClass); ?>" <?php echo e(isset($employee) ? 'disabled' : ''); ?>>
-                <option value="">Select Position</option>
-                <?php $__currentLoopData = $jobs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $job): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                    <option 
-                        value="<?php echo e($job->id); ?>"
-                        data-department="<?php echo e($job->department); ?>"
-                        data-title="<?php echo e($job->job_title); ?>"
-                        data-classification="<?php echo e($job->classification ?? ''); ?>"
-                        data-college="<?php echo e($job->parent_college ?? ''); ?>"
-                        data-status="<?php echo e($job->employment_status ?? ''); ?>"
-                        data-accreditation="<?php echo e($job->accreditation ?? ''); ?>"
-                        <?php echo e(old('job_id', $employee?->job_id) == $job->id ? 'selected' : ''); ?>>
-                        <?php echo e($job->job_title); ?> (<?php echo e($job->department); ?>)
-                    </option>
-                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-            </select>
-            <input type="hidden" name="job_id" id="job_id_hidden_<?php echo e($employeeId); ?>" value="<?php echo e(old('job_id', $employee?->job_id)); ?>">
-        </div>
-    
+    <div class="row">       
         <!-- Department -->
         <div class="col-md-6 mb-3">
             <label class="form-label fw-bold">Parent Department:</label>
@@ -59,6 +37,37 @@
             <input type="text" name="parent_college" id="parent_college_<?php echo e($employeeId); ?>" class="<?php echo e($fieldClass); ?>" 
                 value="<?php echo e(old('parent_college', $employment->parent_college ?? '')); ?>" readonly>
         </div>
+
+        <!-- Job Selection -->
+        <div class="col-md-6 mb-3">
+            <label for="job_id_<?php echo e($employeeId); ?>" class="form-label fw-bold">Select Position:</label>
+            
+            
+            <select 
+                id="job_id_<?php echo e($employeeId); ?>"
+                name="job_id"
+                class="form-select form-select-sm section-field-employment-details-<?php echo e($employeeId); ?>"
+                style="max-height: 38px;" 
+                <?php echo e(isset($employee) ? 'disabled' : ''); ?>
+
+                required>
+
+                <option value="">Select Position</option>
+                <?php $__currentLoopData = $jobs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $job): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <option 
+                        value="<?php echo e($job->id); ?>"
+                        data-department="<?php echo e($job->department); ?>"
+                        data-title="<?php echo e($job->job_title); ?>"
+                        data-classification="<?php echo e($job->classification); ?>"
+                        data-college="<?php echo e($job->parent_college); ?>"
+                        data-status="<?php echo e($job->employment_status); ?>"
+                        data-accreditation="<?php echo e($job->accreditation); ?>"
+                        <?php echo e(old('job_id', $employee?->job_id) == $job->id ? 'selected' : ''); ?>>
+                        <?php echo e($job->job_title); ?> (<?php echo e($job->department); ?>)
+                    </option>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            </select>
+        </div> 
     
         <!-- Classification -->
         <div class="col-md-6 mb-3">

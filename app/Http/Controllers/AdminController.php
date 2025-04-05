@@ -196,12 +196,12 @@ class AdminController extends Controller
     
         // ✅ Validate minimal fields (editable but safe)
         $validated = $request->validate([
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
+            'first_name' => 'nullable|string|max:255',
+            'last_name' => 'nullable|string|max:255',
             'email' => 'nullable|email|max:255',
             'phone' => 'nullable|string|max:20',
             'address' => 'nullable|string|max:255',
-            'cv' => 'nullable|string|max:255',
+            'cv' => 'nullable|file|mimes:pdf|max:2048',
             'privacy_policy_agreed' => 'nullable|boolean',
             'status' => 'nullable|string|max:100',
             'applied_at' => 'nullable|date',
@@ -275,6 +275,7 @@ class AdminController extends Controller
 
         // ✅ Handle CV upload if present
         if ($request->hasFile('cv')) {
+            // dd('CV is being uploaded');
             $cvFile = $request->file('cv');
             $cvFileId = $this->googleDriveService->uploadFile($cvFile);
             $validated['cv'] = $cvFileId;
@@ -624,13 +625,18 @@ class AdminController extends Controller
 
     public function store(Request $request)
     {
+        // dd([
+        //     'has_cv' => $request->hasFile('cv'),
+        //     'cv_file' => $request->file('cv'),
+        // ]);
+        
         $validated = $request->validate([
             // Core employee fields
             'job_title' => 'nullable|string|max:255',
             'department' => 'nullable|string|max:255',
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
-            'email' => 'nullable|email|max:255|unique:employees,email',
+            'email' => 'required|email|max:255|unique:employees,email',
             'phone' => 'nullable|string|max:20',
             'address' => 'nullable|string|max:255',
             'cv' => 'nullable|mimes:pdf|max:2048',
@@ -708,18 +714,24 @@ class AdminController extends Controller
         $employee = null;
 
         DB::transaction(function () use ($validated, $request, &$employee, &$cvFileId) {
-            $employeeData = collect($validated)->except([
-                'educations', 'licenses', 'trainings', 'service_records', 'organizations', 'others'
-            ])->toArray();
-
             // ✅ Upload to Google Drive and hash filename
+            // if ($request->hasFile('cv')) {
+            //     $cvFile = $request->file('cv');
+            //     $cvFileId = $this->googleDriveService->uploadFile($cvFile);
+            //     $employeeData['cv'] = $cvFileId; // ✅ assign it here
+            // } else {
+            //     $cvFileId = null;
+            // }
+
             if ($request->hasFile('cv')) {
                 $cvFile = $request->file('cv');
                 $cvFileId = $this->googleDriveService->uploadFile($cvFile);
-                $employeeData['cv'] = $cvFileId; // ✅ assign it here
-            } else {
-                $cvFileId = null;
+                $validated['cv'] = $cvFileId;
             }
+
+            $employeeData = collect($validated)->except([
+                'educations', 'licenses', 'trainings', 'service_records', 'organizations', 'others'
+            ])->toArray();           
 
             // ✅ Create employee
             $employee = Employee::create($employeeData);

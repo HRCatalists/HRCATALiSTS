@@ -26,15 +26,15 @@
             <div class="mb-3">
                 <label class="form-label fw-bold">First Name:</label>
                 <input type="text" name="first_name"
-                       class="plain-input section-field-employment-summary-{{ $employeeId }}" 
-                       value="{{ old('first_name', $employee->first_name ?? '') }}" readonly>
+                       class="form-control plain-input section-field-employment-summary-{{ $employeeId }}" 
+                       value="{{ old('first_name', $employee->first_name ?? '') }}" disabled>
             </div>
 
             <div class="mb-3">
                 <label class="form-label fw-bold">Last Name:</label>
                 <input type="text" name="last_name"
-                       class="plain-input section-field-employment-summary-{{ $employeeId }}" 
-                       value="{{ old('last_name', $employee->last_name ?? '') }}" readonly>
+                       class="form-control plain-input section-field-employment-summary-{{ $employeeId }}" 
+                       value="{{ old('last_name', $employee->last_name ?? '') }}" disabled>
             </div>
 
             <div class="mb-3">
@@ -47,8 +47,8 @@
             <div class="mb-3">
                 <label class="form-label fw-bold">Status:</label>
                 <input type="text" name="status" 
-                       class="plain-input section-field-employment-summary-{{ $employeeId }}" 
-                       value="{{ old('status', $employee->status ?? '') }}" readonly>
+                       class="form-control plain-input section-field-employment-summary-{{ $employeeId }}" 
+                       value="{{ old('status', $employee->status ?? '') }}" disabled>
             </div>
 
             <div class="mb-3">
@@ -61,8 +61,8 @@
             <div class="mb-3">
                 <label class="form-label fw-bold">Position:</label>
                 <input type="text" name="job_title" 
-                       class="plain-input section-field-employment-summary-{{ $employeeId }}" 
-                       value="{{ old('job_title', $employee->job_title ?? '') }}" readonly>
+                       class="form-control plain-input section-field-employment-summary-{{ $employeeId }}" 
+                       value="{{ old('job_title', $employee->job_title ?? '') }}" disabled>
             </div>
 
             <div class="mb-3">

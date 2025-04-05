@@ -43,9 +43,25 @@
 
         <div class="col-md-12">
             <div class="row">
+                {{-- First Name --}}
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-bold">First Name:<span class="text-danger">*</span></label>
+                    <input type="text" name="first_name" 
+                           class="{{ $fieldClass }} required" 
+                           value="{{ old('first_name', $employee->first_name ?? '') }}" readonly>
+                </div>
+        
+                {{-- Last Name --}}
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-bold">Last Name:<span class="text-danger">*</span></label>
+                    <input type="text" name="last_name" 
+                           class="{{ $fieldClass }} required" 
+                           value="{{ old('last_name', $employee->last_name ?? '') }}" readonly>
+                </div>
+        
+                {{-- The rest of the personal data fields --}}
                 @foreach ($values as $key => $val)
                     @php
-                        // Customize label text and input type if needed
                         $labels = [
                             'phone' => 'Mobile Number',
                             'email' => 'E-mail Address',
@@ -70,18 +86,21 @@
                             'tin_no' => "TIN No.",
                             'pagibig_no' => "Pag-Ibig No.",
                         ];
-
+        
                         $label = $labels[$key] ?? ucfirst(str_replace('_', ' ', $key));
                         $type = in_array($key, ['email']) ? 'email' : (str_contains($key, 'date') ? 'date' : 'text');
                         if ($key === 'no_of_dependents') $type = 'number';
                     @endphp
-
+        
                     <div class="col-md-6 mb-3">
                         <label class="form-label fw-bold">{{ $label }}:</label>
-                        <input type="{{ $type }}" name="{{ $key }}" class="{{ $fieldClass }}" value="{{ $val }}" readonly>
+                        <input type="{{ $type }}" name="{{ $key }}" 
+                               class="{{ $fieldClass }}" 
+                               value="{{ $val }}" readonly>
                     </div>
                 @endforeach
             </div>
         </div>
+        
     </div>
 </div>

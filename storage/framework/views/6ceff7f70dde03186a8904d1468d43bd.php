@@ -82,6 +82,16 @@
                     </div>
                 <?php endif; ?>
 
+                <?php if($errors->any()): ?>
+                    <div class="alert alert-danger alert-dismissible">
+                        <ul class="mb-0">
+                            <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <li><?php echo e($error); ?></li>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        </ul>
+                    </div>
+                <?php endif; ?>
+
                 <!-- Employee Table -->
                 <table id="employeeTable" class="table table-bordered display">
                     <thead>
@@ -151,7 +161,7 @@
                 
                 <?php $__currentLoopData = $employees; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $employee): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <!-- View/Edit Modal -->
-                    <div class="modal fade" id="employeeModal-<?php echo e($employee->id); ?>" tabindex="-1" aria-labelledby="employeeModalLabel-<?php echo e($employee->id); ?>" aria-hidden="true" enctype="multipart/form-data">
+                    <div class="modal fade" id="employeeModal-<?php echo e($employee->id); ?>" tabindex="-1" aria-labelledby="employeeModalLabel-<?php echo e($employee->id); ?>" aria-hidden="true">
                         <div class="modal-dialog modal-xl modal-dialog-scrollable">
                             <div class="modal-content">
 
@@ -163,7 +173,7 @@
 
                                 <!-- ✅ form starts inside modal-body (scrollable area) -->
                                 <div class="modal-body">
-                                    <form method="POST" action="<?php echo e(route('employees.update', $employee->id)); ?>" id="employeeMainForm-<?php echo e($employee->id); ?>">
+                                    <form method="POST" action="<?php echo e(route('employees.update', $employee->id)); ?>" id="employeeMainForm-<?php echo e($employee->id); ?>" enctype="multipart/form-data">
                                         <?php echo csrf_field(); ?>
                                         <?php echo method_field('PUT'); ?>
 
@@ -204,6 +214,7 @@
                 </div>
 
                 <div class="modal-body">
+
                     <form method="POST" action="<?php echo e(route('employees.store')); ?>" id="addEmployeeForm" enctype="multipart/form-data">
                         <?php echo csrf_field(); ?>
 
@@ -218,7 +229,8 @@
                         <?php echo $__env->make('hrcatalists.partials.others-view', ['employee' => null], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 
                         <div class="modal-footer">
-                            <button type="submit" class="btn text-success" onclick="this.disabled=true; this.form.submit();">Submit</button>
+                            
+                            <button type="submit" class="btn text-success">Submit</button>
                             <button type="button" class="btn text-secondary" data-bs-dismiss="modal">Cancel</button>
                         </div>
                     </form>
@@ -288,7 +300,10 @@
             function toggleCVInput(employeeId, enable = false) {
                 const fileInput = document.getElementById(`cv-${employeeId}`);
                 if (fileInput) {
-                    fileInput.disabled = !enable;
+                    // fileInput.disabled = !enable;
+                    fileInput.readOnly = !enable;
+                    fileInput.style.pointerEvents = enable ? 'auto' : 'none'; // prevent clicking
+                    fileInput.style.opacity = enable ? '1' : '0.6'; // show it visually disabled
                 }
             }
     
@@ -346,6 +361,9 @@
                 const wrapper = document.getElementById(`section-${section}-${employeeId}`);
                 const inputs = document.querySelectorAll(`.section-field-${section}-${employeeId}`);
                 const buttonContainer = this.parentElement;
+                const label = document.getElementById(`cvLabel-${employeeId}`);
+
+                if (label) label.textContent = 'No file selected';
     
                 if (isSave) {
                     inputs.forEach(input => {

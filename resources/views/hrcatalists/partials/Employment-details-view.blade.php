@@ -16,29 +16,7 @@
         </div>
     </div>
 
-    <div class="row">
-        <!-- Job Selection -->
-        <div class="col-md-6 mb-3">
-            <label for="job_id_{{ $employeeId }}" class="form-label fw-bold">Select Position:</label>
-            <select name="job_id_visible" id="job_id_{{ $employeeId }}" class="form-select {{ $fieldClass }}" {{ isset($employee) ? 'disabled' : '' }}>
-                <option value="">Select Position</option>
-                @foreach($jobs as $job)
-                    <option 
-                        value="{{ $job->id }}"
-                        data-department="{{ $job->department }}"
-                        data-title="{{ $job->job_title }}"
-                        data-classification="{{ $job->classification ?? '' }}"
-                        data-college="{{ $job->parent_college ?? '' }}"
-                        data-status="{{ $job->employment_status ?? '' }}"
-                        data-accreditation="{{ $job->accreditation ?? '' }}"
-                        {{ old('job_id', $employee?->job_id) == $job->id ? 'selected' : '' }}>
-                        {{ $job->job_title }} ({{ $job->department }})
-                    </option>
-                @endforeach
-            </select>
-            <input type="hidden" name="job_id" id="job_id_hidden_{{ $employeeId }}" value="{{ old('job_id', $employee?->job_id) }}">
-        </div>
-    
+    <div class="row">       
         <!-- Department -->
         <div class="col-md-6 mb-3">
             <label class="form-label fw-bold">Parent Department:</label>
@@ -59,6 +37,36 @@
             <input type="text" name="parent_college" id="parent_college_{{ $employeeId }}" class="{{ $fieldClass }}" 
                 value="{{ old('parent_college', $employment->parent_college ?? '') }}" readonly>
         </div>
+
+        <!-- Job Selection -->
+        <div class="col-md-6 mb-3">
+            <label for="job_id_{{ $employeeId }}" class="form-label fw-bold">Select Position:</label>
+            
+            {{-- Visible dropdown --}}
+            <select 
+                id="job_id_{{ $employeeId }}"
+                name="job_id"
+                class="form-select form-select-sm section-field-employment-details-{{ $employeeId }}"
+                style="max-height: 38px;" {{-- optional override just in case --}}
+                {{ isset($employee) ? 'disabled' : '' }}
+                required>
+
+                <option value="">Select Position</option>
+                @foreach($jobs as $job)
+                    <option 
+                        value="{{ $job->id }}"
+                        data-department="{{ $job->department }}"
+                        data-title="{{ $job->job_title }}"
+                        data-classification="{{ $job->classification }}"
+                        data-college="{{ $job->parent_college }}"
+                        data-status="{{ $job->employment_status }}"
+                        data-accreditation="{{ $job->accreditation }}"
+                        {{ old('job_id', $employee?->job_id) == $job->id ? 'selected' : '' }}>
+                        {{ $job->job_title }} ({{ $job->department }})
+                    </option>
+                @endforeach
+            </select>
+        </div> 
     
         <!-- Classification -->
         <div class="col-md-6 mb-3">
