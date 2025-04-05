@@ -4,8 +4,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Middleware\PreventBackHistory;
 use App\Http\Controllers\FacultyRankingController;
+use App\Http\Middleware\RoleMiddleware;
 
-Route::middleware([RoleMiddleware::class . ':admin,secretary'])->group(function () {
+Route::middleware([RoleMiddleware::class . ':admin,secretary,employeee'])->group(function () {
     Route::get('/ems-dashboard', [AdminController::class, 'emsDashboard'])->name('ems-dashboard');
     Route::get('/ems-employees', [AdminController::class, 'employees'])->name('ems-employees');
     Route::get('/employees/{id}', [AdminController::class, 'showEmployee'])->name('employees.show');
