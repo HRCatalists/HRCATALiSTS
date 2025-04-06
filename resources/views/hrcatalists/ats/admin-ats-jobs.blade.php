@@ -178,7 +178,9 @@
                                                                     </option>
                                                                 </select>
                                                             </div>
-                                                        </div>
+                                                            
+                                                         
+                                                             </div>
                                                         
                                                         <!-- Show this when "Other" is selected -->
                                                         <div class="custom-department-fields card p-3 mb-3 border bg-light shadow-sm {{ !in_array($job->department, $departments->pluck('name')->toArray()) ? '' : 'd-none' }}">
@@ -225,6 +227,15 @@
                                                                     value="{{ $job->end_date }}" required>
                                                             </div>
                                                         </div>
+                                                          <!-- classification -->
+                                                        <div class="col-md-6">
+                                                                    <label for="classification" class="form-label">Classification <span class="text-danger">*</span></label>
+                                                                            <select  name="classification" class="form-control bg-light" required>
+                                                                                <option value="{{ $job->classification }}"required></option>
+                                                                                <option value="Teaching">Teaching</option>
+                                                                                <option value="Non-teaching">Non-teaching</option>
+                                                                            </select>
+                                                                </div>
                                                     </div>
                                 
                                                     <div class="modal-footer">
@@ -322,8 +333,19 @@
                                 <input type="date" class="form-control" id="endDate" name="end_date" required>
                             </div>
                         </div>
-                    </div>                    
+                        <!-- classification -->
+                        <div class="col-md-6">
+                        <label for="classification" class="form-label">Classification <span class="text-danger">*</span></label>
+                                <select id="classification" name="classification" class="form-control bg-light" required>
+                                    <option value="">Select a classificationt</option>
+                                    <option value="Teaching">Teaching</option>
+                                     <option value="Non-teaching">Non-teaching</option>
+                                </select>
+                    </div>
+                    </div> 
+                                       
                     <div class="modal-footer">
+                    
                         <button type="submit" class="btn btn-primary">Save</button>
                         <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">CANCEL</button>
                     </div>

@@ -30,6 +30,7 @@ class JobPostController extends Controller
         $validatedData = $request->validate([
             'job_title' => 'required|string|max:255',
             'department' => 'required|string|max:255',
+            'classification' => 'required|string|max:255',
             'job_description' => 'required|string',
             'requirements' => 'required|string',
             'tags' => 'nullable|string',
@@ -73,6 +74,7 @@ class JobPostController extends Controller
                 'job_title' => $validatedData['job_title'],
                 'slug' => $slug,
                 'department' => $validatedData['department'],
+                'classification' => ($validatedData['classification']),
                 'job_description' => trim($validatedData['job_description']), // ✅ Store as plain text
                 'requirements' => trim($validatedData['requirements']), // ✅ Store as plain text
                 'tags' => $validatedData['tags'],
@@ -115,6 +117,7 @@ class JobPostController extends Controller
                 'id' => $job->id,
                 'job_title' => $job->job_title,
                 'department' => $job->department,
+                'classification' => $job->classification,
                 'is_custom_department' => $isCustomDepartment, // ✅ Flag for frontend
                 'job_description' => $job->job_description,
                 'requirements' => $job->requirements,
@@ -133,6 +136,7 @@ class JobPostController extends Controller
         $validatedData = $request->validate([
             'job_title' => 'required|string|max:255',
             'department' => 'required|string|max:255',
+            'classification' => 'required|string|max:255',
             'job_description' => 'required|string',
             'requirements' => 'required|string',
             'tags' => 'nullable|string',
@@ -229,6 +233,7 @@ class JobPostController extends Controller
         // ✅ No need for json_decode() anymore, just trim the string
         $job->job_description = trim($job->job_description);
         $job->requirements = trim($job->requirements);
+        $job->classification = trim($job->classification);
     
         return view('hrcatalists.job-selected', compact('job'));
     }    

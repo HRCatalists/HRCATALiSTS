@@ -74,6 +74,7 @@
                     <form action="{{ route('applicants.store', ['slug' => $job->slug]) }}" method="POST" enctype="multipart/form-data" id="applicationForm">
                         @csrf
                         <input type="hidden" name="job_id" value="{{ $job->id }}">
+                        <input type="hidden" name="classification" value="{{ $job->classification }}">
 
                         <!-- Name Fields -->
                         <div class="row mb-3">

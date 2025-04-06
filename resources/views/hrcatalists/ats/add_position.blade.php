@@ -43,6 +43,10 @@
                             <input type="date" class="form-control" name="end_date" required>
                         </div>
                     </div>
+                    <div class="col-md-3">
+                            <label for="Classification" class="form-label">Classification <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" name="Classification" required>
+                        
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-post">POST</button>
                         <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">CANCEL</button>

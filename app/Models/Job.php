@@ -19,6 +19,7 @@ class Job extends Model
         'job_title',
         'slug',
         'department',
+        'classification',
         'job_description',
         'requirements',
         'tags',

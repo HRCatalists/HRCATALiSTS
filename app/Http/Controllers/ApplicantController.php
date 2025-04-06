@@ -14,6 +14,7 @@ use App\Models\FacultyTeachingRank2;
 use App\Models\FacultyTeachingRank3;
 use App\Models\FacultyTeachingRank4;
 use App\Models\User;
+use App\Models\EmployeeEmploymentDetail;
 // use App\Models\FacultyTeachingRank2;
 // use App\Models\FacultyTeachingRank2;
 // use App\Models\FacultyTeachingRank2;
@@ -136,10 +137,30 @@ class ApplicantController extends Controller
                 'department' => $job?->department ?? 'Not Set',
             ]);
         
-            FacultyTeachingRank1::create(['emp_id' => $employee->id, 'department' => $employee->department]);
-            FacultyTeachingRank2::create(['emp_id' => $employee->id]);
-            FacultyTeachingRank3::create(['emp_id' => $employee->id]);
-            FacultyTeachingRank4::create(['emp_id' => $employee->id]);
+            if (strtolower($applicant->classification) === 'teaching') {
+                // EmployeeEmploymentDetail::create([
+                //     'employee_id' => $employee->id,
+                //     'classification' => $applicant->classification,
+                // ]);
+                
+                FacultyTeachingRank1::create([
+                    'emp_id' => $employee->id,
+                    'department' => $employee->department,
+                ]);
+            
+                FacultyTeachingRank2::create([
+                    'emp_id' => $employee->id,
+                ]);
+            
+                FacultyTeachingRank3::create([
+                    'emp_id' => $employee->id,
+                ]);
+            
+                FacultyTeachingRank4::create([
+                    'emp_id' => $employee->id,
+                ]);
+            }
+            
         
             // ✅ Create login using phone number
             if (!User::where('email', $applicant->email)->exists()) {
@@ -338,16 +359,19 @@ class ApplicantController extends Controller
             $validated = $request->validate([
                 'job_id' => 'required|integer|exists:job_posts,id',
                 'first_name' => 'required|string|max:255',
+                'classification' => 'required|string|max:255',
                 'last_name' => 'required|string|max:255',
                 'email' => 'required|email|max:255|unique:applicants,email',
                 'phone' => 'required|string|max:20',
                 'address' => 'required|string|max:255',
                 'cv' => 'required|mimes:pdf|max:2048',
                 'privacy_policy_agreed' => 'required',
+                
             ]);
 
             // ✅ Fetch job details
             $job = Job::find($validated['job_id']);
+            
 
             if (!$job) {
                 return response()->json(['message' => 'Job not found!'], 404);
@@ -364,6 +388,7 @@ class ApplicantController extends Controller
             // ✅ Save to the database
             $applicant = new Applicant();
             $applicant->job_id = $validated['job_id'];
+            $applicant->classification = $validated['classification'];
             $applicant->first_name = $validated['first_name'];
             $applicant->last_name = $validated['last_name'];
             $applicant->email = $validated['email'];

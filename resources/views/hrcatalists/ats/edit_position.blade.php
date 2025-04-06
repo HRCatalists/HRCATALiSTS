@@ -44,6 +44,16 @@
                             <label for="editEndDate" class="form-label">End Date <span class="text-danger">*</span></label>
                             <input type="date" class="form-control" name="end_date" id="editEndDate" required>
                         </div>
+                        
+                    </div>
+                      <!-- classification -->
+                      <div class="col-md-6">
+                        <label for="classification" class="form-label">Classification <span class="text-danger">*</span></label>
+                                <select id="classification" name="classification" class="form-control bg-light" required>
+                                    <option value="">Select a classificationt</option>
+                                    <option value="Teaching">Teaching</option>
+                                     <option value="Non-teaching">Non-teaching</option>
+                                </select>
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-post">SAVE</button>
