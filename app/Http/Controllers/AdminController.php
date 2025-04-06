@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Routing\Controller;
 use App\Models\Applicant;
 use App\Models\Job;
 use App\Models\Log;
+use App\Models\User;
 use App\Models\Event;
 use Carbon\Carbon;
 use App\Models\Employee;
@@ -775,6 +777,81 @@ class AdminController extends Controller
         ]);
 
         return back()->with('success', 'New employee added successfully.');
-    }
+    }   
 
+
+    public function manageUsers(Request $request)
+    {
+        $search = $request->input('search');
+    
+        $users = User::query()
+            ->when($search, function ($query, $search) {
+                $query->where('name', 'like', "%{$search}%")
+                      ->orWhere('email', 'like', "%{$search}%");
+            })
+            ->orderBy('name')
+            ->get();
+    
+        return view('hrcatalists.ems.admin-ems-manage-users', compact('users'));
+    }
+    
+    
+    public function searchUsers(Request $request)
+    {
+        $search = $request->input('search');
+    
+        $users = User::query()
+            ->where('name', 'LIKE', "%{$search}%")
+            ->orWhere('email', 'LIKE', "%{$search}%")
+            ->get();
+    
+        return view('hrcatalists.ems.ems-manage-users', compact('users'));
+    }
+    public function updateUserRole(Request $request)
+    {
+        $validated = $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'role' => 'required|in:admin,secretary,employee',
+        ]);
+    
+        $user = User::find($validated['user_id']);
+        $oldRole = $user->role;
+        $user->role = $validated['role'];
+        $user->save();
+    
+        Log::create([
+            'user_id' => Auth::id(),
+            'activity' => "Changed role of {$user->name} from {$oldRole} to {$user->role}",
+            'created_at' => now(),
+        ]);
+    
+        return redirect()->back()->with('success', "{$user->name}'s role was updated to {$user->role}.");
+    }
+    
+    public function createUser(Request $request)
+    {
+        if (Auth::user()->role !== 'admin') {
+            return redirect()->route('manage-users')->with('error', 'Only admins can create users.');
+        }
+    
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'role' => 'required|in:admin,secretary',
+        ]);
+    
+        // Default password
+        $defaultPassword = 'P@SSW0RD';
+    
+        User::create([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'password' => Hash::make($defaultPassword),
+            'role' => $validated['role'],
+        ]);
+    
+        return redirect()->route('manage-users')->with('success', 'User created successfully. Default password is P@SSW0RD.');
+    }
+    
+    
 }

@@ -17,6 +17,7 @@ Route::get('/test-department-toggle', function () {
 });
 
 // Departments
+
 Route::get('/departments', [DepartmentController::class, 'index'])->name('departments.index');
 Route::post('/add-department', [DepartmentController::class, 'store'])->middleware(['auth']);
 
@@ -60,3 +61,4 @@ require __DIR__.'/auth.php';
 require __DIR__.'/admin.php';
 require __DIR__.'/ats.php';
 require __DIR__.'/ems.php';
+require __DIR__.'/emp.php';

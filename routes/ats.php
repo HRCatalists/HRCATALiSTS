@@ -5,8 +5,10 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ApplicantController;
 use App\Http\Controllers\JobPostController;
 use App\Http\Middleware\PreventBackHistory;
+use App\Http\Middleware\RoleMiddleware;
 
-Route::middleware(['auth', PreventBackHistory::class])->group(function () {
+
+Route::middleware([RoleMiddleware::class . ':admin,secretary'])->group(function () {
     // ATS Dashboard
     Route::get('/ats-dashboard', [AdminController::class, 'atsDashboard'])->name('ats-dashboard');
     Route::get('/ats-calendar', [AdminController::class, 'atsCalendar'])->name('ats-calendar');
@@ -53,3 +55,4 @@ Route::middleware(['auth', PreventBackHistory::class])->group(function () {
     Route::post('/jobs/{id}/toggle-status', [JobPostController::class, 'toggleStatus'])->name('jobs.toggle-status');
     Route::post('/update-expired-jobs', [AdminController::class, 'updateExpiredJobs']);
 });
+

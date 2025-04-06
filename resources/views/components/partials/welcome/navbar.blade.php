@@ -8,9 +8,24 @@
                 <img src="{{ asset('images/CC_logo.png') }}" alt="Logo" class="cclogo">
                 <span class="cc-nav-text navbar-text fw-bold ms-2">Columban College, Inc.</span>
             </a>
-            <a class="d-flex align-items-center" href="{{ Auth::check() ? route('admin.dashboard') : route('login') }}">
-                <img src="{{ asset('images/ccihr-logo.png') }}" alt="Logo" class="cclogo">
-            </a>
+            @php
+    $redirectRoute = 'login';
+
+    if (Auth::check()) {
+        $role = Auth::user()->role;
+
+        if (in_array($role, ['admin', 'secretary'])) {
+            $redirectRoute = 'admin.dashboard';
+        } elseif ($role === 'employee') {
+            $redirectRoute = 'emp.dashboard';
+        }
+    }
+@endphp
+
+<a class="d-flex align-items-center" href="{{ route($redirectRoute) }}">
+    <img src="{{ asset('images/ccihr-logo.png') }}" alt="Logo" class="cclogo">
+</a>
+
         </div>
 
         {{-- Job Openings / Apply Now Button --}}
