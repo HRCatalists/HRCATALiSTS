@@ -3,28 +3,28 @@
     $fieldClass = 'plain-input section-field-personal-data-' . $employeeId;
 
     $values = [
-        'phone' => old('phone', $employee->phone ?? 'N/A'),
-        'email' => old('email', $employee->email ?? 'N/A'),
-        'address' => old('address', $employee->address ?? 'N/A'),
-        'tel_no' => old('tel_no', $employee->tel_no ?? 'N/A'),
+        'phone' => old('phone', $employee->phone ?? ''),
+        'email' => old('email', $employee->email ?? ''),
+        'address' => old('address', $employee->address ?? ''),
+        'tel_no' => old('tel_no', $employee->tel_no ?? ''),
         'date_of_birth' => old('date_of_birth', $employee->date_of_birth ?? ''),
-        'place_of_birth' => old('place_of_birth', $employee->place_of_birth ?? 'N/A'),
-        'gender' => old('gender', $employee->gender ?? 'N/A'),
-        'religion' => old('religion', $employee->religion ?? 'N/A'),
-        'citizenship' => old('citizenship', $employee->citizenship ?? 'N/A'),
-        'civil_status' => old('civil_status', $employee->civil_status ?? 'N/A'),
-        'spouse_name' => old('spouse_name', $employee->spouse_name ?? 'N/A'),
-        'spouse_address' => old('spouse_address', $employee->spouse_address ?? 'N/A'),
-        'spouse_occupation' => old('spouse_occupation', $employee->spouse_occupation ?? 'N/A'),
+        'place_of_birth' => old('place_of_birth', $employee->place_of_birth ?? ''),
+        'gender' => old('gender', $employee->gender ?? ''),
+        'religion' => old('religion', $employee->religion ?? ''),
+        'citizenship' => old('citizenship', $employee->citizenship ?? ''),
+        'civil_status' => old('civil_status', $employee->civil_status ?? ''),
+        'spouse_name' => old('spouse_name', $employee->spouse_name ?? ''),
+        'spouse_address' => old('spouse_address', $employee->spouse_address ?? ''),
+        'spouse_occupation' => old('spouse_occupation', $employee->spouse_occupation ?? ''),
         'no_of_dependents' => old('no_of_dependents', $employee->no_of_dependents ?? ''),
-        'children_birthdates' => old('children_birthdates', $employee->children_birthdates ?? 'N/A'),
-        'father_name' => old('father_name', $employee->father_name ?? 'N/A'),
-        'mother_name' => old('mother_name', $employee->mother_name ?? 'N/A'),
-        'mother_address' => old('mother_address', $employee->mother_address ?? 'N/A'),
-        'sss_no' => old('sss_no', $employee->sss_no ?? 'N/A'),
-        'philhealth_no' => old('philhealth_no', $employee->philhealth_no ?? 'N/A'),
-        'tin_no' => old('tin_no', $employee->tin_no ?? 'N/A'),
-        'pagibig_no' => old('pagibig_no', $employee->pagibig_no ?? 'N/A'),
+        'children_birthdates' => old('children_birthdates', $employee->children_birthdates ?? ''),
+        'father_name' => old('father_name', $employee->father_name ?? ''),
+        'mother_name' => old('mother_name', $employee->mother_name ?? ''),
+        'mother_address' => old('mother_address', $employee->mother_address ?? ''),
+        'sss_no' => old('sss_no', $employee->sss_no ?? ''),
+        'philhealth_no' => old('philhealth_no', $employee->philhealth_no ?? ''),
+        'tin_no' => old('tin_no', $employee->tin_no ?? ''),
+        'pagibig_no' => old('pagibig_no', $employee->pagibig_no ?? ''),
     ];
 @endphp
 
@@ -43,9 +43,25 @@
 
         <div class="col-md-12">
             <div class="row">
+                {{-- First Name --}}
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-bold">First Name:<span class="text-danger">*</span></label>
+                    <input type="text" name="first_name" 
+                           class="{{ $fieldClass }} required" 
+                           value="{{ old('first_name', $employee->first_name ?? '') }}" readonly>
+                </div>
+        
+                {{-- Last Name --}}
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-bold">Last Name:<span class="text-danger">*</span></label>
+                    <input type="text" name="last_name" 
+                           class="{{ $fieldClass }} required" 
+                           value="{{ old('last_name', $employee->last_name ?? '') }}" readonly>
+                </div>
+        
+                {{-- The rest of the personal data fields --}}
                 @foreach ($values as $key => $val)
                     @php
-                        // Customize label text and input type if needed
                         $labels = [
                             'phone' => 'Mobile Number',
                             'email' => 'E-mail Address',
@@ -70,18 +86,21 @@
                             'tin_no' => "TIN No.",
                             'pagibig_no' => "Pag-Ibig No.",
                         ];
-
+        
                         $label = $labels[$key] ?? ucfirst(str_replace('_', ' ', $key));
                         $type = in_array($key, ['email']) ? 'email' : (str_contains($key, 'date') ? 'date' : 'text');
                         if ($key === 'no_of_dependents') $type = 'number';
                     @endphp
-
+        
                     <div class="col-md-6 mb-3">
                         <label class="form-label fw-bold">{{ $label }}:</label>
-                        <input type="{{ $type }}" name="{{ $key }}" class="{{ $fieldClass }}" value="{{ $val }}" readonly>
+                        <input type="{{ $type }}" name="{{ $key }}" 
+                               class="{{ $fieldClass }}" 
+                               value="{{ $val }}" readonly>
                     </div>
                 @endforeach
             </div>
         </div>
+        
     </div>
 </div>

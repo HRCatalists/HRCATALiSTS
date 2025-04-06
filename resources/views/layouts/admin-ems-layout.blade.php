@@ -13,6 +13,13 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
+    <!-- DataTables Core CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css">
+
+    <!-- ✅ Add this to support buttons properly -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
+
+
     <!-- Bootstrap CSS v5.3.2 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"/>
 
@@ -59,23 +66,97 @@
     <!-- Calendar JS -->
     <script src="{{ asset('js/db-calendar.js') }}"></script>
 
-    <!-- Bootstrap JavaScript Libraries -->
+
+    <!-- Core Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
-    <!-- JQuery -->
-    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-
-    <!-- jQuery and DataTables JS -->
+    <!-- DataTables Core -->
     <script src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
 
-    <script src="https://cdn.datatables.net/buttons/2.2.3/js/dataTables.buttons.min.js"></script>
+    <!-- DataTables Buttons + Export -->
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.70/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.70/vfs_fonts.js"></script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/pdfmake@0.1.53/build/pdfmake.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/pdfmake@0.1.53/build/vfs_fonts.js"></script>
+    <!-- Init All DataTables -->
+    {{-- <script>
+        const tableIDs = ['#employeeTable', '#basicEdTable', '#logsTable', '#applicantTable'];
 
-    <!-- Tab JS -->
+        function initDataTable(id) {
+            if ($(id).length) {
+                $(id).DataTable({
+                    dom: 'Bfrtip',
+                    buttons: ['copy', 'excel', 'csv', 'pdf', 'print'],
+                    responsive: true,
+                    pageLength: 10,
+                    language: {
+                        paginate: { previous: 'Previous', next: 'Next' },
+                        search: '',
+                        searchPlaceholder: 'Search'
+                    },
+                    initComplete: function () {
+                        $('.dataTables_filter input')
+                            .wrap('<div class="search-box position-relative"></div>')
+                            .attr('placeholder', 'Search');
+                        $('.search-box').prepend('<i class="bi bi-search position-absolute" style="left: 10px; top: 50%; transform: translateY(-50%); color: #888;"></i>');
+                    }
+                });
+            }
+        }
+
+        $(document).ready(function () {
+            tableIDs.forEach(id => initDataTable(id));
+
+            // Handle "select all" checkbox globally
+            $('#selectAll').on('click', function () {
+                const isChecked = $(this).is(':checked');
+                $('.rowCheckbox').prop('checked', isChecked);
+            });
+
+            $('#applicantTable').on('change', '.rowCheckbox', function () {
+                const allChecked = $('.rowCheckbox:checked').length === $('.rowCheckbox').length;
+                $('#selectAll').prop('checked', allChecked);
+            });
+        });
+    </script> --}}
+
+    <!-- Popup & Tab Management -->
+    <script>
+        function showPopup(popupId) {
+            const popup = document.getElementById(popupId);
+            popup.style.visibility = 'visible';
+            popup.style.opacity = '1';
+        }
+
+        function closePopup(popupId) {
+            const popup = document.getElementById(popupId);
+            popup.style.opacity = '0';
+            popup.style.visibility = 'hidden';
+        }
+
+        function approveAction() {
+            alert("Candidate approved!");
+            closePopup('approvePopup');
+        }
+
+        function rejectAction() {
+            alert("Candidate rejected!");
+            closePopup('rejectPopup');
+        }
+
+        window.addEventListener('pageshow', function (event) {
+            if (event.persisted) {
+                window.location.href = "/login";
+            }
+        });
+    </script>
+
+    {{-- <!-- Tab JS -->
     <script>
         function showTab(tabId) {
             // Hide all tab contents
@@ -259,7 +340,7 @@
                 window.location.href = "/login"; // Redirect user back to login
             }
         });
-    </script>
+    </script> --}}
    
 </body>
 </html>

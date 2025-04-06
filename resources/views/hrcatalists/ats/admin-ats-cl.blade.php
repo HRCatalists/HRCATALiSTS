@@ -25,13 +25,13 @@
             @endif
 
             <div class="calendar-wrapper mt-5">
-                <div id="right" class="flex-grow-1">
+                <div id="right" class="">
                     <h2>Event Calendar</h2>
                     <div id="main-calendar"></div>
                 </div>
 
                 <div class="container-calendar">
-                    <h1>Add Event</h1>
+                    {{-- <h1>Add Event</h1>
                     <div class="calendar-event-wrapper">
                         <div id="event-section" class="">
                             <form id="eventForm">
@@ -44,7 +44,7 @@
                             </form>
                         </div>
 
-                        {{-- <div id="reminder-section" class="col-lg-6">
+                        <div id="reminder-section" class="col-lg-6">
                             <h3>Reminders</h3>
                             <ul id="reminderList">
                                 @foreach($events as $event)
@@ -54,8 +54,8 @@
                                     </li>
                                 @endforeach
                             </ul>
-                        </div> --}}
-                        {{-- <div id="reminder-section" class="col-lg-6">
+                        </div>
+                        <div id="reminder-section" class="col-lg-6">
                             <h3>Reminders</h3>
                             <ul id="reminderList" class="list-group">
                                 @foreach($events as $event)
@@ -69,9 +69,9 @@
                                     </li>
                                 @endforeach
                             </ul>
-                        </div>                                                                                            --}}
+                        </div>
                     </div>
-                </div>
+                </div> --}}
 
                 <!-- Event List (DataTable) -->
                 <div class="mt-5">

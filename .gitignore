@@ -22,6 +22,12 @@ yarn-error.log
 /.vscode
 /.zed
 /storage/logs/*
+!/storage/logs/.gitignore
+
+/storage/framework/views/*
+!/storage/framework/views/.gitignore
+
+/storage/app/google-drive.json
 
 # With git-filter-repo
 git filter-repo --path storage/app/google-drive.json --invert-paths

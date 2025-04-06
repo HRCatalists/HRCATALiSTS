@@ -42,4 +42,18 @@ class GoogleDriveService
 
         return $uploadedFile->id;
     }
+
+    public function getFileName($fileId)
+    {
+        try {
+            $file = $this->service->files->get($fileId, [
+                'fields' => 'name'
+            ]);
+
+            return $file->name;
+        } catch (\Exception $e) {
+            return null; // Optionally log the error if needed
+        }
+    }
+
 }

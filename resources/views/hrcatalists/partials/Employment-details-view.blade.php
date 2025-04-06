@@ -16,29 +16,7 @@
         </div>
     </div>
 
-    <div class="row">
-        <!-- Job Selection -->
-        <div class="col-md-6 mb-3">
-            <label for="job_id_{{ $employeeId }}" class="form-label fw-bold">Select Position:</label>
-            <select name="job_id_visible" id="job_id_{{ $employeeId }}" class="form-select {{ $fieldClass }}" {{ isset($employee) ? 'disabled' : '' }}>
-                <option value="">Select Position</option>
-                @foreach($jobs as $job)
-                    <option 
-                        value="{{ $job->id }}"
-                        data-department="{{ $job->department }}"
-                        data-title="{{ $job->job_title }}"
-                        data-classification="{{ $job->classification ?? '' }}"
-                        data-college="{{ $job->parent_college ?? '' }}"
-                        data-status="{{ $job->employment_status ?? '' }}"
-                        data-accreditation="{{ $job->accreditation ?? '' }}"
-                        {{ old('job_id', $employee?->job_id) == $job->id ? 'selected' : '' }}>
-                        {{ $job->job_title }} ({{ $job->department }})
-                    </option>
-                @endforeach
-            </select>
-            <input type="hidden" name="job_id" id="job_id_hidden_{{ $employeeId }}" value="{{ old('job_id', $employee?->job_id) }}">
-        </div>
-    
+    <div class="row">       
         <!-- Department -->
         <div class="col-md-6 mb-3">
             <label class="form-label fw-bold">Parent Department:</label>
@@ -59,6 +37,36 @@
             <input type="text" name="parent_college" id="parent_college_{{ $employeeId }}" class="{{ $fieldClass }}" 
                 value="{{ old('parent_college', $employment->parent_college ?? '') }}" readonly>
         </div>
+
+        <!-- Job Selection -->
+        <div class="col-md-6 mb-3">
+            <label for="job_id_{{ $employeeId }}" class="form-label fw-bold">Select Position:</label>
+            
+            {{-- Visible dropdown --}}
+            <select 
+                id="job_id_{{ $employeeId }}"
+                name="job_id"
+                class="form-select form-select-sm section-field-employment-details-{{ $employeeId }}"
+                style="max-height: 38px;" {{-- optional override just in case --}}
+                {{ isset($employee) ? 'disabled' : '' }}
+                required>
+
+                <option value="">Select Position</option>
+                @foreach($jobs as $job)
+                    <option 
+                        value="{{ $job->id }}"
+                        data-department="{{ $job->department }}"
+                        data-title="{{ $job->job_title }}"
+                        data-classification="{{ $job->classification }}"
+                        data-college="{{ $job->parent_college }}"
+                        data-status="{{ $job->employment_status }}"
+                        data-accreditation="{{ $job->accreditation }}"
+                        {{ old('job_id', $employee?->job_id) == $job->id ? 'selected' : '' }}>
+                        {{ $job->job_title }} ({{ $job->department }})
+                    </option>
+                @endforeach
+            </select>
+        </div> 
     
         <!-- Classification -->
         <div class="col-md-6 mb-3">
@@ -94,41 +102,34 @@
             <input type="date" name="date_permanent" class="{{ $fieldClass }}" 
                 value="{{ old('date_permanent', $employment->date_permanent ?? '') }}" readonly>
         </div>
-
-        <!-- CV Upload -->
-        <div class="col-md-12 mb-3">
-            <label for="cv-{{ $employeeId }}" class="form-label fw-bold">Attach CV <span class="text-danger">*</span></label>
-            <div class="input-group">
-                <input 
-                    type="file" 
-                    name="cv" 
-                    id="cv-{{ $employeeId }}" 
-                    class="form-control d-none @error('cv') is-invalid @enderror {{ $fieldClass }}" 
-                    accept=".pdf" 
-                    {{ isset($employee->id) ? '' : 'required' }}
-                >
-                <label for="cv-{{ $employeeId }}" class="btn btn-primary">Choose File</label>
-                <span class="input-group-text file-label" id="cvLabel-{{ $employeeId }}">
-                    {{ $employee->cv ?? 'No file selected' }}
-                </span>
-            </div>
-            <small class="form-text text-muted">Submit your file in .pdf format (Max: 2 MB)</small>
-
-            @error('cv') 
-                <div class="invalid-feedback d-block">{{ $message }}</div>
-            @enderror
-
-            @if (!is_null($employee) && $employee->cv)
-                <div>
-                    <a href="https://drive.google.com/uc?id={{ $employee->cv }}&export=download" target="_blank" class="text-success">
-                        Download
-                    </a>
-                    <a href="https://drive.google.com/file/d/{{ $employee->cv }}/view" target="_blank" class="text-primary">
-                        View
-                    </a>
-                </div>
-            @endif
-        </div>
     </div>
+
+    <!-- CV Upload (always editable and fetches existing CV) -->
+    <div class="col-md-12 mb-3">
+        <label for="cv-{{ $employeeId }}" class="form-label fw-bold">Attach CV <span class="text-danger">*</span></label>
+
+        <input 
+            type="file" 
+            name="cv" 
+            id="cv-{{ $employeeId }}" 
+            class="form-control @error('cv') is-invalid @enderror" 
+            accept=".pdf"
+            {{ isset($employee->id) ? '' : 'required' }}
+        >
+
+        {{-- Show current CV file (if exists) --}}
+        @if (!empty($employee?->cv))
+            <small class="form-text text-muted d-block mt-2" id="cvLabel-{{ $employee->id }}">
+                Current CV:
+                <strong>{{ $employee->cv_file_name ?? 'Unnamed File' }}</strong><br>
+                <a href="https://drive.google.com/file/d/{{ $employee->cv }}/view" target="_blank" class="text-primary">View</a>
+                |
+                <a href="https://drive.google.com/uc?id={{ $employee->cv }}&export=download" target="_blank" class="text-success">Download</a>
+            </small>
+        @endif
     
+        @error('cv') 
+            <div class="invalid-feedback d-block">{{ $message }}</div>
+        @enderror
+    </div>
 </div>

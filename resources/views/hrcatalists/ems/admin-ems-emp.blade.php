@@ -60,6 +60,16 @@
                     </div>
                 @endif
 
+                @if ($errors->any())
+                    <div class="alert alert-danger alert-dismissible">
+                        <ul class="mb-0">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
                 <!-- Employee Table -->
                 <table id="employeeTable" class="table table-bordered display">
                     <thead>
@@ -98,6 +108,19 @@
                                                 </button>                                            
                                             </li>
 
+                                            <!-- Download CV -->
+                                            @if (!empty($employee->cv))
+                                                <li>
+                                                    <a 
+                                                        href="https://drive.google.com/uc?id={{ $employee->cv }}&export=download" 
+                                                        target="_blank" 
+                                                        class="dropdown-item text-success"
+                                                    >
+                                                        DOWNLOAD CV
+                                                    </a>
+                                                </li>
+                                            @endif
+
                                             <!-- Delete -->
                                             <li>
                                                 <form action="{{ route('employees.delete', $employee->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this employee?');">
@@ -106,13 +129,6 @@
                                                     <button type="submit" class="dropdown-item text-danger">DELETE</button>
                                                 </form>
                                             </li>
-                                            
-                                            {{-- Edit --}}
-                                            {{-- <li>
-                                                <button type="button" class="dropdown-item text-warning" data-bs-toggle="modal" data-bs-target="#editEmployeeModal-{{ $employee->id }}">
-                                                    EDIT
-                                                </button>
-                                            </li> --}}
                                         </ul>
                                     </div>
                                 </td>
@@ -135,7 +151,7 @@
 
                                 <!-- ✅ form starts inside modal-body (scrollable area) -->
                                 <div class="modal-body">
-                                    <form method="POST" action="{{ route('employees.update', $employee->id) }}" id="employeeMainForm-{{ $employee->id }}">
+                                    <form method="POST" action="{{ route('employees.update', $employee->id) }}" id="employeeMainForm-{{ $employee->id }}" enctype="multipart/form-data">
                                         @csrf
                                         @method('PUT')
 
@@ -176,6 +192,7 @@
                 </div>
 
                 <div class="modal-body">
+
                     <form method="POST" action="{{ route('employees.store') }}" id="addEmployeeForm" enctype="multipart/form-data">
                         @csrf
 
@@ -190,7 +207,8 @@
                         @include('hrcatalists.partials.others-view', ['employee' => null])
 
                         <div class="modal-footer">
-                            <button type="submit" class="btn text-success" onclick="this.disabled=true; this.form.submit();">Submit</button>
+                            {{-- <button type="submit" class="btn text-success" onclick="this.disabled=true; this.form.submit();">Submit</button> --}}
+                            <button type="submit" class="btn text-success">Submit</button>
                             <button type="button" class="btn text-secondary" data-bs-dismiss="modal">Cancel</button>
                         </div>
                     </form>
@@ -229,7 +247,7 @@
     {{-- deleteWithConfirm --}}
 
     {{-- JavaScript logic to support dynamic edit/add/remove for all sections in editing employee's information --}}
-    <script>
+    {{-- <script>
         document.addEventListener('DOMContentLoaded', function () {
             const sections = ['education', 'licenses', 'trainings', 'service-records', 'organizations', 'others'];
 
@@ -273,14 +291,23 @@
 
             }
 
+            function toggleCVButton(employeeId, enable = false) {
+                const label = document.querySelector(`#cvWrapper-${employeeId} label`);
+                if (label) {
+                    label.style.pointerEvents = enable ? 'auto' : 'none';
+                    label.style.opacity = enable ? '1' : '0.6';
+                }
+            }
+
             function handleEditClick() {
                 const section = this.dataset.section;
                 const employeeId = this.dataset.employeeId;
                 const wrapper = document.getElementById(`section-${section}-${employeeId}`);
                 const inputs = document.querySelectorAll(`.section-field-${section}-${employeeId}`);
                 const buttonContainer = this.parentElement;
+                const cvWrapper = document.getElementById(`cvWrapper-${employeeId}`);
 
-
+                if (cvWrapper) cvWrapper.classList.remove('d-none');
                 if (wrapper && wrapper.dataset.editing === "true") return;
                 if (wrapper) wrapper.dataset.editing = "true";
 
@@ -289,7 +316,6 @@
                     input.dataset.originalValue = input.value;
                 });
 
-                // ✅ Enable dropdown if it's disabled (like the job dropdown)
                 const selectField = document.querySelector(`#job_id_${employeeId}`);
                 if (selectField) selectField.disabled = false;
 
@@ -298,6 +324,8 @@
 
                 wrapper?.querySelectorAll('.action-column').forEach(col => col.classList.remove('d-none'));
                 wrapper?.querySelectorAll('.remove-edu-row').forEach(btn => btn.classList.remove('d-none'));
+
+                toggleCVButton(employeeId, true); // ✅ enable file upload
 
                 buttonContainer.innerHTML = `
                     <button type="button" class="btn btn-sm btn-success me-2 save-edit-btn"
@@ -323,6 +351,9 @@
                 const wrapper = document.getElementById(`section-${section}-${employeeId}`);
                 const inputs = document.querySelectorAll(`.section-field-${section}-${employeeId}`);
                 const buttonContainer = this.parentElement;
+                const cvWrapper = document.getElementById(`cvWrapper-${employeeId}`);
+
+                if (cvWrapper) cvWrapper.classList.add('d-none');
 
                 if (isSave) {
                     inputs.forEach(input => {
@@ -336,16 +367,16 @@
                     });
                 }
 
-                // ✅ Disable job dropdown regardless of save/cancel
                 const selectField = document.querySelector(`#job_id_${employeeId}`);
                 if (selectField) selectField.disabled = true;
-
 
                 wrapper?.querySelectorAll('.action-column').forEach(col => col.classList.add('d-none'));
                 wrapper?.querySelectorAll('.remove-edu-row').forEach(btn => btn.classList.add('d-none'));
 
                 const addBtn = document.getElementById(getAddButtonId(section, employeeId));
                 if (addBtn) addBtn.classList.add('d-none');
+
+                toggleCVButton(employeeId, false); // ✅ disable file upload
 
                 if (wrapper) wrapper.dataset.editing = "false";
 
@@ -479,8 +510,292 @@
                     if (hiddenInput) hiddenInput.value = this.value;
                 });
             });
+
+            document.querySelectorAll('input[type="file"][id^="cv-"]').forEach(input => {
+                input.addEventListener('change', function () {
+                    const employeeId = this.id.split('-')[1] || 'new';
+                    const fileLabel = document.getElementById('cvLabel-' + employeeId);
+                    const fileName = this.files[0] ? this.files[0].name : 'No file selected';
+                    if (fileLabel) {
+                        fileLabel.textContent = fileName;
+                    }
+                });
+            });
+        });
+    </script> --}}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const sections = ['education', 'licenses', 'trainings', 'service-records', 'organizations', 'others'];
+    
+            function getAddButtonId(section, employeeId) {
+                return {
+                    'education': `addEducationBtn-${employeeId}`,
+                    'licenses': `addLicenseBtn-${employeeId}`,
+                    'trainings': `addTrainingBtn-${employeeId}`,
+                    'service-records': `addServiceRecordBtn-${employeeId}`,
+                    'organizations': `addOrganizationBtn-${employeeId}`,
+                    'others': `addOtherBtn-${employeeId}`
+                }[section];
+            }
+    
+            function getTableId(section, employeeId) {
+                return {
+                    'education': `educationTable-${employeeId}`,
+                    'licenses': `licensesTable-${employeeId}`,
+                    'trainings': `trainingsTable-${employeeId}`,
+                    'service-records': `serviceRecordTable-${employeeId}`,
+                    'organizations': `organizationTable-${employeeId}`,
+                    'others': `othersTable-${employeeId}`
+                }[section];
+            }
+    
+            function toggleCVInput(employeeId, enable = false) {
+                const fileInput = document.getElementById(`cv-${employeeId}`);
+                if (fileInput) {
+                    // fileInput.disabled = !enable;
+                    fileInput.readOnly = !enable;
+                    fileInput.style.pointerEvents = enable ? 'auto' : 'none'; // prevent clicking
+                    fileInput.style.opacity = enable ? '1' : '0.6'; // show it visually disabled
+                }
+            }
+    
+            function bindEditButtons() {
+                document.querySelectorAll('.toggle-edit-btn').forEach(btn => {
+                    btn.removeEventListener('click', handleEditClick);
+                    btn.addEventListener('click', handleEditClick);
+                });
+    
+                document.querySelectorAll('select[id^="job_id_"]').forEach(select => {
+                    select.disabled = true;
+                });
+            }
+    
+            function handleEditClick() {
+                const section = this.dataset.section;
+                const employeeId = this.dataset.employeeId;
+                const wrapper = document.getElementById(`section-${section}-${employeeId}`);
+                const inputs = document.querySelectorAll(`.section-field-${section}-${employeeId}`);
+                const buttonContainer = this.parentElement;
+    
+                if (wrapper && wrapper.dataset.editing === "true") return;
+                if (wrapper) wrapper.dataset.editing = "true";
+    
+                inputs.forEach(input => {
+                    input.readOnly = false;
+                    input.dataset.originalValue = input.value;
+                });
+    
+                const selectField = document.querySelector(`#job_id_${employeeId}`);
+                if (selectField) selectField.disabled = false;
+    
+                const addBtn = document.getElementById(getAddButtonId(section, employeeId));
+                if (addBtn) addBtn.classList.remove('d-none');
+    
+                wrapper?.querySelectorAll('.action-column').forEach(col => col.classList.remove('d-none'));
+                wrapper?.querySelectorAll('.remove-edu-row').forEach(btn => btn.classList.remove('d-none'));
+    
+                toggleCVInput(employeeId, true);
+    
+                buttonContainer.innerHTML = `
+                    <button type="button" class="btn btn-sm btn-success me-2 save-edit-btn"
+                        data-section="${section}" data-employee-id="${employeeId}">Save</button>
+                    <button type="button" class="btn btn-sm btn-secondary cancel-edit-btn"
+                        data-section="${section}" data-employee-id="${employeeId}">Cancel</button>
+                `;
+    
+                bindActionButtons();
+            }
+    
+            function handleSaveCancel() {
+                const isSave = this.classList.contains('save-edit-btn');
+                const section = this.dataset.section;
+                const employeeId = this.dataset.employeeId;
+                const wrapper = document.getElementById(`section-${section}-${employeeId}`);
+                const inputs = document.querySelectorAll(`.section-field-${section}-${employeeId}`);
+                const buttonContainer = this.parentElement;
+                const label = document.getElementById(`cvLabel-${employeeId}`);
+
+                if (label) label.textContent = 'No file selected';
+    
+                if (isSave) {
+                    inputs.forEach(input => {
+                        input.readOnly = true;
+                        input.dataset.originalValue = input.value;
+                    });
+                } else {
+                    inputs.forEach(input => {
+                        input.value = input.dataset.originalValue || '';
+                        input.readOnly = true;
+                    });
+                }
+    
+                const selectField = document.querySelector(`#job_id_${employeeId}`);
+                if (selectField) selectField.disabled = true;
+    
+                wrapper?.querySelectorAll('.action-column').forEach(col => col.classList.add('d-none'));
+                wrapper?.querySelectorAll('.remove-edu-row').forEach(btn => btn.classList.add('d-none'));
+    
+                const addBtn = document.getElementById(getAddButtonId(section, employeeId));
+                if (addBtn) addBtn.classList.add('d-none');
+    
+                toggleCVInput(employeeId, false);
+    
+                if (wrapper) wrapper.dataset.editing = "false";
+    
+                buttonContainer.innerHTML = `
+                    <button type="button" class="btn btn-sm btn-outline-primary toggle-edit-btn"
+                        data-section="${section}" data-employee-id="${employeeId}">Edit</button>
+                `;
+    
+                bindEditButtons();
+            }
+    
+            function bindActionButtons() {
+                document.querySelectorAll('.save-edit-btn, .cancel-edit-btn').forEach(btn => {
+                    btn.removeEventListener('click', handleSaveCancel);
+                    btn.addEventListener('click', handleSaveCancel);
+                });
+            }
+    
+            function bindAddButtons() {
+                sections.forEach(section => {
+                    document.querySelectorAll(`[id^="${getAddButtonId(section, '')}"]`).forEach(btn => {
+                        btn.removeEventListener('click', addRow);
+                        btn.addEventListener('click', addRow);
+                    });
+                });
+            }
+    
+            function addRow() {
+                const id = this.id;
+                const section = sections.find(sec => id.startsWith(getAddButtonId(sec, '')));
+                const employeeId = id.split('-').pop();
+                const tableBody = document.querySelector(`#${getTableId(section, employeeId)} tbody`);
+                const index = tableBody.querySelectorAll('tr').length;
+    
+                let html = ''; // your HTML rows still inserted here (unchanged)
+
+                switch (section) {
+                    case 'education':
+                        html = `
+                            <td><input type="text" name="educations[${index}][level]" class="form-control section-field-education-${employeeId}"></td>
+                            <td><input type="text" name="educations[${index}][school]" class="form-control section-field-education-${employeeId}"></td>
+                            <td><input type="text" name="educations[${index}][course]" class="form-control section-field-education-${employeeId}"></td>
+                            <td><input type="text" name="educations[${index}][major]" class="form-control section-field-education-${employeeId}"></td>
+                            <td><input type="text" name="educations[${index}][remarks]" class="form-control section-field-education-${employeeId}"></td>
+                            <td class="action-column text-center"><button type="button" class="btn btn-sm btn-danger remove-edu-row">Remove</button></td>
+                        `;
+                        break;
+                    case 'licenses':
+                        html = `
+                            <td><input type="text" name="licenses[${index}][license_name]" class="form-control section-field-licenses-${employeeId}"></td>
+                            <td><input type="text" name="licenses[${index}][license_number]" class="form-control section-field-licenses-${employeeId}"></td>
+                            <td><input type="date" name="licenses[${index}][expiry_date]" class="form-control section-field-licenses-${employeeId}"></td>
+                            <td><input type="date" name="licenses[${index}][renewal_from]" class="form-control section-field-licenses-${employeeId}"></td>
+                            <td><input type="date" name="licenses[${index}][renewal_to]" class="form-control section-field-licenses-${employeeId}"></td>
+                            <td class="action-column text-center"><button type="button" class="btn btn-sm btn-danger remove-edu-row">Remove</button></td>
+                        `;
+                        break;
+                    case 'trainings':
+                        html = `
+                            <td><input type="date" name="trainings[${index}][training_date]" class="form-control section-field-trainings-${employeeId}"></td>
+                            <td><input type="text" name="trainings[${index}][title]" class="form-control section-field-trainings-${employeeId}"></td>
+                            <td><input type="text" name="trainings[${index}][venue]" class="form-control section-field-trainings-${employeeId}"></td>
+                            <td><input type="text" name="trainings[${index}][remark]" class="form-control section-field-trainings-${employeeId}"></td>
+                            <td class="action-column text-center"><button type="button" class="btn btn-sm btn-danger remove-edu-row">Remove</button></td>
+                        `;
+                        break;
+                    case 'service-records':
+                        html = `
+                            <td><input type="text" name="service_records[${index}][department]" class="form-control section-field-service-records-${employeeId}"></td>
+                            <td><input type="text" name="service_records[${index}][inclusive_date]" class="form-control section-field-service-records-${employeeId}"></td>
+                            <td><input type="text" name="service_records[${index}][appointment_record]" class="form-control section-field-service-records-${employeeId}"></td>
+                            <td><input type="text" name="service_records[${index}][position]" class="form-control section-field-service-records-${employeeId}"></td>
+                            <td><input type="text" name="service_records[${index}][rank]" class="form-control section-field-service-records-${employeeId}"></td>
+                            <td><input type="text" name="service_records[${index}][remarks]" class="form-control section-field-service-records-${employeeId}"></td>
+                            <td class="action-column text-center"><button type="button" class="btn btn-sm btn-danger remove-edu-row">Remove</button></td>
+                        `;
+                        break;
+                    case 'organizations':
+                        html = `
+                            <td><input type="date" name="organizations[${index}][registration_date]" class="form-control section-field-organizations-${employeeId}"></td>
+                            <td><input type="date" name="organizations[${index}][validity_date]" class="form-control section-field-organizations-${employeeId}"></td>
+                            <td><input type="text" name="organizations[${index}][organization_name]" class="form-control section-field-organizations-${employeeId}"></td>
+                            <td><input type="text" name="organizations[${index}][place]" class="form-control section-field-organizations-${employeeId}"></td>
+                            <td><input type="text" name="organizations[${index}][position]" class="form-control section-field-organizations-${employeeId}"></td>
+                            <td class="action-column text-center"><button type="button" class="btn btn-sm btn-danger remove-edu-row">Remove</button></td>
+                        `;
+                        break;
+                    case 'others':
+                        html = `
+                            <td><input type="date" name="others[${index}][date]" class="form-control section-field-others-${employeeId}"></td>
+                            <td><input type="text" name="others[${index}][description]" class="form-control section-field-others-${employeeId}"></td>
+                            <td class="action-column text-center"><button type="button" class="btn btn-sm btn-danger remove-edu-row">Remove</button></td>
+                        `;
+                        break;
+                }
+    
+                const row = document.createElement('tr');
+                row.innerHTML = html;
+                tableBody.appendChild(row);
+                bindRemoveButtons();
+            }
+    
+            function bindRemoveButtons() {
+                document.querySelectorAll('.remove-edu-row').forEach(btn => {
+                    btn.removeEventListener('click', removeRow);
+                    btn.addEventListener('click', removeRow);
+                });
+            }
+    
+            function removeRow() {
+                this.closest('tr').remove();
+            }
+    
+            // Update hidden job_id field and auto-fill others
+            document.querySelectorAll('select[id^="job_id_"]').forEach(select => {
+                select.addEventListener('change', function () {
+                    const selected = this.options[this.selectedIndex];
+                    const employeeId = this.id.split('_')[2] || 'new';
+    
+                    const fields = {
+                        'department': selected.dataset.department,
+                        'job_title': selected.dataset.title,
+                        'classification': selected.dataset.classification,
+                        'parent_college': selected.dataset.college,
+                        'employment_status': selected.dataset.status,
+                        'accreditation': selected.dataset.accreditation,
+                    };
+    
+                    Object.entries(fields).forEach(([field, value]) => {
+                        const input = document.getElementById(`${field}_${employeeId}`);
+                        if (input) input.value = value || '';
+                    });
+    
+                    const hiddenInput = document.getElementById('job_id_hidden_' + employeeId);
+                    if (hiddenInput) hiddenInput.value = this.value;
+                });
+            });
+    
+            // Update label when a file is chosen
+            document.querySelectorAll('input[type="file"][id^="cv-"]').forEach(input => {
+                input.addEventListener('change', function () {
+                    const employeeId = this.id.split('-')[1] || 'new';
+                    const label = document.getElementById(`cvLabel-${employeeId}`);
+                    const fileName = this.files[0] ? this.files[0].name : 'No file selected';
+                    if (label) {
+                        label.textContent = 'Selected: ' + fileName;
+                    }
+                });
+            });
+    
+            // Initial bindings
+            bindEditButtons();
+            bindAddButtons();
+            bindRemoveButtons();
         });
     </script>
-        
+    
     
 </x-admin-ems-layout>

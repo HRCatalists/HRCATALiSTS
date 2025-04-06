@@ -151,6 +151,13 @@ class AdminController extends Controller
          }
      
          $employees = Employee::with(['employmentDetails'])->get();
+
+         foreach ($employees as $employee) {
+             if (!empty($employee->cv)) {
+                 $employee->cv_file_name = $this->googleDriveService->getFileName($employee->cv);
+             }
+         }
+         
          $jobs = Job::all(); // ✅ Required for dropdown in the modal
      
          return view('hrcatalists.ems.admin-ems-emp', compact('employees', 'jobs')); // ✅ FIXED
@@ -191,12 +198,12 @@ class AdminController extends Controller
     
         // ✅ Validate minimal fields (editable but safe)
         $validated = $request->validate([
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
+            'first_name' => 'nullable|string|max:255',
+            'last_name' => 'nullable|string|max:255',
             'email' => 'nullable|email|max:255',
             'phone' => 'nullable|string|max:20',
             'address' => 'nullable|string|max:255',
-            'cv' => 'nullable|string|max:255',
+            'cv' => 'nullable|file|mimes:pdf|max:2048',
             'privacy_policy_agreed' => 'nullable|boolean',
             'status' => 'nullable|string|max:100',
             'applied_at' => 'nullable|date',
@@ -267,6 +274,14 @@ class AdminController extends Controller
             'others.*.date' => 'nullable|date',
             'others.*.description' => 'nullable|string|max:255',
         ]);
+
+        // ✅ Handle CV upload if present
+        if ($request->hasFile('cv')) {
+            // dd('CV is being uploaded');
+            $cvFile = $request->file('cv');
+            $cvFileId = $this->googleDriveService->uploadFile($cvFile);
+            $validated['cv'] = $cvFileId;
+        }
     
         $employee->update($validated);
     
@@ -312,28 +327,28 @@ class AdminController extends Controller
     }
 
 
-       // Load the ems Calendar View
-       public function emsCalendar()
-       {
-           if (!Auth::check()) {
-               return redirect()->route('login');
-           }
-   
-           $events = Event::where('user_id', Auth::id())->get(); // Fetch events for logged-in user
-           return view('hrcatalists.ems.admin-ems-cl', compact('events'));
-       }
+    //Load the ems Calendar View
+    public function emsCalendar()
+    {
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
 
-       public function deptCOA()
-       {
-           if (!Auth::check()) {
-               return redirect()->route('login');
-           }
-       
-           // Fetch employees where department is "College of Architecture"
-           $employees = Employee::where('department', 'College of Architecture')->get();
-       
-           return view('hrcatalists.ems.admin-ems-dept-coa', compact('employees'));
-       }
+        $events = Event::where('user_id', Auth::id())->get(); // Fetch events for logged-in user
+        return view('hrcatalists.ems.admin-ems-cl', compact('events'));
+    }
+
+    public function deptCOA()
+    {
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+    
+        // Fetch employees where department is "College of Architecture"
+        $employees = Employee::where('department', 'College of Architecture')->get();
+    
+        return view('hrcatalists.ems.admin-ems-dept-coa', compact('employees'));
+    }
        
 
     public function deptCASED()
@@ -604,21 +619,26 @@ class AdminController extends Controller
     }
 
     protected $googleDriveService;
+
     public function __construct(GoogleDriveService $googleDriveService)
     {
         $this->googleDriveService = $googleDriveService;
     }
 
-
     public function store(Request $request)
     {
+        // dd([
+        //     'has_cv' => $request->hasFile('cv'),
+        //     'cv_file' => $request->file('cv'),
+        // ]);
+        
         $validated = $request->validate([
             // Core employee fields
             'job_title' => 'nullable|string|max:255',
             'department' => 'nullable|string|max:255',
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
-            'email' => 'nullable|email|max:255|unique:employees,email',
+            'email' => 'required|email|max:255|unique:employees,email',
             'phone' => 'nullable|string|max:20',
             'address' => 'nullable|string|max:255',
             'cv' => 'nullable|mimes:pdf|max:2048',
@@ -648,7 +668,7 @@ class AdminController extends Controller
             'pagibig_no' => 'nullable|string|max:50',
             'philhealth_no' => 'nullable|string|max:50',
             'tin_no' => 'nullable|string|max:50',
-    
+
             // Employment Details
             'parent_department' => 'nullable|string|max:255',
             'parent_college' => 'nullable|string|max:255',
@@ -657,62 +677,68 @@ class AdminController extends Controller
             'date_employed' => 'nullable|date',
             'accreditation' => 'nullable|string|max:255',
             'date_permanent' => 'nullable|date',
-    
+
             // Nested related fields
             'educations.*.level' => 'nullable|string|max:255',
             'educations.*.school' => 'nullable|string|max:255',
             'educations.*.course' => 'nullable|string|max:255',
             'educations.*.major' => 'nullable|string|max:255',
             'educations.*.remarks' => 'nullable|string|max:255',
-    
+
             'licenses.*.license_name' => 'nullable|string|max:255',
             'licenses.*.license_number' => 'nullable|string|max:255',
             'licenses.*.expiry_date' => 'nullable|date',
             'licenses.*.renewal_from' => 'nullable|date',
             'licenses.*.renewal_to' => 'nullable|date',
-    
+
             'trainings.*.training_date' => 'nullable|date',
             'trainings.*.title' => 'nullable|string|max:255',
             'trainings.*.venue' => 'nullable|string|max:255',
             'trainings.*.remark' => 'nullable|string|max:255',
-    
+
             'service_records.*.department' => 'nullable|string|max:255',
             'service_records.*.inclusive_date' => 'nullable|string|max:255',
             'service_records.*.appointment_record' => 'nullable|string|max:255',
             'service_records.*.position' => 'nullable|string|max:255',
             'service_records.*.rank' => 'nullable|string|max:100',
             'service_records.*.remarks' => 'nullable|string|max:255',
-    
+
             'organizations.*.registration_date' => 'nullable|date',
             'organizations.*.validity_date' => 'nullable|date',
             'organizations.*.organization_name' => 'nullable|string|max:255',
             'organizations.*.place' => 'nullable|string|max:255',
             'organizations.*.position' => 'nullable|string|max:255',
-    
+
             'others.*.date' => 'nullable|date',
             'others.*.description' => 'nullable|string|max:255',
         ]);
-    
-        $cvFileId = null; // Initialize $cvFileId with a default value
-        $employee = null; // Declare $employee outside the closure
-        DB::transaction(function () use ($validated, $request, $cvFileId, &$employee) {
-            $employeeData = collect($validated)->except([
-                'educations', 'licenses', 'trainings', 'service_records', 'organizations', 'others'
-            ])->toArray();
-        
-            // ✅ Upload CV and attach it to $employeeData
+
+        $employee = null;
+
+        DB::transaction(function () use ($validated, $request, &$employee, &$cvFileId) {
+            // ✅ Upload to Google Drive and hash filename
+            // if ($request->hasFile('cv')) {
+            //     $cvFile = $request->file('cv');
+            //     $cvFileId = $this->googleDriveService->uploadFile($cvFile);
+            //     $employeeData['cv'] = $cvFileId; // ✅ assign it here
+            // } else {
+            //     $cvFileId = null;
+            // }
+
             if ($request->hasFile('cv')) {
                 $cvFile = $request->file('cv');
                 $cvFileId = $this->googleDriveService->uploadFile($cvFile);
-                $employeeData['cv'] = $cvFileId;
-            } else {
-                $employeeData['cv'] = null;
+                $validated['cv'] = $cvFileId;
             }
-        
-            // ✅ Now create employee with cv field
-            $employee = Employee::create($employeeData);        
-    
-            // Create employment details
+
+            $employeeData = collect($validated)->except([
+                'educations', 'licenses', 'trainings', 'service_records', 'organizations', 'others'
+            ])->toArray();           
+
+            // ✅ Create employee
+            $employee = Employee::create($employeeData);
+
+            // ✅ Employment details
             $employee->employmentDetails()->create([
                 'parent_department' => $request->input('parent_department'),
                 'parent_college' => $request->input('parent_college'),
@@ -723,8 +749,8 @@ class AdminController extends Controller
                 'date_permanent' => $request->input('date_permanent'),
                 'cv' => $cvFileId,
             ]);
-    
-            // Handle related records
+
+            // ✅ Related sections
             $relations = [
                 'educations' => 'educations',
                 'licenses' => 'licenses',
@@ -733,24 +759,23 @@ class AdminController extends Controller
                 'organizations' => 'organizations',
                 'others' => 'others',
             ];
-    
-            foreach ($relations as $input => $relationMethod) {
+
+            foreach ($relations as $input => $relation) {
                 if ($request->has($input)) {
                     foreach ($request->input($input) as $record) {
                         if (array_filter($record)) {
-                            $employee->{$relationMethod}()->create($record);
+                            $employee->{$relation}()->create($record);
                         }
                     }
                 }
             }
         });
 
-        // ✅ Create log entry after employee creation
         Log::create([
             'user_id' => Auth::id(),
             'activity' => "Added new employee: {$employee->first_name} {$employee->last_name} (Job Title: {$employee->job_title})",
         ]);
-    
+
         return back()->with('success', 'New employee added successfully.');
     }   
 
@@ -825,7 +850,7 @@ class AdminController extends Controller
             'role' => $validated['role'],
         ]);
     
-        return redirect()->route('manage-users')->with('success', 'User created successfully. Default password is P@SSW0RD.');
+        return redirect()->route('manage-users')->with('success', 'User created successfully.');
     }
     
     
