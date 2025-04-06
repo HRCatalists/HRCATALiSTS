@@ -337,7 +337,7 @@
                         <div class="col-md-6">
                         <label for="classification" class="form-label">Classification <span class="text-danger">*</span></label>
                                 <select id="classification" name="classification" class="form-control bg-light" required>
-                                    <option value="">Select a classificationt</option>
+                                    <option value="">Select a classification</option>
                                     <option value="Teaching">Teaching</option>
                                      <option value="Non-teaching">Non-teaching</option>
                                 </select>
