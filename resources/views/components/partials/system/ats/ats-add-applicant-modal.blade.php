@@ -50,11 +50,13 @@
                     <select name="job_id" id="job_id" class="form-select" required>
                         <option value="" selected disabled>Select a Job</option>
                         @foreach($jobs as $job)
-                            <option value="{{ $job->id }}" data-slug="{{ $job->slug }}">
-                                {{ $job->job_title }} ({{ $job->department }})
+                            <option value="{{ $job->id }} " data-slug="{{ $job->slug }}">
+                                {{ $job->job_title }} ({{ $job->department }} )
                             </option>
+                         
                         @endforeach
                     </select>
+                    <input type="hidden" name="classification" value=" {{ $job->classification }}">
                     <div class="error-message text-danger"></div>
 
                     <!-- Hidden Slug Field -->

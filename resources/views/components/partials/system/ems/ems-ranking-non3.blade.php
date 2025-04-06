@@ -26,36 +26,36 @@
         </tr>
 
         <tr>
-            <td class="text-start">Excellent <span class="float-end">4.01 - 5.0</span></td>
-            <td   class="text-center"><input type="radio" id="fifty-points" name="groupIIIWE" value="1"></td>
+            <td class="text-start">Excellent <span class="float-end">4.01 - 5.0 (20)</span></td>
+            <td   class="text-center"><input type="radio" id="fifty-points" name="groupIIIWE" value="20"></td>
             <td></td>
             <td></td>
             <td></td>
         </tr>
         <tr>
-            <td class="text-start">Very Good <span class="float-end">3.01 - 4.0</span></td>
-            <td   class="text-center"><input type="radio" id="fifty-points" name="groupIIIWE" value="1"></td>
+            <td class="text-start">Very Good <span class="float-end">3.01 - 4.0 (16)</span></td>
+            <td   class="text-center"><input type="radio" id="fifty-points" name="groupIIIWE" value="16"></td>
             <td></td>
             <td></td>
             <td></td>
         </tr>
         <tr>
-            <td class="text-start">Good <span class="float-end">2.01 - 3.0</span></td>
-            <td   class="text-center"><input type="radio" id="fifty-points" name="groupIIIWE" value="1"></td>
+            <td class="text-start">Good <span class="float-end">2.01 - 3.0 (12)</span></td>
+            <td   class="text-center"><input type="radio" id="fifty-points" name="groupIIIWE" value="12"></td>
             <td></td>
             <td></td>
             <td></td>
         </tr>
         <tr>
-            <td class="text-start">Fair <span class="float-end">1.01 - 2.0</span></td>
-            <td   class="text-center"><input type="radio" id="fifty-points" name="groupIIIWE" value="1"></td>
+            <td class="text-start">Fair <span class="float-end">1.01 - 2.0 (8)</span></td>
+            <td   class="text-center"><input type="radio" id="fifty-points" name="groupIIIWE" value="8"></td>
             <td></td>
             <td></td>
             <td></td>
         </tr>
         <tr>
-            <td class="text-start">Poor <span class="float-end">0.01 - 1.0</span></td>
-            <td   class="text-center"><input type="radio" id="fifty-points" name="groupIIIWE" value="1"></td>
+            <td class="text-start">Poor <span class="float-end">0.01 - 1.0 (4)</span></td>
+            <td   class="text-center"><input type="radio" id="fifty-points" name="groupIIIWE" value="4"></td>
             <td></td>
             <td></td>
             <td></td>

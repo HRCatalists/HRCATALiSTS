@@ -96,12 +96,12 @@
                         <!-- Tab content -->
                         <div class="tab-content my-5" id="myTabContent">
 
-                        <x-partials.system.ems.ems-ranking-non1 />
-                        <x-partials.system.ems.ems-ranking-non2 />
-                        <x-partials.system.ems.ems-ranking-non3 />
-                        <x-partials.system.ems.ems-ranking-non4 />
-                        <x-partials.system.ems.ems-ranking-non5 />
-                        <x-partials.system.ems.ems-ranking-non6 />
+                                <x-partials.system.ems.ems-ranking-non1 />
+                                <x-partials.system.ems.ems-ranking-non2 />
+                                <x-partials.system.ems.ems-ranking-non3 />
+                                <x-partials.system.ems.ems-ranking-non4 />
+                                <x-partials.system.ems.ems-ranking-non5 />
+                                <x-partials.system.ems.ems-ranking-non6 /> 
 
                            
 
@@ -115,8 +115,8 @@
                     
                     </div>
 
-                </div>
+                
 
-</div>
+                </div>
 
     </x-admin-ems-layout>

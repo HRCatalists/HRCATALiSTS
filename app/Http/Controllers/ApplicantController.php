@@ -112,7 +112,7 @@ class ApplicantController extends Controller
         }
     
         $applicantName = trim($applicant->first_name . ' ' . $applicant->last_name);
-        $oldStatus = $applicant->status;
+   
     
         // Update applicant status
         if ($newStatus === 'hired') {
@@ -138,10 +138,10 @@ class ApplicantController extends Controller
             ]);
         
             if (strtolower($applicant->classification) === 'teaching') {
-                // EmployeeEmploymentDetail::create([
-                //     'employee_id' => $employee->id,
-                //     'classification' => $applicant->classification,
-                // ]);
+                 EmployeeEmploymentDetail::create([
+                     'employee_id' => $employee->id,
+                     'classification' => $applicant->classification,
+                 ]);
                 
                 FacultyTeachingRank1::create([
                     'emp_id' => $employee->id,
