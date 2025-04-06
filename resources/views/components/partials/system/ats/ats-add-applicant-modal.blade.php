@@ -51,7 +51,7 @@
                         <option value="" selected disabled>Select a Job</option>
                         @foreach($jobs as $job)
                             <option value="{{ $job->id }} " data-slug="{{ $job->slug }}">
-                                {{ $job->job_title }} ({{ $job->department }} )
+                                {{ $job->job_title }} ({{ $job->department }} ) {{ $job->classification }}
                             </option>
                          
                         @endforeach
@@ -81,10 +81,8 @@
                     
                     <!-- ✅ Privacy Policy Agreement -->
                     <div class="mb-3">
-                        <input type="checkbox" id="privacy_policy_agreed" name="privacy_policy_agreed" value="1" required>
-                        <label for="privacy_policy_agreed" class="form-label">
-                            I agree to the <a href="#" target="_blank">Privacy Policy</a>
-                        </label>
+                        <input type="hidden" id="privacy_policy_agreed" name="privacy_policy_agreed" value="1" required>
+                        
                         <div class="error-message text-danger"></div>
                     </div>
                 </div>
