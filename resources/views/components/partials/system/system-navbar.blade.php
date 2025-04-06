@@ -30,7 +30,11 @@
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
                     <li><a class="dropdown-item" href="#">Profile</a></li>
                     <li><a class="dropdown-item" href="#">Settings</a></li>
-                    <li><a class="dropdown-item" href="{{ route('manage-users') }}">Add user</a></li>
+                    @auth
+                        @if (Auth::user()->role !== 'secretary')
+                            <li><a class="dropdown-item" href="{{ route('manage-users') }}">Add user</a></li>
+                        @endif
+                    @endauth
                     <li><hr class="dropdown-divider"></li>
                     <li>
                         <form action="{{ route('logout') }}" method="POST">

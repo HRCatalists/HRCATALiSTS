@@ -56,7 +56,7 @@
         <div class="container justify-content-center align-items-center mt-5 g-1">
             <div class="row latest-opening-wrapper">
                 @if ($jobs->isEmpty())
-                    <p>No job openings are available at the moment.</p>
+                    <p class="text-center">No job openings are available at the moment.</p>
                 @else
                     <!-- Swiper -->
                     <div class="swiper-container col-md-5 job-column">

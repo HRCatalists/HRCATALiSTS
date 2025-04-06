@@ -14,6 +14,10 @@ use Illuminate\Support\Facades\Log;
 
 class FacultyRankingController extends Controller
 {
+    private function isSecretary()
+    {
+        return Auth::check() && Auth::user()->role === 'secretary';
+    }
     // EMS Faculty Ranking page
     public function ranking()
     {
@@ -83,6 +87,10 @@ class FacultyRankingController extends Controller
     // Save total points after calculating them
     public function saveTotalPoints(Request $request)
     {
+        if ($this->isSecretary()) {
+            return redirect()->back()->with('error', 'You do not have permission to perform this action.');
+        }
+
         if (!Auth::check()) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
@@ -174,6 +182,10 @@ class FacultyRankingController extends Controller
     }
     public function saveTotalPoints2(Request $request)
     {
+        if ($this->isSecretary()) {
+            return redirect()->back()->with('error', 'You do not have permission to perform this action.');
+        }
+
         if (!Auth::check()) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
@@ -219,67 +231,78 @@ class FacultyRankingController extends Controller
         }
     }
     public function saveTotalPoints3(Request $request)
-{
-    try {
-        $validated = $request->validate([
-            'emp_id' => 'required|exists:teaching_rank3,emp_id',
-            'classroom_evaluation' => 'nullable|numeric|min:0|max:50',
-            'work_evaluation' => 'nullable|numeric|min:0|max:50',
-        ]);
+    {
 
-        $faculty = FacultyTeachingRank3::where('emp_id', $validated['emp_id'])->first();
+        if ($this->isSecretary()) {
+            return redirect()->back()->with('error', 'You do not have permission to perform this action.');
+        }
+        
+        try {
+            
 
-        if (!$faculty) {
-            return response()->json(['error' => 'Faculty not found'], 404);
+            $validated = $request->validate([
+                'emp_id' => 'required|exists:teaching_rank3,emp_id',
+                'classroom_evaluation' => 'nullable|numeric|min:0|max:50',
+                'work_evaluation' => 'nullable|numeric|min:0|max:50',
+            ]);
+
+            $faculty = FacultyTeachingRank3::where('emp_id', $validated['emp_id'])->first();
+
+            if (!$faculty) {
+                return response()->json(['error' => 'Faculty not found'], 404);
+            }
+
+            $faculty->classroom_evaluation = $request->input('classroom_evaluation', 0);
+            $faculty->work_evaluation = $request->input('work_evaluation', 0);
+            $faculty->calculateTotalPoints();
+
+            return response()->json(['success' => true, 'data' => $faculty]);
+
+        } catch (\Exception $e) {
+            \Log::error("Rank 3 Save Error: " . $e->getMessage());
+            return response()->json(['error' => 'Server error'], 500);
+        }
+    }
+    public function saveTotalPoints4(Request $request)
+    {
+        if ($this->isSecretary()) {
+            return redirect()->back()->with('error', 'You do not have permission to perform this action.');
         }
 
-        $faculty->classroom_evaluation = $request->input('classroom_evaluation', 0);
-        $faculty->work_evaluation = $request->input('work_evaluation', 0);
-        $faculty->calculateTotalPoints();
+        try {
+            
 
-        return response()->json(['success' => true, 'data' => $faculty]);
+            $validated = $request->validate([
+                'emp_id' => 'required|exists:teaching_rank4,emp_id',
+                'attendance_activities' => 'nullable|in:0,30',
+                'committee_involvement' => 'nullable|in:0,30',
+                'community_extension' => 'nullable|in:0,40',
+            ]);
 
-    } catch (\Exception $e) {
-        \Log::error("Rank 3 Save Error: " . $e->getMessage());
-        return response()->json(['error' => 'Server error'], 500);
-    }
-}
-public function saveTotalPoints4(Request $request)
-{
-    try {
-        $validated = $request->validate([
-            'emp_id' => 'required|exists:teaching_rank4,emp_id',
-            'attendance_activities' => 'nullable|in:0,30',
-            'committee_involvement' => 'nullable|in:0,30',
-            'community_extension' => 'nullable|in:0,40',
-        ]);
+            $faculty = \App\Models\FacultyTeachingRank4::where('emp_id', $validated['emp_id'])->first();
 
-        $faculty = \App\Models\FacultyTeachingRank4::where('emp_id', $validated['emp_id'])->first();
+            if (!$faculty) {
+                return response()->json(['error' => 'Faculty not found'], 404);
+            }
 
-        if (!$faculty) {
-            return response()->json(['error' => 'Faculty not found'], 404);
+            $faculty->attendance_activities = $request->input('attendance_activities', 0);
+            $faculty->committee_involvement = $request->input('committee_involvement', 0);
+            $faculty->community_extension = $request->input('community_extension', 0);
+
+            $faculty->total_points = 
+                $faculty->attendance_activities + 
+                $faculty->committee_involvement + 
+                $faculty->community_extension;
+
+            $faculty->total_percentage = $faculty->total_points * 0.15;
+
+            $faculty->save();
+
+            return response()->json(['success' => true, 'data' => $faculty]);
+        } catch (\Exception $e) {
+            \Log::error("Rank 4 Save Error: " . $e->getMessage());
+            return response()->json(['error' => 'Server error'], 500);
         }
-
-        $faculty->attendance_activities = $request->input('attendance_activities', 0);
-        $faculty->committee_involvement = $request->input('committee_involvement', 0);
-        $faculty->community_extension = $request->input('community_extension', 0);
-
-        $faculty->total_points = 
-            $faculty->attendance_activities + 
-            $faculty->committee_involvement + 
-            $faculty->community_extension;
-
-        $faculty->total_percentage = $faculty->total_points * 0.15;
-
-        $faculty->save();
-
-        return response()->json(['success' => true, 'data' => $faculty]);
-    } catch (\Exception $e) {
-        \Log::error("Rank 4 Save Error: " . $e->getMessage());
-        return response()->json(['error' => 'Server error'], 500);
     }
-}
-
-
 
 }

@@ -21,6 +21,10 @@ use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {
+    private function isSecretary()
+    {
+        return Auth::check() && Auth::user()->role === 'secretary';
+    }
     public function dashboard()
     {
         if (!Auth::check()) {
@@ -42,7 +46,8 @@ class AdminController extends Controller
         return view('hrcatalists.admin-dashboard', compact(
             'logs', 'totalApplicants', 'applicantsByStatus', 'totalJobs', 'events'
         ));
-    }    
+    }
+
     public function atsLogs()
     {
         if (!Auth::check()) {
@@ -177,6 +182,11 @@ class AdminController extends Controller
     // ****Delete employee data
     public function deleteEmployee($id)
     {
+
+        if ($this->isSecretary()) {
+            return redirect()->back()->with('error', 'You do not have permission to perform this action.');
+        }
+
         $employee = Employee::find($id);
 
         if (!$employee) {
@@ -194,6 +204,10 @@ class AdminController extends Controller
     // ****Edit employee data
     public function update(Request $request, $id)
     {
+        if ($this->isSecretary()) {
+            return redirect()->back()->with('error', 'Unauthorized action for secretary role.');
+        }
+
         $employee = Employee::findOrFail($id);
     
         // ✅ Validate minimal fields (editable but safe)
@@ -514,6 +528,10 @@ class AdminController extends Controller
     }   
     public function deleteEvent($id)
     {
+        if ($this->isSecretary()) {
+            return redirect()->back()->with('error', 'You do not have permission to perform this action.');
+        }
+
         if (!Auth::check()) {
             return response()->json([
                 'success' => false,
@@ -587,6 +605,7 @@ class AdminController extends Controller
     }
     public function updateExpiredJobs(Request $request)
     {
+
         // Get count of expired jobs before updating
         $expiredJobCount = Job::where('end_date', '<', Carbon::today())
                               ->where('status', 'active')
@@ -782,6 +801,10 @@ class AdminController extends Controller
 
     public function manageUsers(Request $request)
     {
+        if ($this->isSecretary()) {
+            return redirect()->back()->with('error', 'You do not have permission to perform this action.');
+        }
+
         $search = $request->input('search');
     
         $users = User::query()
@@ -798,6 +821,10 @@ class AdminController extends Controller
     
     public function searchUsers(Request $request)
     {
+        if ($this->isSecretary()) {
+            return redirect()->back()->with('error', 'You do not have permission to perform this action.');
+        }
+
         $search = $request->input('search');
     
         $users = User::query()
@@ -809,6 +836,10 @@ class AdminController extends Controller
     }
     public function updateUserRole(Request $request)
     {
+        if ($this->isSecretary()) {
+            return redirect()->back()->with('error', 'You do not have permission to perform this action.');
+        }
+
         $validated = $request->validate([
             'user_id' => 'required|exists:users,id',
             'role' => 'required|in:admin,secretary,employee',
@@ -830,8 +861,8 @@ class AdminController extends Controller
     
     public function createUser(Request $request)
     {
-        if (Auth::user()->role !== 'admin') {
-            return redirect()->route('manage-users')->with('error', 'Only admins can create users.');
+        if ($this->isSecretary()) {
+            return redirect()->back()->with('error', 'You do not have permission to perform this action.');
         }
     
         $validated = $request->validate([
@@ -852,6 +883,5 @@ class AdminController extends Controller
     
         return redirect()->route('manage-users')->with('success', 'User created successfully.');
     }
-    
-    
+ 
 }

@@ -24,6 +24,10 @@ use App\Models\EmployeeEmploymentDetail;
 
 class ApplicantController extends Controller
 {
+    private function isSecretary()
+    {
+        return Auth::check() && Auth::user()->role === 'secretary';
+    }
     public function index()
     {
         if (!Auth::check()) {
@@ -48,6 +52,10 @@ class ApplicantController extends Controller
         if (!Auth::check()) {
             return redirect()->route('login')->with('error', 'Please log in to update status.');
         }
+
+        if ($this->isSecretary()) {
+            return redirect()->back()->with('error', 'You do not have permission to perform this action.');
+        }        
     
         $request->validate([
             'action' => 'required|string|in:approve,reject,archive,pass_evaluation,fail_evaluation'
@@ -92,6 +100,10 @@ class ApplicantController extends Controller
         if (!Auth::check()) {
             return redirect()->route('login')->with('error', 'Please log in to update applicant status.');
         }
+
+        if ($this->isSecretary()) {
+            return redirect()->back()->with('error', 'You do not have permission to perform this action.');
+        }       
     
         $applicant = Applicant::with('job')->find($id);
         if (!$applicant) {
@@ -281,7 +293,7 @@ class ApplicantController extends Controller
     {
         if (!Auth::check()) {
             return redirect()->route('login')->with('error', 'Please log in.');
-        }
+        } 
     
         $validStatuses = ['pending', 'screening', 'scheduled', 'evaluation', 'hired', 'rejected', 'archived'];
     
@@ -445,6 +457,11 @@ class ApplicantController extends Controller
     // bulk action - change status to archived
     public function bulkArchive(Request $request)
     {
+
+        if ($this->isSecretary()) {
+            return redirect()->back()->with('error', 'You do not have permission to perform this action.');
+        }  
+
         Applicant::whereIn('id', $request->ids)->update(['status' => 'archived']);
         return response()->json(['success' => true]);
     }
@@ -455,16 +472,21 @@ class ApplicantController extends Controller
     // bulk action - change status to rejected
     public function bulkReject(Request $request)
     {
-        try {
-            // Delete applicants by their IDs
-            Applicant::whereIn('id', $request->ids)->delete();
+        if ($this->isSecretary()) {
+            $errorMsg = 'You do not have permission to perform this action.';
     
-            return response()->json(['success' => true]);
-        } catch (\Exception $e) {
-            \Log::error('Bulk reject (delete) failed: ' . $e->getMessage());
-            return response()->json(['success' => false, 'message' => 'Failed to delete applicants.']);
+            if ($request->expectsJson()) {
+                return response()->json(['success' => false, 'message' => $errorMsg], 403);
+            }
+    
+            return redirect()->back()->with('error', $errorMsg);
         }
-    }
+    
+        // Delete applicants by their IDs
+        Applicant::whereIn('id', $request->ids)->delete();
+    
+        return response()->json(['success' => true, 'message' => 'Applicants deleted successfully.']);
+    }       
 
     // *
     // **
@@ -472,16 +494,28 @@ class ApplicantController extends Controller
     // ****Action button approve
     public function approve($id)
     {
+        if ($this->isSecretary()) {
+            $errorMsg = 'You do not have permission to perform this action.';
+    
+            if (request()->expectsJson()) {
+                return response()->json(['success' => false, 'message' => $errorMsg], 403);
+            }
+    
+            return redirect()->back()->with('error', $errorMsg);
+        }
+    
         $applicant = Applicant::with('job')->findOrFail($id);
         $applicant->status = 'hired';
         $applicant->save();
     
-        // ✅ Check if this applicant already exists in the employees table
         if (Employee::where('email', $applicant->email)->exists()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'This applicant is already hired. Duplicate email found in employees table.'
-            ], 409); // 409 = Conflict
+            $conflictMsg = 'This applicant is already hired. Duplicate email found in employees table.';
+    
+            if (request()->expectsJson()) {
+                return response()->json(['success' => false, 'message' => $conflictMsg], 409);
+            }
+    
+            return redirect()->back()->with('error', $conflictMsg);
         }
     
         $job = $applicant->job;
@@ -499,29 +533,19 @@ class ApplicantController extends Controller
             'job_title' => $job?->job_title ?? 'Not Set',
             'department' => $job?->department ?? 'Not Set',
         ]);
-
-        // Also insert the employee's id into the teaching_rank1 table
-        FacultyTeachingRank1::create([
-            'emp_id' => $employee->id,
-            'department' => $job?->department ?? 'Not Set',
-        ]);
-            FacultyTeachingRank2::create([
-                'emp_id' => $employee->id,
-            
-            ]);
-            FacultyTeachingRank3::create([
-            'emp_id' => $employee->id,
-            
-        ]);
-        FacultyTeachingRank4::create([
-            'emp_id' => $employee->id,
-            
-        ]);
     
-        return response()->json([
-            'success' => true,
-            'message' => 'Applicant approved and transferred to employees.'
-        ]);
+        FacultyTeachingRank1::create(['emp_id' => $employee->id, 'department' => $job?->department ?? 'Not Set']);
+        FacultyTeachingRank2::create(['emp_id' => $employee->id]);
+        FacultyTeachingRank3::create(['emp_id' => $employee->id]);
+        FacultyTeachingRank4::create(['emp_id' => $employee->id]);
+    
+        $successMsg = 'Applicant approved and transferred to employees.';
+    
+        if (request()->expectsJson()) {
+            return response()->json(['success' => true, 'message' => $successMsg]);
+        }
+    
+        return redirect()->back()->with('success', $successMsg);
     }
 
     // *
@@ -530,11 +554,25 @@ class ApplicantController extends Controller
     // ****Action button reject/delete
     public function reject($id)
     {
+        if ($this->isSecretary()) {
+            $errorMsg = 'You do not have permission to perform this action.';
+    
+            if (request()->expectsJson()) {
+                return response()->json(['success' => false, 'message' => $errorMsg], 403);
+            }
+    
+            return redirect()->back()->with('error', $errorMsg);
+        }
+    
         $applicant = Applicant::findOrFail($id);
         $applicant->delete();
-
-        return response()->json(['success' => true, 'message' => 'Applicant permanently deleted.']);
-    }
+    
+        if (request()->expectsJson()) {
+            return response()->json(['success' => true, 'message' => 'Applicant permanently deleted.']);
+        }
+    
+        return redirect()->back()->with('success', 'Applicant permanently deleted.');
+    }    
 
     // *
     // **
@@ -542,11 +580,25 @@ class ApplicantController extends Controller
     // ****Action button archive
     public function archive($id)
     {
+        if ($this->isSecretary()) {
+            $errorMsg = 'You do not have permission to perform this action.';
+    
+            if (request()->expectsJson()) {
+                return response()->json(['success' => false, 'message' => $errorMsg], 403);
+            }
+    
+            return redirect()->back()->with('error', $errorMsg);
+        }
+    
         $applicant = Applicant::findOrFail($id);
         $applicant->status = 'archived';
         $applicant->save();
-
-        return response()->json(['success' => true, 'message' => 'Applicant archived successfully.']);
-    }
+    
+        if (request()->expectsJson()) {
+            return response()->json(['success' => true, 'message' => 'Applicant archived successfully.']);
+        }
+    
+        return redirect()->back()->with('success', 'Applicant archived successfully.');
+    }    
 }
     

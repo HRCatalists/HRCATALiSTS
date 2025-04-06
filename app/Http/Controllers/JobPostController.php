@@ -9,6 +9,11 @@ use Illuminate\Support\Facades\Auth;
 
 class JobPostController extends Controller
 {
+
+    private function isSecretary()
+    {
+        return Auth::check() && Auth::user()->role === 'secretary';
+    }
     /**
      * Display all job positions.
      */
@@ -207,7 +212,11 @@ class JobPostController extends Controller
      */
     public function destroy($id)
     {
-        \Log::info("Attempting to delete job ID: $id");
+        if ($this->isSecretary()) {
+            return redirect()->back()->with('error', 'You do not have permission to perform this action.');
+        } 
+        
+        // \Log::info("Attempting to delete job ID: $id");
         
         $job = Job::findOrFail($id);
         

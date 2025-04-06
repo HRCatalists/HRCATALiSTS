@@ -134,17 +134,34 @@
                             @enderror
                         </div>
 
-                        <div class="form-check my-4 d-flex align-items-center">
+                        {{-- <div class="form-check my-4 d-flex align-items-center">
+                            <input class="form-check-input me-2" type="checkbox" id="privacyCheck" name="privacy_policy_agreed" disabled required>
+                            <label class="form-check-label me-1" for="privacyCheck">I agree to the</label>
+                            <a href="#" id="openPrivacyModal" data-bs-toggle="modal" data-bs-target="#privacyPolicyModal">Privacy Policy</a>
+                        </div>
+                        <small id="privacyHint" class="text-muted">Please read the Privacy Policy before agreeing.</small> --}}
+                        <!-- Privacy Policy Checkbox -->
+                        <div class="form-check d-flex align-items-center">
                             <input class="form-check-input me-2" type="checkbox" id="privacyCheck" name="privacy_policy_agreed" disabled required>
                             <label class="form-check-label me-1" for="privacyCheck">I agree to the</label>
                             <a href="#" id="openPrivacyModal" data-bs-toggle="modal" data-bs-target="#privacyPolicyModal">Privacy Policy</a>
                         </div>
                         <small id="privacyHint" class="text-muted">Please read the Privacy Policy before agreeing.</small>
 
+                        <!-- Terms of Use Checkbox -->
+                        <div class="form-check mt-3 d-flex align-items-center">
+                            <input class="form-check-input me-2" type="checkbox" id="termsCheck" name="terms_agreed" disabled required>
+                            <label class="form-check-label me-1" for="termsCheck">I agree to the</label>
+                            <a href="#" id="openTermsModal" data-bs-toggle="modal" data-bs-target="#termsModal">Terms of Use</a><br>
+                        </div>
+                        <small id="termsHint" class="text-muted">Please read the Terms of Use before agreeing.</small>
+
+
                         @include('hrcatalists.privacy-policy-modal')
+                        @include('hrcatalists.terms-of-use-modal')
                         
                         <!-- Submit Button -->
-                        <div class="d-grid">
+                        <div class="d-grid mt-5">
                             <button type="submit" class="btn btn-primary">SUBMIT</button>
                         </div>
                     </form>
@@ -156,6 +173,36 @@
 
     {{-- Privacy Policy read function --}}
     <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const privacyCheckbox = document.getElementById("privacyCheck");
+            const privacyModal = document.getElementById("privacyPolicyModal");
+            const privacyHint = document.getElementById("privacyHint");
+    
+            const termsCheckbox = document.getElementById("termsCheck");
+            const termsModal = document.getElementById("termsModal");
+            const termsHint = document.getElementById("termsHint");
+    
+            if (privacyModal) {
+                privacyModal.addEventListener("hidden.bs.modal", function () {
+                    privacyCheckbox.disabled = false;
+                    privacyHint.textContent = "You may now agree to the Privacy Policy.";
+                    privacyHint.classList.remove("text-muted");
+                    privacyHint.classList.add("text-success");
+                });
+            }
+    
+            if (termsModal) {
+                termsModal.addEventListener("hidden.bs.modal", function () {
+                    termsCheckbox.disabled = false;
+                    termsHint.textContent = "You may now agree to the Terms of Use.";
+                    termsHint.classList.remove("text-muted");
+                    termsHint.classList.add("text-success");
+                });
+            }
+        });
+    </script>
+    
+    {{-- <script>
         document.addEventListener("DOMContentLoaded", function () {
             const checkbox = document.getElementById("privacyCheck");
             const modal = document.getElementById("privacyPolicyModal");
@@ -169,7 +216,7 @@
                 privacyHint.classList.add("text-success");
             });
         });
-    </script>    
+    </script>     --}}
 
     {{-- File upload & Validation --}}
     <script>
