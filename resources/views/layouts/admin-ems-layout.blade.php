@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
     <!-- DataTables Core CSS -->
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css">
+    <link rel="stylesheet" href="//cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
 
     <!-- ✅ Add this to support buttons properly -->
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
@@ -66,26 +66,30 @@
     <!-- Calendar JS -->
     <script src="{{ asset('js/db-calendar.js') }}"></script>
 
-
-    <!-- Core Scripts -->
+    <!-- Bootstrap JavaScript Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
+
+
+    <!-- ✅ jQuery (REQUIRED for DataTables) -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
-    <!-- DataTables Core -->
-    <script src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
+    <!-- ✅ DataTables Core -->
+    <script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js"></script>
 
-    <!-- DataTables Buttons + Export -->
+    <!-- ✅ DataTables Buttons Extension -->
     <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.70/pdfmake.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.70/vfs_fonts.js"></script>
+
+    <!-- ✅ Export Dependencies -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
 
     <!-- Init All DataTables -->
-    {{-- <script>
-        const tableIDs = ['#employeeTable', '#basicEdTable', '#logsTable', '#applicantTable'];
+    <script>
+        const tableIDs = ['#employeeTable'];
 
         function initDataTable(id) {
             if ($(id).length) {
@@ -123,10 +127,10 @@
                 $('#selectAll').prop('checked', allChecked);
             });
         });
-    </script> --}}
+    </script>
 
     <!-- Popup & Tab Management -->
-    <script>
+    {{-- <script>
         function showPopup(popupId) {
             const popup = document.getElementById(popupId);
             popup.style.visibility = 'visible';
@@ -154,7 +158,7 @@
                 window.location.href = "/login";
             }
         });
-    </script>
+    </script> --}}
 
     {{-- <!-- Tab JS -->
     <script>

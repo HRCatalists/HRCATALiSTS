@@ -93,7 +93,7 @@ class ApplicantController extends Controller
             return redirect()->route('login')->with('error', 'Please log in to update applicant status.');
         }
     
-        $applicant = Applicant::with('job')->find($id); // Load job only (no department relation needed)
+        $applicant = Applicant::with('job')->find($id);
         if (!$applicant) {
             return redirect()->back()->with('error', 'Applicant not found.');
         }
@@ -101,11 +101,11 @@ class ApplicantController extends Controller
         $validStatuses = ['pending', 'screening', 'scheduled', 'evaluation', 'hired', 'rejected', 'archived'];
         $newStatus = $request->input('status');
         $oldStatus = $applicant->status;
-
-            // 🚫 Prevent reverting back to "pending"
-            if ($oldStatus !== 'pending' && $newStatus === 'pending') {
-                return redirect()->back()->with('error', 'You cannot revert an applicant back to Pending status.');
-            }
+    
+        // 🚫 Prevent reverting to pending
+        if ($oldStatus !== 'pending' && $newStatus === 'pending') {
+            return redirect()->back()->with('error', 'You cannot revert an applicant back to Pending status.');
+        }
     
         if (!in_array($newStatus, $validStatuses)) {
             return redirect()->back()->with('error', 'Invalid status provided.');
@@ -114,7 +114,6 @@ class ApplicantController extends Controller
         $applicantName = trim($applicant->first_name . ' ' . $applicant->last_name);
    
     
-        // Update applicant status
         if ($newStatus === 'hired') {
             // Prevent duplicate hire
             if (Employee::where('email', $applicant->email)->exists()) {
@@ -169,16 +168,38 @@ class ApplicantController extends Controller
                 User::create([
                     'name' => $applicant->first_name . ' ' . $applicant->last_name,
                     'email' => $applicant->email,
-                    'password' => bcrypt($rawPassword),
-                    'role' => 'Employee',
+                    'phone' => $applicant->phone,
+                    'address' => $applicant->address,
+                    'cv' => $applicant->cv,
+                    'privacy_policy_agreed' => $applicant->privacy_policy_agreed,
+                    'status' => 'hired',
+                    'applied_at' => $applicant->applied_at,
+                    'job_title' => $job?->job_title ?? 'Not Set',
+                    'department' => $job?->department ?? 'Not Set',
                 ]);
+    
+                // Auto-create blank faculty rank records
+                FacultyTeachingRank1::create(['emp_id' => $employee->id, 'department' => $employee->department]);
+                FacultyTeachingRank2::create(['emp_id' => $employee->id]);
+                FacultyTeachingRank3::create(['emp_id' => $employee->id]);
+                FacultyTeachingRank4::create(['emp_id' => $employee->id]);
+    
+                // Create user account
+                if (!User::where('email', $applicant->email)->exists()) {
+                    User::create([
+                        'name' => $applicant->first_name . ' ' . $applicant->last_name,
+                        'email' => $applicant->email,
+                        'password' => bcrypt('P@SSW0RD'),
+                        'role' => 'Employee',
+                    ]);
+                }
             }
-            
-        
-            $applicant->delete();
         }
-        
-        // Log the update
+    
+        // ✅ Update the status regardless
+        $applicant->update(['status' => $newStatus]);
+    
+        // 📝 Log the update
         Log::create([
             'user_id' => Auth::id(),
             'activity' => "Updated status for applicant: {$applicantName} from " . ucfirst($oldStatus) . " to " . ucfirst($newStatus),
