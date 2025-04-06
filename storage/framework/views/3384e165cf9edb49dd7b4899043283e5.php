@@ -92,6 +92,16 @@
         </li>
 
         
+
+        <li class="d-flex align-items-center pe-5">   
+            <a href="<?php echo e(route('manage-users')); ?>" class="fw-bold ms-3 sidebar-effect">
+                <!-- <img src="images/cv.png" class="icon" alt="positions-icon"> -->
+
+                <span class="ms-3 sidebar-effect">ADD USER</span> 
+            </a>
+        </li>
     </ul>
+
+    
 </div>
 <!-- End of Sidebar --><?php /**PATH C:\Users\raide\OneDrive\Desktop\HRCATALiSTS-hr-catalists\resources\views/components/partials/system/ats/ats-sidebar.blade.php ENDPATH**/ ?>

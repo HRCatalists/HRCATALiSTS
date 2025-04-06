@@ -6,7 +6,7 @@ use App\Http\Middleware\PreventBackHistory;
 use App\Http\Controllers\FacultyRankingController;
 use App\Http\Middleware\RoleMiddleware;
 
-Route::middleware([RoleMiddleware::class . ':admin,secretary,employeee'])->group(function () {
+Route::middleware([RoleMiddleware::class . ':admin,secretary'])->group(function () {
     Route::get('/ems-dashboard', [AdminController::class, 'emsDashboard'])->name('ems-dashboard');
     Route::get('/ems-employees', [AdminController::class, 'employees'])->name('ems-employees');
     Route::get('/employees/{id}', [AdminController::class, 'showEmployee'])->name('employees.show');
@@ -48,6 +48,20 @@ Route::post('/save-points', [FacultyRankingController::class, 'saveTotalPoints']
 Route::post('/save-points2', [FacultyRankingController::class, 'saveTotalPoints2']);
 Route::post('/save-points3', [FacultyRankingController::class, 'saveTotalPoints3']);
 Route::post('/save-points4', [FacultyRankingController::class, 'saveTotalPoints4']);
+
+
+//change role employee
+
+    Route::get('/manage-users', [AdminController::class, 'manageUsers'])->name('manage-users');
+    Route::post('/create-user', [AdminController::class, 'createUser'])->name('create-user');
+    Route::post('/update-role', [AdminController::class, 'updateUserRole'])->name('update-role');
+
+
+
+
+
+
+
 
 
 

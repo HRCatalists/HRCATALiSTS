@@ -30,6 +30,7 @@
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
                     <li><a class="dropdown-item" href="#">Profile</a></li>
                     <li><a class="dropdown-item" href="#">Settings</a></li>
+                    <li><a class="dropdown-item" href="<?php echo e(route('manage-users')); ?>">Add user</a></li>
                     <li><hr class="dropdown-divider"></li>
                     <li>
                         <form action="<?php echo e(route('logout')); ?>" method="POST">

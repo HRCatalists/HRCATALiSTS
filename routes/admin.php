@@ -16,12 +16,4 @@ Route::middleware([
     // Add other admin-only or shared routes here
 });
 
-// 👤 Employee Dashboard
-Route::middleware([
-    'auth',
-    PreventBackHistory::class,
-    RoleMiddleware::class . ':employee'
-])->group(function () {
-    Route::get('/emp-dashboard', [EmployeeController::class, 'dashboard'])->name('emp.dashboard');
-    // Add other employee-specific routes here
-});
+

@@ -163,6 +163,16 @@
         {{-- <li class="d-flex align-items-center mt-3 pe-5">
             <a href="{{ route('main-menu') }}" class="fw-bold ms-3 sidebar-effect">SWITCH TO EMS</a>
         </li> --}}
+
+        <li class="d-flex align-items-center pe-5">   
+            <a href="{{ route('manage-users') }}" class="fw-bold ms-3 sidebar-effect">
+                <!-- <img src="images/cv.png" class="icon" alt="positions-icon"> -->
+
+                <span class="ms-3 sidebar-effect">ADD USER</span> 
+            </a>
+        </li>
     </ul>
+
+    
 </div>
 <!-- End of Sidebar -->
