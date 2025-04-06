@@ -43,7 +43,6 @@
                 @php
                     $statuses = ['all', 'pending', 'screening', 'scheduled', 'evaluation', 'hired', 'archived'];
                     // $statuses = ['all', 'pending', 'screening', 'scheduled', 'evaluation', 'hired', 'rejected', 'archived'];
-
                 @endphp
 
                 <ul class="nav nav-tabs mt-4" id="statusTabs" role="tablist">
@@ -62,7 +61,7 @@
                             </button>
                         </li>
                     @endforeach
-                </ul>
+                </ul>               
 
                 <div class="tab-content" id="statusTabsContent">
                     <div class="d-flex flex-wrap gap-3 mb-3">
@@ -72,8 +71,6 @@
                         <a href="#" class="select-link text-decoration-underline" data-status="screening">Screening</a>
                         <a href="#" class="select-link text-decoration-underline" data-status="scheduled">Scheduled</a>
                         <a href="#" class="select-link text-decoration-underline" data-status="evaluation">Evaluation</a>
-                        {{-- <a href="#" class="select-link text-decoration-underline" data-status="hired">Hired</a> --}}
-                        {{-- <a href="#" class="select-link text-decoration-underline" data-status="rejected">Rejected</a> --}}
                         <a href="#" class="select-link text-decoration-underline" data-status="archived">Archived</a>
                     </div>                    
                     @foreach ($statuses as $key => $stat) 
@@ -85,12 +82,14 @@
                             <table class="table table-bordered display applicantTable">
                                 <thead>
                                     <tr>
-                                        <th></th>
+                                        <th class="no-export"></th>
+                                        <th>No</th>
                                         <th>NAME</th>
                                         <th>STATUS</th>
+                                        <th>Classification</th>
                                         <th>APPLIED DATE</th>
-                                        <th>POSITION APPLIED TO</th>
-                                        <th>ACTION</th>
+                                        <th>POSITION APPLIED</th>
+                                        <th class="no-export">ACTION</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -113,12 +112,13 @@
                                         }
                                     @endphp
 
-                                    @foreach($filteredApplicants as $applicant)
+                                    @foreach($filteredApplicants as $index => $applicant)
                                         <tr>
-                                            <td class="text-center">
+                                            <td class="text-center no-export">
                                                 <input type="checkbox" class="rowCheckbox" value="{{ $applicant->id }}">
                                             </td>
-                                            <td>{{ $applicant->first_name }} {{ $applicant->last_name }}</td>
+                                            <td class="text-center no-number"></td>
+                                            <td>{{ $applicant->first_name }} {{ $applicant->last_name }}</td>                                           
                                             <td>
                                                 <form method="POST" action="{{ route('applicants.chooseStatus', $applicant->id) }}" class="status-update-form">
                                                     @csrf
@@ -135,11 +135,12 @@
                                                     </select>
                                                 </form>
                                             </td>
+                                            <td>{{ $applicant->classification ?? 'N/A' }}</td>
                                             <td data-order="{{ \Carbon\Carbon::parse($applicant->applied_at)->timestamp }}">
                                                 {{ \Carbon\Carbon::parse($applicant->applied_at)->format('F d, Y') }}
                                             </td>                                    
                                             <td>{{ $applicant->job->job_title ?? 'N/A' }}</td>
-                                            <td>
+                                            <td class="no-export">
                                                 <div class="dropdown text-center">
                                                     <button class="btn btn-primary border-0" type="button" data-bs-toggle="dropdown">
                                                         <i class="fa-solid fa-list"></i>
@@ -198,6 +199,7 @@
                         </div>
                     @endforeach
                 </div>
+                
             </div>
         </div>
     </div>
@@ -209,6 +211,7 @@
     
     <!-- Candidate Profile Offcanvas -->
     @include('components.partials.system.ats.ats-candidate-profile-offcanvas')
+
 
     {{-- Applying button color changes based on the status --}}
     <script>
@@ -444,6 +447,7 @@
     {{-- Handle Form Submission & Display Success/Error Alerts --}}
 
     {{-- bulk selection of archived and rejected --}}
+    {{-- bulk selection of archived and rejected (tab-aware) --}}
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const checkboxes = document.querySelectorAll(".rowCheckbox");
@@ -672,13 +676,101 @@
     </script>
     {{-- Reject & Archive action button sweetalert --}}
 
-    {{-- Print --}}
-    {{-- <script>
-        document.querySelector('.print-btn').addEventListener('click', function () {
-            window.print();
-        });
-    </script>  --}}
-    {{-- Print --}}
+    {{-- Print Only Active Tab --}}
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelector('.print-btn').addEventListener('click', function () {
+                const activeTab = document.querySelector('.tab-pane.show.active');
+                if (!activeTab) {
+                    Swal.fire("Oops!", "No active tab found to print.", "warning");
+                    return;
+                }
 
-        
+                const table = activeTab.querySelector('table');
+                if (!table) {
+                    Swal.fire("Oops!", "No table found in the active tab.", "warning");
+                    return;
+                }
+
+                const clonedTable = table.cloneNode(true);
+
+                // === Identify column indexes to remove (columns with 'no-export')
+                const noExportIndex = [];
+                clonedTable.querySelectorAll('thead tr').forEach(row => {
+                    row.querySelectorAll('th').forEach((th, index) => {
+                        if (th.classList.contains('no-export')) {
+                            noExportIndex.push(index);
+                        }
+                    });
+                });
+
+                // === Remove matching <th>
+                clonedTable.querySelectorAll('thead tr').forEach(row => {
+                    noExportIndex.slice().reverse().forEach(i => {
+                        if (row.children[i]) row.removeChild(row.children[i]);
+                    });
+                });
+
+                // === Remove matching <td> in each <tbody> row
+                clonedTable.querySelectorAll('tbody tr').forEach(row => {
+                    noExportIndex.slice().reverse().forEach(i => {
+                        if (row.children[i]) row.removeChild(row.children[i]);
+                    });
+                });
+
+                // === Convert <select class="status-dropdown"> into plain styled text
+                clonedTable.querySelectorAll('select.status-dropdown').forEach(select => {
+                    const selectedText = select.options[select.selectedIndex]?.textContent || '';
+                    const span = document.createElement('span');
+                    span.textContent = selectedText;
+                    span.style.fontWeight = 'bold';
+                    span.style.padding = '4px 8px';
+                    span.style.display = 'inline-block';
+                    span.style.borderRadius = '4px';
+                    span.style.backgroundColor = '#eee';
+                    span.style.color = '#333';
+                    select.parentNode.replaceChild(span, select);
+                });
+
+                // === Title for print header
+                const activeTabButton = document.querySelector('.nav-link.active');
+                const tabTitle = activeTabButton ? activeTabButton.textContent.trim() : 'Applicant List';
+
+                // === Get styles from loaded stylesheets
+                const styles = [...document.styleSheets]
+                    .filter(style => style.href)
+                    .map(style => `<link rel="stylesheet" href="${style.href}">`)
+                    .join('\n');
+
+                // === Write print content
+                const printWindow = window.open('', '', 'width=900,height=650');
+                printWindow.document.write(`
+                    <html>
+                        <head>
+                            <title>Print - ${tabTitle} Applicants</title>
+                            ${styles}
+                            <style>
+                                body { font-family: Arial, sans-serif; margin: 20px; }
+                                h2 { text-align: center; margin-bottom: 20px; }
+                                table { width: 100%; border-collapse: collapse; }
+                                th, td { border: 1px solid #000; padding: 8px; text-align: left; vertical-align: middle; }
+                                th { background-color: #f8f8f8; }
+                            </style>
+                        </head>
+                        <body>
+                            <h2>Applicant List - ${tabTitle}</h2>
+                            ${clonedTable.outerHTML}
+                        </body>
+                    </html>
+                `);
+                printWindow.document.close();
+                printWindow.focus();
+                printWindow.print();
+                printWindow.close();
+            });
+        });
+    </script>
+    {{-- Print Only Active Tab --}}
+
+
 </x-admin-ats-layout>

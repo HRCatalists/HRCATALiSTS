@@ -314,8 +314,6 @@
                         Phone: (047) 222 3329 loc. 120<br>
                         hamdo@columban.edu.ph
                     </strong></p>
-
-
                 </div>
             </div>
         </section>

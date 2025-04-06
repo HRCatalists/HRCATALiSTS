@@ -48,7 +48,7 @@
 {{-- *** --}}
 {{-- ** --}}
 {{-- * --}}
-<script>
+{{-- <script>
     $(document).ready(function () {
         // Loop through each table with class 'applicantTable' and initialize DataTables
         $('.applicantTable').each(function () {
@@ -74,6 +74,48 @@
         // force the DataTable to redraw its columns (important for hidden tab tables)
         $('a[data-bs-toggle="tab"]').on('shown.bs.tab', function () {
             $('.applicantTable').DataTable().columns.adjust().draw();
+        });
+    });
+</script> --}}
+<script>
+    $(document).ready(function () {
+        // Initialize all tables
+        $('.applicantTable').each(function () {
+            $(this).DataTable({
+                responsive: true,
+                paging: true,
+                searching: true,
+                info: true,
+                lengthChange: true,
+                order: [[3, 'desc']],
+                dom: '<"datatable-toolbar d-flex justify-content-between align-items-center my-3"lf>tip',
+                columnDefs: [
+                    { targets: 3, width: '180px' }, // STATUS
+                    { targets: 6, width: '200px' }, // POSITION APPLIED TO
+                ],
+            });
+        });
+
+        // Fix for hidden tabs
+        $('a[data-bs-toggle="tab"]').on('shown.bs.tab', function () {
+            $('.applicantTable').DataTable().columns.adjust().draw();
+        });
+
+        // Add row numbering
+        $('.applicantTable').each(function () {
+            const table = $(this).DataTable();
+
+            table.on('draw', function () {
+                const pageInfo = table.page.info();
+                let rowNum = pageInfo.start + 1;
+
+                table.rows({ page: 'current' }).every(function () {
+                    const row = this.node();
+                    $(row).find('td.no-number').first().html(rowNum++);
+                });
+            });
+
+            table.draw(); // Trigger initial numbering
         });
     });
 </script>

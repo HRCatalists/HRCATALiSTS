@@ -216,6 +216,17 @@
                                                                 <label class="form-label">Tags</label>
                                                                 <input type="text" class="form-control" name="tags" value="{{ $job->tags }}">
                                                             </div>
+                                                            <!-- classification -->
+                                                            <div class="col-md-6">
+                                                                <label for="classification" class="form-label">Classification <span class="text-danger">*</span></label>
+                                                                <select name="classification" class="form-control bg-light" required>
+                                                                    <option value="Teaching" {{ $job->classification == 'Teaching' ? 'selected' : '' }}>Teaching</option>
+                                                                    <option value="Non-teaching" {{ $job->classification == 'Non-teaching' ? 'selected' : '' }}>Non-teaching</option>
+                                                                </select>                                                                
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row mb-3">
                                                             <div class="col-md-3">
                                                                 <label class="form-label">Date Issued <span class="text-danger">*</span></label>
                                                                 <input type="date" class="form-control" name="date_issued"
@@ -227,15 +238,6 @@
                                                                     value="{{ $job->end_date }}" required>
                                                             </div>
                                                         </div>
-                                                          <!-- classification -->
-                                                        <div class="col-md-6">
-                                                                    <label for="classification" class="form-label">Classification <span class="text-danger">*</span></label>
-                                                                            <select  name="classification" class="form-control bg-light" required>
-                                                                                <option value="{{ $job->classification }}"required></option>
-                                                                                <option value="Teaching">Teaching</option>
-                                                                                <option value="Non-teaching">Non-teaching</option>
-                                                                            </select>
-                                                                </div>
                                                     </div>
                                 
                                                     <div class="modal-footer">
@@ -320,6 +322,16 @@
                                 <label for="tags" class="form-label">Tags <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" id="tags" name="tags" placeholder="Enter tags">
                             </div>
+
+                            <!-- classification -->
+                            <div class="col-md-6">
+                                <label for="classification" class="form-label">Classification <span class="text-danger">*</span></label>
+                                <select id="classification" name="classification" class="form-control bg-light" required>
+                                    <option value="">Select a classification</option>
+                                    <option value="Teaching">Teaching</option>
+                                        <option value="Non-teaching">Non-teaching</option>
+                                </select>
+                            </div>
                     
                             <!-- Date Issued -->
                             <div class="col-md-3">
@@ -333,15 +345,6 @@
                                 <input type="date" class="form-control" id="endDate" name="end_date" required>
                             </div>
                         </div>
-                        <!-- classification -->
-                        <div class="col-md-6">
-                        <label for="classification" class="form-label">Classification <span class="text-danger">*</span></label>
-                                <select id="classification" name="classification" class="form-control bg-light" required>
-                                    <option value="">Select a classification</option>
-                                    <option value="Teaching">Teaching</option>
-                                     <option value="Non-teaching">Non-teaching</option>
-                                </select>
-                    </div>
                     </div> 
                                        
                     <div class="modal-footer">
