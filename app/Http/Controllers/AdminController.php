@@ -850,7 +850,7 @@ class AdminController extends Controller
             'role' => $validated['role'],
         ]);
     
-        return redirect()->route('manage-users')->with('success', 'User created successfully. Default password is P@SSW0RD.');
+        return redirect()->route('manage-users')->with('success', 'User created successfully.');
     }
     
     
