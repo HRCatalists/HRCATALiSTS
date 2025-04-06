@@ -272,6 +272,29 @@
     
 
     <script>
+        $(document).ready(function () {
+            $('#employeeTable').DataTable({
+                responsive: true,
+                pageLength: 10,
+                lengthChange: true,
+                order: [[1, 'asc']], // Optional: order by ID
+                columnDefs: [
+                    { targets: 0, orderable: false }, // Disable sort for checkboxes
+                    { targets: -1, orderable: false } // Disable sort for Action column
+                ],
+                language: {
+                    search: '',
+                    searchPlaceholder: 'Search employees...',
+                    paginate: {
+                        previous: 'Previous',
+                        next: 'Next'
+                    }
+                }
+            });
+        });
+    </script>    
+
+    <script>
         document.addEventListener('DOMContentLoaded', function () {
             const sections = ['education', 'licenses', 'trainings', 'service-records', 'organizations', 'others'];
     

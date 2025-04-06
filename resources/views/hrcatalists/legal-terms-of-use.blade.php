@@ -29,7 +29,7 @@
 
                     <h6 class="mt-4 fw-bold">AGREEMENT TO OUR LEGAL TERMS</h6>
                     <p>We are Columban College, Inc., a company registered in the Philippines at #1 First St., New Asinan, Olongapo City, Zambales 2200.</p>
-                    <p>We operate the website https:// careers.columban.edu.ph, as well as any other related products 
+                    <p>We operate the website https://www.ccihamdo.com, as well as any other related products 
                         and services that refer or link to these legal terms.
                     </p>
                     <p>You can contact us by telephone at (047) 222 3329 loc. 120, email at hamdo@columban.edu.ph, or 
