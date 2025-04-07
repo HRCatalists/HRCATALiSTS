@@ -34,9 +34,13 @@ class AdminController extends Controller
     
         $logs = Log::latest()->take(5)->get();
         $totalApplicants = Applicant::count();
+        $applicantsByStatus = Applicant::selectRaw('LOWER(TRIM(status)) as status, COUNT(*) as count')
+            ->groupBy('status')
+            ->pluck('count', 'status')
+            ->toArray();
         $totalJobs = Job::count();
-        $events = Event::select('event_date', 'event_time', 'title', 'description')->get();
         $totalEmployees = Employee::count();
+        $events = Event::select('event_date', 'event_time', 'title', 'description')->get();
 
         // Count teaching and non-teaching
         $teachingCount = EmployeeEmploymentDetail::where('classification', 'teaching')->count();
@@ -60,6 +64,7 @@ class AdminController extends Controller
         return view('hrcatalists.admin-dashboard', compact(
             'logs',
             'totalApplicants',
+            'applicantsByStatus',
             'totalJobs',
             'events',
             'totalEmployees',
