@@ -18,7 +18,7 @@
                 <ul class="list-unstyled">
                     <li class="mb-2"><i class="fas fa-map-marker-alt me-2"></i>#1 First St. New Asinan, Olongapo City</li>
                     <li class="mb-2"><i class="fas fa-envelope me-2"></i>hamdo@columban.edu.ph</li>
-                    <li><i class="fas fa-phone me-2"></i>(047) 222-3329</li>
+                    <li><i class="fas fa-phone me-2"></i>(047) 222-3329 loc. 120</li>
                 </ul>
             </div>
         </div>

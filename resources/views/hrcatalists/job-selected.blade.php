@@ -134,12 +134,6 @@
                             @enderror
                         </div>
 
-                        {{-- <div class="form-check my-4 d-flex align-items-center">
-                            <input class="form-check-input me-2" type="checkbox" id="privacyCheck" name="privacy_policy_agreed" disabled required>
-                            <label class="form-check-label me-1" for="privacyCheck">I agree to the</label>
-                            <a href="#" id="openPrivacyModal" data-bs-toggle="modal" data-bs-target="#privacyPolicyModal">Privacy Policy</a>
-                        </div>
-                        <small id="privacyHint" class="text-muted">Please read the Privacy Policy before agreeing.</small> --}}
                         <!-- Privacy Policy Checkbox -->
                         <div class="form-check d-flex align-items-center">
                             <input class="form-check-input me-2" type="checkbox" id="privacyCheck" name="privacy_policy_agreed" disabled required>
@@ -156,6 +150,14 @@
                         </div>
                         <small id="termsHint" class="text-muted">Please read the Terms of Use before agreeing.</small>
 
+                        @error('privacy_policy_agreed')
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        @enderror
+
+                        @error('terms_agreed')
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        @enderror
+
 
                         @include('hrcatalists.privacy-policy-modal')
                         @include('hrcatalists.terms-of-use-modal')
@@ -171,9 +173,10 @@
         </div>
     </div>
 
-    {{-- Privacy Policy read function --}}
+    {{-- Privacy Policy Modal & Terms of Use Modal Validation --}}
     <script>
         document.addEventListener("DOMContentLoaded", function () {
+            const form = document.getElementById("applicationForm");
             const privacyCheckbox = document.getElementById("privacyCheck");
             const privacyModal = document.getElementById("privacyPolicyModal");
             const privacyHint = document.getElementById("privacyHint");
@@ -182,6 +185,7 @@
             const termsModal = document.getElementById("termsModal");
             const termsHint = document.getElementById("termsHint");
     
+            // Enable Privacy checkbox after reading modal
             if (privacyModal) {
                 privacyModal.addEventListener("hidden.bs.modal", function () {
                     privacyCheckbox.disabled = false;
@@ -191,6 +195,7 @@
                 });
             }
     
+            // Enable Terms checkbox after reading modal
             if (termsModal) {
                 termsModal.addEventListener("hidden.bs.modal", function () {
                     termsCheckbox.disabled = false;
@@ -199,24 +204,29 @@
                     termsHint.classList.add("text-success");
                 });
             }
-        });
-    </script>
     
-    {{-- <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const checkbox = document.getElementById("privacyCheck");
-            const modal = document.getElementById("privacyPolicyModal");
-            const privacyHint = document.getElementById("privacyHint");
+            // ✅ Enforce both checkboxes must be checked before form submit
+            form.addEventListener("submit", function (event) {
+                if (!privacyCheckbox.checked || !termsCheckbox.checked) {
+                    event.preventDefault(); // Stop submission
     
-            // Enable checkbox when modal is fully hidden (user closes it)
-            modal.addEventListener("hidden.bs.modal", function () {
-                checkbox.disabled = false;
-                privacyHint.textContent = "You may now agree to the Privacy Policy.";
-                privacyHint.classList.remove("text-muted");
-                privacyHint.classList.add("text-success");
+                    let message = "Please make sure you have agreed to the following:\n";
+                    if (!privacyCheckbox.checked) message += "- Privacy Policy\n";
+                    if (!termsCheckbox.checked) message += "- Terms of Use";
+    
+                    Swal.fire({
+                        icon: "warning",
+                        title: "Incomplete Agreement",
+                        text: message,
+                        confirmButtonColor: "#ffc107",
+                        confirmButtonText: "Got it"
+                    });
+                }
             });
         });
-    </script>     --}}
+    </script>
+    {{-- Privacy Policy Modal & Terms of Use Modal Validation --}}
+
 
     {{-- File upload & Validation --}}
     <script>
@@ -278,6 +288,21 @@
                 event.preventDefault(); // Prevent default form submission
 
                 const formData = new FormData(form);
+
+                const cvInput = document.getElementById("cv");
+                const file = cvInput.files[0];
+
+                // Check if resume is uploaded
+                if (!file) {
+                    Swal.fire({
+                        icon: "warning",
+                        title: "Resume Required",
+                        text: "Please upload your CV before submitting the application.",
+                        confirmButtonColor: "#ffc107",
+                        confirmButtonText: "Okay"
+                    });
+                    return; // Stop submission
+                }
 
                 // Clear previous error messages
                 document.querySelectorAll(".error-message").forEach(el => el.remove());
