@@ -12,9 +12,72 @@
                 <div class="row dashboard-row d-flex justify-content-between align-items-start">
                 
                     <div class="col-md-7">
-                        <!-- Dept. Count -->
-                        <div class="">
 
+                        {{-- Classification of Employees (Teaching and Non-Teaching) --}}
+                        <div class="card shadow p-3 mb-3">
+                            <h5 class="card-title">Employee Classification</h5>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    Teaching
+                                    <span class="badge bg-primary rounded-pill">{{ $teachingCount }}</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    Non-Teaching
+                                    <span class="badge bg-secondary rounded-pill">{{ $nonTeachingCount }}</span>
+                                </li>
+                            </ul>
+                        </div>
+                        {{-- End Classification of Employees --}}
+
+                        {{-- Employee Count by Department --}}
+                        <div class="card shadow p-3 mb-3">
+                            <h5 class="card-title">Employee Count by Department</h5>
+                            @foreach ($departmentPercentages as $label => $data)
+                                @php
+                                    // Convert to slug for class name (e.g., "College of Nursing" → "college-of-nursing")
+                                    $class = Str::slug($label);
+                                @endphp
+
+
+                                <div class="mb-2">
+                                    <div class="department-name">{{ $label }}</div>
+                                    <div class="progress">
+                                        <div class="progress-bar {{ $class }}" style="width: {{ $data['percentage'] }}%;">
+                                            {{ $data['count'] }} employee{{ $data['count'] == 1 ? '' : 's' }}
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                        {{-- Employee Count by Department --}}
+                        
+                        {{-- @php
+                            $departments = [
+                                'College of Engineering' => 'eng',
+                                'College of Arts & Science and Education' => 'cased',
+                                'College of Business and Accountancy' => 'cba',
+                                'College of Nursing' => 'nursing',
+                                'College of Computer Studies' => 'ccs',
+                                'College of Architecture' => 'arch',
+                                'College of Basic Education' => 'basic',
+                            ];
+                        @endphp
+
+                        @foreach ($departments as $label => $class)
+                            @php
+                                $data = $departmentPercentages[$label] ?? ['count' => 0, 'percentage' => 0];
+                            @endphp
+
+                            <div class="mb-2">
+                                <div class="department-name">{{ $label }}</div>
+                                <div class="progress">
+                                    <div class="progress-bar {{ $class }}" style="width: {{ $data['percentage'] }}%;">
+                                        {{ $data['count'] }} employee{{ $data['count'] == 1 ? '' : 's' }}
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach --}}
+                        {{-- <div class="">
                             <div class="card shadow p-2">
                                 <div class="card-body">
                                 <h5 class="card-title mb-4">Employee Count by Department</h5>
@@ -70,9 +133,9 @@
 
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                         <!--  End Dept. Count -->
-                    </div>
+                    </div>                 
 
                     <div class="col-md-5">
                         <div class="row">
@@ -84,7 +147,7 @@
                                             <h5 class="card-title m-auto">Employees</h5>
                                             <img src="images/cv-2.png" class="card-icon m-auto" alt="doc-icon">
                                         </div>
-                                        <p class="emp-counter text-wrap fw-bold mt-2">234</p>
+                                        <p class="emp-counter text-wrap fw-bold mt-2">{{ $totalEmployees ?? 0 }}</p>
                                     </div>
                                 </div>
                             </div>

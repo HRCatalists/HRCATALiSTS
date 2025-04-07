@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ApplicantController;
 use App\Http\Controllers\JobPostController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Middleware\PreventBackHistory;
 use App\Http\Middleware\RoleMiddleware;
 

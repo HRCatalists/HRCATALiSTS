@@ -11,6 +11,7 @@ use App\Models\Job;
 use App\Models\Log;
 use App\Models\User;
 use App\Models\Event;
+use App\Models\EmployeeEmploymentDetail;
 use Carbon\Carbon;
 use App\Models\Employee;
 use App\Services\GoogleDriveService;
@@ -31,20 +32,40 @@ class AdminController extends Controller
             return redirect()->route('login');
         }
     
-        // Fetch logs, applicants, and jobs
         $logs = Log::latest()->take(5)->get();
         $totalApplicants = Applicant::count();
-        $applicantsByStatus = Applicant::selectRaw('LOWER(TRIM(status)) as status, COUNT(*) as count')
-            ->groupBy('status')
-            ->pluck('count', 'status')
-            ->toArray();
         $totalJobs = Job::count();
-    
-        // ✅ Fetch all events (without category filtering)
         $events = Event::select('event_date', 'event_time', 'title', 'description')->get();
+        $totalEmployees = Employee::count();
+
+        // Count teaching and non-teaching
+        $teachingCount = EmployeeEmploymentDetail::where('classification', 'teaching')->count();
+        $nonTeachingCount = EmployeeEmploymentDetail::where('classification', 'non-teaching')->count();
+    
+        // ✅ Calculate employee count per department
+        $departmentCounts = Employee::selectRaw('department, COUNT(*) as count')
+            ->groupBy('department')
+            ->pluck('count', 'department')
+            ->toArray();
+
+        // ✅ Compute percentages
+        $departmentPercentages = [];
+        foreach ($departmentCounts as $dept => $count) {
+            $departmentPercentages[$dept] = [
+                'count' => $count,
+                'percentage' => $totalEmployees > 0 ? round(($count / $totalEmployees) * 100, 1) : 0,
+            ];
+        }
     
         return view('hrcatalists.admin-dashboard', compact(
-            'logs', 'totalApplicants', 'applicantsByStatus', 'totalJobs', 'events'
+            'logs',
+            'totalApplicants',
+            'totalJobs',
+            'events',
+            'totalEmployees',
+            'teachingCount',
+            'nonTeachingCount',
+            'departmentPercentages'
         ));
     }
 
