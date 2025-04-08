@@ -54,7 +54,8 @@ Route::get('/login', function () {
 
 // Job Application Form
 Route::get('/job-selected/{slug}', [JobPostController::class, 'jobSelected'])->name('job-selected');
-Route::post('/job-selected/{slug}/apply', [ApplicantController::class, 'store'])->name('applicants.store');
+Route::post('/careers/{slug}/apply', [ApplicantController::class, 'submitFromPublic'])->name('public.applicant.submit');
+
 
 // Logout route
 Route::post('/logout', function () {

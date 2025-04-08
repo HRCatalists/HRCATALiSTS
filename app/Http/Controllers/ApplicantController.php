@@ -400,6 +400,60 @@ class ApplicantController extends Controller
         return redirect()->back()->with('success', 'Application submitted successfully!');
     }
 
+    public function submitFromPublic(Request $request)
+    {
+        // ✅ 1. Validate request
+        $validated = $request->validate([
+            'job_id' => 'required|integer|exists:job_posts,id',
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:applicants,email',
+            'phone' => 'required|string|max:20',
+            'address' => 'required|string|max:255',
+            'classification' => 'required|string|max:255',
+            'cv' => 'required|mimes:pdf|max:2048',
+            'privacy_policy_agreed' => 'required',
+            'terms_agreed' => 'required',
+        ]);
+
+        // ✅ 2. Upload to Google Drive
+        $cvFileId = null;
+        if ($request->hasFile('cv')) {
+            $cvFile = $request->file('cv');
+            $cvFileId = $this->googleDriveService->uploadFile($cvFile); // returns Google Drive File ID
+        }
+
+        // ✅ 3. Create new applicant
+        $applicant = new Applicant();
+        $applicant->job_id = $validated['job_id'];
+        $applicant->first_name = $validated['first_name'];
+        $applicant->last_name = $validated['last_name'];
+        $applicant->email = $validated['email'];
+        $applicant->phone = $validated['phone'];
+        $applicant->address = $validated['address'];
+        $applicant->classification = $validated['classification'];
+        $applicant->cv = $cvFileId;
+        $applicant->status = 'pending';
+        $applicant->applied_at = now();
+        $applicant->privacy_policy_agreed = true;
+        $applicant->terms_agreed = true;
+        $applicant->save();
+
+        // ✅ 4. Log submission
+        ApplicationSubmission::create([
+            'full_name' => $applicant->first_name . ' ' . $applicant->last_name,
+            'email' => $applicant->email,
+            'classification' => $applicant->classification,
+            'job_id' => $applicant->job_id,
+            'job_title' => $applicant->job->job_title ?? 'N/A',
+            'status' => 'submitted',
+            'submitted_at' => now(),
+        ]);
+
+        // ✅ 5. Redirect back with success message
+        return redirect()->back()->with('success', 'Your application has been submitted successfully!');
+    }
+
     // *
     // **
     // ***
