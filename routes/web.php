@@ -11,10 +11,20 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\InterviewScheduled;
+// use App\Http\Controllers\ResetPasswordController;
 
-Route::get('/test-department-toggle', function () {
-    return view('hrcatalists.ats.ats-dept-modal-other');
-});
+// // Show "Forgot Password" form
+// Route::get('/forgot-password', [ResetPasswordController::class, 'showEmailForm'])->name('password.request');
+// Route::post('/forgot-password', [ResetPasswordController::class, 'sendResetLink'])->name('password.email');
+
+// Route::get('/custom-reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])
+//     ->name('custom.password.reset');
+
+// Route::post('/custom-reset-password', [ResetPasswordController::class, 'resetPassword'])
+//     ->name('custom.password.update');
+
+
+
 
 // Departments
 

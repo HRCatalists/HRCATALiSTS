@@ -15,7 +15,7 @@
         </button>
         
         <!-- Left Side (Logo and College Name) -->
-        <a class=" d-flex align-items-center" href="#">
+        <a class=" d-flex align-items-center" href="{{ route('admin.dashboard') }}">
             <img src="images/CC_logo.png" alt="Logo" class="cclogo">
             <span class="cc-nav-text navbar-text ms-2">Columban College, Inc.</span>
         </a>
@@ -29,7 +29,7 @@
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
                     <li><a class="dropdown-item" href="#">Profile</a></li>
-                    <li><a class="dropdown-item" href="#">Settings</a></li>
+                    <li><a class="dropdown-item" href="{{ route('password.update') }}">Settings</a></li>
                     @auth
                         @if (Auth::user()->role !== 'secretary')
                             <li><a class="dropdown-item" href="{{ route('manage-users') }}">Add user</a></li>

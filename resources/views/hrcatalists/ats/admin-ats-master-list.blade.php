@@ -79,7 +79,7 @@
                             role="tabpanel" 
                             aria-labelledby="{{ $stat }}-tab"
                         >
-                            <table class="table table-bordered display applicantTable">
+                            <table class="table table-bordered display applicantTable" id="applicantTable-{{ $stat }}">
                                 <thead>
                                     <tr>
                                         <th class="no-export"></th>
@@ -112,14 +112,14 @@
                                         }
                                     @endphp
 
-                                    @foreach($filteredApplicants as $index => $applicant)
+                                    @foreach($filteredApplicants as $applicant)
                                         <tr>
                                             <td class="text-center no-export">
                                                 <input type="checkbox" class="rowCheckbox" value="{{ $applicant->id }}">
                                             </td>
-                                            <td class="text-center no-number"></td>
+                                            <td class="row-number text-center"></td>
                                             <td>{{ $applicant->first_name }} {{ $applicant->last_name }}</td>                                           
-                                            <td>
+                                            {{-- <td>
                                                 <form method="POST" action="{{ route('applicants.chooseStatus', $applicant->id) }}" class="status-update-form">
                                                     @csrf
                                                     <select name="status" class="form-select status-dropdown"
@@ -134,7 +134,23 @@
                                                         @endforeach
                                                     </select>
                                                 </form>
-                                            </td>
+                                            </td> --}}
+                                            <td data-order="{{ array_search($applicant->status, ['pending','screening','scheduled','evaluation','hired','archived']) }}">
+                                                <form method="POST" action="{{ route('applicants.chooseStatus', $applicant->id) }}" class="status-update-form">
+                                                    @csrf
+                                                    <select name="status" class="form-select status-dropdown"
+                                                        data-applicant-name="{{ $applicant->first_name }} {{ $applicant->last_name }}" 
+                                                        data-current-status="{{ $applicant->status }}"
+                                                        style="color: #fff; border-radius: 4px; padding: 4px; text-align: center; background-color: {{ $statusColors[$applicant->status] ?? '#000' }};"
+                                                    >
+                                                        @foreach ($statuses as $s)
+                                                            <option value="{{ $s }}" {{ $applicant->status == $s ? 'selected' : '' }}>
+                                                                {{ ucfirst($s) }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </form>
+                                            </td>                                            
                                             <td>{{ $applicant->classification ?? 'N/A' }}</td>
                                             <td data-order="{{ \Carbon\Carbon::parse($applicant->applied_at)->timestamp }}">
                                                 {{ \Carbon\Carbon::parse($applicant->applied_at)->format('F d, Y') }}
@@ -210,8 +226,7 @@
     @include('components.partials.system.ats.ats-add-applicant-modal', ['jobs' => $jobs])
     
     <!-- Candidate Profile Offcanvas -->
-    @include('components.partials.system.ats.ats-candidate-profile-offcanvas')
-
+    @include('components.partials.system.ats.ats-candidate-profile-offcanvas')  
 
     {{-- Applying button color changes based on the status --}}
     <script>
@@ -771,6 +786,106 @@
         });
     </script>
     {{-- Print Only Active Tab --}}
+
+    {{-- DataTables with Row Numbering --}}
+    {{-- <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const initialized = new Set();
+            
+    
+            function addRowNumbering(tableInstance) {
+                tableInstance.on('draw.dt', function () {
+                    const pageInfo = tableInstance.page.info();
+                    let start = pageInfo.start + 1;
+    
+                    tableInstance.rows({ page: 'current' }).every(function () {
+                        const $row = $(this.node());
+                        $row.find('td.row-number').html(start++);
+                    });
+                });
+            }
+    
+            $('.applicantTable').each(function () {
+                const $table = $(this);
+                const tableId = $table.attr('id');
+    
+                if (!initialized.has(tableId)) {
+                    const dt = $table.DataTable();
+                    addRowNumbering(dt);
+                    dt.draw(); // trigger numbering now
+                    initialized.add(tableId);
+                }
+            });
+    
+            // When switching tabs, redraw and re-number the current table
+            $('a[data-bs-toggle="tab"]').on('shown.bs.tab', function (e) {
+                const targetId = $(e.target).attr('data-bs-target'); // e.g., #tab-hired
+                const $table = $(`${targetId} .applicantTable`);
+    
+                if ($table.length) {
+                    const dt = $table.DataTable();
+                    dt.columns.adjust().draw(); // triggers re-numbering
+                }
+            });
+        });
+    </script> --}}
+    {{-- DataTables with Row Numbering + UI Fix --}}
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const initialized = new Set();
+
+            function addRowNumbering(tableInstance) {
+                tableInstance.on('draw.dt', function () {
+                    const pageInfo = tableInstance.page.info();
+                    let start = pageInfo.start + 1;
+
+                    tableInstance.rows({ page: 'current' }).every(function () {
+                        const $row = $(this.node());
+                        $row.find('td.row-number').html(start++);
+                    });
+                });
+            }
+
+            $('.applicantTable').each(function () {
+                const $table = $(this);
+                const tableId = $table.attr('id');
+
+                if (!initialized.has(tableId)) {
+                    const tabId = $table.closest('.tab-pane').attr('id');
+                    const isAllTab = tabId === 'tab-all';
+
+                    const dt = $table.DataTable({
+                        responsive: true,
+                        paging: true,
+                        searching: true,
+                        info: true,
+                        lengthChange: true,
+                        order: isAllTab ? [[3, 'asc']] : [[5, 'desc']], // 🧠 sort by Status in 'All', else by No
+                        dom: '<"datatable-toolbar d-flex justify-content-between align-items-center my-3"lf>tip',
+                        columnDefs: isAllTab ? [{
+                            targets: 3,
+                            orderData: [3],
+                        }] : []
+                    });                
+
+                    addRowNumbering(dt);
+                    dt.draw(); // trigger initial row numbers
+                    initialized.add(tableId);
+                }
+            });
+
+            // Handle tab switching and force redraw
+            $('a[data-bs-toggle="tab"]').on('shown.bs.tab', function (e) {
+                const targetId = $(e.target).attr('data-bs-target'); // e.g., #tab-hired
+                const $table = $(`${targetId} .applicantTable`);
+                if ($table.length) {
+                    const dt = $table.DataTable();
+                    dt.columns.adjust().draw(); // triggers draw + row renumbering
+                }
+            });
+        });
+    </script>
+    {{-- DataTables with Row Numbering --}}
 
 
 </x-admin-ats-layout>

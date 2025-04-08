@@ -92,9 +92,10 @@
 }
 
 .master-text:hover {
-    color: white !important;
-    background-color: #3377CC;
+    /* color: white !important; */
+    background-color: #d1e6ff;
 }
+
 
 .active-text {
     color: #3EB52B !important;
@@ -104,6 +105,16 @@
 .active-text:hover {
     color: white !important;
     background-color: #3EB52B;
+}
+
+.active-text-sub {
+    color: #3EB52B !important;
+    transition: transform 0.3s ease;
+}
+
+.active-text-sub:hover {
+    /* color: white !important; */
+    background-color: #efffec;
 }
 
 .arch-text {

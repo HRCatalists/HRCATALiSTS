@@ -19,9 +19,7 @@ class FacultyTeachingRank2 extends Model
         'full_time_other_schools',
         'part_time_cc',
         'part_time_other_schools',
-        'research_class_based',
         'research_school_based',
-        'research_community_based',
         'course_module',
         'workbook_lab_manual',
         'research_articles',
@@ -37,6 +35,11 @@ class FacultyTeachingRank2 extends Model
 
     public function employee()
     {
+        return $this->belongsTo(Employee::class, 'emp_id', 'id');
+    }
+
+    public function teachingRank1()
+    {
         return $this->belongsTo(FacultyTeachingRank1::class, 'emp_id', 'emp_id');
     }
 
@@ -48,10 +51,7 @@ class FacultyTeachingRank2 extends Model
             ($this->part_time_cc * 0.5) +
             ($this->part_time_other_schools * 0.25) +
 
-            ($this->research_class_based * 5) +
             ($this->research_school_based * 15) +
-            ($this->research_community_based * 5) +
-
             ($this->course_module * 5) +
             ($this->workbook_lab_manual * 5) +
             ($this->research_articles * 2) +

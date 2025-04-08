@@ -11,6 +11,7 @@ use App\Models\Job;
 use App\Models\Log;
 use App\Models\User;
 use App\Models\Event;
+use App\Models\EmployeeEmploymentDetail;
 use Carbon\Carbon;
 use App\Models\Employee;
 use App\Services\GoogleDriveService;
@@ -31,7 +32,6 @@ class AdminController extends Controller
             return redirect()->route('login');
         }
     
-        // Fetch logs, applicants, and jobs
         $logs = Log::latest()->take(5)->get();
         $totalApplicants = Applicant::count();
         $applicantsByStatus = Applicant::selectRaw('LOWER(TRIM(status)) as status, COUNT(*) as count')
@@ -39,12 +39,38 @@ class AdminController extends Controller
             ->pluck('count', 'status')
             ->toArray();
         $totalJobs = Job::count();
-    
-        // ✅ Fetch all events (without category filtering)
+        $totalEmployees = Employee::count();
         $events = Event::select('event_date', 'event_time', 'title', 'description')->get();
+
+        // Count teaching and non-teaching
+        $teachingCount = EmployeeEmploymentDetail::where('classification', 'teaching')->count();
+        $nonTeachingCount = EmployeeEmploymentDetail::where('classification', 'non-teaching')->count();
+    
+        // ✅ Calculate employee count per department
+        $departmentCounts = Employee::selectRaw('department, COUNT(*) as count')
+            ->groupBy('department')
+            ->pluck('count', 'department')
+            ->toArray();
+
+        // ✅ Compute percentages
+        $departmentPercentages = [];
+        foreach ($departmentCounts as $dept => $count) {
+            $departmentPercentages[$dept] = [
+                'count' => $count,
+                'percentage' => $totalEmployees > 0 ? round(($count / $totalEmployees) * 100, 1) : 0,
+            ];
+        }
     
         return view('hrcatalists.admin-dashboard', compact(
-            'logs', 'totalApplicants', 'applicantsByStatus', 'totalJobs', 'events'
+            'logs',
+            'totalApplicants',
+            'applicantsByStatus',
+            'totalJobs',
+            'events',
+            'totalEmployees',
+            'teachingCount',
+            'nonTeachingCount',
+            'departmentPercentages'
         ));
     }
 
@@ -883,5 +909,23 @@ class AdminController extends Controller
     
         return redirect()->route('manage-users')->with('success', 'User created successfully.');
     }
+    public function updatePassword(Request $request)
+{
+    $request->validate([
+        'current_password' => 'required',
+        'new_password' => 'required|min:6|confirmed',
+    ]);
+
+    $user = Auth::user();
+
+    if (!Hash::check($request->current_password, $user->password)) {
+        return back()->with('error', 'Current password is incorrect.');
+    }
+
+    $user->password = Hash::make($request->new_password);
+    $user->save();
+
+    return back()->with('success', 'Password updated successfully!');
+}
  
 }

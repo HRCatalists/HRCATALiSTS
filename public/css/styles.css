@@ -44,13 +44,3 @@ tr.selected-row {
 .manage-users-container {
     margin: 8rem 20rem 0 20rem;
 }
-
-@media print {
-    select.status-dropdown {
-        display: none !important;
-    }
-
-    .status-label {
-        display: inline-block !important;
-    }
-}

@@ -398,7 +398,7 @@ class ApplicantController extends Controller
                 'address' => 'required|string|max:255',
                 'cv' => 'required|mimes:pdf|max:2048',
                 'privacy_policy_agreed' => 'required',
-                
+                'terms_agreed' => 'required',
             ]);
 
             // ✅ Fetch job details
@@ -428,6 +428,7 @@ class ApplicantController extends Controller
             $applicant->address = $validated['address'];
             $applicant->cv = $cvFileId; // Save Google Drive File ID
             $applicant->privacy_policy_agreed = 1;
+            $applicant->terms_agreed = 1;
             $applicant->status = 'pending';
             $applicant->applied_at = now();
             $applicant->save();
