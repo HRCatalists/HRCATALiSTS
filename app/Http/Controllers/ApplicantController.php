@@ -67,49 +67,49 @@ class ApplicantController extends Controller
     // **
     // ***
     //status update in overview
-    public function updateStatus(Request $request, $id)
-    {
-        if (!Auth::check()) {
-            return redirect()->route('login')->with('error', 'Please log in to update status.');
-        }
+    // public function updateStatus(Request $request, $id)
+    // {
+    //     if (!Auth::check()) {
+    //         return redirect()->route('login')->with('error', 'Please log in to update status.');
+    //     }
 
-        if ($this->isSecretary()) {
-            return redirect()->back()->with('error', 'You do not have permission to perform this action.');
-        }        
+    //     if ($this->isSecretary()) {
+    //         return redirect()->back()->with('error', 'You do not have permission to perform this action.');
+    //     }        
     
-        $request->validate([
-            'action' => 'required|string|in:approve,reject,archive,pass_evaluation,fail_evaluation'
-        ]);        
+    //     $request->validate([
+    //         'action' => 'required|string|in:approve,reject,archive,pass_evaluation,fail_evaluation'
+    //     ]);        
     
-        try {
-            $applicant = Applicant::findOrFail($id);
+    //     try {
+    //         $applicant = Applicant::findOrFail($id);
     
-            // Map actions to statuses
-            $statusMap = [
-                'approve' => 'evaluation',          // Moved to Evaluation stage
-                'reject' => 'rejected',
-                'archive' => 'archived',
-                'pass_evaluation' => 'hired',       // Passed the Evaluation
-                'fail_evaluation' => 'rejected',    // Failed the Evaluation
-            ];
+    //         // Map actions to statuses
+    //         $statusMap = [
+    //             'approve' => 'evaluation',          // Moved to Evaluation stage
+    //             'reject' => 'rejected',
+    //             'archive' => 'archived',
+    //             'pass_evaluation' => 'hired',       // Passed the Evaluation
+    //             'fail_evaluation' => 'rejected',    // Failed the Evaluation
+    //         ];
     
-            $newStatus = $statusMap[$request->action];
-            $applicant->status = $newStatus;
-            $applicant->save();
+    //         $newStatus = $statusMap[$request->action];
+    //         $applicant->status = $newStatus;
+    //         $applicant->save();
     
-            // Log the action
-            Log::create([
-                'user_id' => Auth::id(),
-                'activity' => "Applicant {$applicant->first_name} {$applicant->last_name} marked as {$newStatus}",
-                'created_at' => now(),
-            ]);
+    //         // Log the action
+    //         Log::create([
+    //             'user_id' => Auth::id(),
+    //             'activity' => "Applicant {$applicant->first_name} {$applicant->last_name} marked as {$newStatus}",
+    //             'created_at' => now(),
+    //         ]);
     
-            return redirect()->back()->with('success', 'Applicant status updated successfully.');
-        } catch (\Exception $e) {
-            \Log::error("Failed to update status: " . $e->getMessage());
-            return redirect()->back()->with('error', 'Failed to update status. Please try again.');
-        }
-    }
+    //         return redirect()->back()->with('success', 'Applicant status updated successfully.');
+    //     } catch (\Exception $e) {
+    //         \Log::error("Failed to update status: " . $e->getMessage());
+    //         return redirect()->back()->with('error', 'Failed to update status. Please try again.');
+    //     }
+    // }
 
     // *
     // **
@@ -132,7 +132,7 @@ class ApplicantController extends Controller
         }
     
         $validStatuses = ['pending', 'screening', 'scheduled', 'evaluation', 'hired', 'rejected', 'archived'];
-        $newStatus = $request->input('status');
+        $newStatus = strtolower(trim($request->input('status')));
         $oldStatus = $applicant->status;
     
         // 🚫 Prevent reverting to pending
@@ -148,65 +148,60 @@ class ApplicantController extends Controller
    
     
         if ($newStatus === 'hired') {
-            // Prevent duplicate hire
-            if (Employee::where('email', $applicant->email)->exists()) {
-                return redirect()->back()->with('error', 'This applicant is already hired. Duplicate email found.');
+            // If not already in employees table, hire and create
+            if (!Employee::where('email', $applicant->email)->exists()) {
+                $job = $applicant->job;
+        
+                $employee = Employee::create([
+                    'first_name' => $applicant->first_name,
+                    'last_name' => $applicant->last_name,
+                    'email' => $applicant->email,
+                    'phone' => $applicant->phone,
+                    'address' => $applicant->address,
+                    'cv' => $applicant->cv,
+                    'privacy_policy_agreed' => $applicant->privacy_policy_agreed,
+                    'status' => 'hired',
+                    'applied_at' => $applicant->applied_at,
+                    'job_title' => $job?->job_title ?? 'Not Set',
+                    'department' => $job?->department ?? 'Not Set',
+                ]);
+        
+                if (strtolower($applicant->classification) === 'teaching') {
+                    EmployeeEmploymentDetail::create([
+                        'employee_id' => $employee->id,
+                        'classification' => $applicant->classification,
+                    ]);
+        
+                    FacultyTeachingRank1::create([
+                        'emp_id' => $employee->id,
+                        'department' => $employee->department,
+                    ]);
+                    FacultyTeachingRank2::create(['emp_id' => $employee->id]);
+                    FacultyTeachingRank3::create(['emp_id' => $employee->id]);
+                    FacultyTeachingRank4::create(['emp_id' => $employee->id]);
+                }
+        
+                if (!User::where('email', $applicant->email)->exists()) {
+                    User::create([
+                        'name' => $applicant->first_name . ' ' . $applicant->last_name,
+                        'email' => $applicant->email,
+                        'password' => bcrypt('P@SSW0RD'),
+                        'role' => 'Employee',
+                    ]);
+                }
             }
         
-            $job = $applicant->job;
-        
-            $employee = Employee::create([
-                'first_name' => $applicant->first_name,
-                'last_name' => $applicant->last_name,
-                'email' => $applicant->email,
-                'phone' => $applicant->phone,
-                'address' => $applicant->address,
-                'cv' => $applicant->cv,
-                'privacy_policy_agreed' => $applicant->privacy_policy_agreed,
-                'status' => 'hired',
-                'applied_at' => $applicant->applied_at,
-                'job_title' => $job?->job_title ?? 'Not Set',
-                'department' => $job?->department ?? 'Not Set',
+            // ✅ Always update status to hired, even if already an employee
+            $applicant->update(['status' => 'hired']);
+
+            Log::create([
+                'user_id' => Auth::id(),
+                'activity' => "Hired applicant: {$applicantName}",
+                'created_at' => now(),
             ]);
         
-            if (strtolower($applicant->classification) === 'teaching') {
-                 EmployeeEmploymentDetail::create([
-                     'employee_id' => $employee->id,
-                     'classification' => $applicant->classification,
-                 ]);
-                
-                FacultyTeachingRank1::create([
-                    'emp_id' => $employee->id,
-                    'department' => $employee->department,
-                ]);
-            
-                FacultyTeachingRank2::create([
-                    'emp_id' => $employee->id,
-                ]);
-            
-                FacultyTeachingRank3::create([
-                    'emp_id' => $employee->id,
-                ]);
-            
-                FacultyTeachingRank4::create([
-                    'emp_id' => $employee->id,
-                ]);
-            }
-            
-        
-            // ✅ Create login account
-            if (!User::where('email', $applicant->email)->exists()) {
-                User::create([
-                    'name' => $applicant->first_name . ' ' . $applicant->last_name,
-                    'email' => $applicant->email,
-                    'password' => bcrypt('P@SSW0RD'),
-                    'role' => 'Employee',
-                ]);
-            }
-
-            // Update applicant status
-            $applicant->update(['status' => 'hired']);
-        }
+            return redirect()->back()->with('success', "Applicant has been hired successfully.");
+        }        
 
         //ARCHIVING = SOFT DELETE        
         elseif ($newStatus === 'archived') {
@@ -229,7 +224,7 @@ class ApplicantController extends Controller
     
         // ✅ DELETION for Rejected       
         elseif ($newStatus === 'rejected') {
-            $applicant->delete();
+            $applicant->forceDelete();
 
             Log::create([
                 'user_id' => Auth::id(),

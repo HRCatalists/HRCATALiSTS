@@ -5,7 +5,15 @@
 
     <x-partials.system.ats.ats-sidebar />
 
-    <div class="container mt-5" style="max-width: 600px;">
+    @push('styles')
+    <style>
+        body {
+            padding-top: 150px;
+        }
+    </style>
+    @endpush
+
+    <div class="container" style="max-width: 600px;">
         <h3 class="mb-4 fw-bold text-primary">🔒 Change Your Password</h3>
 
         {{-- Success/Error Alert --}}

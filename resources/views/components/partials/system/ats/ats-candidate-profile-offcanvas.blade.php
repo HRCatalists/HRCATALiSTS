@@ -93,20 +93,25 @@
                         <p id="cvMessage">No CV available.</p>
                     @endif
 
-                    <div class="d-grid mt-5">
+                    {{-- <div class="d-grid mt-5">
                         @if(isset($applicant))
                             <!-- PASS/FAIL for Evaluation -->
                             <div id="demoButtons" class="d-none">
                                 <form method="POST" action="{{ route('applicants.updateStatus', $applicant->id) }}">
                                     @csrf
                                     <input type="hidden" name="action" value="pass_evaluation">
-                                    <button type="submit" class="btn btn-success mb-2">PASS DEMO TEACHING</button>
+                                    <button type="submit" class="btn btn-success mb-2">PASS</button>
                                 </form>
                                 <form method="POST" action="{{ route('applicants.updateStatus', $applicant->id) }}">
                                     @csrf
                                     <input type="hidden" name="action" value="fail_evaluation">
-                                    <button type="submit" class="btn btn-danger mb-2">FAIL DEMO TEACHING</button>
+                                    <button type="submit" class="btn btn-danger mb-2">FAIL</button>
                                 </form>
+                                <form method="POST" action="{{ route('applicants.updateStatus', $applicant->id) }}">
+                                    @csrf
+                                    <input type="hidden" name="action" value="archive">
+                                    <button type="submit" class="btn btn-secondary">ARCHIVE</button>
+                                </form>                                
                             </div>
                     
                             <!-- Approve/Reject/Archive -->
@@ -114,7 +119,7 @@
                                 <form method="POST" action="{{ route('applicants.updateStatus', $applicant->id) }}">
                                     @csrf
                                     <input type="hidden" name="action" value="approve">
-                                    <button type="submit" class="btn btn-primary mb-2">APPROVE</button>
+                                    <button type="submit" class="btn btn-primary mb-2">FOR EVALUATION</button>
                                 </form>
                                 <form method="POST" action="{{ route('applicants.updateStatus', $applicant->id) }}">
                                     @csrf
@@ -125,12 +130,12 @@
                                     @csrf
                                     <input type="hidden" name="action" value="archive">
                                     <button type="submit" class="btn btn-secondary">ARCHIVE</button>
-                                </form>
+                                </form>                                
                             </div>
                         @else
                             <p class="text-danger">Applicant data not found.</p>
                         @endif
-                    </div>
+                    </div> --}}
                 </div>
             </div>
         

@@ -51,6 +51,8 @@
 
     <!-- Dashboard Calendar CSS -->
     <link rel="stylesheet" href="{{ asset('css/db-ats-calendar.css') }}">
+
+    @stack('styles')
 </head>
 
 <body>
