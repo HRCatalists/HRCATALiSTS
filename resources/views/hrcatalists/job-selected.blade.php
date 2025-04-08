@@ -71,7 +71,7 @@
                         </div>
                     @endif
 
-                    <form action="{{ route('applicants.store', ['slug' => $job->slug]) }}" method="POST" enctype="multipart/form-data" id="applicationForm">
+                    <form action="{{ route('public.applicant.submit', ['slug' => $job->slug]) }}" method="POST" enctype="multipart/form-data" id="applicationForm">
                         @csrf
                         <input type="hidden" name="job_id" value="{{ $job->id }}">
                         <input type="hidden" name="classification" value="{{ $job->classification }}">
@@ -164,8 +164,11 @@
                         
                         <!-- Submit Button -->
                         <div class="d-grid mt-5">
-                            <button type="submit" class="btn btn-primary">SUBMIT</button>
-                        </div>
+                            <button type="submit" class="btn btn-primary" id="submitBtn">
+                                <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true" id="submitSpinner"></span>
+                                <span id="submitText">SUBMIT</span>
+                            </button>
+                        </div>                        
                     </form>
                 </div>
             </div>
@@ -283,15 +286,17 @@
         document.addEventListener("DOMContentLoaded", function () {
             const form = document.getElementById("applicationForm");
             const formUrl = form.getAttribute("action");
-
+            const submitBtn = document.getElementById("submitBtn");
+            const submitSpinner = document.getElementById("submitSpinner");
+            const submitText = document.getElementById("submitText");
+    
             form.addEventListener("submit", async function (event) {
                 event.preventDefault(); // Prevent default form submission
-
+    
                 const formData = new FormData(form);
-
                 const cvInput = document.getElementById("cv");
                 const file = cvInput.files[0];
-
+    
                 // Check if resume is uploaded
                 if (!file) {
                     Swal.fire({
@@ -303,11 +308,16 @@
                     });
                     return; // Stop submission
                 }
-
+    
+                // 🔄 Show loading state
+                submitBtn.disabled = true;
+                submitSpinner.classList.remove("d-none");
+                submitText.textContent = "Submitting...";
+    
                 // Clear previous error messages
                 document.querySelectorAll(".error-message").forEach(el => el.remove());
                 document.querySelectorAll(".is-invalid").forEach(el => el.classList.remove("is-invalid"));
-
+    
                 try {
                     const response = await fetch(formUrl, {
                         method: "POST",
@@ -316,14 +326,14 @@
                             "Accept": "application/json" // Ensures Laravel returns JSON
                         }
                     });
-
+    
                     let result;
                     try {
                         result = await response.json(); // Attempt JSON parsing
                     } catch (jsonError) {
                         result = { message: "Invalid response from the server. Please check backend logs." };
                     }
-
+    
                     if (response.ok) {
                         Swal.fire({
                             icon: "success",
@@ -333,18 +343,18 @@
                         }).then(() => {
                             window.location.reload(); // ✅ Refresh page after successful submission
                         });
-
+    
                     } else if (response.status === 422) {
                         // ❌ VALIDATION ERROR: Show errors under respective fields
                         for (const field in result.errors) {
                             const inputField = document.querySelector(`[name="${field}"]`);
                             if (inputField) {
                                 inputField.classList.add("is-invalid");
-
+    
                                 const errorDiv = document.createElement("div");
                                 errorDiv.className = "text-danger error-message mt-1";
                                 errorDiv.innerText = result.errors[field][0];
-
+    
                                 // Ensure error message is placed correctly
                                 if (inputField.closest('.input-group')) {
                                     inputField.closest('.input-group').after(errorDiv);
@@ -354,7 +364,7 @@
                             }
                         }
                     } else {
-                        // ❌ OTHER ERRORS: Show SweetAlert
+                        // ❌ OTHER ERRORS
                         Swal.fire({
                             icon: "error",
                             title: "Submission Failed",
@@ -363,13 +373,18 @@
                         });
                     }
                 } catch (error) {
-                    // ❌ NETWORK ERROR: Show SweetAlert
+                    // ❌ NETWORK ERROR
                     Swal.fire({
                         icon: "error",
                         title: "Network Error",
                         text: "Something went wrong. Please check your internet connection and try again.",
                         confirmButtonColor: "#d33",
                     });
+                } finally {
+                    // ✅ Restore button
+                    submitBtn.disabled = false;
+                    submitSpinner.classList.add("d-none");
+                    submitText.textContent = "SUBMIT";
                 }
             });
         });
