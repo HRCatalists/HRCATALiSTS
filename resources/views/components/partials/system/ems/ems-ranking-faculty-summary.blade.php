@@ -1,4 +1,4 @@
-<!-- SUMMARY -->
+<!-- SUMMARY TAB -->
 <div class="tab-pane fade" id="content5" role="tabpanel">
   <table class="table table-bordered mt-5">
     <thead>
@@ -16,25 +16,25 @@
       <tr>
         <td>I. Academy Preparation & Other Qualifications</td>
         <td id="academyCredit">0</td>
-        <td id="academyWeight">30%</td>
+        <td>30%</td>
         <td id="academyRating">0</td>
       </tr>
       <tr>
         <td>II. Teaching Experience & Professional/Work Experience</td>
         <td id="teachingCredit">0</td>
-        <td id="teachingWeight">20%</td>
+        <td>20%</td>
         <td id="teachingRating">0</td>
       </tr>
       <tr>
         <td>III. Faculty Performance as a Professional Educator</td>
         <td id="facultyPerformanceCredit">0</td>
-        <td id="facultyPerformanceWeight">35%</td>
+        <td>35%</td>
         <td id="facultyPerformanceRating">0</td>
       </tr>
       <tr>
         <td>IV. Corporate Commitment (In/ Off Campus Service)</td>
         <td id="corporateCommitmentCredit">0</td>
-        <td id="corporateCommitmentWeight">15%</td>
+        <td>15%</td>
         <td id="corporateCommitmentRating">0</td>
       </tr>
       <tr>
@@ -46,86 +46,90 @@
         <td id="previousRank">Not Calculated</td>
       </tr>
       <tr>
+        <td class="text-start" colspan="3">PREVIOUS SCORE: </td>
+        <td id="previousScore">0</td>
+      </tr>
+      <tr>
         <td class="text-end" colspan="3"><strong>RANK</strong></td>
         <td id="finalRank">Not Ranked</td>
       </tr>
       <tr>
-        <td class="text-start" colspan="4"><strong>N.B. Credit points/ rank will be effective only upon submission of supporting documents on specified date.</strong></td>
+        <td class="text-start" colspan="4">
+          <strong>N.B. Credit points/ rank will be effective only upon submission of supporting documents on specified date.</strong>
+        </td>
       </tr>
     </tbody>
   </table>
+  <div class="text-center my-3">
+    <button id="saveSummaryBtn" class="btn btn-success">Generate Summary</button>
+  </div>
 </div>
 
-<!-- <script>
-document.addEventListener('DOMContentLoaded', function () {
-    // Function to calculate and update the summary table
-    function updateSummary() {
-        // Grab the points from each section (using the new IDs)
-        let academyPoints = parseFloat(document.getElementById('totalPointsI') ? document.getElementById('totalPointsI').innerText : 0) || 0;
-        let teachingPoints = parseFloat(document.getElementById('totalPointsII') ? document.getElementById('totalPointsII').innerText : 0) || 0;
-        let facultyPoints = parseFloat(document.getElementById('totalPointsIII') ? document.getElementById('totalPointsIII').innerText : 0) || 0;
-        let corporatePoints = parseFloat(document.getElementById('totalPointsIV') ? document.getElementById('totalPointsIV').innerText : 0) || 0;
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  document.getElementById("saveSummaryBtn").addEventListener("click", function () {
+    const empId = document.querySelector('[name="emp_id"]').value;
+    if (!empId) return alert("Please select a faculty first.");
 
-        // Debugging: Check if values are being captured correctly
-        console.log("Academy Points: ", academyPoints);
-        console.log("Teaching Points: ", teachingPoints);
-        console.log("Faculty Points: ", facultyPoints);
-        console.log("Corporate Points: ", corporatePoints);
+    fetch("/save-summary", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
+      },
+      body: JSON.stringify({ emp_id: empId })
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        const s = data.summary;
 
-        // Calculate weighted ratings for each section
-        let academyWeighted = academyPoints * 0.30;
-        let teachingWeighted = teachingPoints * 0.20;
-        let facultyWeighted = facultyPoints * 0.35;
-        let corporateWeighted = corporatePoints * 0.15;
+        const a = s.academy_preparation_other_qualifications;
+        const b = s.teaching_and_work_exp;
+        const c = s.faculty_performance;
+        const d = s.corporate_commitment;
+        const oldRank = s.old_rank || "Not Recorded";
+        const oldScore = s.old_score || 0;
 
-        // Debugging: Check weighted values
-        console.log("Academy Weighted: ", academyWeighted);
-        console.log("Teaching Weighted: ", teachingWeighted);
-        console.log("Faculty Weighted: ", facultyWeighted);
-        console.log("Corporate Weighted: ", corporateWeighted);
+        const weighted = {
+          academy: a * 0.30,
+          teaching: b * 0.20,
+          performance: c * 0.35,
+          commitment: d * 0.15
+        };
 
-        // Update summary table with individual section points
-        document.getElementById('academyCredit').innerText = academyPoints.toFixed(2);
-        document.getElementById('academyWeight').innerText = "30%";
-        document.getElementById('academyRating').innerText = academyWeighted.toFixed(2);
+        const total = Object.values(weighted).reduce((sum, val) => sum + val, 0);
 
-        document.getElementById('teachingCredit').innerText = teachingPoints.toFixed(2);
-        document.getElementById('teachingWeight').innerText = "20%";
-        document.getElementById('teachingRating').innerText = teachingWeighted.toFixed(2);
+        document.getElementById("academyCredit").textContent = a;
+        document.getElementById("teachingCredit").textContent = b;
+        document.getElementById("facultyPerformanceCredit").textContent = c;
+        document.getElementById("corporateCommitmentCredit").textContent = d;
 
-        document.getElementById('facultyPerformanceCredit').innerText = facultyPoints.toFixed(2);
-        document.getElementById('facultyPerformanceWeight').innerText = "35%";
-        document.getElementById('facultyPerformanceRating').innerText = facultyWeighted.toFixed(2);
+        document.getElementById("academyRating").textContent = weighted.academy.toFixed(2);
+        document.getElementById("teachingRating").textContent = weighted.teaching.toFixed(2);
+        document.getElementById("facultyPerformanceRating").textContent = weighted.performance.toFixed(2);
+        document.getElementById("corporateCommitmentRating").textContent = weighted.commitment.toFixed(2);
 
-        document.getElementById('corporateCommitmentCredit').innerText = corporatePoints.toFixed(2);
-        document.getElementById('corporateCommitmentWeight').innerText = "15%";
-        document.getElementById('corporateCommitmentRating').innerText = corporateWeighted.toFixed(2);
-
-        // Calculate overall score and update summary
-        let overallRating = academyWeighted + teachingWeighted + facultyWeighted + corporateWeighted;
-        document.getElementById('overallRating').innerText = overallRating.toFixed(2);
-
-        // Determine rank based on overall rating
-        let rank = "";
-        if (overallRating >= 300) {
-            rank = "Excellent";
-        } else if (overallRating >= 200) {
-            rank = "Good";
-        } else {
-            rank = "Needs Improvement";
-        }
-        document.getElementById('finalRank').innerText = rank;
-    }
-
-    // Call updateSummary when the page loads
-    updateSummary();
-
-    // Attach event listeners to trigger updates when points change
-    document.querySelectorAll('input[type="checkbox"], input[type="number"]').forEach(function (input) {
-        input.addEventListener('change', function() {
-            updateSummary();
-        });
+        document.getElementById("overallRating").textContent = total.toFixed(2);
+        document.getElementById("finalRank").textContent = getRankFromScore(total);
+        document.getElementById("previousRank").textContent = oldRank;
+        document.getElementById("previousScore").textContent = oldScore;
+      } else {
+        alert("Failed to generate summary: " + (data.error || "Unknown error"));
+      }
+    })
+    .catch(err => {
+      console.error("Summary error:", err);
+      alert("An error occurred generating the summary.");
     });
-});
+  });
 
-</script> -->
+  function getRankFromScore(score) {
+    if (score >= 95) return "Professor";
+    if (score >= 85) return "Associate Professor";
+    if (score >= 75) return "Assistant Professor";
+    if (score >= 65) return "Instructor";
+    return "Needs Review";
+  }
+});
+</script>

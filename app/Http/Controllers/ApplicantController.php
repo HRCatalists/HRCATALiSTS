@@ -23,7 +23,6 @@ use App\Models\EmployeeEmploymentDetail;
 
 
 
-
 class ApplicantController extends Controller
 {
     private function isSecretary()

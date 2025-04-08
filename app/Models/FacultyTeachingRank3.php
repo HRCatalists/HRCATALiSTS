@@ -24,7 +24,7 @@ class FacultyTeachingRank3 extends Model
      */
     public function employee()
     {
-        return $this->belongsTo(Employee::class, 'emp_id');
+        return $this->belongsTo(Employee::class, 'emp_id','id');
     }
 
     /**
@@ -35,14 +35,5 @@ class FacultyTeachingRank3 extends Model
         return $this->belongsTo(FacultyTeachingRank2::class, 'emp_id', 'emp_id');
     }
 
-    /**
-     * Calculate and update total points.
-     */
-    public function calculateTotalPoints()
-    {
-        $points = ($this->classroom_evaluation ?? 0) + ($this->work_evaluation ?? 0);
-        $this->total_points = $points;
-        $this->total_percentage = $points * 0.35;
-        $this->save();
-    }
+  
 }

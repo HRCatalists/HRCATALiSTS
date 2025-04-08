@@ -4,7 +4,8 @@
 <!-- Faculty Rank 1 Partial Form -->
 <div class="tab-pane fade show active" id="content1" role="tabpanel">
   <!-- Hidden field for emp_id; ensure that $faculty is passed to the view -->
-  <input type="hidden" name="emp_id" value="{{ $faculty->emp_id ?? '' }}">
+  <input type="hidden" name="emp_id" id="rank1_emp_id" value="{{ $faculty->emp_id ?? '' }}">
+
 
   <table class="table table-bordered mt-5">
     <thead>
@@ -380,35 +381,77 @@ document.addEventListener("DOMContentLoaded", function () {
 
         updateTotalPoints(); // ✅ Recalculate total points
     };
+            function updateTotalPoints() {
+            const $ = (name) => document.querySelector(`#content1 [name="${name}"]`);
+            let groupA = 0, groupB = 0, groupC = 0, groupD = 0, groupE = 0;
 
-    function updateTotalPoints() {
-        let total = 0;
+            // Group A: Degrees (Max 50)
+            if ($("bachelor_degree")?.checked) groupA += 20;
+            if ($("ma_ms_candidate")?.checked) groupA += 25;
+            if ($("masters_thesis_completed")?.checked) groupA += 28;
+            if ($("full_master_degree")?.checked) groupA += 30;
+            if ($("phd_education")?.checked) groupA += 40;
+            if ($("doctorate_dissertation_completed")?.checked) groupA += 45;
+            if ($("full_doctorate_degree")?.checked) groupA += 50;
 
-        // Sum all checked checkbox values in content1
-        document.querySelectorAll('#content1 input[type="checkbox"]:checked').forEach(el => {
-            total += parseFloat(el.value) || 0;
-        });
+            groupA += (parseFloat($("academic_units_master_degree")?.value) || 0) / 6;
+            groupA += (parseFloat($("academic_units_doctorate_degree")?.value) || 0) / 6;
 
-        const masterUnits = parseFloat(document.querySelector('#content1 [name="academic_units_master_degree"]')?.value) || 0;
-        const doctorateUnits = parseFloat(document.querySelector('#content1 [name="academic_units_doctorate_degree"]')?.value) || 0;
-        const seminars = parseFloat(document.querySelector('#content1 [name="seminars_attended"]')?.value) || 0;
+            groupA = Math.min(groupA, 50);
 
-        total += masterUnits / 6;
-        total += doctorateUnits / 6;
-        total += seminars * 0.33;
+            // Group B: Additional Degrees (Max 10)
+            if ($("additional_bachelor_degree")?.checked) groupB += 4;
+            if ($("additional_master_degree")?.checked) groupB += 6;
+            if ($("additional_doctorate_degree")?.checked) groupB += 10;
+            if ($("multiple_degrees")?.checked) groupB += 10;
 
-        total = parseFloat(total.toFixed(2));
-        document.getElementById("totalPointsI").innerText = total.toFixed(2);
-        document.getElementById("totalPercentageI").innerText = (total * 0.3).toFixed(2);
-    }
+            groupB = Math.min(groupB, 10);
 
-    // Recalculate when any input changes inside Rank 1
-    document.querySelectorAll('#content1 input').forEach(input => {
-        input.addEventListener("input", updateTotalPoints);
-        if (input.type === "checkbox") {
-            input.addEventListener("change", updateTotalPoints);
+            // Group C: Trainings (Max 10)
+            if ($("specialized_training")?.checked) groupC += 2;
+            if ($("travel_grant_for_study")?.checked) groupC += 5;
+            if ($("professional_education_units")?.checked) groupC += 5;
+            if ($("plumbing_certification")?.checked) groupC += 5;
+            if ($("certificate_of_completion")?.checked) groupC += 3;
+            if ($("national_certification")?.checked) groupC += 5;
+            if ($("trainers_methodology")?.checked) groupC += 10;
+
+            groupC += (parseFloat($("seminars_attended")?.value) || 0) * 0.33;
+            groupC = Math.min(groupC, 10);
+
+            // Group D: Government Exams (Max 20)
+            if ($("teachers_board_certified")?.checked) groupD += 20;
+            if ($("career_service_certification")?.checked) groupD += 15;
+            if ($("bar_exam_certification")?.checked) groupD += 20;
+
+            groupD = Math.min(groupD, 20);
+
+            // Group E: Honors (Max 10)
+            if ($("board_exam_placer")?.checked) groupE += 10;
+            if ($("local_awards")?.checked) groupE += 3;
+            if ($("regional_awards")?.checked) groupE += 5;
+            if ($("national_awards")?.checked) groupE += 10;
+            if ($("summa_cum_laude")?.checked) groupE += 10;
+            if ($("magna_cum_laude")?.checked) groupE += 8;
+            if ($("cum_laude")?.checked) groupE += 6;
+            if ($("with_distinction")?.checked) groupE += 3;
+
+            groupE = Math.min(groupE, 10);
+
+            const total = groupA + groupB + groupC + groupD + groupE;
+            const weighted = total * 0.30;
+
+            document.getElementById("totalPointsI").innerText = total.toFixed(2);
+            document.getElementById("totalPercentageI").innerText = weighted.toFixed(2);
         }
-    });
+
+            // Recalculate when any input changes inside Rank 1
+            document.querySelectorAll('#content1 input').forEach(input => {
+                input.addEventListener("input", updateTotalPoints);
+                if (input.type === "checkbox") {
+                    input.addEventListener("change", updateTotalPoints);
+                }
+            });
 
     // SAVE FUNCTION for Rank 1
     document.getElementById("saveButton").addEventListener("click", function () {
