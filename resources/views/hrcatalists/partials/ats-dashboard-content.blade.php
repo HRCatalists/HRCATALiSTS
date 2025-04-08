@@ -3,245 +3,206 @@
             <div class="container">
                 {{-- <div class="welcome-text-only">Welcome, {{ auth()->user()->name }}!</div> --}}
 
-                <div class="d-flex justify-content-between align-items-center my-4">
+                {{-- <div class="d-flex justify-content-between align-items-center my-4">
                     <div>
                         <h2 class="db-h2">APPLICANTS</h2>
-                        {{-- <h4 class="db-h4 mt-4">Overview</h4> --}}
                     </div>
-                </div>
+                </div> --}}
 
                 <div class="row dashboard-row d-flex justify-content-between align-items-start">
+                    <div class="container my-5">
+                        <h3 class="mb-4 fw-bold text-primary">Applicants</h3>
                 
-                    <!-- Cards and Chart Section -->
-                    <div class="col-md-5">
-                        <div class="row row-cols-1 g-4">
-                            {{-- <span class="applicant-header">Applicants</span> --}}
-                            <div class="col">
-                                <div class="card custom-card new-app-bg text-white">
-                                    <div class="card-body d-flex justify-content-between align-items-center">
-                                        <div class="d-flex align-items-center ms-4">
-                                            <div class="me-3">
-                                                <img src="images/applicant.png" class="card-icon m-auto" alt="table-icon">
-                                            </div>
-                                            <h5 class="card-title">New Applicants</h5>
+                        <div class="row g-4">
+                            @php
+                            $cards = [
+                                ['label' => 'Applications Received', 'key' => 'total', 'count' => $applicationsReceived ?? 0, 'icon' => 'fa-file-alt'],
+                                ['label' => 'Active Applicants', 'key' => 'active', 'count' => $activeApplicantsCount ?? 0, 'icon' => 'fa-users'],
+                                ['label' => 'New Applicants', 'key' => 'pending', 'count' => $applicantsByStatus['pending'] ?? 0, 'icon' => 'fa-user-plus'],
+                                ['label' => 'Screening', 'key' => 'screening', 'count' => $applicantsByStatus['screening'] ?? 0, 'icon' => 'fa-search'],
+                                ['label' => 'Scheduled', 'key' => 'scheduled', 'count' => $applicantsByStatus['scheduled'] ?? 0, 'icon' => 'fa-calendar-check'],
+                                ['label' => 'Evaluation', 'key' => 'evaluation', 'count' => $applicantsByStatus['evaluation'] ?? 0, 'icon' => 'fa-clipboard-check'],
+                                ['label' => 'Hired', 'key' => 'hired', 'count' => $applicantsByStatus['hired'] ?? 0, 'icon' => 'fa-user-check'],
+                                ['label' => 'Archived', 'key' => 'archived', 'count' => $applicantsByStatus['archived'] ?? 0, 'icon' => 'fa-archive'],
+                            ];
+                        
+                            $statusColors = [
+                                'total' => '#6a11cb',       // Applications Received - deep purple
+                                'active' => '#43cea2',      // Active Applicants - teal/green
+
+                                // DO NOT CHANGE THESE COLORS 👇
+                                'pending' => '#555555',     // New Applicants - dark gray
+                                'screening' => '#ffe135',   // Screening - banana yellow
+                                'scheduled' => '#ff8c00',   // Scheduled - orange
+                                'interviewed' => '#ff8c00', // Interviewed - same as scheduled
+                                'evaluation' => '#007bff',  // Evaluation - primary blue
+                                'hired' => '#4CAF50',       // Hired - green
+                                'rejected' => '#8b0000',    // Rejected - dark red
+                                'archived' => '#4b0082',    // Archived - deep purple
+                            ];
+                        @endphp
+                        
+                        @foreach($cards as $card)
+                            @php
+                                $hexColor = $statusColors[$card['key']] ?? '#000';
+                            @endphp
+                            <div class="col-md-3">
+                                <div class="card shadow-sm border-0 h-100">
+                                    <div class="card-body d-flex align-items-center justify-content-between">
+                                        <div>
+                                            <h6 class="fw-semibold text-uppercase" style="color: {{ $hexColor }};">{{ $card['label'] }}</h6>
+                                            <h2 class="fw-bold text-dark">{{ $card['count'] }}</h2>
+                                            <a href="{{ route('ats-applicants') }}" class="btn btn-sm btn-outline-primary mt-2">View</a>
                                         </div>
-                                        <div class="text-end me-4">
-                                            <a href="{{ route('ats-applicants') }}" class="view-link d-block">View all</a>
-                                            <h2 class="card-number text-white">{{ $applicantsByStatus['pending'] ?? 0 }}</h2>
-                                        </div>
+                                        <i class="fas {{ $card['icon'] }} fa-2x" style="color: {{ $hexColor }};"></i>
                                     </div>
                                 </div>
                             </div>
-
-                            {{-- Applicants by Status - 3 rows, 2 columns each --}}
-                            <div class="container mt-3">
-                                <div class="row g-4">
-                                    <!-- Row 1 -->
-                                    <div class="col-md-6">
-                                        <div class="card master-text custom-card">
-                                            <div class="card-body d-flex justify-content-between align-items-center">
-                                                <h5 class="card-title ms-4">Total</h5>
-                                                <div class="text-end me-4">
-                                                    <a href="{{ route('ats-applicants') }}" class="view-link">View</a>
-                                                    <h2 class="card-number">{{ $totalApplicants ?? 0 }}</h2>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="card master-text custom-card">
-                                            <div class="card-body d-flex justify-content-between align-items-center">
-                                                <h5 class="card-title ms-4">Screening</h5>
-                                                <div class="text-end me-4">
-                                                    <a href="{{ route('ats-applicants') }}" class="view-link">View</a>
-                                                    <h2 class="card-number">{{ $applicantsByStatus['screening'] ?? 0 }}</h2>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Row 2 -->
-                                    <div class="col-md-6">
-                                        <div class="card master-text custom-card">
-                                            <div class="card-body d-flex justify-content-between align-items-center">
-                                                <h5 class="card-title ms-4">Scheduled</h5>
-                                                <div class="text-end me-4">
-                                                    <a href="{{ route('ats-applicants') }}" class="view-link">View</a>
-                                                    <h2 class="card-number">{{ $applicantsByStatus['scheduled'] ?? 0 }}</h2>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="card master-text custom-card">
-                                            <div class="card-body d-flex justify-content-between align-items-center">
-                                                <h5 class="card-title ms-4">Evaluation</h5>
-                                                <div class="text-end me-4">
-                                                    <a href="{{ route('ats-applicants') }}" class="view-link">View</a>
-                                                    <h2 class="card-number">{{ $applicantsByStatus['evaluation'] ?? 0 }}</h2>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Row 3 -->
-                                    <div class="col-md-6">
-                                        <div class="card master-text custom-card">
-                                            <div class="card-body d-flex justify-content-between align-items-center">
-                                                <h5 class="card-title ms-4">Hired</h5>
-                                                <div class="text-end me-4">
-                                                    <a href="{{ route('ats-applicants') }}" class="view-link">View</a>
-                                                    <h2 class="card-number">{{ $applicantsByStatus['hired'] ?? 0 }}</h2>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="card master-text custom-card">
-                                            <div class="card-body d-flex justify-content-between align-items-center">
-                                                <h5 class="card-title ms-4">Archived</h5>
-                                                <div class="text-end me-4">
-                                                    <a href="{{ route('ats-applicants') }}" class="view-link">View</a>
-                                                    <h2 class="card-number">{{ $applicantsByStatus['archived'] ?? 0 }}</h2>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            {{-- Active Positions --}}
-                            <div class="col pt-3">
-                                <div class="card active-text custom-card">
-                                    <div class="card-body d-flex justify-content-between align-items-center">
-                                        <div class="d-flex align-items-center ms-4">
-                                            <div class="me-3">
-                                                <div class="imageBox">
-                                                    <div class="imageInn">
-                                                        <img src="images/cv-2.png" class="card-icon m-auto" alt="Default Image">
-                                                    </div>
-                                                    <div class="hoverImg">
-                                                        <img src="images/cv-3.png" class="card-icon m-auto" alt="Profile Image">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <h5 class="card-title">Job Positions</h5>
-                                        </div>
-                                        <div class="text-end me-4">
-                                            <a href="{{ route('ats-jobs') }}" class="view-link d-block">View all</a>
-                                            <h2 class="card-number">{{ $totalJobs ?? 0 }}</h2>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="container mt-3">
-                                <div class="row g-4">
-                                    <!-- Row 1 -->
-                                    <div class="col-md-6">
-                                        <div class="card active-text-sub custom-card">
-                                            <div class="card-body d-flex justify-content-between align-items-center">
-                                                <h5 class="card-title ms-4">Active</h5>
-                                                <div class="text-end me-4">
-                                                    <a href="{{ route('ats-jobs') }}" class="view-link">View</a>
-                                                    <h2 class="card-number">{{ $totalApplicants ?? 0 }}</h2>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="card active-text-sub custom-card">
-                                            <div class="card-body d-flex justify-content-between align-items-center">
-                                                <h5 class="card-title ms-4">Inactive</h5>
-                                                <div class="text-end me-4">
-                                                    <a href="{{ route('ats-jobs') }}" class="view-link">View</a>
-                                                    <h2 class="card-number">{{ $applicantsByStatus['screening'] ?? 0 }}</h2>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Chart Section -->
-                        <div class="chart-container mt-5">
-                            <canvas id="applicantsChart"></canvas>
+                        @endforeach                            
                         </div>
                     </div>
-                    <!-- End Cards and Chart Section -->
 
-                    <!-- Calendar, Events, & Logs Section -->
-                    <div class="col-md-7">
-
-                        <!-- Calendar -->
-                        <div class="card shadow">
-
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <h5 class="card-title mb-4">Event Calendar and Important Dates</h5>
-                                    <a href="{{ route('ats-calendar') }}" class="go-to-calendar mb-4">See more...</a>
-                                </div>
-                                <div class="calendar-container">
-                                    <div class="calendar-header d-flex justify-content-between align-items-center">
-                                        <button id="prev-month">&lt;</button>
-                                        <span id="calendar-header" class="text-center"></span>
-                                        <button id="next-month">&gt;</button>
+                    <div class="container mt-4">
+                        {{-- Row 1: Event Calendar (Full Width) --}}
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <!-- Calendar -->
+                                <div class="card shadow">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <h5 class="card-title mb-4">Event Calendar and Important Dates</h5>
+                                            <a href="{{ route('ats-calendar') }}" class="go-to-calendar mb-4">See more...</a>
+                                        </div>
+                                        <div class="calendar-container">
+                                            <div class="calendar-header d-flex justify-content-between align-items-center">
+                                                <button id="prev-month">&lt;</button>
+                                                <span id="calendar-header" class="text-center"></span>
+                                                <button id="next-month">&gt;</button>
+                                            </div>
+                                            <div id="ats-calendar" class="mb-4"></div>
+                                        </div>
                                     </div>
-                                    <div id="ats-calendar" class="mb-4"></div>
+                                </div>
+
+                                <!-- Event Modal -->
+                                <div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalTitle" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="eventModalTitle">Event Details</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body" id="eventModalBody">
+                                                <!-- Events will be loaded dynamically here -->
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Event Modal -->
-                        <div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalTitle" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="eventModalTitle">Event Details</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    
+                        {{-- Row 2: Job Positions + Logs --}}
+                        <div class="row g-4">
+                            {{-- Left Column: Job Positions --}}
+                            <div class="col-md-5">
+                                <div class="row row-cols-1 g-4">
+                                    {{-- Total Job Positions --}}
+                                    <div class="col">
+                                        <div class="card active-text-sub custom-card h-100">
+                                            <div class="card-body d-flex justify-content-between align-items-center">
+                                                <div class="d-flex align-items-center ms-4">
+                                                    <div class="me-3">
+                                                        <i class="fas fa-briefcase fa-2x text-success"></i>
+                                                    </div>
+                                                    <h5 class="card-title mb-0">Job Positions</h5>
+                                                </div>
+                                                <div class="text-end me-4">
+                                                    <a href="{{ route('ats-jobs') }}" class="view-link d-block">View</a>
+                                                    <h2 class="card-number">{{ $totalJobs ?? 0 }}</h2>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="modal-body" id="eventModalBody">
-                                        <!-- Events will be loaded dynamically here -->
+                    
+                                    {{-- Active Job Positions --}}
+                                    <div class="col">
+                                        <div class="card active-text-sub custom-card h-100">
+                                            <div class="card-body d-flex justify-content-between align-items-center">
+                                                <div class="d-flex align-items-center ms-4">
+                                                    <div class="me-3">
+                                                        <i class="fas fa-check-circle fa-2x text-success"></i>
+                                                    </div>
+                                                    <h5 class="card-title mb-0">Active Jobs</h5>
+                                                </div>
+                                                <div class="text-end me-4">
+                                                    <a href="{{ route('ats-jobs', ['status' => 'active']) }}" class="view-link d-block">View</a>
+                                                    <h2 class="card-number">{{ $activeJobsCount ?? 0 }}</h2>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                    
+                                    {{-- Inactive Job Positions --}}
+                                    <div class="col">
+                                        <div class="card active-text-sub custom-card h-100">
+                                            <div class="card-body d-flex justify-content-between align-items-center">
+                                                <div class="d-flex align-items-center ms-4">
+                                                    <div class="me-3">
+                                                        <i class="fas fa-pause-circle fa-2x text-secondary"></i>
+                                                    </div>
+                                                    <h5 class="card-title mb-0">Inactive Jobs</h5>
+                                                </div>
+                                                <div class="text-end me-4">
+                                                    <a href="{{ route('ats-jobs', ['status' => 'inactive']) }}" class="view-link d-block">View</a>
+                                                    <h2 class="card-number">{{ $inactiveJobsCount ?? 0 }}</h2>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-
-                        <!-- Logs -->
-                        <div class="card shadow mt-4">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <h5 class="fw-bold">Recent Activities</h5>
-                                    <a href="{{ route('ats-logs') }}" class="view-link">See more...</a>
+                    
+                            {{-- Right Column: Logs --}}
+                            <div class="col-md-7">
+                                <div class="card shadow h-100">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <h5 class="fw-bold">Recent Activities</h5>
+                                            <a href="{{ route('ats-logs') }}" class="view-link">See more...</a>
+                                        </div>
+                                        <table class="table table-bordered m-0">
+                                            <thead class="small">
+                                                <tr>
+                                                    <th>NO</th>
+                                                    <th>USER</th>
+                                                    <th>ACTIVITIES</th>
+                                                    <th>TIME</th>
+                                                    <th>DATE</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="small">
+                                                @foreach($logs as $log)
+                                                    <tr>
+                                                        <td>{{ $loop->iteration }}</td>
+                                                        <td>{{ $log->user->name ?? 'Guest' }}</td>
+                                                        <td>{{ $log->activity }}</td>
+                                                        <td>{{ $log->created_at->format('h:i a') }}</td>
+                                                        <td>{{ $log->created_at->format('F d, Y') }}</td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
-                                <table class="table table-bordered m-0">
-                                    <thead class="small">
-                                        <tr>
-                                            <th>NO</th>
-                                            <th>USER</th>
-                                            <th>ACTIVITIES</th>
-                                            <th>TIME</th>
-                                            <th>DATE</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="small">
-                                    @foreach($logs as $log)
-                            <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td>{{ $log->user->name ?? 'Guest' }}</td>
-                                <td>{{ $log->activity }}</td>
-                                <td>{{ $log->created_at->format('h:i a') }}</td>
-                                <td>{{ $log->created_at->format('F d, Y') }}</td>
-                            </tr>
-                                    @endforeach
-                                    </tbody>
-                                </table>
                             </div>
                         </div>
                     </div>
-                    <!-- End Calendar, Events, & Logs Section -->
+
+                    <!-- Chart Section -->
+                    <div class="chart-container mt-5">
+                        <canvas id="applicantsChart"></canvas>
+                    </div>
+
                 </div>
             </div>
         </div>
