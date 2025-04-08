@@ -12,12 +12,11 @@ use App\Models\Log;
 use App\Models\User;
 use App\Models\Event;
 use App\Models\EmployeeEmploymentDetail;
+use App\Models\ApplicationSubmission;
 use Carbon\Carbon;
 use App\Models\Employee;
 use App\Services\GoogleDriveService;
 use Illuminate\Support\Facades\DB;
-
-
 
 
 class AdminController extends Controller
@@ -32,8 +31,13 @@ class AdminController extends Controller
             return redirect()->route('login');
         }
     
-        $logs = Log::latest()->take(5)->get();
+        $logs = Log::latest()->take(7)->get();
         $totalApplicants = Applicant::count();
+        $activeApplicantsCount = Applicant::whereNotIn('status', ['hired', 'rejected', 'archived'])->count();
+        $recentActiveApplicants = Applicant::whereNotIn('status', ['hired', 'rejected', 'archived'])
+            ->latest('applied_at')
+            ->take(5)
+            ->get();
         $applicantsByStatus = Applicant::selectRaw('LOWER(TRIM(status)) as status, COUNT(*) as count')
             ->groupBy('status')
             ->pluck('count', 'status')
@@ -45,6 +49,12 @@ class AdminController extends Controller
         // Count teaching and non-teaching
         $teachingCount = EmployeeEmploymentDetail::where('classification', 'teaching')->count();
         $nonTeachingCount = EmployeeEmploymentDetail::where('classification', 'non-teaching')->count();
+
+        $applicationsReceived = ApplicationSubmission::count(); // total count
+        $recentSubmissions = ApplicationSubmission::latest('submitted_at')->take(5)->get(); // latest 5
+
+        $activeJobsCount = Job::where('status', 'active')->count();
+        $inactiveJobsCount = Job::where('status', 'inactive')->count(); // or 'closed', 'expired', etc.
     
         // ✅ Calculate employee count per department
         $departmentCounts = Employee::selectRaw('department, COUNT(*) as count')
@@ -70,7 +80,13 @@ class AdminController extends Controller
             'totalEmployees',
             'teachingCount',
             'nonTeachingCount',
-            'departmentPercentages'
+            'departmentPercentages',
+            'applicationsReceived',
+            'recentSubmissions',
+            'activeApplicantsCount',
+            'recentActiveApplicants',
+            'activeJobsCount',
+            'inactiveJobsCount'
         ));
     }
 

@@ -22,6 +22,8 @@ Route::middleware([RoleMiddleware::class . ':admin,secretary'])->group(function 
     Route::delete('/events/{id}', [AdminController::class, 'deleteEvent'])->name('events.destroy');
 
     // Applicants
+    Route::post('/applicants', [ApplicantController::class, 'store'])->name('applicants.store');
+    Route::post('/applicants/{id}/recover', [ApplicantController::class, 'restore'])->name('applicants.recover');
     Route::get('/ats-applicants', [ApplicantController::class, 'byStatus'])->name('ats-applicants');
     Route::get('/ats/applicants/status/{status}', [ApplicantController::class, 'byStatus'])->name('applicants.byStatus');
     Route::get('/ats-pending', [ApplicantController::class, 'pending'])->name('ats-pending');

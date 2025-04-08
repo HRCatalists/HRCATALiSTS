@@ -41,12 +41,12 @@
                 
                 <!-- Status Tabs -->
                 @php
-                    $statuses = ['all', 'pending', 'screening', 'scheduled', 'evaluation', 'hired', 'archived'];
-                    // $statuses = ['all', 'pending', 'screening', 'scheduled', 'evaluation', 'hired', 'rejected', 'archived'];
+                    $dropdownStatuses = ['all', 'pending', 'screening', 'scheduled', 'evaluation', 'hired', 'archived'];
+                    $statuses = ['all', 'pending', 'screening', 'scheduled', 'evaluation', 'hired', 'rejected', 'archived'];
                 @endphp
 
                 <ul class="nav nav-tabs mt-4" id="statusTabs" role="tablist">
-                    @foreach ($statuses as $key => $stat)
+                    @foreach ($dropdownStatuses as $key => $stat)
                         <li class="nav-item" role="presentation">
                             <button 
                                 class="nav-link {{ $key === 0 ? 'active' : '' }}" 
@@ -105,12 +105,23 @@
                                             'archived' => '#4b0082'
                                         ];
 
-                                        if ($stat === 'all') {
-                                            $filteredApplicants = $allApplicants->whereNotIn('status', ['hired', 'archived']);
+                                        // if ($stat === 'all') {
+                                        //     $filteredApplicants = $allApplicants->whereNotIn('status', ['hired', 'archived']);
+                                        // } else {
+                                        //     $filteredApplicants = $allApplicants->where('status', $stat);
+                                        // }
+                                    @endphp
+
+                                    @php
+                                        if ($stat === 'archived') {
+                                            $filteredApplicants = $archivedApplicants;
+                                        } elseif ($stat === 'all') {
+                                            $filteredApplicants = $activeApplicants->whereNotIn('status', ['hired', 'archived']);
                                         } else {
-                                            $filteredApplicants = $allApplicants->where('status', $stat);
+                                            $filteredApplicants = $activeApplicants->where('status', $stat);
                                         }
                                     @endphp
+
 
                                     @foreach($filteredApplicants as $applicant)
                                         <tr>
@@ -119,22 +130,6 @@
                                             </td>
                                             <td class="row-number text-center"></td>
                                             <td>{{ $applicant->first_name }} {{ $applicant->last_name }}</td>                                           
-                                            {{-- <td>
-                                                <form method="POST" action="{{ route('applicants.chooseStatus', $applicant->id) }}" class="status-update-form">
-                                                    @csrf
-                                                    <select name="status" class="form-select status-dropdown"
-                                                        data-applicant-name="{{ $applicant->first_name }} {{ $applicant->last_name }}" 
-                                                        data-current-status="{{ $applicant->status }}"
-                                                        style="color: #fff; border-radius: 4px; padding: 4px; text-align: center; background-color: {{ $statusColors[$applicant->status] ?? '#000' }};"
-                                                    >
-                                                        @foreach ($statuses as $s)
-                                                            <option value="{{ $s }}" {{ $applicant->status == $s ? 'selected' : '' }}>
-                                                                {{ ucfirst($s) }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                </form>
-                                            </td> --}}
                                             <td data-order="{{ array_search($applicant->status, ['pending','screening','scheduled','evaluation','hired','archived']) }}">
                                                 <form method="POST" action="{{ route('applicants.chooseStatus', $applicant->id) }}" class="status-update-form">
                                                     @csrf
@@ -142,7 +137,8 @@
                                                         data-applicant-name="{{ $applicant->first_name }} {{ $applicant->last_name }}" 
                                                         data-current-status="{{ $applicant->status }}"
                                                         style="color: #fff; border-radius: 4px; padding: 4px; text-align: center; background-color: {{ $statusColors[$applicant->status] ?? '#000' }};"
-                                                    >
+                                                        @if ($stat === 'archived') disabled @endif
+                                                        >
                                                         @foreach ($statuses as $s)
                                                             <option value="{{ $s }}" {{ $applicant->status == $s ? 'selected' : '' }}>
                                                                 {{ ucfirst($s) }}
@@ -161,7 +157,7 @@
                                                     <button class="btn btn-primary border-0" type="button" data-bs-toggle="dropdown">
                                                         <i class="fa-solid fa-list"></i>
                                                     </button>
-                                                    <ul class="dropdown-menu">
+                                                    {{-- <ul class="dropdown-menu">
                                                         <!-- Approve -->
                                                         <li>
                                                             <button class="dropdown-item text-success action-approve" 
@@ -205,7 +201,73 @@
                                                                 <i class="fa fa-box-archive me-2"></i> Archive
                                                             </button>
                                                         </li>
+                                                    </ul> --}}
+                                                    <ul class="dropdown-menu">
+                                                        @if ($stat === 'archived')
+                                                            <!-- Recover Button -->
+                                                            <li>
+                                                                <form method="POST" action="{{ route('applicants.recover', $applicant->id) }}">
+                                                                    @csrf
+                                                                    <button class="dropdown-item text-success" type="submit">
+                                                                        <i class="fa fa-rotate-left me-2"></i> Recover
+                                                                    </button>
+                                                                </form>
+                                                            </li>
+                                                        @else
+                                                            <!-- Approve -->
+                                                            <li>
+                                                                <button class="dropdown-item text-success action-approve" 
+                                                                    data-id="{{ $applicant->id }}" 
+                                                                    data-name="{{ $applicant->first_name }} {{ $applicant->last_name }}">
+                                                                    <i class="fa fa-check me-2"></i> Approve
+                                                                </button>
+                                                            </li>
+                                                    
+                                                            <!-- View Button -->
+                                                            <li>
+                                                                <button type="button" class="dropdown-item text-primary"
+                                                                    data-bs-toggle="offcanvas"
+                                                                    data-bs-target="#candidateProfile"
+                                                                    data-applicant-id="{{ $applicant->id }}"
+                                                                    data-applicant-name="{{ $applicant->first_name }} {{ $applicant->last_name }}"
+                                                                    data-applicant-status="{{ $applicant->status }}"
+                                                                    data-applicant-email="{{ $applicant->email }}"
+                                                                    data-applicant-phone="{{ $applicant->phone }}"
+                                                                    data-applicant-position="{{ $applicant->job->job_title ?? 'N/A' }}"
+                                                                    data-applicant-address="{{ $applicant->address }}"
+                                                                    data-applicant-notes="{{ $applicant->notes }}">
+                                                                    <i class="fa fa-eye me-2"></i> View
+                                                                </button>
+                                                            </li>
+                                                    
+                                                            <!-- Reject -->
+                                                            <li>
+                                                                <form method="POST" action="{{ route('applicants.chooseStatus', $applicant->id) }}" class="change-status-form">
+                                                                    @csrf
+                                                                    <input type="hidden" name="status" value="rejected">
+                                                                    <button type="button" class="dropdown-item text-danger trigger-change-status"
+                                                                        data-name="{{ $applicant->first_name }} {{ $applicant->last_name }}"
+                                                                        data-action="reject">
+                                                                        <i class="fa fa-times me-2"></i> Reject
+                                                                    </button>
+                                                                </form>
+                                                            </li>
+
+                                                            <!-- Archive -->
+                                                            <li>
+                                                                <form method="POST" action="{{ route('applicants.chooseStatus', $applicant->id) }}" class="change-status-form">
+                                                                    @csrf
+                                                                    <input type="hidden" name="status" value="archived">
+                                                                    <button type="button" class="dropdown-item text-purple trigger-change-status"
+                                                                        data-name="{{ $applicant->first_name }} {{ $applicant->last_name }}"
+                                                                        data-action="archive">
+                                                                        <i class="fa fa-box-archive me-2"></i> Archive
+                                                                    </button>
+                                                                </form>
+                                                            </li>
+                                                        @endif
                                                     </ul>
+                                                    
                                                 </div>                                                
                                             </td>
                                         </tr>
@@ -318,151 +380,70 @@
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const fileInput = document.getElementById("cv");
-            const fileLabel = document.querySelector(".file-label");
+    
+            if (!fileInput) return;
     
             fileInput.addEventListener("change", function () {
-                if (this.files.length > 0) {
-                    const file = this.files[0];
+                const file = this.files[0];
     
-                    // File Validation - Max Size 2MB
-                    if (file.size > 2 * 1024 * 1024) { // 2MB limit
+                if (file) {
+                    const maxSizeMB = 2;
+                    const maxSizeBytes = maxSizeMB * 1024 * 1024;
+    
+                    if (file.size > maxSizeBytes) {
                         Swal.fire({
                             icon: "error",
                             title: "File Too Large!",
-                            text: "The selected file exceeds the 2MB size limit. Please upload a smaller file.",
-                            confirmButtonColor: "#d33",
-                            confirmButtonText: "Okay"
+                            text: `The selected file exceeds the ${maxSizeMB}MB limit.`,
+                            confirmButtonColor: "#d33"
                         });
-                        this.value = ""; // Reset file input
-                        fileLabel.textContent = "No file selected"; // Reset label
-                        return;
-                    }
     
-                    fileLabel.textContent = file.name; // ✅ Update Label with Selected File Name
-                } else {
-                    fileLabel.textContent = "No file selected"; // Reset if no file
+                        // Clear the file input
+                        fileInput.value = "";
+                    }
                 }
             });
         });
-    </script>
+    </script>       
     {{-- File upload and validation --}}
 
     {{-- Job Selection Dropdown --}}
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const jobDropdown = document.getElementById("job_id");
-            const form = document.getElementById("addApplicantForm");
-
+            const slugInput = document.getElementById("jobSlug");
+            const classificationInput = document.getElementById("classification");
+            const classificationDisplay = document.getElementById("classification_display");
+    
+            if (!jobDropdown || !slugInput || !classificationInput) {
+                console.error("❌ Required elements not found!");
+                return;
+            }
+    
             jobDropdown.addEventListener("change", function () {
-                const selectedOption = jobDropdown.options[jobDropdown.selectedIndex];
-                const slug = selectedOption.getAttribute("data-slug");
-
-                if (slug) {
-                    form.action = `/job-selected/${slug}/apply`;
-                    document.getElementById("jobSlug").value = slug;
+                const selectedOption = this.options[this.selectedIndex];
+                if (!selectedOption) return;
+    
+                const slug = selectedOption.getAttribute("data-slug")?.trim();
+                const classification = selectedOption.getAttribute("data-classification")?.trim();
+    
+                console.log("🧪 Selected Slug:", slug);
+                console.log("🧪 Selected Classification:", classification);
+    
+                if (slug) slugInput.value = slug;
+                if (classification) {
+                    classificationInput.value = classification;
+                    if (classificationDisplay) classificationDisplay.value = classification;
+                } else {
+                    classificationInput.value = "";
+                    if (classificationDisplay) classificationDisplay.value = "";
                 }
             });
         });
-    </script>
+    </script> 
     {{-- Job Selection Dropdown --}}
 
-    {{-- Handle Form Submission & Display Success/Error Alerts --}}
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const form = document.getElementById("addApplicantForm");
-            const modal = new bootstrap.Modal(document.getElementById("addApplicantModal"));
-    
-            form.addEventListener("submit", async function (event) {
-                event.preventDefault(); // Prevent default form submission
-    
-                const formData = new FormData(form);
-    
-                // Clear previous error messages
-                document.querySelectorAll(".error-message").forEach(el => el.innerText = "");
-                document.querySelectorAll(".is-invalid").forEach(el => el.classList.remove("is-invalid"));
-    
-                try {
-                    const response = await fetch(form.action, {
-                        method: "POST",
-                        body: formData,
-                        headers: {
-                            "Accept": "application/json", // Ensures Laravel returns JSON
-                            "X-CSRF-TOKEN": document.querySelector('input[name="_token"]').value,
-                        },
-                    });
-    
-                    let result;
-                    try {
-                        result = await response.json(); // Attempt to parse JSON response
-                    } catch (jsonError) {
-                        result = { message: "Invalid server response. Please check backend logs." };
-                    }
-    
-                    if (response.ok) {
-                        // ✅ SUCCESS: Show SweetAlert and reset form
-                        Swal.fire({
-                            icon: "success",
-                            title: "Application Submitted!",
-                            text: "Your application has been successfully submitted.",
-                            confirmButtonColor: "#28a745",
-                        }).then(() => {
-                            form.reset(); // Clear form fields
-                            modal.hide(); // Close modal
-                            location.reload(); // Refresh the page after clicking "Okay"
-                        });
-    
-                    } else if (response.status === 422) {
-                        // ❌ VALIDATION ERROR: Display errors below fields
-                        for (const field in result.errors) {
-                            const inputField = document.querySelector(`[name="${field}"]`);
-                            if (inputField) {
-                                inputField.classList.add("is-invalid");
-    
-                                const errorDiv = document.createElement("div");
-                                errorDiv.className = "text-danger error-message mt-1";
-                                errorDiv.innerText = result.errors[field][0];
-    
-                                if (inputField.closest('.input-group')) {
-                                    inputField.closest('.input-group').after(errorDiv);
-                                } else {
-                                    inputField.after(errorDiv);
-                                }
-                            }
-                        }
-    
-                        // ✅ Show SweetAlert when submission fails (e.g., Email already taken)
-                        Swal.fire({
-                            icon: "error",
-                            title: "Submission Failed",
-                            text: result.errors.email ? "The email has already been taken. Please use another email." : "There was an issue submitting your application.",
-                            confirmButtonColor: "#d33",
-                        });
-    
-                    } else {
-                        // ❌ OTHER ERRORS: Show SweetAlert
-                        Swal.fire({
-                            icon: "error",
-                            title: "Submission Failed",
-                            text: result.message || "An error occurred. Please try again.",
-                            confirmButtonColor: "#d33",
-                        });
-                    }
-                } catch (error) {
-                    // ❌ NETWORK ERROR: Show SweetAlert
-                    Swal.fire({
-                        icon: "error",
-                        title: "Network Error",
-                        text: "Something went wrong. Please check your internet connection and try again.",
-                        confirmButtonColor: "#d33",
-                    });
-                }
-            });
-        });
-    </script>    
-    {{-- Handle Form Submission & Display Success/Error Alerts --}}
-
     {{-- bulk selection of archived and rejected --}}
-    {{-- bulk selection of archived and rejected (tab-aware) --}}
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const checkboxes = document.querySelectorAll(".rowCheckbox");
@@ -644,51 +625,45 @@
     {{-- Reject & Archive action button sweetalert --}}
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            function confirmAction(buttonClass, title, text, confirmColor, urlSuffix) {
-                document.querySelectorAll(buttonClass).forEach(button => {
-                    button.addEventListener('click', function () {
-                        const id = this.dataset.id;
-                        const name = this.dataset.name;
-
-                        Swal.fire({
-                            title: `${title} ${name}?`,
-                            text: text,
-                            icon: urlSuffix === 'reject' ? 'error' : (urlSuffix === 'approve' ? 'success' : 'info'),
-                            showCancelButton: true,
-                            confirmButtonColor: confirmColor,
-                            cancelButtonColor: '#6c757d',
-                            confirmButtonText: `Yes, ${urlSuffix}`
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                fetch(`/applicants/${id}/${urlSuffix}`, {
-                                    method: "POST",
-                                    headers: {
-                                        "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content,
-                                        "Accept": "application/json"
-                                    }
-                                })
-                                .then(response => response.json())
-                                .then(data => {
-                                    if (data.success) {
-                                        Swal.fire("Success", data.message, "success").then(() => location.reload());
-                                    } else {
-                                        Swal.fire("Error", data.message || "Something went wrong.", "error");
-                                    }
-                                })
-                                .catch(() => {
-                                    Swal.fire("Error", "Network error occurred.", "error");
-                                });
-                            }
-                        });
+            document.querySelectorAll('.trigger-change-status').forEach(button => {
+                button.addEventListener('click', function () {
+                    const name = this.dataset.name;
+                    const action = this.dataset.action;
+                    const form = this.closest('form');
+    
+                    const titles = {
+                        reject: "Reject Applicant",
+                        archive: "Archive Applicant"
+                    };
+    
+                    const texts = {
+                        reject: `Are you sure you want to reject ${name}? This will permanently delete the applicant.`,
+                        archive: `Are you sure you want to archive ${name}? This will move the applicant to the archived list.`
+                    };
+    
+                    const colors = {
+                        reject: "#d33",
+                        archive: "#6f42c1"
+                    };
+    
+                    Swal.fire({
+                        title: titles[action],
+                        text: texts[action],
+                        icon: action === 'reject' ? 'error' : 'info',
+                        showCancelButton: true,
+                        confirmButtonColor: colors[action],
+                        cancelButtonColor: '#6c757d',
+                        confirmButtonText: `Yes, ${action}`
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            form.submit();
+                        }
                     });
                 });
-            }
-
-            confirmAction('.action-approve', 'Approve', 'This will hire the applicant and transfer them to employees.', '#28a745', 'approve');
-            confirmAction('.action-reject', 'Reject', 'This will permanently delete the applicant.', '#d33', 'reject');
-            confirmAction('.action-archive', 'Archive', 'This will move the applicant to the archived list.', '#6f42c1', 'archive');
+            });
         });
     </script>
+    
     {{-- Reject & Archive action button sweetalert --}}
 
     {{-- Print Only Active Tab --}}
@@ -887,5 +862,30 @@
     </script>
     {{-- DataTables with Row Numbering --}}
 
+    @if ($errors->any())
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const modal = new bootstrap.Modal(document.getElementById('addApplicantModal'));
+                modal.show();
+            });
+        </script>
+    @endif
+
+    @if (session('success'))
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: '{{ session('success') }}',
+                    confirmButtonColor: '#28a745'
+                }).then(() => {
+                    if (result.isConfirmed) {
+                        window.location.reload();
+                    }
+                });
+            });
+        </script>
+    @endif
 
 </x-admin-ats-layout>
