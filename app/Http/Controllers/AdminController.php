@@ -394,17 +394,17 @@ class AdminController extends Controller
         return view('hrcatalists.ems.admin-ems-cl', compact('events'));
     }
 
-    public function deptCOA()
-    {
-        if (!Auth::check()) {
-            return redirect()->route('login');
-        }
+    // public function deptCOA()
+    // {
+    //     if (!Auth::check()) {
+    //         return redirect()->route('login');
+    //     }
     
-        // Fetch employees where department is "College of Architecture"
-        $employees = Employee::where('department', 'College of Architecture')->get();
+    //     // Fetch employees where department is "College of Architecture"
+    //     $employees = Employee::where('department', 'College of Architecture')->get();
     
-        return view('hrcatalists.ems.admin-ems-dept-coa', compact('employees'));
-    }
+    //     return view('hrcatalists.ems.admin-ems-dept-coa', compact('employees'));
+    // }
        
 
     public function deptCASED()
