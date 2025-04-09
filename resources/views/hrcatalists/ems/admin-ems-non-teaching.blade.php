@@ -42,16 +42,6 @@
                                 </div>
                             </div>
     
-                            <div class="d-flex justify-content-center align-content-center mt-4">
-    
-                                <label class="fw-bold me-2" for="inlusiveDate">Inclusive Date:</label>
-    
-                                <input type="date" id="inlusiveDate" class="form-control me-2">
-                                <span class="fw-bold me-2">to</span>
-                                <input type="date" id="inlusiveDate" class="form-control me-2">
-    
-                            </div>
-
                         </div>
     
                     </div>

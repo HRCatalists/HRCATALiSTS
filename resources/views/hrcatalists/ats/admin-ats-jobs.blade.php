@@ -206,7 +206,7 @@
                                                                 <textarea name="job_description" class="form-control" rows="5" required>{{ $job->job_description }}</textarea>
                                                             </div>
                                                             <div class="col-md-6">
-                                                                <label class="form-label">Requirements <span class="text-danger">*</span></label>
+                                                                <label class="form-label">Qualifications <span class="text-danger">*</span></label>
                                                                 <textarea name="requirements" class="form-control" rows="5" required>{{ $job->requirements }}</textarea>
                                                             </div>
                                                         </div>

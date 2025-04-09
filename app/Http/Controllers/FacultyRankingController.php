@@ -345,6 +345,13 @@ class FacultyRankingController extends Controller
                 return "Needs Review";
             }
 
-
+            public function non_ranking()
+            {
+                if (!Auth::check()) {
+                    return redirect()->route('login');
+                }
+                return view('hrcatalists.ems.admin-ems-non-teaching');
+            }
+        
     }
 

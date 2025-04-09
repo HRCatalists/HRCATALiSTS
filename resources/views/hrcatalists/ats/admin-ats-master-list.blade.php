@@ -216,12 +216,16 @@
                                                         @else
                                                             <!-- Approve -->
                                                             <li>
-                                                                <button class="dropdown-item text-success action-approve" 
-                                                                    data-id="{{ $applicant->id }}" 
-                                                                    data-name="{{ $applicant->first_name }} {{ $applicant->last_name }}">
-                                                                    <i class="fa fa-check me-2"></i> Approve
-                                                                </button>
-                                                            </li>
+                                                                <form method="POST" action="{{ route('applicants.chooseStatus', $applicant->id) }}" class="change-status-form">
+                                                                    @csrf
+                                                                    <input type="hidden" name="status" value="hired">
+                                                                    <button type="button" class="dropdown-item text-success trigger-change-status"
+                                                                    data-name="{{ $applicant->first_name }} {{ $applicant->last_name }}"
+                                                                    data-action="approve">
+                                                                        <i class="fa fa-check me-2"></i> Approve
+                                                                    </button>
+                                                                </form>
+                                                            </li>                                                            
                                                     
                                                             <!-- View Button -->
                                                             <li>
@@ -622,47 +626,59 @@
     </script>
     {{-- bulk selection of archived and rejected --}}
 
-    {{-- Reject & Archive action button sweetalert --}}
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            document.querySelectorAll('.trigger-change-status').forEach(button => {
-                button.addEventListener('click', function () {
-                    const name = this.dataset.name;
-                    const action = this.dataset.action;
-                    const form = this.closest('form');
-    
-                    const titles = {
-                        reject: "Reject Applicant",
-                        archive: "Archive Applicant"
-                    };
-    
-                    const texts = {
-                        reject: `Are you sure you want to reject ${name}? This will permanently delete the applicant.`,
-                        archive: `Are you sure you want to archive ${name}? This will move the applicant to the archived list.`
-                    };
-    
-                    const colors = {
-                        reject: "#d33",
-                        archive: "#6f42c1"
-                    };
-    
-                    Swal.fire({
-                        title: titles[action],
-                        text: texts[action],
-                        icon: action === 'reject' ? 'error' : 'info',
-                        showCancelButton: true,
-                        confirmButtonColor: colors[action],
-                        cancelButtonColor: '#6c757d',
-                        confirmButtonText: `Yes, ${action}`
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            form.submit();
-                        }
-                    });
+{{-- SweetAlert for Reject, Archive, and Approve actions --}}
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll('.trigger-change-status').forEach(button => {
+            button.addEventListener('click', function () {
+                const name = this.dataset.name?.trim() || "this applicant";
+                const action = this.dataset.action;
+                const form = this.closest('form');
+
+                const config = {
+                    reject: {
+                        title: "Reject Applicant",
+                        text: `Are you sure you want to reject ${name}? This will permanently delete the applicant.`,
+                        icon: "error",
+                        color: "#d33"
+                    },
+                    archive: {
+                        title: "Archive Applicant",
+                        text: `Are you sure you want to archive ${name}? This will move the applicant to the archived list.`,
+                        icon: "info",
+                        color: "#6f42c1"
+                    },
+                    approve: {
+                        title: "Approve Applicant",
+                        text: `Are you sure you want to approve and hire ${name}? This will add them to the employee list.`,
+                        icon: "question",
+                        color: "#28a745"
+                    }
+                };
+
+                const { title, text, icon, color } = config[action] || {};
+
+                if (!title || !form) return;
+
+                Swal.fire({
+                    title,
+                    text,
+                    icon,
+                    showCancelButton: true,
+                    confirmButtonColor: color,
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: `Yes, ${action}`
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
                 });
             });
         });
-    </script>
+    });
+</script>
+
+
     
     {{-- Reject & Archive action button sweetalert --}}
 
