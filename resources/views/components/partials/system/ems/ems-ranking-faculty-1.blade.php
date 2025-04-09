@@ -396,7 +396,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
             groupA += (parseFloat($("academic_units_master_degree")?.value) || 0) / 6;
             groupA += (parseFloat($("academic_units_doctorate_degree")?.value) || 0) / 6;
-
+              
+            //group A Cap
             groupA = Math.min(groupA, 50);
 
             // Group B: Additional Degrees (Max 10)

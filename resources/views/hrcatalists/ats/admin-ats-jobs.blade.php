@@ -312,7 +312,7 @@
                     
                             <!-- Requirements -->
                             <div class="col-md-6">
-                                <label for="requirements" class="form-label">Requirements <span class="text-danger">*</span></label>
+                                <label for="requirements" class="form-label">Qualifications <span class="text-danger">*</span></label>
                                 <textarea name="requirements" id="requirements" class="form-control" rows="8" placeholder="Each bullet on a new line..." required></textarea>
                                 <small class="text-muted">Each bullet on a new line. Will format as list.</small>
                             </div>

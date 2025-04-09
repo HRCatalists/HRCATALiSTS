@@ -181,21 +181,14 @@ class ApplicantController extends Controller
                     FacultyTeachingRank4::create(['emp_id' => $employee->id]);
                 }
                 
-            //     else{
-            //         EmployeeEmploymentDetail::create([
-            //           'employee_id' => $employee->id,
-            //           'classification' => $applicant->classification,
-            //       ]);
+                else{
+                    EmployeeEmploymentDetail::create([
+                      'employee_id' => $employee->id,
+                      'classification' => $applicant->classification,
+                  ]);
       
-            //       FacultyTeachingRank1::create([
-            //           'emp_id' => $employee->id,
-            //           'department' => $employee->department,
-            //       ]);
-            //       FacultyTeachingRank2::create(['emp_id' => $employee->id]);
-            //       FacultyTeachingRank3::create(['emp_id' => $employee->id]);
-            //       FacultyTeachingRank4::create(['emp_id' => $employee->id]);
-                
-            //   }
+                 
+              }
 
         
                 if (!User::where('email', $applicant->email)->exists()) {
