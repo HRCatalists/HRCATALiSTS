@@ -453,6 +453,172 @@
             const checkboxes = document.querySelectorAll(".rowCheckbox");
             const archiveBtn = document.querySelector(".bulk-archive-btn");
             const rejectBtn = document.querySelector(".bulk-reject-btn");
+            let lastClickedStatus = null;
+    
+            function updateBulkButtons() {
+                const anyChecked = [...checkboxes].some(cb => cb.checked);
+                archiveBtn.style.display = anyChecked ? 'inline-block' : 'none';
+                rejectBtn.style.display = anyChecked ? 'inline-block' : 'none';
+            }
+    
+            function updateRowHighlights() {
+                document.querySelectorAll("tbody tr").forEach(row => {
+                    const checkbox = row.querySelector(".rowCheckbox");
+                    row.classList.toggle("selected-row", checkbox && checkbox.checked);
+                });
+                updateBulkButtons();
+            }
+    
+            function getSelectedApplicantIds() {
+                return [...document.querySelectorAll('.rowCheckbox:checked')].map(cb => cb.value);
+            }
+    
+            function bulkStatusUpdate(actionUrl, ids, successText) {
+                const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+
+                fetch(actionUrl, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": csrfToken
+                    },
+                    body: JSON.stringify({ ids: ids })
+                })
+                .then(async response => {
+                    if (!response.ok) {
+                        const errorData = await response.json().catch(() => null);
+                        const errorMsg = errorData?.message || `Server error ${response.status}`;
+                        throw new Error(errorMsg);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        Swal.fire("Success", successText, "success").then(() => location.reload());
+                    } else {
+                        Swal.fire("Error", data.message || "Something went wrong.", "error");
+                    }
+                })
+                .catch(error => {
+                    console.error("Bulk update failed:", error);
+                    Swal.fire("Error", error.message || "A network error occurred.", "error");
+                });
+            }
+
+    
+            // === Archive Button Click ===
+            archiveBtn.addEventListener("click", function () {
+                const selectedIds = getSelectedApplicantIds();
+                if (selectedIds.length === 0) return;
+
+                Swal.fire({
+                    title: "Archive Selected Applicants",
+                    text: "Are you sure you want to archive the selected applicants?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: "Yes, archive them",
+                    cancelButtonText: "Cancel",
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#6c757d"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        bulkStatusUpdate(
+                            "{{ route('applicants.bulkArchive') }}",
+                            selectedIds,
+                            "Applicants archived successfully!"
+                        );
+                    }
+                });
+            });
+    
+            // === Reject Button Click ===
+            rejectBtn.addEventListener("click", function () {
+                const selectedIds = getSelectedApplicantIds();
+                if (selectedIds.length === 0) return;
+
+                Swal.fire({
+                    title: "Delete Selected Applicants",
+                    text: "Are you sure you want to permanently delete the selected applicants? This action cannot be undone.",
+                    icon: "error",
+                    showCancelButton: true,
+                    confirmButtonText: "Yes, delete them",
+                    cancelButtonText: "Cancel",
+                    confirmButtonColor: "#d33",
+                    cancelButtonColor: "#6c757d"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        bulkStatusUpdate(
+                            "{{ route('applicants.bulkReject') }}",
+                            selectedIds,
+                            "Applicants rejected and removed."
+                        );
+                    }
+                });
+            });
+    
+            // === Select All ===
+            document.getElementById("selectAllLink").addEventListener("click", function (e) {
+                e.preventDefault();
+    
+                const allChecked = [...checkboxes].every(cb => cb.checked);
+                checkboxes.forEach(cb => cb.checked = !allChecked);
+                lastClickedStatus = allChecked ? null : 'all';
+                updateRowHighlights();
+            });
+    
+            // === Select by Status ===
+            document.querySelectorAll('[data-status]').forEach(link => {
+                link.addEventListener("click", function (e) {
+                    e.preventDefault();
+    
+                    const targetStatus = this.getAttribute("data-status");
+                    const matchingCheckboxes = [];
+                    const allRows = document.querySelectorAll("tbody tr");
+    
+                    allRows.forEach(row => {
+                        const dropdown = row.querySelector("select.status-dropdown");
+                        const checkbox = row.querySelector(".rowCheckbox");
+    
+                        if (dropdown && checkbox) {
+                            if (dropdown.value === targetStatus) {
+                                matchingCheckboxes.push(checkbox);
+                            } else {
+                                checkbox.checked = false;
+                            }
+                        }
+                    });
+    
+                    const allSelected = matchingCheckboxes.length > 0 && matchingCheckboxes.every(cb => cb.checked);
+    
+                    if (lastClickedStatus === targetStatus && allSelected) {
+                        matchingCheckboxes.forEach(cb => cb.checked = false);
+                        lastClickedStatus = null;
+                    } else {
+                        matchingCheckboxes.forEach(cb => cb.checked = true);
+                        lastClickedStatus = targetStatus;
+                    }
+    
+                    updateRowHighlights();
+                });
+            });
+    
+            // === Individual Checkbox Changes ===
+            checkboxes.forEach(cb => {
+                cb.addEventListener("change", function () {
+                    updateRowHighlights();
+                    lastClickedStatus = null;
+                });
+            });
+    
+            updateBulkButtons();
+        });
+    </script>
+    
+    {{-- <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const checkboxes = document.querySelectorAll(".rowCheckbox");
+            const archiveBtn = document.querySelector(".bulk-archive-btn");
+            const rejectBtn = document.querySelector(".bulk-reject-btn");
             let lastClickedStatus = null; // ⬅️ Track last clicked status
     
             // === Update Bulk Buttons ===
@@ -623,7 +789,7 @@
     
             updateBulkButtons(); // Initialize on load
         });
-    </script>
+    </script> --}}
     {{-- bulk selection of archived and rejected --}}
 
 {{-- SweetAlert for Reject, Archive, and Approve actions --}}
