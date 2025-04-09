@@ -337,8 +337,9 @@
                     if (response.ok) {
                         Swal.fire({
                             icon: "success",
-                            title: "Application Submitted!",
-                            text: "Your application has been successfully submitted.",
+                            title: "Thank you for submitting your application.",
+                            text: "If shortlisted, you will receive an email regarding your interview schedule. Please check your Spam folder as well.",
+                            
                             confirmButtonColor: "#28a745",
                         }).then(() => {
                             window.location.reload(); // ✅ Refresh page after successful submission

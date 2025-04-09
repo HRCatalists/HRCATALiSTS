@@ -198,10 +198,10 @@
                         </div>
                     </div>
 
-                    <!-- Chart Section -->
+                    <!-- Chart Section
                     <div class="chart-container mt-5">
                         <canvas id="applicantsChart"></canvas>
-                    </div>
+                    </div> -->
 
                 </div>
             </div>
