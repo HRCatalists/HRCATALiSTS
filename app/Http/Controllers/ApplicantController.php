@@ -118,16 +118,20 @@ class ApplicantController extends Controller
     public function chooseStatus(Request $request, $id)
     {
         if (!Auth::check()) {
+
             return redirect()->route('login')->with('error', 'Please log in to update applicant status.');
         }
-
+        
         if ($this->isSecretary()) {
+
+
             return redirect()->back()->with('error', 'You do not have permission to perform this action.');
-        }       
+        }        
     
         $applicant = Applicant::with('job')->find($id);
         // Check if the applicant exists
         if (!$applicant) {
+
             return redirect()->back()->with('error', 'Applicant not found.');
         }
     
@@ -255,7 +259,7 @@ class ApplicantController extends Controller
                 'created_at' => now(),
             ]);
 
-            return redirect()->back()->with('success', "Applicant status updated to " . ucfirst($newStatus) . ".");
+            return redirect()->back()->with('success', "Applicant status updated to " . ucfirst($newStatus) . ".");            
         }
     }    
 
@@ -459,42 +463,40 @@ class ApplicantController extends Controller
         return redirect()->back()->with('success', 'Your application has been submitted successfully!');
     }
 
-    // *
-    // **
     // ***
-    // bulk action - change status to archived
+    // Bulk Archive (update status + soft delete)
     public function bulkArchive(Request $request)
     {
-
         if ($this->isSecretary()) {
-            return redirect()->back()->with('error', 'You do not have permission to perform this action.');
-        }  
+            return response()->json(['success' => false, 'message' => 'You do not have permission to perform this action.'], 403);
+        }
 
-        Applicant::whereIn('id', $request->ids)->update(['status' => 'archived']);
-        return response()->json(['success' => true]);
+        $ids = $request->ids;
+
+        foreach ($ids as $id) {
+            $applicant = Applicant::find($id);
+            if ($applicant) {
+                $applicant->status = 'archived';
+                $applicant->save();
+                $applicant->delete(); // Soft delete
+            }
+        }
+
+        return response()->json(['success' => true, 'message' => 'Applicants archived successfully.']);
     }
 
-    // *
-    // **
     // ***
-    // bulk action - change status to rejected
+    // Bulk Reject (permanent delete)
     public function bulkReject(Request $request)
     {
         if ($this->isSecretary()) {
-            $errorMsg = 'You do not have permission to perform this action.';
-    
-            if ($request->expectsJson()) {
-                return response()->json(['success' => false, 'message' => $errorMsg], 403);
-            }
-    
-            return redirect()->back()->with('error', $errorMsg);
+            return response()->json(['success' => false, 'message' => 'You do not have permission to perform this action.'], 403);
         }
-    
-        // Delete applicants by their IDs
-        Applicant::whereIn('id', $request->ids)->delete();
-    
-        return response()->json(['success' => true, 'message' => 'Applicants deleted successfully.']);
-    }       
+
+        Applicant::whereIn('id', $request->ids)->forceDelete(); // Permanent delete
+
+        return response()->json(['success' => true, 'message' => 'Applicants permanently deleted.']);
+    }
 
     // *
     // **

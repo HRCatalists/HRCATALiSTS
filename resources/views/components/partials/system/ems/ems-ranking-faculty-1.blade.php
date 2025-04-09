@@ -350,167 +350,226 @@
 </div>
 <!-- Save Button -->
 
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-    // ✅ Populates Rank 1 form only
-    window.populateFacultyForm = function (faculty) {
-        const fields = [
-            "bachelor_degree", "academic_units_master_degree", "ma_ms_candidate",
-            "masters_thesis_completed", "full_master_degree", "academic_units_doctorate_degree",
-            "phd_education", "doctorate_dissertation_completed", "full_doctorate_degree",
-            "additional_bachelor_degree", "additional_master_degree", "additional_doctorate_degree",
-            "multiple_degrees", "specialized_training", "travel_grant_for_study",
-            "seminars_attended", "professional_education_units", "plumbing_certification",
-            "certificate_of_completion", "national_certification", "trainers_methodology",
-            "teachers_board_certified", "career_service_certification", "bar_exam_certification",
-            "board_exam_placer", "local_awards", "regional_awards", "national_awards",
-            "summa_cum_laude", "magna_cum_laude", "cum_laude", "with_distinction"
-        ];
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // ✅ Populates Rank 1 form only
+        window.populateFacultyForm = function (faculty) {
+            const fields = [
+                "bachelor_degree", "academic_units_master_degree", "ma_ms_candidate",
+                "masters_thesis_completed", "full_master_degree", "academic_units_doctorate_degree",
+                "phd_education", "doctorate_dissertation_completed", "full_doctorate_degree",
+                "additional_bachelor_degree", "additional_master_degree", "additional_doctorate_degree",
+                "multiple_degrees", "specialized_training", "travel_grant_for_study",
+                "seminars_attended", "professional_education_units", "plumbing_certification",
+                "certificate_of_completion", "national_certification", "trainers_methodology",
+                "teachers_board_certified", "career_service_certification", "bar_exam_certification",
+                "board_exam_placer", "local_awards", "regional_awards", "national_awards",
+                "summa_cum_laude", "magna_cum_laude", "cum_laude", "with_distinction"
+            ];
 
-        fields.forEach(field => {
-            const input = document.querySelector(`#content1 [name="${field}"]`);
-            const value = faculty[field];
-            if (!input) return;
+            fields.forEach(field => {
+                const input = document.querySelector(`#content1 [name="${field}"]`);
+                const value = faculty[field];
+                if (!input) return;
 
-            if (input.type === "checkbox") {
-                input.checked = Boolean(Number(value));
-            } else {
-                input.value = value ?? "";
-            }
-        });
-
-        updateTotalPoints(); // ✅ Recalculate total points
-    };
-            function updateTotalPoints() {
-            const $ = (name) => document.querySelector(`#content1 [name="${name}"]`);
-            let groupA = 0, groupB = 0, groupC = 0, groupD = 0, groupE = 0;
-
-            // Group A: Degrees (Max 50)
-            if ($("bachelor_degree")?.checked) groupA += 20;
-            if ($("ma_ms_candidate")?.checked) groupA += 25;
-            if ($("masters_thesis_completed")?.checked) groupA += 28;
-            if ($("full_master_degree")?.checked) groupA += 30;
-            if ($("phd_education")?.checked) groupA += 40;
-            if ($("doctorate_dissertation_completed")?.checked) groupA += 45;
-            if ($("full_doctorate_degree")?.checked) groupA += 50;
-
-            groupA += (parseFloat($("academic_units_master_degree")?.value) || 0) / 6;
-            groupA += (parseFloat($("academic_units_doctorate_degree")?.value) || 0) / 6;
-              
-            //group A Cap
-            groupA = Math.min(groupA, 50);
-
-            // Group B: Additional Degrees (Max 10)
-            if ($("additional_bachelor_degree")?.checked) groupB += 4;
-            if ($("additional_master_degree")?.checked) groupB += 6;
-            if ($("additional_doctorate_degree")?.checked) groupB += 10;
-            if ($("multiple_degrees")?.checked) groupB += 10;
-
-            groupB = Math.min(groupB, 10);
-
-            // Group C: Trainings (Max 10)
-            if ($("specialized_training")?.checked) groupC += 2;
-            if ($("travel_grant_for_study")?.checked) groupC += 5;
-            if ($("professional_education_units")?.checked) groupC += 5;
-            if ($("plumbing_certification")?.checked) groupC += 5;
-            if ($("certificate_of_completion")?.checked) groupC += 3;
-            if ($("national_certification")?.checked) groupC += 5;
-            if ($("trainers_methodology")?.checked) groupC += 10;
-
-            groupC += (parseFloat($("seminars_attended")?.value) || 0) * 0.33;
-            groupC = Math.min(groupC, 10);
-
-            // Group D: Government Exams (Max 20)
-            if ($("teachers_board_certified")?.checked) groupD += 20;
-            if ($("career_service_certification")?.checked) groupD += 15;
-            if ($("bar_exam_certification")?.checked) groupD += 20;
-
-            groupD = Math.min(groupD, 20);
-
-            // Group E: Honors (Max 10)
-            if ($("board_exam_placer")?.checked) groupE += 10;
-            if ($("local_awards")?.checked) groupE += 3;
-            if ($("regional_awards")?.checked) groupE += 5;
-            if ($("national_awards")?.checked) groupE += 10;
-            if ($("summa_cum_laude")?.checked) groupE += 10;
-            if ($("magna_cum_laude")?.checked) groupE += 8;
-            if ($("cum_laude")?.checked) groupE += 6;
-            if ($("with_distinction")?.checked) groupE += 3;
-
-            groupE = Math.min(groupE, 10);
-
-            const total = groupA + groupB + groupC + groupD + groupE;
-            const weighted = total * 0.30;
-
-            document.getElementById("totalPointsI").innerText = total.toFixed(2);
-            document.getElementById("totalPercentageI").innerText = weighted.toFixed(2);
-        }
-
-            // Recalculate when any input changes inside Rank 1
-            document.querySelectorAll('#content1 input').forEach(input => {
-                input.addEventListener("input", updateTotalPoints);
                 if (input.type === "checkbox") {
-                    input.addEventListener("change", updateTotalPoints);
+                    input.checked = Boolean(Number(value));
+                } else {
+                    input.value = value ?? "";
                 }
             });
 
-    // SAVE FUNCTION for Rank 1
-    document.getElementById("saveButton").addEventListener("click", function () {
-        const emp_id = document.querySelector('[name="emp_id"]').value;
-        if (!emp_id) return alert("Employee ID is missing.");
+            updateTotalPoints(); // ✅ Recalculate total points
+        };
 
-        const totalPoints = parseFloat(document.getElementById("totalPointsI").innerText) || 0;
-        const formData = new FormData();
+        // ✅ Populates Rank 1 form only
+        function updateTotalPoints() {
+          const $ = (name) => document.querySelector(`#content1 [name="${name}"]`);
+          let groupA = 0, groupB = 0, groupC = 0, groupD = 0, groupE = 0;
 
-        const fields = [
-            "emp_id", "bachelor_degree", "academic_units_master_degree", "ma_ms_candidate",
-            "masters_thesis_completed", "full_master_degree", "academic_units_doctorate_degree",
-            "phd_education", "doctorate_dissertation_completed", "full_doctorate_degree",
-            "additional_bachelor_degree", "additional_master_degree", "additional_doctorate_degree",
-            "multiple_degrees", "specialized_training", "travel_grant_for_study",
-            "seminars_attended", "professional_education_units", "plumbing_certification",
-            "certificate_of_completion", "national_certification", "trainers_methodology",
-            "teachers_board_certified", "career_service_certification", "bar_exam_certification",
-            "board_exam_placer", "local_awards", "regional_awards", "national_awards",
-            "summa_cum_laude", "magna_cum_laude", "cum_laude", "with_distinction"
-        ];
+          // Group A: Degrees (Max 50)
+          if ($("bachelor_degree")?.checked) groupA += 20;
+          if ($("ma_ms_candidate")?.checked) groupA += 25;
+          if ($("masters_thesis_completed")?.checked) groupA += 28;
+          if ($("full_master_degree")?.checked) groupA += 30;
+          if ($("phd_education")?.checked) groupA += 40;
+          if ($("doctorate_dissertation_completed")?.checked) groupA += 45;
+          if ($("full_doctorate_degree")?.checked) groupA += 50;
 
-        fields.forEach(field => {
-            const input = document.querySelector(`#content1 [name="${field}"]`);
-            if (input) {
-                formData.append(field, input.type === "checkbox" ? (input.checked ? input.value : 0) : input.value);
-            }
-        });
+          groupA += (parseFloat($("academic_units_master_degree")?.value) || 0) / 6;
+          groupA += (parseFloat($("academic_units_doctorate_degree")?.value) || 0) / 6;
 
-        formData.append("total_points", totalPoints);
+          // // Group A: Degrees (Max 50, staged logic)
+          // const degreeStages = [
+          //   { checkbox: $("bachelor_degree"), points: 20 },
+          //   { checkbox: $("ma_ms_candidate"), points: 25 },
+          //   { checkbox: $("masters_thesis_completed"), points: 28 },
+          //   { checkbox: $("full_master_degree"), points: 30 },
+          //   { checkbox: $("phd_education"), points: 40 },
+          //   { checkbox: $("doctorate_dissertation_completed"), points: 45 },
+          //   { checkbox: $("full_doctorate_degree"), points: 50 }
+          // ];
 
-        const saveBtn = document.getElementById("saveButton");
-        saveBtn.disabled = true;
-        saveBtn.innerText = "Saving...";
+          // let highestStage = 0;
+          // degreeStages.forEach(stage => {
+          //   if (stage.checkbox?.checked) {
+          //     highestStage = Math.max(highestStage, stage.points);
+          //   }
+          // });
 
-        fetch("/save-points", {
-            method: "POST",
-            body: formData,
-            headers: {
-                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
-            }
-        })
-        .then(res => res.json())
-        .then(data => {
-            saveBtn.disabled = false;
-            saveBtn.innerText = "Save";
-            if (data.success) {
-                alert("Faculty ranking saved successfully!");
-            } else {
-                alert("Error saving: " + (data.message || "Unknown error"));
-            }
-        })
-        .catch(err => {
-            saveBtn.disabled = false;
-            saveBtn.innerText = "Save";
-            console.error("Save error:", err);
-            alert("An error occurred while saving.");
+          // groupA += highestStage;
+
+          // // Academic Units: Master’s
+          // const masterUnits = parseFloat($("academic_units_master_degree")?.value) || 0;
+          // const maMsCandidateCheckbox = $("ma_ms_candidate");
+
+          // if (masterUnits >= 30) {
+          //   if (maMsCandidateCheckbox && !maMsCandidateCheckbox.checked) {
+          //     maMsCandidateCheckbox.checked = true;
+          //   }
+          // } else {
+          //   if (maMsCandidateCheckbox && maMsCandidateCheckbox.checked) {
+          //     maMsCandidateCheckbox.checked = false;
+          //   }
+          // }
+
+          // const hasStage25OrAbove = degreeStages.some(stage => stage.points >= 25 && stage.checkbox?.checked);
+          // if (!hasStage25OrAbove) {
+          //   groupA += masterUnits / 6;
+          // }
+
+          // // Academic Units: Doctorate
+          // const doctorateUnits = parseFloat($("academic_units_doctorate_degree")?.value) || 0;
+          // const phdEducationCheckbox = $("phd_education");
+
+          // if (doctorateUnits >= 30) {
+          //   if (phdEducationCheckbox && !phdEducationCheckbox.checked) {
+          //     phdEducationCheckbox.checked = true;
+          //   }
+          // } else {
+          //   if (phdEducationCheckbox && phdEducationCheckbox.checked) {
+          //     phdEducationCheckbox.checked = false;
+          //   }
+          // }
+
+          // const hasStage40OrAbove = degreeStages.some(stage => stage.points >= 40 && stage.checkbox?.checked);
+          // if (!hasStage40OrAbove) {
+          //   groupA += doctorateUnits / 6;
+          // }
+
+          groupA = Math.min(groupA, 50);
+
+          // Group B: Additional Degrees (Max 10)
+          if ($("additional_bachelor_degree")?.checked) groupB += 4;
+          if ($("additional_master_degree")?.checked) groupB += 6;
+          if ($("additional_doctorate_degree")?.checked) groupB += 10;
+          if ($("multiple_degrees")?.checked) groupB += 10;
+
+          groupB = Math.min(groupB, 10);
+
+          // Group C: Trainings (Max 10)
+          if ($("specialized_training")?.checked) groupC += 2;
+          if ($("travel_grant_for_study")?.checked) groupC += 5;
+          if ($("professional_education_units")?.checked) groupC += 5;
+          if ($("plumbing_certification")?.checked) groupC += 5;
+          if ($("certificate_of_completion")?.checked) groupC += 3;
+          if ($("national_certification")?.checked) groupC += 5;
+          if ($("trainers_methodology")?.checked) groupC += 10;
+
+          groupC += (parseFloat($("seminars_attended")?.value) || 0) * 0.33;
+          groupC = Math.min(groupC, 10);
+
+          // Group D: Government Exams (Max 20)
+          if ($("teachers_board_certified")?.checked) groupD += 20;
+          if ($("career_service_certification")?.checked) groupD += 15;
+          if ($("bar_exam_certification")?.checked) groupD += 20;
+
+          groupD = Math.min(groupD, 20);
+
+          // Group E: Honors (Max 10)
+          if ($("board_exam_placer")?.checked) groupE += 10;
+          if ($("local_awards")?.checked) groupE += 3;
+          if ($("regional_awards")?.checked) groupE += 5;
+          if ($("national_awards")?.checked) groupE += 10;
+          if ($("summa_cum_laude")?.checked) groupE += 10;
+          if ($("magna_cum_laude")?.checked) groupE += 8;
+          if ($("cum_laude")?.checked) groupE += 6;
+          if ($("with_distinction")?.checked) groupE += 3;
+
+          groupE = Math.min(groupE, 10);
+
+          const total = groupA + groupB + groupC + groupD + groupE;
+          const weighted = total * 0.30;
+
+          document.getElementById("totalPointsI").innerText = total.toFixed(2);
+          document.getElementById("totalPercentageI").innerText = weighted.toFixed(2);
+        }
+
+                // Recalculate when any input changes inside Rank 1
+                document.querySelectorAll('#content1 input').forEach(input => {
+                    input.addEventListener("input", updateTotalPoints);
+                    if (input.type === "checkbox") {
+                        input.addEventListener("change", updateTotalPoints);
+                    }
+                });
+
+        // SAVE FUNCTION for Rank 1
+        document.getElementById("saveButton").addEventListener("click", function () {
+            const emp_id = document.querySelector('[name="emp_id"]').value;
+            if (!emp_id) return alert("Employee ID is missing.");
+
+            const totalPoints = parseFloat(document.getElementById("totalPointsI").innerText) || 0;
+            const formData = new FormData();
+
+            const fields = [
+                "emp_id", "bachelor_degree", "academic_units_master_degree", "ma_ms_candidate",
+                "masters_thesis_completed", "full_master_degree", "academic_units_doctorate_degree",
+                "phd_education", "doctorate_dissertation_completed", "full_doctorate_degree",
+                "additional_bachelor_degree", "additional_master_degree", "additional_doctorate_degree",
+                "multiple_degrees", "specialized_training", "travel_grant_for_study",
+                "seminars_attended", "professional_education_units", "plumbing_certification",
+                "certificate_of_completion", "national_certification", "trainers_methodology",
+                "teachers_board_certified", "career_service_certification", "bar_exam_certification",
+                "board_exam_placer", "local_awards", "regional_awards", "national_awards",
+                "summa_cum_laude", "magna_cum_laude", "cum_laude", "with_distinction"
+            ];
+
+            fields.forEach(field => {
+                const input = document.querySelector(`#content1 [name="${field}"]`);
+                if (input) {
+                    formData.append(field, input.type === "checkbox" ? (input.checked ? input.value : 0) : input.value);
+                }
+            });
+
+            formData.append("total_points", totalPoints);
+
+            const saveBtn = document.getElementById("saveButton");
+            saveBtn.disabled = true;
+            saveBtn.innerText = "Saving...";
+
+            fetch("/save-points", {
+                method: "POST",
+                body: formData,
+                headers: {
+                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
+                }
+            })
+            .then(res => res.json())
+            .then(data => {
+                saveBtn.disabled = false;
+                saveBtn.innerText = "Save";
+                if (data.success) {
+                    alert("Faculty ranking saved successfully!");
+                } else {
+                    alert("Error saving: " + (data.message || "Unknown error"));
+                }
+            })
+            .catch(err => {
+                saveBtn.disabled = false;
+                saveBtn.innerText = "Save";
+                console.error("Save error:", err);
+                alert("An error occurred while saving.");
+            });
         });
     });
-});
-</script>
+  </script>
