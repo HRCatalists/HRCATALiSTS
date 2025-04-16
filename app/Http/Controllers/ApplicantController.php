@@ -609,6 +609,25 @@ class ApplicantController extends Controller
         }
     
         return redirect()->back()->with('success', 'Applicant archived successfully.');
-    }    
+    }
+    // *
+    // **
+    // ***
+    // ****offcanvas for requirements
+    public function updateRequirements(Request $request, $id)
+    {
+        $applicant = Applicant::findOrFail($id);
+
+        $requirements = [];
+
+        foreach (config('requirements.list') as $key => $label) {
+            $requirements[$key] = $request->has("requirements.$key");
+        }
+
+        $applicant->requirements = $requirements;
+        $applicant->save();
+
+        return back()->with('success', 'Requirements updated successfully!');
+    }
 }
     

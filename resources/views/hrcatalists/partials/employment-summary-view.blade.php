@@ -17,7 +17,7 @@
 
         <div class="col-md-9">
             <div class="mb-3">
-                <label class="form-label fw-bold">Faculty Code:</label>
+                <label class="form-label fw-bold">Employee No:</label>
                 <input type="text" name="faculty_code" 
                        class="plain-input section-field-employment-summary-{{ $employeeId }}" 
                        value="{{ old('faculty_code', $employee->faculty_code ?? '') }}" readonly>

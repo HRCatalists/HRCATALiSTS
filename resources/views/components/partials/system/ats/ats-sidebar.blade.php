@@ -143,14 +143,14 @@
             </ul>
         </li>
 
-        <li class="d-flex align-items-center pe-5">
+        {{-- <li class="d-flex align-items-center pe-5">
             
             <a href="{{ route('ems-policy') }}" class="nav-link px-0 align-middle">
                 <img src="images/faqs.png" class="icon" alt="archived-icon">
 
                 <span class="ms-3 sidebar-effect">COMPANY POLICY</span> 
             </a>
-        </li>
+        </li> --}}
 
         <li class="d-flex align-items-center pe-5">   
             <a href="{{ route('ats-logs') }}" class="nav-link px-0 align-middle">

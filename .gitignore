@@ -27,7 +27,7 @@ yarn-error.log
 /storage/framework/views/*
 !/storage/framework/views/.gitignore
 
-/storage/app/google-drive.json
+/storage/google-drive.json
 
 # With git-filter-repo
 git filter-repo --path storage/app/google-drive.json --invert-paths
