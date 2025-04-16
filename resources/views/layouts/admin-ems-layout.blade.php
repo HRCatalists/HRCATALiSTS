@@ -89,13 +89,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
 
-    <!-- Init All DataTables -->
+    <!-- DataTables JS -->
     <script>
         const tableIDs = ['#employeeTable'];
-
+    
         function initDataTable(id) {
             if ($(id).length) {
-                $(id).DataTable({
+                const table = $(id).DataTable({
                     dom: 'Bfrtip',
                     buttons: ['copy', 'excel', 'csv', 'pdf', 'print'],
                     responsive: true,
@@ -106,30 +106,54 @@
                         searchPlaceholder: 'Search'
                     },
                     initComplete: function () {
+                        const api = this.api();
+    
+                        // Add column filter dropdowns in the footer
+                        api.columns().every(function () {
+                            const column = this;
+                            const footer = $(column.footer()).empty();
+    
+                            const select = $('<select><option value="">All</option></select>')
+                                .appendTo(footer)
+                                .on('change', function () {
+                                    const val = $.fn.dataTable.util.escapeRegex($(this).val());
+                                    column.search(val ? '^' + val + '$' : '', true, false).draw();
+                                });
+    
+                            column.data().unique().sort().each(function (d) {
+                                if (d) {
+                                    select.append('<option value="' + d + '">' + d + '</option>');
+                                }
+                            });
+                        });
+    
+                        // Wrap main search input
                         $('.dataTables_filter input')
                             .wrap('<div class="search-box position-relative"></div>')
                             .attr('placeholder', 'Search');
+    
                         $('.search-box').prepend('<i class="bi bi-search position-absolute" style="left: 10px; top: 50%; transform: translateY(-50%); color: #888;"></i>');
                     }
                 });
             }
         }
-
+    
         $(document).ready(function () {
             tableIDs.forEach(id => initDataTable(id));
-
-            // Handle "select all" checkbox globally
+    
+            // Global select all logic
             $('#selectAll').on('click', function () {
                 const isChecked = $(this).is(':checked');
                 $('.rowCheckbox').prop('checked', isChecked);
             });
-
-            $('#applicantTable').on('change', '.rowCheckbox', function () {
+    
+            $('#employeeTable').on('change', '.rowCheckbox', function () {
                 const allChecked = $('.rowCheckbox:checked').length === $('.rowCheckbox').length;
                 $('#selectAll').prop('checked', allChecked);
             });
         });
     </script>
+    <!-- DataTables JS -->    
 
     <!-- Popup & Tab Management -->
     {{-- <script>

@@ -617,17 +617,23 @@ class ApplicantController extends Controller
     public function updateRequirements(Request $request, $id)
     {
         $applicant = Applicant::findOrFail($id);
-
-        $requirements = [];
-
-        foreach (config('requirements.list') as $key => $label) {
-            $requirements[$key] = $request->has("requirements.$key");
+    
+        // Retrieve the submitted requirements (will have "0" for unchecked, "1" for checked)
+        $reqs = $request->input('requirements', []);
+    
+        // Get the list of all requirements from your configuration
+        $allRequirements = config('requirements.list');
+    
+        $normalized = [];
+        foreach ($allRequirements as $key => $label) {
+            // Convert the submitted value to a boolean (or leave as 1/0)
+            $normalized[$key] = (isset($reqs[$key]) && $reqs[$key] == '1') ? true : false;
         }
-
-        $applicant->requirements = $requirements;
+    
+        $applicant->requirements = $normalized;
         $applicant->save();
-
-        return back()->with('success', 'Requirements updated successfully!');
-    }
+    
+        return back()->with('success', 'Requirements updated successfully.');
+    }    
 }
     

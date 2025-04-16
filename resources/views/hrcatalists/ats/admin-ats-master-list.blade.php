@@ -89,6 +89,7 @@
                                         <th>Classification</th>
                                         <th>APPLIED DATE</th>
                                         <th>POSITION APPLIED</th>
+                                        <th>REQUIREMENTS</th>
                                         <th class="no-export">ACTION</th>
                                     </tr>
                                 </thead>
@@ -152,6 +153,20 @@
                                                 {{ \Carbon\Carbon::parse($applicant->applied_at)->format('F d, Y') }}
                                             </td>                                    
                                             <td>{{ $applicant->job->job_title ?? 'N/A' }}</td>
+                                            <td>
+                                                @php
+                                                    $reqs = config('requirements.list');
+                                                    $status = 'Incomplete';
+                                                
+                                                    if ($applicant->requirements ?? false) {
+                                                        $completedCount = collect($applicant->requirements)->filter()->count();
+                                                        $status = $completedCount === count($reqs) ? 'Completed' : 'Incomplete';
+                                                    }
+                                                @endphp                                            
+                                    
+                                                {{ $status }}
+                                            </td>
+                                            
                                             <td class="no-export">
                                                 <div class="dropdown text-center">
                                                     <button class="btn btn-primary border-0" type="button" data-bs-toggle="dropdown">
@@ -240,7 +255,9 @@
                                                                     data-applicant-position="{{ $applicant->job->job_title ?? 'N/A' }}"
                                                                     data-applicant-address="{{ $applicant->address }}"
                                                                     data-applicant-notes="{{ $applicant->notes }}"
-                                                                    data-applicant-resume="{{ $applicant->cv }}">
+                                                                    data-applicant-resume="{{ $applicant->cv }}"
+                                                                    data-applicant-requirements='@json($applicant->requirements)'
+                                                                    >
                                                                     
                                                                     <i class="fa fa-eye me-2"></i> View
                                                                 </button>
