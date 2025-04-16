@@ -28,16 +28,17 @@ class Applicant extends Model
     }
 
     
-    public function scopeIncompleteRequirements($query)
+        public function scopeIncompleteRequirements($query)
     {
-        return $query->where(function($q) {
-            // Check if no requirements at all
+        return $query->where(function ($q) {
+            // If requirements field is completely missing
             $q->whereNull('requirements');
-    
-            // OR Check if any requirement is false
-            foreach (config('requirements.list') as $key => $label) {
+
+            // OR: If any required item is explicitly false
+            foreach (config('requirements.list', []) as $key => $label) {
                 $q->orWhereRaw("JSON_EXTRACT(requirements, '$.\"$key\"') = false");
             }
         })->whereNotIn('status', ['hired', 'rejected', 'archived']);
-    }    
+    }
+
 }

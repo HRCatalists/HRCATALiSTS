@@ -61,7 +61,7 @@ Route::middleware([RoleMiddleware::class . ':admin,secretary'])->group(function 
     })->name('password.change');
     
 
-    Route::post('/change-password', [AdminController::class, 'updatePassword'])->name('password.update');
+    // Route::post('/change-password', [AdminController::class, 'updatePassword'])->name('password.update');
 
 
 });
