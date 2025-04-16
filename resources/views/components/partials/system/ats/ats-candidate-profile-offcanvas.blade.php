@@ -80,18 +80,15 @@
                         </div>
                     </div>
 
-                    <!-- Attachment -->
-                    @if(!empty($applicant->cv))
-                        <div class="file-attachment my-4">
-                            <a id="applicantCVLink" href="https://drive.google.com/uc?export=download&id={{ $applicant->cv }}" target="_blank" download>
-                                <img src="{{ asset('images/pdf-img.png') }}" alt="PDF icon">
-                                <span id="applicantCV">CV.pdf</span>
-                                <span class="ms-auto">Click to Download</span>
-                            </a>
-                        </div>
-                    @else
-                        <p id="cvMessage">No CV available.</p>
-                    @endif
+                  <!-- Attachment -->
+                  <div class="file-attachment my-4">
+                        <a id="applicantCVLink" href="#" target="_blank" download style="display: none;" class="d-flex align-items-center gap-2">
+                            <img src="{{ asset('images/pdf-img.png') }}" alt="PDF icon" style="width: 24px;">
+                            <span id="applicantCV" class="fw-semibold text-primary"></span>
+                            <span class="ms-auto text-muted">Click to Download</span>
+                        </a>
+                        <p id="cvMessage" class="mb-0 text-muted border rounded px-3 py-2" style="display: none;">No CV available.</p>
+                    </div>
 
                     {{-- <div class="d-grid mt-5">
                         @if(isset($applicant))
@@ -193,122 +190,136 @@
 <!-- For adding notes -->
 
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-    // Edit Notes Modal
-    const editNotesBtn = document.getElementById("editNotesBtn");
-    const noteContent = document.getElementById("noteContent");
-    const saveNotesBtn = document.getElementById("saveNotesBtn");
-
-    if (editNotesBtn && noteContent && saveNotesBtn) {
-        editNotesBtn.addEventListener("click", function () {
-            let allNotes = document.querySelectorAll("#notes p");
-            let combinedNotes = Array.from(allNotes).map(note => note.innerText).join("\n\n");
-            noteContent.value = combinedNotes.trim();
-            new bootstrap.Modal(document.getElementById("editNotesModal")).show();
-        });
-
-        saveNotesBtn.addEventListener("click", function () {
-            let updatedNotes = noteContent.value.split("\n\n");
-            document.querySelectorAll("#notes p").forEach((note, index) => {
-                if (updatedNotes[index]) note.innerText = updatedNotes[index];
+    document.addEventListener("DOMContentLoaded", function () {
+        // Edit Notes Modal
+        const editNotesBtn = document.getElementById("editNotesBtn");
+        const noteContent = document.getElementById("noteContent");
+        const saveNotesBtn = document.getElementById("saveNotesBtn");
+    
+        if (editNotesBtn && noteContent && saveNotesBtn) {
+            editNotesBtn.addEventListener("click", function () {
+                let allNotes = document.querySelectorAll("#notes p");
+                let combinedNotes = Array.from(allNotes).map(note => note.innerText).join("\n\n");
+                noteContent.value = combinedNotes.trim();
+                new bootstrap.Modal(document.getElementById("editNotesModal")).show();
             });
-            document.querySelector("#editNotesModal .btn-close").click();
-        });
-    }
-
-    // Offcanvas Handling
-    const offcanvas = document.getElementById('candidateProfile');
-    if (offcanvas) {
-        const statusColors = {
-            'pending': '#6c757d',
-            'screening': '#17a2b8',
-            'scheduled': '#ffc107',
-            'evaluation': '#007bff',
-            'hired': '#28a745',
-            'rejected': '#dc3545',
-            'archived': '#343a40'
-        };
-
-        offcanvas.addEventListener('show.bs.offcanvas', function (event) {
-            const button = event.relatedTarget;
-            if (!button) return;
-
-            const data = {
-                name: button.dataset.applicantName || 'N/A',
-                status: button.dataset.applicantStatus || 'N/A',
-                email: button.dataset.applicantEmail || 'N/A',
-                phone: button.dataset.applicantPhone || 'N/A',
-                position: button.dataset.applicantPosition || 'N/A',
-                address: button.dataset.applicantAddress || 'N/A',
-                resume: button.dataset.applicantResume || 'N/A',
-                jobTitle: button.dataset.applicantJobTitle || 'N/A'
-            };
-
-            const statusKey = data.status.toLowerCase();
-            const statusColor = statusColors[statusKey] || '#000000';
-
-            Swal.fire({
-                icon: 'info',
-                title: data.name,
-                text: `Currently in stage: ${data.status.toUpperCase()}`,
-                confirmButtonColor: statusColor,
-                confirmButtonText: 'View Profile'
-            });
-
-            Object.entries({
-                'applicantName': data.name,
-                'applicantEmail': data.email,
-                'applicantPhone': data.phone,
-                'applicantPosition': data.position,
-                'applicantAddress': data.address,
-                'applicantResume': data.resume,
-                'applicantJobTitle': data.jobTitle
-                
-            }).forEach(([id, value]) => {
-                const el = document.getElementById(id);
-                if (el) el.innerText = value;
-            });
-
-            const statusEl = document.getElementById('applicantStatus');
-            if (statusEl) {
-                statusEl.innerText = `STAGE: ${data.status.toUpperCase()}`;
-                Object.assign(statusEl.style, {
-                    color: statusColor,
-                    border: `2px solid ${statusColor}`,
-                    backgroundColor: 'transparent',
-                    fontWeight: '600'
+    
+            saveNotesBtn.addEventListener("click", function () {
+                let updatedNotes = noteContent.value.split("\n\n");
+                document.querySelectorAll("#notes p").forEach((note, index) => {
+                    if (updatedNotes[index]) note.innerText = updatedNotes[index];
                 });
-            }
+                document.querySelector("#editNotesModal .btn-close").click();
+            });
+        }
+    
+        // Offcanvas Handling
+        const offcanvas = document.getElementById('candidateProfile');
+        if (offcanvas) {
+            const statusColors = {
+                'pending': '#6c757d',
+                'screening': '#17a2b8',
+                'scheduled': '#ffc107',
+                'evaluation': '#007bff',
+                'hired': '#28a745',
+                'rejected': '#dc3545',
+                'archived': '#343a40'
+            };
+    
+            offcanvas.addEventListener('show.bs.offcanvas', function (event) {
+                const button = event.relatedTarget;
+                if (!button) return;
+    
+                const data = {
+                    name: button.dataset.applicantName || 'N/A',
+                    status: button.dataset.applicantStatus || 'N/A',
+                    email: button.dataset.applicantEmail || 'N/A',
+                    phone: button.dataset.applicantPhone || 'N/A',
+                    position: button.dataset.applicantPosition || 'N/A',
+                    address: button.dataset.applicantAddress || 'N/A',
+                    resume: button.dataset.applicantResume || 'N/A',
+                    jobTitle: button.dataset.applicantJobTitle || 'N/A'
+                };
+    
+                // Set static content
+                Object.entries({
+                    'applicantName': data.name,
+                    'applicantEmail': data.email,
+                    'applicantPhone': data.phone,
+                    'applicantPosition': data.position,
+                    'applicantAddress': data.address,
+                    'applicantResume': data.resume,
+                    'applicantJobTitle': data.jobTitle
+                }).forEach(([id, value]) => {
+                    const el = document.getElementById(id);
+                    if (el) el.innerText = value;
+                });
+    
+                // Status styling
+                const statusKey = data.status.toLowerCase();
+                const statusColor = statusColors[statusKey] || '#000000';
+                const statusEl = document.getElementById('applicantStatus');
+                if (statusEl) {
+                    statusEl.innerText = `STAGE: ${data.status.toUpperCase()}`;
+                    Object.assign(statusEl.style, {
+                        color: statusColor,
+                        border: `2px solid ${statusColor}`,
+                        backgroundColor: 'transparent',
+                        fontWeight: '600'
+                    });
+                }
+    
+                // Show correct buttons
+                document.getElementById(statusKey === 'evaluation' ? 'demoButtons' : 'defaultButtons')?.classList.remove('d-none');
+                document.getElementById(statusKey !== 'evaluation' ? 'demoButtons' : 'defaultButtons')?.classList.add('d-none');
+    
+                // CV Download Link
+                const cvLink = document.getElementById('applicantCVLink');
+                const cvNameSpan = document.getElementById('applicantCV');
+                const cvMessage = document.getElementById('cvMessage');
 
-            document.getElementById(statusKey === 'evaluation' ? 'demoButtons' : 'defaultButtons')?.classList.remove('d-none');
-            document.getElementById(statusKey !== 'evaluation' ? 'demoButtons' : 'defaultButtons')?.classList.add('d-none');
-        });
-    }
+                const resumeId = button.dataset.applicantResume || 'N/A';
+                const applicantName = button.dataset.applicantName || 'Applicant';
 
-    // Laravel Success/Error Alerts
-    @if(session('success'))
-        Swal.fire({
-            icon: 'success',
-            title: 'Success!',
-            text: "{{ session('success') }}",
-            confirmButtonColor: '#28a745'
-        });
-    @endif
-
-    @if(session('error'))
-        Swal.fire({
-            icon: 'error',
-            title: 'Error!',
-            text: "{{ session('error') }}",
-            confirmButtonColor: '#dc3545'
-        });
-    @endif
-});
-
-
+                if (resumeId !== 'N/A') {
+                    if (cvLink) {
+                        cvLink.href = `https://drive.google.com/uc?export=download&id=${resumeId}`;
+                        cvLink.style.display = 'inline-flex';
+                    }
+                    if (cvNameSpan) {
+                        // Generate filename from applicant name
+                        const cleanName = applicantName.trim().replace(/\s+/g, '_');
+                        const fileName = `${cleanName}_CV.pdf`;
+                        cvNameSpan.textContent = fileName;
+                    }
+                    if (cvMessage) cvMessage.style.display = 'none';
+                } else {
+                    if (cvLink) cvLink.style.display = 'none';
+                    if (cvMessage) cvMessage.style.display = 'block';
+                }
+            });
+        }
+    
+        // Laravel Success/Error Alerts
+        @if(session('success'))
+            Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: "{{ session('success') }}",
+                confirmButtonColor: '#28a745'
+            });
+        @endif
+    
+        @if(session('error'))
+            Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: "{{ session('error') }}",
+                confirmButtonColor: '#dc3545'
+            });
+        @endif
+    });
 </script>
-
-
 
 
 

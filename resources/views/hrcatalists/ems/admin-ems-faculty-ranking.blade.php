@@ -44,11 +44,11 @@
                 <div class="mt-5" id="search-results"></div>
 
                 <!-- 🖨️ Print Button -->
-                <div class="d-flex justify-content-end mb-3">
+                <!-- <div class="d-flex justify-content-end mb-3">
                     <button class="btn shadow print-btn">
                         <i class="fa fa-print"></i> PRINT
                     </button>
-                </div>
+                </div> -->
 
                 <!-- 👨‍🏫 Employee Name Display -->
                 <div class="text-center mt-4 mb-2">

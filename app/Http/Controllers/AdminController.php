@@ -38,10 +38,18 @@ class AdminController extends Controller
             ->latest('applied_at')
             ->take(5)
             ->get();
+
+        // dd(Applicant::where('status', 'archived')->get());
         $applicantsByStatus = Applicant::selectRaw('LOWER(TRIM(status)) as status, COUNT(*) as count')
-            ->groupBy('status')
-            ->pluck('count', 'status')
-            ->toArray();
+        ->groupByRaw('LOWER(TRIM(status))')
+        ->pluck('count', 'status')
+        ->toArray();
+
+        $archivedApplicantsCount = Applicant::onlyTrashed()->count();
+
+        // Manually inject archived count in the array
+        $applicantsByStatus['archived'] = $archivedApplicantsCount;
+
         $totalJobs = Job::count();
         $totalEmployees = Employee::count();
         $events = Event::select('event_date', 'event_time', 'title', 'description')->get();
@@ -197,27 +205,44 @@ class AdminController extends Controller
              return redirect()->route('login');
          }
      
-         $employees = Employee::with(['employmentDetails'])->get();
-
+         // ✅ Bulk update all employment details (only once per load)
+         $employmentDetails = EmployeeEmploymentDetail::all();
+     
+         foreach ($employmentDetails as $detail) {
+             $detail->updateYearsServed(); // This will check and save only if necessary
+         }
+     
+         // Now load employees with relationships after the update
+         $employees = Employee::with('employmentDetails')->get();
+     
          foreach ($employees as $employee) {
              if (!empty($employee->cv)) {
                  $employee->cv_file_name = $this->googleDriveService->getFileName($employee->cv);
              }
          }
-         
-         $jobs = Job::all(); // ✅ Required for dropdown in the modal
      
-         return view('hrcatalists.ems.admin-ems-emp', compact('employees', 'jobs')); // ✅ FIXED
+         $jobs = Job::all();
+     
+         return view('hrcatalists.ems.admin-ems-emp', compact('employees', 'jobs'));
      }
      
-    public function showEmployees()
-    {
-        $employees = Employee::with('employmentDetails')->get();
-        $jobs = Job::all(); // <-- this line is the key!
-    
-        return view('hrcatalists.ems.admin-ems-emp', compact('employees', 'jobs'));
-    }    
-
+     
+     
+     public function showEmployees()
+     {
+         $employees = Employee::with('employmentDetails')->get();
+     
+         foreach ($employees as $employee) {
+             foreach ($employee->employmentDetails as $detail) {
+                 $detail->updateYearsServed();
+             }
+         }
+     
+         $jobs = Job::all();
+     
+         return view('hrcatalists.ems.admin-ems-emp', compact('employees', 'jobs'));
+     }
+     
     // *
     // **
     // ***
@@ -342,15 +367,28 @@ class AdminController extends Controller
         $employee->update($validated);
     
         // ✅ Employment details
+        $employee = Employee::findOrFail($id);
+
+        $employment = $employee->employmentDetails()->firstOrNew(['employee_id' => $employee->id]);
+    
+        $contractType = $request->input('contract_type');
+        $datePermanent = $request->input('date_permanent') ?? $employment->date_permanent;
+    
+        if ($contractType === 'Full-time' && empty($employment->date_permanent)) {
+            $datePermanent = now()->toDateString();
+        }
+    
         $employmentData = [
             'parent_department' => $request->input('parent_department'),
             'parent_college' => $request->input('parent_college'),
             'classification' => $request->input('classification'),
             'employment_status' => $request->input('employment_status'),
+            'contract_type' => $contractType,
             'date_employed' => $request->input('date_employed') ?? $employee->created_at->toDateString(),
             'accreditation' => $request->input('accreditation'),
-            'date_permanent' => $request->input('date_permanent'),
+            'date_permanent' => $datePermanent,
         ];
+    
     
         $employee->employmentDetails()->updateOrCreate([], $employmentData);
     
@@ -378,7 +416,11 @@ class AdminController extends Controller
             'user_id' => Auth::id(),
             'activity' => "Updated employee profile: {$employee->first_name} {$employee->last_name} (ID: {$employee->id})",
         ]);
+        $employment->fill($employmentData);
+        $employment->updateYearsServed();
+        $employment->save();
     
+ 
         return back()->with('success', 'Employee updated successfully.');
     }
 
@@ -592,13 +634,36 @@ class AdminController extends Controller
             'event_id' => $id
         ]);
     }    
-    public function atsApplicants()
+    public function atsApplicants(Request $request)
     {
         if (!Auth::check()) {
             return redirect()->route('login');
         }
-        return view('hrcatalists.ats.admin-ats-master-list'); // ATS Applicants
+    
+        $status = $request->status;  // get the passed status from URL
+    
+        $query = Applicant::query();
+    
+        if ($status) {
+            if ($status == 'total') {
+                // Show all applicants
+            } elseif ($status == 'active') {
+                // Show only active applicants
+                $query->whereNotIn('status', ['hired', 'rejected', 'archived']);
+            } else {
+                // Show applicants with the specific status
+                $query->where('status', $status);
+            }
+        } else {
+            // Default view: Active applicants only
+            $query->whereNotIn('status', ['hired', 'rejected', 'archived']);
+        }
+    
+        $applicants = $query->latest()->get();
+    
+        return view('hrcatalists.ats.admin-ats-master-list', compact('applicants', 'status'));
     }
+    
 
     public function atsScreening()
     {
@@ -930,6 +995,7 @@ class AdminController extends Controller
     $user->save();
 
     return back()->with('success', 'Password updated successfully!');
+    
 }
- 
+
 }

@@ -15,6 +15,7 @@ Route::middleware([RoleMiddleware::class . ':admin,secretary'])->group(function 
     Route::get('/ats-calendar', [AdminController::class, 'atsCalendar'])->name('ats-calendar');
     Route::get('/ats-job-openings', [AdminController::class, 'atsJobs'])->name('ats-jobs');
     Route::get('/ats-logs', [AdminController::class, 'atsLogs'])->name('ats-logs');
+    // Route::get('/admin-dashboard', [DashboardController::class, 'dashboard'])->name('admin-dashboard');
 
     // Events
     Route::get('/events', [AdminController::class, 'getEvents'])->name('events.index');

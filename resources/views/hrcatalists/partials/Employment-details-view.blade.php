@@ -88,6 +88,15 @@
             <input type="date" name="date_employed" class="{{ $fieldClass }}"
                 value="{{ old('date_employed', $employment->date_employed ?? now()->format('Y-m-d')) }}" readonly>
         </div>
+        <!-- Years of service -->
+
+        <div class="col-md-6 mb-3">
+            <label class="form-label fw-bold">Years of Service:</label>
+            <input type="text" name="years_served" class="{{ $fieldClass }}"
+                value="{{ $employment->years_served ?? '0' }}" readonly>
+        </div>
+
+
     
         <!-- Accreditation -->
         <div class="col-md-6 mb-3">
@@ -95,7 +104,27 @@
             <input type="text" name="accreditation" id="accreditation_{{ $employeeId }}" class="{{ $fieldClass }}" 
                 value="{{ old('accreditation', $employment->accreditation ?? '') }}" readonly>
         </div>
-    
+    <!-- Contract Type -->
+            
+            <div class="col-md-6 mb-3">
+            <label for="contract_type_{{ $employeeId }}" class="form-label fw-bold">Contract Type:</label>
+            <select 
+                name="contract_type" 
+                id="contract_type_{{ $employeeId }}" 
+                class="form-select form-select-sm {{ $fieldClass }}" 
+                required
+            >
+                <option value="">Select Contract Type</option>
+                <option value="Full-time" {{ old('contract_type', $employment->contract_type ?? '') == 'Full-time' ? 'selected' : '' }}>Full-time</option>
+                <option value="Part-time" {{ old('contract_type', $employment->contract_type ?? '') == 'Part-time' ? 'selected' : '' }}>Part-time</option>
+                <option value="Contractual" {{ old('contract_type', $employment->contract_type ?? '') == 'Contractual' ? 'selected' : '' }}>Contractual</option>
+                <option value="Fixed-term" {{ old('contract_type', $employment->contract_type ?? '') == 'Fixed-term' ? 'selected' : '' }}>Fixed-term</option>
+                <option value="Casual" {{ old('contract_type', $employment->contract_type ?? '') == 'Casual' ? 'selected' : '' }}>Casual</option>
+                <option value="Intern" {{ old('contract_type', $employment->contract_type ?? '') == 'Intern' ? 'selected' : '' }}>Intern</option>
+            </select>
+        </div>
+
+
         <!-- Permanent Status -->
         <div class="col-md-6 mb-3">
             <label class="form-label fw-bold">Date of Permanent Status:</label>

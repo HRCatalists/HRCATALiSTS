@@ -52,7 +52,8 @@
                                         <div>
                                             <h6 class="fw-semibold text-uppercase" style="color: {{ $hexColor }};">{{ $card['label'] }}</h6>
                                             <h2 class="fw-bold text-dark">{{ $card['count'] }}</h2>
-                                            <a href="{{ route('ats-applicants') }}" class="btn btn-sm btn-outline-primary mt-2">View</a>
+                                            <!-- <a href="{{ route('ats-applicants') }}" class="btn btn-sm btn-outline-primary mt-2">View</a> -->
+                                            <a href="{{ route('ats-applicants', ['status' => $card['key']]) }}" class="btn btn-sm btn-outline-primary mt-2">View</a>
                                         </div>
                                         <i class="fas {{ $card['icon'] }} fa-2x" style="color: {{ $hexColor }};"></i>
                                     </div>

@@ -239,7 +239,8 @@
                                                                     data-applicant-phone="{{ $applicant->phone }}"
                                                                     data-applicant-position="{{ $applicant->job->job_title ?? 'N/A' }}"
                                                                     data-applicant-address="{{ $applicant->address }}"
-                                                                    data-applicant-notes="{{ $applicant->notes }}">
+                                                                    data-applicant-notes="{{ $applicant->notes }}"
+                                                                    data-applicant-resume="{{ $applicant->cv }}">
                                                                     <i class="fa fa-eye me-2"></i> View
                                                                 </button>
                                                             </li>

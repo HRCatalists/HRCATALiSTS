@@ -31,10 +31,10 @@
                         ADD EMPLOYEE
                     </button>
                 
-                    <button type="button" class="btn shadow print-btn ms-auto">
+                    <!-- <button type="button" class="btn shadow print-btn ms-auto">
                         <i class="fas fa-print me-2"></i> Print
                     </button>              
-                </div>
+                </div> -->
 
                 {{-- Success Alert --}}
                 @if (session('success'))
