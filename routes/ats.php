@@ -35,6 +35,7 @@ Route::middleware([RoleMiddleware::class . ':admin,secretary'])->group(function 
     Route::post('/applicants/bulk-archive', [ApplicantController::class, 'bulkArchive'])->name('applicants.bulkArchive');
     Route::post('/applicants/bulk-reject', [ApplicantController::class, 'bulkReject'])->name('applicants.bulkReject');
     Route::get('/applicants/print/{status}', [AdminController::class, 'printApplicantsByStatus'])->name('applicants.print');
+    Route::put('/applicants/{id}/requirements', [ApplicantController::class, 'updateRequirements'])->name('applicants.updateRequirements');
 
     // Action button routes
     Route::get('/applicants/{id}', [ApplicantController::class, 'show']);

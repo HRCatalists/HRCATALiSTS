@@ -1,17 +1,93 @@
         <!-- Dashboard Content -->
         <div id="" class="flex-grow-1">
             <div class="container">
-                {{-- <div class="welcome-text-only">Welcome, {{ auth()->user()->name }}!</div> --}}
-
-                {{-- <div class="d-flex justify-content-between align-items-center my-4">
-                    <div>
-                        <h2 class="db-h2">APPLICANTS</h2>
-                    </div>
-                </div> --}}
-
                 <div class="row dashboard-row d-flex justify-content-between align-items-start">
                     <div class="container my-5">
                         <h3 class="mb-4 fw-bold text-primary">Applicants</h3>
+
+                        {{-- 1st row: incomplete requirements & today/upcoming events --}}
+                        <div class="row g-4 mb-4">
+
+                            {{-- Incomplete Requirements --}}
+                            <div class="col-md-5">
+                                <div class="card border-warning shadow-sm h-100">
+                                    <div class="card-body">
+                                        <h5 class="text-warning fw-bold mb-2">
+                                            Applicants with Incomplete Requirements
+                                        </h5>
+                        
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <span class="fs-4 fw-semibold text-dark">{{ $incompleteApplicants->count() }}</span>
+                                            <a href="{{ route('ats-applicants') }}" class="btn btn-sm btn-outline-warning">Manage Applicants</a>
+                                        </div>
+                        
+                                        @if($incompleteApplicants->isNotEmpty())
+                                            <button class="btn btn-sm btn-outline-secondary mb-3 d-flex align-items-center gap-2 toggle-btn"
+                                                data-bs-toggle="collapse" 
+                                                data-bs-target="#incompleteApplicantsList"
+                                                data-target="#incompleteApplicantsList">
+                                                <span>View Applicants</span>
+                                                <i class="fas fa-chevron-down rotate-icon"></i>
+                                            </button>
+                        
+                                            <div class="collapse" id="incompleteApplicantsList">
+                                                <ul class="mb-0 small">
+                                                    @foreach($incompleteApplicants as $applicant)
+                                                        <li>{{ $applicant->first_name }} {{ $applicant->last_name }}</li>
+                                                    @endforeach
+                                                </ul>
+                                            </div>
+                                        @else
+                                            <p class="text-muted">All applicants have submitted their requirements.</p>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                        
+                            {{-- Upcoming Events --}}
+                            <div class="col-md-7">
+                                <div class="card border-info shadow-sm h-100">
+                                    <div class="card-body">
+                                        <h5 class="text-info fw-bold mb-2">
+                                            Upcoming Interviews & Events
+                                        </h5>
+                        
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <span class="fs-4 fw-semibold text-dark">{{ $upcomingEvents->count() }}</span>
+                                            <a href="{{ route('ats-calendar') }}" class="btn btn-sm btn-outline-info">Go to Calendar</a>
+                                        </div>
+                        
+                                        @if($upcomingEvents->isNotEmpty())
+                                            <button class="btn btn-sm btn-outline-secondary mb-3 d-flex align-items-center gap-2 toggle-btn"
+                                                data-bs-toggle="collapse" 
+                                                data-bs-target="#upcomingEventsList"
+                                                data-target="#upcomingEventsList">
+                                                <span>View Events</span>
+                                                <i class="fas fa-chevron-down rotate-icon"></i>
+                                            </button>
+                        
+                                            <div class="collapse" id="upcomingEventsList">
+                                                <ul class="mb-0 small">
+                                                    @foreach($upcomingEvents as $event)
+                                                        <li class="mb-2">
+                                                            <div class="fw-bold">{{ $event->title }}</div>
+                                                            <div class="text-muted">{{ $event->description }}</div>
+                                                            <div class="small">
+                                                                {{ \Carbon\Carbon::parse($event->event_date)->format('M d, Y') }} 
+                                                                at {{ \Carbon\Carbon::parse($event->event_time)->format('h:i A') }}
+                                                            </div>
+                                                        </li>
+                                                    @endforeach
+                                                </ul>
+                                            </div>
+                                        @else
+                                            <p class="text-muted">No upcoming events scheduled.</p>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                                            
                 
                         <div class="row g-4">
                             @php
@@ -160,7 +236,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div>                               
                             </div>
                     
                             {{-- Right Column: Logs --}}
@@ -199,10 +275,10 @@
                         </div>
                     </div>
 
-                    <!-- Chart Section
-                    <div class="chart-container mt-5">
+                    <!-- Chart Section -->
+                    {{-- <div class="chart-container mt-5">
                         <canvas id="applicantsChart"></canvas>
-                    </div> -->
+                    </div> --}}
 
                 </div>
             </div>

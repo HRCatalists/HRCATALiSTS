@@ -30,8 +30,24 @@ class AdminController extends Controller
         if (!Auth::check()) {
             return redirect()->route('login');
         }
+
+        
+        // $notifications = [];
+
+        // if(Applicant::whereDate('applied_at', today())->count() > 0) {
+        //     $notifications[] = (object) ['message' => 'New applicant submitted today.'];
+        // }
+        
+        // if(Job::where('end_date', '<', now()->addDays(7))->count() > 0) {
+        //     $notifications[] = (object) ['message' => 'Some jobs are expiring soon.'];
+        // }
+        
+        // $notificationsCount = count($notifications);
     
+        // Logs
         $logs = Log::latest()->take(7)->get();
+
+        // ATS Applicants
         $totalApplicants = Applicant::count();
         $activeApplicantsCount = Applicant::whereNotIn('status', ['hired', 'rejected', 'archived'])->count();
         $recentActiveApplicants = Applicant::whereNotIn('status', ['hired', 'rejected', 'archived'])
@@ -39,17 +55,15 @@ class AdminController extends Controller
             ->take(5)
             ->get();
 
-        // dd(Applicant::where('status', 'archived')->get());
         $applicantsByStatus = Applicant::selectRaw('LOWER(TRIM(status)) as status, COUNT(*) as count')
-        ->groupByRaw('LOWER(TRIM(status))')
-        ->pluck('count', 'status')
-        ->toArray();
+            ->groupBy('status')
+            ->pluck('count', 'status')
+            ->toArray();
 
-        $archivedApplicantsCount = Applicant::onlyTrashed()->count();
+        // Get the count of applicants with incomplete requirements
+        $incompleteApplicants = Applicant::incompleteRequirements()->get();
 
-        // Manually inject archived count in the array
-        $applicantsByStatus['archived'] = $archivedApplicantsCount;
-
+        // Jobs
         $totalJobs = Job::count();
         $totalEmployees = Employee::count();
         $events = Event::select('event_date', 'event_time', 'title', 'description')->get();
@@ -78,7 +92,18 @@ class AdminController extends Controller
                 'percentage' => $totalEmployees > 0 ? round(($count / $totalEmployees) * 100, 1) : 0,
             ];
         }
+
+        // ✅ Fetch events for the calendar
+        $today = now()->startOfDay();
+        $nextFiveDays = now()->addDays(4)->endOfDay(); // 5 days only
+        
+        $upcomingEvents = Event::whereBetween('event_date', [$today, $nextFiveDays])
+                            ->orderBy('event_date')
+                            ->orderBy('event_time')
+                            ->get();
     
+        // $notificationsCount = count($notifications);
+
         return view('hrcatalists.admin-dashboard', compact(
             'logs',
             'totalApplicants',
@@ -94,7 +119,9 @@ class AdminController extends Controller
             'activeApplicantsCount',
             'recentActiveApplicants',
             'activeJobsCount',
-            'inactiveJobsCount'
+            'inactiveJobsCount',
+            'incompleteApplicants',
+            'upcomingEvents'
         ));
     }
 
@@ -265,6 +292,183 @@ class AdminController extends Controller
         return redirect()->back()->with('success', 'Employee deleted successfully.');
     }
 
+    private function sortEducationsByLevel(array $educations): array
+    {
+        $priority = [
+            'Doctorate' => 1,
+            'PhD' => 1,
+            'Master\'s' => 2,
+            'Graduate Studies' => 2,
+            'Bachelor\'s' => 3,
+            'College' => 3,
+            'Associate' => 4,
+            'Senior High School' => 5,
+            'High School' => 6,
+            'Elementary' => 7,
+            'Others' => 8
+        ];
+
+        return collect($educations)
+            ->sortBy(function ($edu) use ($priority) {
+                $level = trim($edu['level'] ?? '');
+                return $priority[$level] ?? 999;
+            })
+            ->values()
+            ->toArray();
+    }
+    // *
+    // **
+    // ***
+    // ****Add new employee data
+    public function store(Request $request)
+    {
+        
+        $validated = $request->validate([
+            // Core employee fields
+            'job_title' => 'nullable|string|max:255',
+            'department' => 'nullable|string|max:255',
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:employees,email',
+            'phone' => 'nullable|string|max:20',
+            'address' => 'nullable|string|max:255',
+            'cv' => 'nullable|mimes:pdf|max:2048',
+            'job_id' => 'nullable|exists:jobs,id',
+            'privacy_policy_agreed' => 'nullable|boolean',
+            'status' => 'nullable|string|max:100',
+            'applied_at' => 'nullable|date',
+            'faculty_code' => 'nullable|string|max:255',
+            'school_of' => 'nullable|string|max:255',
+            'designation_group' => 'nullable|string|max:255',
+            'branch' => 'nullable|string|max:255',
+            'date_of_birth' => 'nullable|date',
+            'place_of_birth' => 'nullable|string|max:255',
+            'gender' => 'nullable|string|max:50',
+            'religion' => 'nullable|string|max:100',
+            'civil_status' => 'nullable|string|max:100',
+            'citizenship' => 'nullable|string|max:100',
+            'spouse_name' => 'nullable|string|max:255',
+            'spouse_address' => 'nullable|string|max:255',
+            'spouse_occupation' => 'nullable|string|max:255',
+            'no_of_dependents' => 'nullable|integer',
+            'children_birthdates' => 'nullable|string|max:255',
+            'father_name' => 'nullable|string|max:255',
+            'mother_name' => 'nullable|string|max:255',
+            'mother_address' => 'nullable|string|max:255',
+            'sss_no' => 'nullable|string|max:50',
+            'pagibig_no' => 'nullable|string|max:50',
+            'philhealth_no' => 'nullable|string|max:50',
+            'tin_no' => 'nullable|string|max:50',
+
+            // Employment Details
+            'parent_department' => 'nullable|string|max:255',
+            'parent_college' => 'nullable|string|max:255',
+            'classification' => 'nullable|string|max:255',
+            'employment_status' => 'nullable|string|max:255',
+            'date_employed' => 'nullable|date',
+            'accreditation' => 'nullable|string|max:255',
+            'date_permanent' => 'nullable|date',
+
+            // Nested related fields
+            'educations.*.level' => 'nullable|string|max:255',
+            'educations.*.school' => 'nullable|string|max:255',
+            'educations.*.course' => 'nullable|string|max:255',
+            'educations.*.major' => 'nullable|string|max:255',
+            'educations.*.remarks' => 'nullable|string|max:255',
+
+            'licenses.*.license_name' => 'nullable|string|max:255',
+            'licenses.*.license_number' => 'nullable|string|max:255',
+            'licenses.*.expiry_date' => 'nullable|date',
+            'licenses.*.renewal_from' => 'nullable|date',
+            'licenses.*.renewal_to' => 'nullable|date',
+
+            'trainings.*.training_date' => 'nullable|date',
+            'trainings.*.title' => 'nullable|string|max:255',
+            'trainings.*.venue' => 'nullable|string|max:255',
+            'trainings.*.remark' => 'nullable|string|max:255',
+
+            'service_records.*.department' => 'nullable|string|max:255',
+            'service_records.*.inclusive_date' => 'nullable|string|max:255',
+            'service_records.*.appointment_record' => 'nullable|string|max:255',
+            'service_records.*.position' => 'nullable|string|max:255',
+            'service_records.*.rank' => 'nullable|string|max:100',
+            'service_records.*.remarks' => 'nullable|string|max:255',
+
+            'organizations.*.registration_date' => 'nullable|date',
+            'organizations.*.validity_date' => 'nullable|date',
+            'organizations.*.organization_name' => 'nullable|string|max:255',
+            'organizations.*.place' => 'nullable|string|max:255',
+            'organizations.*.position' => 'nullable|string|max:255',
+
+            'others.*.date' => 'nullable|date',
+            'others.*.description' => 'nullable|string|max:255',
+        ]);
+
+        $employee = null;
+
+        DB::transaction(function () use ($validated, $request, &$employee, &$cvFileId) {
+
+            if ($request->hasFile('cv')) {
+                $cvFile = $request->file('cv');
+                $cvFileId = $this->googleDriveService->uploadFile($cvFile);
+                $validated['cv'] = $cvFileId;
+            }
+
+            $employeeData = collect($validated)->except([
+                'educations', 'licenses', 'trainings', 'service_records', 'organizations', 'others'
+            ])->toArray();           
+
+            // ✅ Create employee
+            $employee = Employee::create($employeeData);
+
+            // ✅ Employment details
+            $employee->employmentDetails()->create([
+                'parent_department' => $request->input('parent_department'),
+                'parent_college' => $request->input('parent_college'),
+                'classification' => $request->input('classification'),
+                'employment_status' => $request->input('employment_status'),
+                'date_employed' => $request->input('date_employed') ?? now(),
+                'accreditation' => $request->input('accreditation'),
+                'date_permanent' => $request->input('date_permanent'),
+                'cv' => $cvFileId,
+            ]);
+
+            // ✅ Related sections
+            $relations = [
+                'educations' => 'educations',
+                'licenses' => 'licenses',
+                'trainings' => 'trainings',
+                'service_records' => 'serviceRecords',
+                'organizations' => 'organizations',
+                'others' => 'others',
+            ];
+
+            foreach ($relations as $input => $relation) {
+                if ($request->has($input)) {
+                    $records = $request->input($input);
+            
+                    // Sort educations before save
+                    if ($input === 'educations') {
+                        $records = $this->sortEducationsByLevel($records);
+                    }
+            
+                    foreach ($records as $record) {
+                        if (array_filter($record)) {
+                            $employee->{$relation}()->create($record);
+                        }
+                    }
+                }
+            }
+        });
+
+        Log::create([
+            'user_id' => Auth::id(),
+            'activity' => "Added new employee: {$employee->first_name} {$employee->last_name} (Job Title: {$employee->job_title})",
+        ]);
+
+        return back()->with('success', 'New employee added successfully.');
+    }
+
     // *
     // **
     // ***
@@ -405,7 +609,15 @@ class AdminController extends Controller
         foreach ($relations as $input => $relationMethod) {
             if ($request->has($input)) {
                 $employee->{$relationMethod}()->delete();
-                foreach ($request->$input as $record) {
+        
+                $records = $request->input($input);
+        
+                // Sort educations before saving
+                if ($input === 'educations') {
+                    $records = $this->sortEducationsByLevel($records);
+                }
+        
+                foreach ($records as $record) {
                     $employee->{$relationMethod}()->create($record);
                 }
             }
@@ -738,161 +950,6 @@ class AdminController extends Controller
     {
         $this->googleDriveService = $googleDriveService;
     }
-
-    public function store(Request $request)
-    {
-        // dd([
-        //     'has_cv' => $request->hasFile('cv'),
-        //     'cv_file' => $request->file('cv'),
-        // ]);
-        
-        $validated = $request->validate([
-            // Core employee fields
-            'job_title' => 'nullable|string|max:255',
-            'department' => 'nullable|string|max:255',
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:employees,email',
-            'phone' => 'nullable|string|max:20',
-            'address' => 'nullable|string|max:255',
-            'cv' => 'nullable|mimes:pdf|max:2048',
-            'job_id' => 'nullable|exists:jobs,id',
-            'privacy_policy_agreed' => 'nullable|boolean',
-            'status' => 'nullable|string|max:100',
-            'applied_at' => 'nullable|date',
-            'faculty_code' => 'nullable|string|max:255',
-            'school_of' => 'nullable|string|max:255',
-            'designation_group' => 'nullable|string|max:255',
-            'branch' => 'nullable|string|max:255',
-            'date_of_birth' => 'nullable|date',
-            'place_of_birth' => 'nullable|string|max:255',
-            'gender' => 'nullable|string|max:50',
-            'religion' => 'nullable|string|max:100',
-            'civil_status' => 'nullable|string|max:100',
-            'citizenship' => 'nullable|string|max:100',
-            'spouse_name' => 'nullable|string|max:255',
-            'spouse_address' => 'nullable|string|max:255',
-            'spouse_occupation' => 'nullable|string|max:255',
-            'no_of_dependents' => 'nullable|integer',
-            'children_birthdates' => 'nullable|string|max:255',
-            'father_name' => 'nullable|string|max:255',
-            'mother_name' => 'nullable|string|max:255',
-            'mother_address' => 'nullable|string|max:255',
-            'sss_no' => 'nullable|string|max:50',
-            'pagibig_no' => 'nullable|string|max:50',
-            'philhealth_no' => 'nullable|string|max:50',
-            'tin_no' => 'nullable|string|max:50',
-
-            // Employment Details
-            'parent_department' => 'nullable|string|max:255',
-            'parent_college' => 'nullable|string|max:255',
-            'classification' => 'nullable|string|max:255',
-            'employment_status' => 'nullable|string|max:255',
-            'date_employed' => 'nullable|date',
-            'accreditation' => 'nullable|string|max:255',
-            'date_permanent' => 'nullable|date',
-
-            // Nested related fields
-            'educations.*.level' => 'nullable|string|max:255',
-            'educations.*.school' => 'nullable|string|max:255',
-            'educations.*.course' => 'nullable|string|max:255',
-            'educations.*.major' => 'nullable|string|max:255',
-            'educations.*.remarks' => 'nullable|string|max:255',
-
-            'licenses.*.license_name' => 'nullable|string|max:255',
-            'licenses.*.license_number' => 'nullable|string|max:255',
-            'licenses.*.expiry_date' => 'nullable|date',
-            'licenses.*.renewal_from' => 'nullable|date',
-            'licenses.*.renewal_to' => 'nullable|date',
-
-            'trainings.*.training_date' => 'nullable|date',
-            'trainings.*.title' => 'nullable|string|max:255',
-            'trainings.*.venue' => 'nullable|string|max:255',
-            'trainings.*.remark' => 'nullable|string|max:255',
-
-            'service_records.*.department' => 'nullable|string|max:255',
-            'service_records.*.inclusive_date' => 'nullable|string|max:255',
-            'service_records.*.appointment_record' => 'nullable|string|max:255',
-            'service_records.*.position' => 'nullable|string|max:255',
-            'service_records.*.rank' => 'nullable|string|max:100',
-            'service_records.*.remarks' => 'nullable|string|max:255',
-
-            'organizations.*.registration_date' => 'nullable|date',
-            'organizations.*.validity_date' => 'nullable|date',
-            'organizations.*.organization_name' => 'nullable|string|max:255',
-            'organizations.*.place' => 'nullable|string|max:255',
-            'organizations.*.position' => 'nullable|string|max:255',
-
-            'others.*.date' => 'nullable|date',
-            'others.*.description' => 'nullable|string|max:255',
-        ]);
-
-        $employee = null;
-
-        DB::transaction(function () use ($validated, $request, &$employee, &$cvFileId) {
-            // ✅ Upload to Google Drive and hash filename
-            // if ($request->hasFile('cv')) {
-            //     $cvFile = $request->file('cv');
-            //     $cvFileId = $this->googleDriveService->uploadFile($cvFile);
-            //     $employeeData['cv'] = $cvFileId; // ✅ assign it here
-            // } else {
-            //     $cvFileId = null;
-            // }
-
-            if ($request->hasFile('cv')) {
-                $cvFile = $request->file('cv');
-                $cvFileId = $this->googleDriveService->uploadFile($cvFile);
-                $validated['cv'] = $cvFileId;
-            }
-
-            $employeeData = collect($validated)->except([
-                'educations', 'licenses', 'trainings', 'service_records', 'organizations', 'others'
-            ])->toArray();           
-
-            // ✅ Create employee
-            $employee = Employee::create($employeeData);
-
-            // ✅ Employment details
-            $employee->employmentDetails()->create([
-                'parent_department' => $request->input('parent_department'),
-                'parent_college' => $request->input('parent_college'),
-                'classification' => $request->input('classification'),
-                'employment_status' => $request->input('employment_status'),
-                'date_employed' => $request->input('date_employed') ?? now(),
-                'accreditation' => $request->input('accreditation'),
-                'date_permanent' => $request->input('date_permanent'),
-                'cv' => $cvFileId,
-            ]);
-
-            // ✅ Related sections
-            $relations = [
-                'educations' => 'educations',
-                'licenses' => 'licenses',
-                'trainings' => 'trainings',
-                'service_records' => 'serviceRecords',
-                'organizations' => 'organizations',
-                'others' => 'others',
-            ];
-
-            foreach ($relations as $input => $relation) {
-                if ($request->has($input)) {
-                    foreach ($request->input($input) as $record) {
-                        if (array_filter($record)) {
-                            $employee->{$relation}()->create($record);
-                        }
-                    }
-                }
-            }
-        });
-
-        Log::create([
-            'user_id' => Auth::id(),
-            'activity' => "Added new employee: {$employee->first_name} {$employee->last_name} (Job Title: {$employee->job_title})",
-        ]);
-
-        return back()->with('success', 'New employee added successfully.');
-    }   
-
 
     public function manageUsers(Request $request)
     {

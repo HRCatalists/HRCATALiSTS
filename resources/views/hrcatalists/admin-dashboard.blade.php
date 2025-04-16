@@ -72,6 +72,30 @@
         window.atsEvents = @json($events);
     </script>
     
-    <script src="{{ asset('js/calendar.js') }}" defer></script>      
+    <script src="{{ asset('js/calendar.js') }}" defer></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const toggleButtons = document.querySelectorAll('.toggle-btn');
+        
+            toggleButtons.forEach(button => {
+                const targetId = button.getAttribute('data-target');
+                const targetElement = document.querySelector(targetId);
+                const icon = button.querySelector('.rotate-icon');
+        
+                button.addEventListener('click', () => {
+                    icon.classList.toggle('rotated');
+                    
+                    setTimeout(() => {
+                        const collapse = bootstrap.Collapse.getInstance(targetElement);
+                        if (collapse && targetElement.classList.contains('show')) {
+                            collapse.hide();
+                            icon.classList.remove('rotated');
+                        }
+                    }, 10000); // 10 seconds
+                });
+            });
+        });
+    </script>        
 
 </x-admin-ats-layout>

@@ -41,15 +41,26 @@
 
             <!-- Tabs -->
             <ul class="nav nav-tabs">
+
+                {{-- Applicannt Information Overview --}}
                 <li class="nav-item">
                     <a class="nav-link active" href="#" onclick="showTab('overview')">Overview</a>
                 </li>
+
+                {{-- Notes --}}
                 <li class="nav-item">
                     <a class="nav-link" href="#" onclick="showTab('notes')">Notes</a>
                 </li>
+
+                {{-- Schedule an Interview --}}
                 <li class="nav-item">
                     <a class="nav-link" href="#" onclick="showTab('interview')">Schedule an Interview</a>
                 </li>
+
+                {{-- Requirements --}}
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="showTab('requirements')">Requirements</a>
+                </li>                
             </ul>
 
             <!-- Overview Tab -->
@@ -80,15 +91,15 @@
                         </div>
                     </div>
 
-                  <!-- Attachment -->
-                  <div class="file-attachment my-4">
+                    <!-- Attachment -->
+                    <div class="file-attachment my-4">
                         <a id="applicantCVLink" href="#" target="_blank" download style="display: none;" class="d-flex align-items-center gap-2">
                             <img src="{{ asset('images/pdf-img.png') }}" alt="PDF icon" style="width: 24px;">
                             <span id="applicantCV" class="fw-semibold text-primary"></span>
                             <span class="ms-auto text-muted">Click to Download</span>
                         </a>
                         <p id="cvMessage" class="mb-0 text-muted border rounded px-3 py-2" style="display: none;">No CV available.</p>
-                    </div>
+                    </div>                    
 
                     {{-- <div class="d-grid mt-5">
                         @if(isset($applicant))
@@ -181,10 +192,95 @@
                 </form>                
             </div>
             <!-- End Interview Tab -->
+
+            <!-- Requirements Tab -->
+            <div id="requirements" class="tab-content" style="display: none;">
+                <form method="POST" id="requirementsForm" data-action-template="{{ route('applicants.updateRequirements', ['id' => 'APPLICANT_ID']) }}">
+                    @csrf
+                    @method('PUT')              
+                    <h5 class="mb-3">Application Requirements</h5>
+
+                    @php
+                        $requirementsList = config('requirements.list'); // ✅ Key => Label
+                        $applicantRequirements = is_array($applicant->requirements)
+                            ? $applicant->requirements
+                            : json_decode($applicant->requirements ?? '{}', true);
+                    @endphp
+                    
+                    <div class="row">
+                        @foreach ($requirementsList as $key => $label)
+                            <div class="col-md-6 mb-2">
+                                <div class="form-check">
+                                    <input
+                                        class="form-check-input"
+                                        type="checkbox"
+                                        id="req{{ $loop->index }}"
+                                        name="requirements[{{ $key }}]"
+                                        value="1"
+                                        {{ !empty($applicantRequirements[$key]) ? 'checked' : '' }}
+                                    >
+                                    <label class="form-check-label" for="req{{ $loop->index }}">
+                                        {{ $label }}
+                                    </label>
+                                </div>
+                            </div>
+                        @endforeach
+                    
+                    </div>                           
+        
+                    <div class="d-grid mt-3">
+                        <button type="submit" class="btn btn-success">Save Requirements</button>
+                    </div>
+                </form>
+            </div>
+            {{-- <div id="requirements" class="tab-content" style="display: none;">
+                <form id="requirementsForm">
+                    <h5 class="mb-3">Application Requirements</h5>
+
+                    @php
+                        $requirements = [
+                            'Letter of Application addressed to the President',
+                            'Accomplished Application Form for Employment',
+                            'Letter of Recommendation and/or clearance from previous employer',
+                            'Letter of Recommendation from the references given in the bio-data',
+                            'Transcript of Records authenticated by CHED',
+                            'Photocopy of Birth Certificate',
+                            'Photocopy of Baptismal and Confirmation Certificate',
+                            'Photocopy of the Catholic Marriage Contract (if married)',
+                            'NBI or Police Clearance',
+                            'SSS, Pag-ibig HDMF, Philhealth & TIN',
+                            'Professional License (for board courses)',
+                            'Certificates of Trainings/Seminars/Special Studies',
+                            'Two (2) colored ID Pictures (size 2x2)',
+                            'Medical Exam Results (CBC, Chest X-Ray, Drug Test, ECG, HBsAg, Urinalysis)',
+                            'Personality Assessment Profile',
+                            'Certificates of Training/Seminars Attended'
+                        ];
+                    @endphp
+
+                    <div class="row">
+                        @foreach ($requirements as $requirement)
+                            <div class="col-md-6 mb-2">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="req{{ $loop->index }}" name="requirements[]" value="{{ $requirement }}">
+                                    <label class="form-check-label" for="req{{ $loop->index }}">
+                                        {{ $requirement }}
+                                    </label>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+
+                    <div class="d-grid mt-3">
+                        <button type="submit" class="btn btn-success">Save Requirements</button>
+                    </div>
+                </form>
+            </div> --}}
+            <!-- End Requirements Tab -->
         </div>
     </div>
 </div>
-<!-- End Offcanvas -->
+<!-- Candidate Profile Offcanvas -->
 
 
 <!-- For adding notes -->
@@ -225,12 +321,13 @@
                 'rejected': '#dc3545',
                 'archived': '#343a40'
             };
-    
+
             offcanvas.addEventListener('show.bs.offcanvas', function (event) {
                 const button = event.relatedTarget;
                 if (!button) return;
-    
+
                 const data = {
+                    id: button.dataset.applicantId || null,
                     name: button.dataset.applicantName || 'N/A',
                     status: button.dataset.applicantStatus || 'N/A',
                     email: button.dataset.applicantEmail || 'N/A',
@@ -240,7 +337,7 @@
                     resume: button.dataset.applicantResume || 'N/A',
                     jobTitle: button.dataset.applicantJobTitle || 'N/A'
                 };
-    
+
                 // Set static content
                 Object.entries({
                     'applicantName': data.name,
@@ -254,7 +351,7 @@
                     const el = document.getElementById(id);
                     if (el) el.innerText = value;
                 });
-    
+
                 // Status styling
                 const statusKey = data.status.toLowerCase();
                 const statusColor = statusColors[statusKey] || '#000000';
@@ -268,34 +365,58 @@
                         fontWeight: '600'
                     });
                 }
-    
-                // Show correct buttons
+
+                // Toggle action buttons
                 document.getElementById(statusKey === 'evaluation' ? 'demoButtons' : 'defaultButtons')?.classList.remove('d-none');
                 document.getElementById(statusKey !== 'evaluation' ? 'demoButtons' : 'defaultButtons')?.classList.add('d-none');
-    
-                // CV Download Link
+
+                // Set correct CV download link
                 const cvLink = document.getElementById('applicantCVLink');
                 const cvNameSpan = document.getElementById('applicantCV');
                 const cvMessage = document.getElementById('cvMessage');
 
-                const resumeId = button.dataset.applicantResume || 'N/A';
-                const applicantName = button.dataset.applicantName || 'Applicant';
-
-                if (resumeId !== 'N/A') {
+                if (data.resume !== 'N/A') {
                     if (cvLink) {
-                        cvLink.href = `https://drive.google.com/uc?export=download&id=${resumeId}`;
+                        cvLink.href = `https://drive.google.com/uc?export=download&id=${data.resume}`;
                         cvLink.style.display = 'inline-flex';
                     }
                     if (cvNameSpan) {
-                        // Generate filename from applicant name
-                        const cleanName = applicantName.trim().replace(/\s+/g, '_');
-                        const fileName = `${cleanName}_CV.pdf`;
-                        cvNameSpan.textContent = fileName;
+                        const cleanName = data.name.trim().replace(/\s+/g, '_');
+                        cvNameSpan.textContent = `${cleanName}_CV.pdf`;
                     }
                     if (cvMessage) cvMessage.style.display = 'none';
                 } else {
                     if (cvLink) cvLink.style.display = 'none';
                     if (cvMessage) cvMessage.style.display = 'block';
+                }
+
+                // ✅ Dynamically update Requirements form action
+                const requirementsForm = document.getElementById('requirementsForm');
+                if (requirementsForm && data.id) {
+                    const template = requirementsForm.getAttribute('data-action-template');
+                    requirementsForm.action = template.replace('APPLICANT_ID', data.id);
+                }
+
+                // ✅ You can also dynamically set form action for Notes and Interview forms if needed
+                // Just follow the same logic for `editNotesForm` and `scheduleInterviewForm`
+
+                // ✅ Set Requirements Checkboxes based on JSON
+                if (button.dataset.applicantRequirements) {
+                    try {
+                        const parsedReqs = JSON.parse(button.dataset.applicantRequirements);
+                        const allCheckboxes = document.querySelectorAll('#requirementsForm input[type="checkbox"]');
+
+                        allCheckboxes.forEach(cb => {
+                            const nameAttr = cb.getAttribute('name'); // e.g. requirements[letter_of_application]
+                            const match = nameAttr.match(/^requirements\[(.+)\]$/);
+                            if (match) {
+                                const key = match[1]; // Extract key inside brackets
+                                cb.checked = parsedReqs?.[key] === true || parsedReqs?.[key] === 1;
+                            }
+                        });
+                    } catch (err) {
+                        console.error("❌ Error parsing applicant requirements:", err);
+                    }
                 }
             });
         }
@@ -320,6 +441,7 @@
         @endif
     });
 </script>
+    
 
 
 

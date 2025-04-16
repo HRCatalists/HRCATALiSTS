@@ -4,9 +4,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
+    {{-- <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
     <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Expires" content="0"> --}}
 
     <link rel="icon" type="image/png" href="{{ asset('images/ccihr-logo.png') }}">
 
@@ -54,8 +54,12 @@
 </head>
 
 <body>
-    <!-- Navbar -->
-    <x-partials.system.system-navbar />
+    {{-- Navbar with Notifications --}}
+    {{-- <x-partials.system.system-navbar /> --}}
+    @include('components.partials.system.system-navbar', [
+        'notifications' => $notifications ?? [],
+        'notificationsCount' => $notificationsCount ?? 0,
+    ])
 
     {{ $slot }}
 

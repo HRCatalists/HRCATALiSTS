@@ -1,7 +1,40 @@
 @php
     $employeeId = $employee->id ?? 'new';
-    $educations = $employee->educations ?? []; // prevent error when $employee is null
+    $educations = $employee->educations ?? [];
+
+    $priority = [
+        'Doctorate' => 1,
+        'Master\'s' => 2,
+        'Bachelor\'s' => 3,
+        'College' => 3,
+        'Associate' => 4,
+        'Senior High School' => 5,
+        'High School' => 6,
+        'Elementary' => 7,
+        'Others' => 8
+    ];
+
+    $normalize = function ($level) {
+        $level = strtolower(trim($level));
+        return match (true) {
+            str_contains($level, 'phd'), str_contains($level, 'doctor') => 'Doctorate',
+            str_contains($level, 'master') => 'Master\'s',
+            str_contains($level, 'bachelor') => 'Bachelor\'s',
+            str_contains($level, 'college') => 'College',
+            str_contains($level, 'associate') => 'Associate',
+            str_contains($level, 'senior high') => 'Senior High School',
+            str_contains($level, 'high school'), str_contains($level, 'junior high') => 'High School',
+            str_contains($level, 'elementary') => 'Elementary',
+            default => 'Others'
+        };
+    };
+
+    $educations = collect($educations)->sortBy(function ($edu) use ($priority, $normalize) {
+        $normalized = $normalize($edu->level ?? '');
+        return $priority[$normalized] ?? 999;
+    })->values();
 @endphp
+
 
 <!-- Educational Background -->
 <div class="mb-5" id="section-education-{{ $employeeId }}" data-editing="false">

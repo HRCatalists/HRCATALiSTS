@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class EmpRank1 extends Model
+class EmpRank6 extends Model
 {
     use HasFactory;
 

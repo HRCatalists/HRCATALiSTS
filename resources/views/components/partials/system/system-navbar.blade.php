@@ -20,12 +20,37 @@
             <span class="cc-nav-text navbar-text ms-2">Columban College, Inc.</span>
         </a>
         
-        <!-- Right Side (User Profile Section) -->
+        <!-- Right Side (Navbar) -->
         <div class="d-flex align-items-center">
+
+            {{-- Notification Bell
+            <div class="dropdown me-3">
+                <a href="#" class="text-decoration-none position-relative" id="notificationDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fas fa-bell fa-lg text-dark"></i>
+                    @if(isset($notificationsCount) && $notificationsCount > 0)
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                        {{ $notificationsCount }}
+                    </span>
+                @endif                
+                </a>
+
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationDropdown">
+                    <li class="dropdown-header">Notifications</li>
+
+                    @forelse($notifications as $note)
+                        <li><a class="dropdown-item small" href="#">{{ $note->message }}</a></li>
+                    @empty
+                        <li><span class="dropdown-item small text-muted">No new notifications</span></li>
+                    @endforelse
+                </ul>
+            </div> --}}
+
+            {{-- Username & Profile --}}
             <span class="user-name navbar-text me-3">{{ auth()->user()->name }}!</span>
+
             <div class="dropdown">
                 <a href="#" class="dropdown-toggle d-flex align-items-center text-decoration-none" id="userMenu" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="images/dummy-profile.png" alt="Profile" class="rounded-circle user-img">
+                    <img src="{{ asset('images/dummy-profile.png') }}" alt="Profile" class="rounded-circle user-img">
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
                     <li><a class="dropdown-item" href="#">Profile</a></li>
@@ -44,7 +69,9 @@
                     </li>
                 </ul>
             </div>
+
         </div>
+
     </div>
 </nav>
 <!-- End of Navbar -->
