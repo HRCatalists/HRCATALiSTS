@@ -27,7 +27,7 @@
                         </button>
                     </div>
                 
-                    <button type="button" class="btn btn-primary add-btn action-btn me-2" data-bs-toggle="modal" data-bs-target="#addEmployeeModal">
+                    <button type="button" class="btn btn-primary add-btn action-btn me-2 mb-4" data-bs-toggle="modal" data-bs-target="#addEmployeeModal">
                         ADD EMPLOYEE
                     </button>
                 
@@ -57,7 +57,7 @@
             
 
                 <!-- Employee Table -->
-                <table id="employeeTable" class="table table-bordered display">
+                <table id="employeeTable" class="table table-bordered table-striped align-middle">
                     <thead>
                         <tr>
                             <th class="text-center"><input type="checkbox" id="selectAll"></th>
